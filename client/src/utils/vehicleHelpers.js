@@ -89,6 +89,7 @@ export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerO
   let activeCount = 0;
   let activeArray = [];
   let inactiveArray = [];
+  // should comment these in at some point
   // console.log('okToActivateVehicle called FORMDATA IS:', formvehicle);
   // console.log('okToActivateVehicle called with role:', role);
   // console.log('okToActivateVehicle called UNIT OWNER IS:', ownerOfUnit);
