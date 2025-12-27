@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import hoaRoutes from "./routes/hoaRoutes.js";
@@ -24,6 +25,20 @@ app.use("/api/users", userRoutes);
 app.use("/api/hoas", hoaRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/payments", paymentRoutes);
+
+app.get("/reset-password/:token", (req, res) => {
+  try {
+    const { token } = req.params;
+
+    jwt.verify(token, process.env.JWT_SECRET);
+
+    const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
+    res.redirect(`${clientURL}/reset-password?token=${token}`);
+  } catch (err) {
+    const clientURL = process.env.CLIENT_URL || "http://localhost:5173";
+    res.redirect(`${clientURL}/reset-password-error?message=Token%20expired%20or%20invalid`);
+  }
+});
 
 //app.use(errorHandler);
 

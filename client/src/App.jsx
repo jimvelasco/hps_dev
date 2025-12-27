@@ -26,6 +26,7 @@ import TestPage from "./pages/TestPage";
 import UserProfile from "./pages/UserProfile";
 import ParkingPayment from "./pages/ParkingPayment";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function LandingPage({ backgroundImage, hoaId, hoaError }) {
@@ -239,6 +240,8 @@ function App() {
           } />
 
           <Route path="/:hoaId/test" element={<TestPage />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password-error" element={<ErrorPage />} />
           <Route path="/error" element={<ErrorPage />} />
          
           <Route path="/:hoaId/error" element={

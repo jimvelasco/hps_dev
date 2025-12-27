@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
+import ForgotPasswordDialog from "../components/ForgotPasswordDialog";
 
 export default function OwnersLogin() {
   const { hoaId } = useParams();
@@ -15,6 +16,7 @@ export default function OwnersLogin() {
   // const [email, setEmail] = useState("admin@retreatia.com");
   const [password, setPassword] = useState("123456");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [showForgotPasswordDialog, setShowForgotPasswordDialog] = useState(false);
 
   useEffect(() => {
     localStorage.removeItem("token");
@@ -123,6 +125,18 @@ export default function OwnersLogin() {
               placeholder="Enter your password"
               required
             />
+            <div style={{ marginTop: "8px", textAlign: "right" }}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowForgotPasswordDialog(true);
+                }}
+                style={{ color: "#1976d2", textDecoration: "underline", fontSize: "14px", cursor: "pointer" }}
+              >
+                Forgot Password?
+              </a>
+            </div>
           </div>
           <div style={{ display: 'flex', justifyContent: "space-between" }}>
 
@@ -149,6 +163,12 @@ export default function OwnersLogin() {
           </div>
         )} */}
       </div>
+
+      <ForgotPasswordDialog
+        isOpen={showForgotPasswordDialog}
+        hoaId={hoaId}
+        onClose={() => setShowForgotPasswordDialog(false)}
+      />
     </div>
   );
 }

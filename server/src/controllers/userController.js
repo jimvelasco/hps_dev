@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import sgMail from "@sendgrid/mail";
 
 const getUsers = async (req, res) => {
  
@@ -258,6 +259,96 @@ const verifyRenterPin = async (req, res) => {
   }
 };
 
-export { getUsers, getUserById, createUser, updateUser, loginUser, getCurrentUser, verifyRenterPin };
+const forgotPassword = async (req, res) => {
+  try {
+    const { email, hoaId } = req.body;
+
+    if (!email || !hoaId) {
+      return res.status(400).json({ message: "Email and HOA ID are required" });
+    }
+
+    const user = await User.findOne({ email, hoaid: hoaId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found for this email and HOA" });
+    }
+
+    const resetToken = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        hoaId: user.hoaid
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
+    const resetLink = `${serverUrl}/reset-password/${resetToken}`;
+
+    const msg = {
+      to: user.email,
+      from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparkingsolutions.com",
+      subject: "Password Reset Request",
+      html: `
+        <h2>Password Reset Request</h2>
+        <p>Hi ${user.first_name},</p>
+        <p>We received a request to reset your password. Click the link below to create a new password:</p>
+        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+          Reset Password
+        </a>
+        <p>This link will expire in 1 hour.</p>
+        <p>If you didn't request a password reset, please ignore this email.</p>
+        <p>Best regards,<br/>HOA Parking Solutions</p>
+      `
+    };
+
+    await sgMail.send(msg);
+
+    res.status(200).json({
+      message: "Password reset email sent successfully"
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({ message: "Token and new password are required" });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      message: "Password reset successfully"
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { getUsers, getUserById, createUser, updateUser, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword };
 
 
