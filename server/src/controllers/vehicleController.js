@@ -110,10 +110,6 @@ const getVehicleById = async (req, res) => {
 const getVehiclesForUnitNumber = async (req, res) => {
   try {
     const { hoaId, unitNumber } = req.params;
-    //  console.log("getVehiclesForUnitNumber received params:", req.params);
-    const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
-
-    //const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter",enddate: { $gte: todayStr } };
 
     const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter" };
     //   console.log("getVehiclesForUnitNumber qry built:", qry);
@@ -222,12 +218,14 @@ const batchUpdateDateFields = async (req, res) => {
       const updateData = {};
 
       if (vehicle.startdate) {
-        const checkinDate = new Date(vehicle.startdate + 'T00:00:00Z');
+       // const checkinDate = new Date(vehicle.startdate + 'T00:00:00Z');
+         const checkinDate = vehicle.startdate + 'T00:00:00Z';
         updateData.checkin = checkinDate;
       }
 
       if (vehicle.enddate) {
-        const checkoutDate = new Date(vehicle.enddate + 'T00:00:00Z');
+       // const checkoutDate = new Date(vehicle.enddate + 'T00:00:00Z');
+         const checkoutDate = vehicle.enddate + 'T00:00:00Z';
         updateData.checkout = checkoutDate;
       }
 

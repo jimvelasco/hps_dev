@@ -21,7 +21,11 @@ export const createVehicleSchema = z.object({
   startdate: z.string().min(1, 'Start date is required'),
   requires_payment: z.number().optional(),
   // change_history: z.array(z.unknown()).optional()
-});
+}).transform((data) => ({
+  ...data,
+  checkin: new Date(data.startdate).toISOString(),
+  checkout: new Date(data.enddate).toISOString()
+}));
 
 export const updateVehicleSchema = z.object({
   ownerid: z.string(),
@@ -33,8 +37,8 @@ export const updateVehicleSchema = z.object({
   carownerphone: z.string().min(10, 'Phone number must be valid'),
   make: z.string().min(1, 'Make is required'),
   model: z.string().min(1, 'Model is required'),
-  year: z.string().min(1,'Year is required').max(4, 'Year must be 4 digits'),
- // year: z.string().min(4, 'Year must be 4 digits'),
+  year: z.string().min(1, 'Year is required').max(4, 'Year must be 4 digits'),
+  // year: z.string().min(4, 'Year must be 4 digits'),
   vehicle_type: z.string().min(1, 'Vehicle type is required'),
   plate: z.string().min(1, 'License plate is required'),
   plate_state: z.string().min(1, 'Plate state is required'),
@@ -44,7 +48,11 @@ export const updateVehicleSchema = z.object({
   enddate: z.string().min(1, 'End date is required'),
   startdate: z.string().min(1, 'Start date is required'),
   requires_payment: z.number().optional(),
-
+}).transform((data) => ({
+  ...data,
+  checkin: new Date(data.startdate).toISOString(),
+  checkout: new Date(data.enddate).toISOString()
+}));
   // enddate: z.string().refine((value) => {
   //   const date = new Date(value);
   //   if (Number.isNaN(date.getTime())) return false;
@@ -61,7 +69,7 @@ export const updateVehicleSchema = z.object({
   //  change_history: z.array(z.unknown()).optional(),
   //  number_of_changes: z.number().optional(),
   // has_read_terms: z.number().optional()
-});
+
 /*
  carowner_fname: response.data.carowner_fname || "",
           carowner_lname: response.data.carowner_lname || "",

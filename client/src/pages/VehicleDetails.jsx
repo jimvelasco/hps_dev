@@ -6,7 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
-import { okToActivateOwnerVehicle , okToActivateRenterVehicle } from "../utils/vehicleHelpers";
+import { okToActivateOwnerVehicle , okToActivateRenterVehicle,utcDateOnly } from "../utils/vehicleHelpers";
 
 import mongoose from "mongoose";
 
@@ -121,7 +121,15 @@ export default function VehicleDetails() {
         const response = await axios.get(qry);
         // setVehicle(response.data);
         // console.log("VD Fetched vehicle data:", response.data);
-        //  console.log("userid for unit:", userIdForUnit);
+       // let sd =  new Date(response.data.checkin).toLocaleDateString("en-CA");
+      // let ed =  new Date(response.data.checkout).toLocaleDateString("en-CA");
+        const sd = utcDateOnly(response.data.checkin);
+        const ed = utcDateOnly(response.data.checkout);
+
+
+          console.log("checkin date:", sd,'before local', response.data.checkin);
+           console.log("checkout date:", ed, 'before local',response.data.checkout);
+        //  console.log("checkout date:',ed );
         //  let oid = loggedInUser ? loggedInUser._id : userIdForUnit;
         setFormData({
           // ownerid: oid || null,
@@ -141,8 +149,8 @@ export default function VehicleDetails() {
           plate_state: response.data.plate_state || "",
           //  active_flag: response.data.active_flag || 0,
           // startdate: response.data.startdate || "",
-          startdate: response.data.startdate || "",
-          enddate: response.data.enddate || "",
+          startdate: sd,
+          enddate: ed,
           requires_payment: response.data.requires_payment || 0,
         });
         // console.log("VehicleDetails.jsx populated from useEffect formData:", formData);

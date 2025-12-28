@@ -6,7 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGrid from "../components/VehiclesGrid";
-import { getVehicleActiveStatusBoolean } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean,utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 
 
@@ -93,7 +93,7 @@ export default function OwnerVehicles() {
       const today = new Date();
       const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
       //const formattedDate = oneYearAgo.toISOString().split('T')[0];
-       const formattedDate = oneYearAgo.toLocaleDateString("en-CA");
+       const formattedDate =  utcDateOnly(oneYearAgo); //toLocaleDateString("en-CA");
       setFilterDate(formattedDate);
     }
   }, [allVehicles]);

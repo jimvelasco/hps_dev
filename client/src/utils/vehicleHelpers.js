@@ -1,6 +1,19 @@
-export const getVehicleActiveStatusBoolean = (element) => {
+export const oldgetVehicleActiveStatusBoolean = (element) => {
   //const mongoDateStr = new Date(element.checkout).toLocaleDateString("en-CA"); // "2025-12-03"
   const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
+
+  /*
+  function todayUtcMidnight() {
+  const now = new Date();
+  return new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate()
+  ));
+}
+
+const mongoDate = new Date(doc.startDate);
+  */
 
   // let d = new Date(element.checkout);
   // const y = d.getUTCFullYear();
@@ -29,6 +42,37 @@ export const getVehicleActiveStatusBoolean = (element) => {
   }
 }
 
+export const getVehicleActiveStatusBoolean = (element) => {
+  const now = new Date();
+  const today = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate()
+  ));
+const mongoDate = new Date(element.checkout);
+  if (mongoDate >= today) {
+    //console.log('returning true *******************************************************',"");
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const getVehicleIsActiveTodayBoolean = (element) => {
+  const now = new Date();
+  const today = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate()
+  ));
+const mongoDate = new Date(element.checkout);
+  if (mongoDate == today) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // {/*
 //   function ymdFromMongoUTC(value) {
 //   // value may be an ISO string ("2025-12-16T00:00:00.000Z")
@@ -46,7 +90,7 @@ export const getVehicleActiveStatusBoolean = (element) => {
 
 // this is true if the vehicle's enddate is exactly today.  Used to highlight which vehicles will be
 // leaving today
-export const getVehicleIsActiveTodayBoolean = (element) => {
+export const xxxgetVehicleIsActiveTodayBoolean = (element) => {
   // "2025-12-03"
   // let d = new Date(element.checkout);
   // const y = d.getUTCFullYear();
@@ -60,6 +104,11 @@ export const getVehicleIsActiveTodayBoolean = (element) => {
   } else {
     return false;
   }
+}
+
+export const utcDateOnly = (isoStr) => {
+  const d = new Date(isoStr);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
 }
 
 export const formatPhoneNumber = (phone) => {
@@ -256,105 +305,6 @@ export const okToActivateRenterVehicle = (formvehicle, vehiclearray, role, owner
  
 
 
-export const good_okToActivateVehicle = (formvehicle, vehiclearray, role, ownerOfUnit) => {
-  const formedate = formvehicle.enddate;
-  let activeCount = 0;
-  let activeArray = [];
-  let inactiveArray = [];
-  console.log('okToActivateVehicle called with role:', role,ownerOfUnit);
-  const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
-  for (let i = 0; i < vehiclearray.length; i++) {
-    const v = vehiclearray[i];
-    const isok = getVehicleActiveStatusBoolean(v);
-    if (isok) {
-      activeArray.push(v);
-      activeCount++;
-    } else {
-      inactiveArray.push(v);
-    }
-  }
-   let maxallowed = ownerOfUnit.parking_allowed_owner;
-   if (role === "renter") {
-      maxallowed = ownerOfUnit.parking_allowed_renter;
-   }
-    if ((activeArray.length) >= maxallowed) {
-      if (todayStr >formedate) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    return true;
-}
-export const yyokToActivateVehicle = (formvehicle, vehiclearray, role, user, isModifyMode, clickedvid) => {
-  const formedate = formvehicle.enddate;
-  let activeCount = 0;
-  let activeArray = [];
-  let inactiveArray = [];
-  const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
-  for (let i = 0; i < vehiclearray.length; i++) {
-    const v = vehiclearray[i];
-    const isok = getVehicleActiveStatusBoolean(v);
-    if (isok) {
-      activeArray.push(v);
-      activeCount++;
-    } else {
-      inactiveArray.push(v);
-    }
-  }
-   const maxallowed = user.parking_allowed_owner;
-  if (isModifyMode) {
-    if ((activeArray.length) >= maxallowed) {
-      if (todayStr >formedate) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    return true;
-  }
-}
-
-export const xxokToActivateVehicle = (formvehicle, vehiclearray, role, user, isModifyMode, clickedvid) => {
-  const formedate = formvehicle.enddate;
-  let activeCount = 0;
-  let activeArray = [];
-  let inactiveArray = [];
-  const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
-  // if (todayStr > formedate) {
-  //  console.log('pass okToActivateVehicle enddate is in the past:', todayStr,formedate);
-  // } else {
-  //    console.log('fail okToActivateVehicle enddate is in the future:', todayStr, formedate);
-  // }
-  
-
-  for (let i = 0; i < vehiclearray.length; i++) {
-    const v = vehiclearray[i];
-    const isok = getVehicleActiveStatusBoolean(v);
-    if (isok) {
-      activeArray.push(v);
-    } else {
-      inactiveArray.push(v);
-    }
-    if (isok) {
-      activeCount++;
-    }
-  }
-  if (isModifyMode) {
-    let filteredActive = activeArray.filter(v => v._id === clickedvid);
-    let filteredInActive = inactiveArray.filter(v => v._id === clickedvid);
-    const maxallowed = user.parking_allowed_owner;
-    console.log('okToActivateVehicle isModifyMode filteredActive:', filteredActive.length,filteredActive);
-    if ((activeArray.length) >= maxallowed) {
-      if (todayStr >formedate) {
-         console.log('okToActivateVehicle isModifyMode filteredActive: after filter', filteredActive.length,filteredActive);
-        return true;
-      }
-      return false;
-    }
-    return true
-  }
-}
     // if ((filteredActive.length + filteredInActive.length) <= maxallowed) {
     //   return false;
     // }

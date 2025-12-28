@@ -86,14 +86,14 @@ const vehicleSchema = new mongoose.Schema(
     type: String
   },
 
-  // checkout: {
-  //   type: Date,
-  //   default: Date.now
-  // },
-  // checkin: {
-  //   type: Date,
-  //   default: Date.now
-  // },
+  checkout: {
+    type: Date,
+    default: Date.now
+  },
+  checkin: {
+    type: Date,
+    default: Date.now
+  },
 
 
   // change_history: {

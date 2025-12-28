@@ -76,6 +76,37 @@ export default function Administration() {
     }
   };
 
+   const handleTestModel = async () => {
+    console.log("handleTestModel called");
+    try {
+      const response = await axios.post(`/tests/`);
+      if (response.status === 201) {
+        alert(`test model executed successfully. Result: ${response.data.message || "Done"}`);
+        const responseData = await axios.get(`/tests/`);
+        console.log("Test Models fetched:", responseData.data);
+      }
+    } catch (err) {
+      alert(`Error running handleTestModel: ${err.response?.data?.message || err.message}`);
+      console.error("Error:", err);
+    } 
+  };
+   const handleTestModelGet = async () => {
+    console.log("handleTestModel called");
+    //const startd = "2025-12-27T00:00:00.000Z";
+    // const startd = new Date().toLocaleDateString('en-CA');
+     const startd = "2025-12-27";
+    try {
+      const response = await axios.get(`/tests/${startd}`);
+      if (response.status === 200) {
+       
+        console.log("Test Models fetched:", response.data);
+      }
+    } catch (err) {
+      alert(`Error running handleTestModel: ${err.response?.data?.message || err.message}`);
+      console.error("Error:", err);
+    } 
+  };
+
   const handleOpenTestPage = () => {
     navigate(`/${hoaId}/test`);
   };
@@ -364,6 +395,74 @@ export default function Administration() {
               Manage Contact Information
             </button>
           </section>
+
+           <section style={{
+            backgroundColor: "white",
+            padding: "30px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            textAlign: "center"
+          }}>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Contact Information</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Test Model
+            </p>
+            <button
+              onClick={handleTestModel}
+              style={{
+                padding: "12px 24px",
+                fontSize: "16px",
+                backgroundColor: "#e91e63",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold",
+                transition: "background-color 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = "#c2185b"}
+              onMouseLeave={(e) => e.target.style.backgroundColor = "#e91e63"}
+            >
+             Test Model
+            </button>
+          </section>
+
+            <section style={{
+            backgroundColor: "white",
+            padding: "30px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            textAlign: "center"
+          }}>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Contact Information</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Test Model
+            </p>
+            <button
+              onClick={handleTestModelGet}
+              style={{
+                padding: "12px 24px",
+                fontSize: "16px",
+                backgroundColor: "#e91e63",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold",
+                transition: "background-color 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = "#c2185b"}
+              onMouseLeave={(e) => e.target.style.backgroundColor = "#e91e63"}
+            >
+             Test Model Get
+            </button>
+          </section>
+
+
+
+
+
+
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import hoaRoutes from "./routes/hoaRoutes.js";
 import vehicleRoutes from "./routes/vehicleRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import testRoutes from "./routes/testRoutes.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 dotenv.config();
 connectDB();
@@ -25,6 +26,9 @@ app.use("/api/users", userRoutes);
 app.use("/api/hoas", hoaRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/tests", testRoutes);
+
+
 
 app.get("/reset-password/:token", (req, res) => {
   try {
