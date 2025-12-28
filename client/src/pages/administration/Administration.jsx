@@ -92,8 +92,7 @@ export default function Administration() {
   };
    const handleTestModelGet = async () => {
     console.log("handleTestModel called");
-    //const startd = "2025-12-27T00:00:00.000Z";
-    // const startd = new Date().toLocaleDateString('en-CA');
+    
      const startd = "2025-12-27";
     try {
       const response = await axios.get(`/tests/${startd}`);

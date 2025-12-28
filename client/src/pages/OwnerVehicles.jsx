@@ -93,7 +93,7 @@ export default function OwnerVehicles() {
       const today = new Date();
       const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
       //const formattedDate = oneYearAgo.toISOString().split('T')[0];
-       const formattedDate =  utcDateOnly(oneYearAgo); //toLocaleDateString("en-CA");
+       const formattedDate =  utcDateOnly(oneYearAgo);
       setFilterDate(formattedDate);
     }
   }, [allVehicles]);
@@ -308,6 +308,7 @@ export default function OwnerVehicles() {
                 handleDetailsClick={handleDetailsClick}
                 handlePaymentClick={handlePaymentClick}
                 getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                utcDateOnly={utcDateOnly}
               />
 
             </div>

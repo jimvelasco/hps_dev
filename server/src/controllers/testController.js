@@ -12,13 +12,6 @@ const createTestModel = async (req, res) => {
   let sdate = new Date().toLocaleDateString('en-CA'); // "YYYY-MM-DD"
   sdate = sdate + 'T00:00:00.000Z';
 
-//  const adate =  new Date().toISOString().split('T')[0];
-//  const bdate =  new Date().toISOString();
-//  const ldate = new Date(bdate).toLocaleDateString('en-CA');
-//   console.log("ISO date split:", adate);
-//  console.log("ISO date:", bdate);
-//   console.log("sdate:", sdate);
-//   console.log("ldate:", ldate);
 
 const start = new Date(Date.UTC(2025, 11, 26));
  const end   = new Date(Date.UTC(2025, 11, 27));

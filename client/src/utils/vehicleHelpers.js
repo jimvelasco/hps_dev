@@ -1,46 +1,4 @@
-export const oldgetVehicleActiveStatusBoolean = (element) => {
-  //const mongoDateStr = new Date(element.checkout).toLocaleDateString("en-CA"); // "2025-12-03"
-  const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
 
-  /*
-  function todayUtcMidnight() {
-  const now = new Date();
-  return new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate()
-  ));
-}
-
-const mongoDate = new Date(doc.startDate);
-  */
-
-  // let d = new Date(element.checkout);
-  // const y = d.getUTCFullYear();
-  // const m = String(d.getUTCMonth() + 1).padStart(2, "0");
-  // const day = String(d.getUTCDate()).padStart(2, "0");
-  // const mongoDateStr = `${y}-${m}-${day}`; // "YYYY-MM-DD"
-  const mongoDateStr = element.enddate;
-  //  console.log("")
-   // console.log('todayStr=', todayStr,'mongoDateStr=', mongoDateStr, (mongoDateStr >= todayStr));
-   // console.log('mongoDateStr=', mongoDateStr); 
-  //  console.log('plate=', element.plate);  
-  //  console.log('istrue=', (mongoDateStr >= todayStr )); 
-  // console.log('');  
-  // console.log('getVehicleActiveStatusBoolean',
-  //   'indate=', element.checkout,
-  //   'mongoDateStr=', mongoDateStr,
-  //   'todayStr=', todayStr,
-  //   'plate=', element.plate
-  // );
-
-  if (mongoDateStr >= todayStr) {
-    //console.log('returning true *******************************************************',"");
-    return true;
-  } else {
-    return false;
-  }
-}
 
 export const getVehicleActiveStatusBoolean = (element) => {
   const now = new Date();
@@ -73,38 +31,6 @@ const mongoDate = new Date(element.checkout);
   }
 }
 
-// {/*
-//   function ymdFromMongoUTC(value) {
-//   // value may be an ISO string ("2025-12-16T00:00:00.000Z")
-//   // or a Date object (new Date(...))
-//   const d = (typeof value === "string") ? new Date(value) : value;
-//   if (!(d instanceof Date) || isNaN(d)) return null;
-
-//   const y = d.getUTCFullYear();
-//   const m = String(d.getUTCMonth() + 1).padStart(2, "0");
-//   const day = String(d.getUTCDate()).padStart(2, "0");
-
-//   return `${y}-${m}-${day}`; // "YYYY-MM-DD"
-// }
-//   *}
-
-// this is true if the vehicle's enddate is exactly today.  Used to highlight which vehicles will be
-// leaving today
-export const xxxgetVehicleIsActiveTodayBoolean = (element) => {
-  // "2025-12-03"
-  // let d = new Date(element.checkout);
-  // const y = d.getUTCFullYear();
-  // const m = String(d.getUTCMonth() + 1).padStart(2, "0");
-  // const day = String(d.getUTCDate()).padStart(2, "0");
-  //const mongoDateStr = `${y}-${m}-${day}`; // "YYYY-MM-DD"
-  const mongoDateStr = element.enddate; // "YYYY-MM-DD"
-
-  if (mongoDateStr == todayStr) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 export const utcDateOnly = (isoStr) => {
   const d = new Date(isoStr);
@@ -114,72 +40,6 @@ export const utcDateOnly = (isoStr) => {
 export const formatPhoneNumber = (phone) => {
   phone = phone.replace(/\D/g, '');
   return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-}
-//  let curdate = new Date().toLocaleDateString();
-//             let curdatetime = new Date(curdate).getTime(); -432 000 000
-
-// true if vehicle enddate is today or in the future
-// export const xxisVehicleActive = (vehicle) => {
-//   if (!vehicle?.enddate) return false;
-//   const today = new Date();
-//   today.setHours(0, 0, 0, 0);
-//   return new Date(vehicle.enddate) >= today;
-// };
-
-// export const xxgetActiveRenterVehicles = (vehicles) => {
-//   return vehicles.filter(
-//     (v) => v.carownertype === 'renter' && isVehicleActive(v)
-//   );
-// };
- //const oktoadd = okToActivateVehicle(formData,vehicles,role,ownerOfUnit);
-
-export const aaokToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerOfUnit,vehicleId) => {
-  const formedate = formvehicle.enddate;
-  let activeCount = 0;
-  let activeArray = [];
-  let inactiveArray = [];
-  // should comment these in at some point
-  // console.log('okToActivateVehicle called FORMDATA IS:', formvehicle);
-  // console.log('okToActivateVehicle called with role:', role);
-  // console.log('okToActivateVehicle called UNIT OWNER IS:', ownerOfUnit);
-  // console.log('okToActivateVehicle called VEHICLE ID IS:', vehicleId);
-
-  const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
-  for (let i = 0; i < vehiclearray.length; i++) {
-    const v = vehiclearray[i];
-    const isok = getVehicleActiveStatusBoolean(v);
-    if (isok) {
-     // console.log('just added active')
-      activeArray.push(v);
-      activeCount++;
-    } else {
-    //  console.log('just added IN active')
-      inactiveArray.push(v);
-    }
-  }
-  console.log('active length is ', activeArray.length, ' inactive length is ', inactiveArray.length );
-  let filteredActive = [];
-  let filteredInActive = [];
- // console.log('ACTIVE ARRAY IS ', activeArray);
-  if (vehicleId) {
-    filteredActive = activeArray.filter(v => v._id !== vehicleId);
-    filteredInActive = inactiveArray.filter(v => v._id !== vehicleId);
-    //  console.log('vehiclearray length is ', vehiclearray.length,activeCount);
-    //  console.log('FILTERED ACTIVE ARRAY IS ', filteredActive);
-    //   console.log('FILTERED IN ACTIVE ARRAY IS ', filteredInActive);
-      return { oktoadd: true, rpflag: 0 };
-  }
- // console.log('FILTERED ACTIVE ARRAY LENGTH IS ', filteredActive.length);
-   let maxallowed = ownerOfUnit.parking_allowed_owner;
-    if ((activeArray.length) >= maxallowed) {
-      if (todayStr > formedate) {
-        return {oktoadd:true, rpflag: 0};
-      } else {
-        return {oktoadd:false, rpflag: 0};
-      }
-    }
-  //  console.log('RETURNING NEITHER CONDITION TRUE')
-     return {oktoadd:true, rpflag: 0};
 }
 
 export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerOfUnit,vehicleId) => {

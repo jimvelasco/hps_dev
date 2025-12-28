@@ -65,21 +65,9 @@ export default function OnsiteVehicles() {
   }
 
   const formatDate = (date, vehicle) => {
-    //if (String(date) === '2025-12-02') {
-    //console.log("Special date encountered:", date);
-    // let newdate = date + 'T00:00:00';
-    //  console.log("Special date encountered formatted:", new Date(newdate).toLocaleDateString());
-    //}
-    // console.log('date type',typeof date)
+   
     let newdate = date;
-    // if (typeof date === "string") {
-    //   newdate = date;  // + 'T00:00:00';
-    // } else {
-    // newdate = new Date(date).toISOString().substring(0, 10);
-    //   console.log("Date converted to ISO string:", newdate);
-    // }
-    //  console.log("Special date encountered formatted is string:", vehicle.plate,date,new Date(newdate).toLocaleDateString());
-    //  return new Date(newdate).toLocaleDateString();
+   
     return newdate;
   };
   const paymentRequired = (vehicle) => {

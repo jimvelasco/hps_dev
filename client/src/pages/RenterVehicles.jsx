@@ -5,7 +5,7 @@ import { useError } from "../context/ErrorContext";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGrid from "../components/VehiclesGrid";
-import { getVehicleActiveStatusBoolean } from "../utils/vehicleHelpers";
+import {  getVehicleActiveStatusBoolean,utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 
 
@@ -240,6 +240,7 @@ export default function RenterVehicles() {
                 handleDetailsClick={handleDetailsClick}
                 handlePaymentClick={handlePaymentClick}
                 getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                utcDateOnly={utcDateOnly}
               />
             </div>
             <div className="phoneview">
