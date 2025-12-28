@@ -189,9 +189,6 @@ const deleteVehicle = async (req, res) => {
   }
 };
 
-// const allVehicles = await Vehicle.find({ ownerid: ownerId, hoaid: hoaId });
-// const activeRenterVehicles = getActiveRenterVehicles(allVehicles);
-// const vehicleCount = activeRenterVehicles.length;
 
 
 

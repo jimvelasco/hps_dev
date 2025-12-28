@@ -178,7 +178,7 @@ export default function RenterVehicles() {
     navigate(`/${hoaId}/payment`, {
       state: {
         vehicleId: vid,
-        unitNumber: unitNumber, userId: userIdForUnit, hoaId: hoaId
+        unitNumber: unitNumber, userId: userIdForUnit, hoaId: hoaId, role: "renter"
       }
     });
   }

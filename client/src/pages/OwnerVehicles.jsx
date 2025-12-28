@@ -92,7 +92,8 @@ export default function OwnerVehicles() {
     if (allVehicles.length > 0) {
       const today = new Date();
       const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-      const formattedDate = oneYearAgo.toISOString().split('T')[0];
+      //const formattedDate = oneYearAgo.toISOString().split('T')[0];
+       const formattedDate = oneYearAgo.toLocaleDateString("en-CA");
       setFilterDate(formattedDate);
     }
   }, [allVehicles]);
@@ -219,16 +220,25 @@ export default function OwnerVehicles() {
   };
   const handlePaymentClick = (vid) => {
     console.log("Payment click for vehicle id:", vid);
-     setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Information",
-        message: `Cannot pay for renter vehicle from the owners screen.`,
-        confirmText: "OK",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
-      });
+
+     navigate(`/${hoaId}/payment`, {
+      state: {
+        vehicleId: vid,
+        unitNumber: loggedInUser.unitnumber, userId: ownerId, hoaId: hoaId,role: "owner"
+      }
+    });
+    // if (role !== "owner") {
+    //  setModal({
+    //     isOpen: true,
+    //     type: "alert",
+    //     title: "Information",
+    //     message: `Cannot pay for renter vehicle from the owners screen.`,
+    //     confirmText: "OK",
+    //     onConfirm: () => {
+    //       setModal(prev => ({ ...prev, isOpen: false }));
+    //     },
+    //   });
+    //   }
   }
   const navButtons = [
     {

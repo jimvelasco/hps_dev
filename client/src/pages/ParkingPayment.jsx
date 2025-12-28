@@ -10,7 +10,7 @@ import ModalAlert from "../components/ModalAlert";
 export default function ParkingPayment() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { vehicleId, unitNumber, hoaId } = location.state;
+  const { vehicleId, unitNumber, hoaId ,role} = location.state;
   const [loading, setLoading] = useState(false);
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
@@ -100,11 +100,7 @@ export default function ParkingPayment() {
       });
 
       if (response.status === 200) {
-        console.log("Payment recorded successfully. setting sessionStorage");
-        // sessionStorage.setItem("parkingPaymentComplete", "true");
-        // sessionStorage.setItem("paidForSpot", spotNumber);
-
-
+        console.log("Payment recorded successfully.");
         await axios.put(`/vehicles/payment/${vehicleId}`, {
           state: {
             requires_payment: 2
@@ -119,26 +115,34 @@ export default function ParkingPayment() {
             confirmText: "OK",
             onConfirm: () => {
               setModal(prev => ({ ...prev, isOpen: false }))
-              navigate(`/${hoaId}/rentervehicles/${unitNumber}`);
+              if (role === "renter") {
+                navigate(`/${hoaId}/rentervehicles/${unitNumber}`);
+              } else {
+                navigate(`/${hoaId}/ownervehicles`);
+              }
             }
           });
         }
-
       }
     } catch (error) {
-      console.error("Payment failed:", error);
+      console.error("Error processing payment:", error);
       setModal({
         isOpen: true,
         type: "alert",
         title: "Payment Failed",
         message: error.response?.data?.message || "Payment processing failed",
         confirmText: "OK",
-        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }))
+        }
       });
+
     } finally {
       setLoading(false);
     }
   };
+
+
   const handleBackClick = () => {
     // console.log('back clicked in Vehicle Details')
     // navigate(`/${hoaId}/ownervehicles`);

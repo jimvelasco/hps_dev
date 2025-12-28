@@ -64,10 +64,13 @@ export default function VehicleDetails() {
     carownertype: role,
 
     //  active_flag: 0,
-    startdate: new Date().toISOString().substring(0, 10),
-    enddate: edate.toISOString().substring(0, 10),
-    checkin: new Date().toISOString().substring(0, 10),
-    checkout: new Date().toISOString().substring(0, 10)
+    // const todayStr = new Date().toLocaleDateString("en-CA"); 
+    // startdate: new Date().toISOString().substring(0, 10),
+    // enddate: edate.toISOString().substring(0, 10),
+    startdate: new Date().toLocaleDateString("en-CA"),
+    enddate: edate.toLocaleDateString("en-CA"),
+  //  checkin: new Date().toISOString().substring(0, 10),
+  // checkout: new Date().toISOString().substring(0, 10)
   });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
 
@@ -284,6 +287,7 @@ renter_free_parking 1
     // console.log('vehicles:', vehicles);
     // console.log('role:', role);
     // console.log('unitOwner:', unitOwner);
+    let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
 
    //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
    let oktoaddobj =  { oktoadd: false, activecount: 0 };;
@@ -291,13 +295,13 @@ renter_free_parking 1
     if (role === 'owner') {
      // rpflag = 0;
        oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner,vehid);
-    //  console.log('oktoaddobj:', oktoaddobj);
+      console.log('oktoaddobj:', oktoaddobj);
       if (!oktoaddobj.oktoadd) {
         setModal({
           isOpen: true,
           type: "alert",
           title: "Validation Error",
-          message: "You are not allowed to have more active vehicles than your parking allowance. Please deactivate another vehicle before activating this one.",
+          message: "You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.",
           confirmText: "OK",
           onConfirm: () => {
             setModal(prev => ({ ...prev, isOpen: false }))
@@ -305,7 +309,7 @@ renter_free_parking 1
         });
         return;
       } else {
-      rpflag = 0;
+      rpflag = oktoaddobj.rpflag; //0;
       }
     }
     if (role === 'renter') {
