@@ -23,17 +23,17 @@ export default function OnsiteVehicles() {
         try {
           setVehiclesLoading(true);
           const response = await axios.get(`/vehicles/${hoaId}`);
-         let newary = [];
+          let newary = [];
           response.data.forEach(element => {
-            
+
             if (getVehicleActiveStatusBoolean(element)) {
               newary.push(element);
-            
+
             }
 
 
           });
-         
+
           setVehicles(newary);
           setVehiclesError(null);
         } catch (err) {
@@ -65,9 +65,9 @@ export default function OnsiteVehicles() {
   }
 
   const formatDate = (date, vehicle) => {
-   
+
     let newdate = date;
-   
+
     return newdate;
   };
   const paymentRequired = (vehicle) => {
@@ -114,9 +114,10 @@ export default function OnsiteVehicles() {
         )}
 
         <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "15px"
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '10px',
+          justifyContent: 'center'
         }}>
 
           {vehicles.map((vehicle) => (
@@ -124,13 +125,15 @@ export default function OnsiteVehicles() {
               key={vehicle._id}
               style={{ backgroundColor: paymentRequired(vehicle) ? '#white' : 'white' }}
             >
-              <div style={{ marginBottom: "10px", padding: "10px", borderBottom: "0px solid #1976d2" ,
-               backgroundColor: paymentRequired(vehicle) ? 'lightblue' : 'white'
+              <div style={{
+                marginBottom: "10px", padding: "10px", borderBottom: "0px solid #1976d2",
+                backgroundColor: paymentRequired(vehicle) ? 'lightblue' : 'white'
 
               }}>
-                <h4 style={{ margin: "0 0 5px 0", color: "#1976d2"
-                 
-                  }}>                  
+                <h4 style={{
+                  margin: "0 0 5px 0", color: "#1976d2"
+
+                }}>
                   {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`}
                 </h4>
               </div>
@@ -145,7 +148,7 @@ export default function OnsiteVehicles() {
                     backgroundColor: getVehicleIsActiveTodayBoolean(vehicle) ? 'pink' : bgcolor
                   }}
                 ><b>Checkout:</b> {formatDate(vehicle.enddate, vehicle)}</div>
-                 </div>
+              </div>
             </div>
           ))}
         </div>

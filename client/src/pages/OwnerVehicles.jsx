@@ -6,6 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGrid from "../components/VehiclesGrid";
+import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import { getVehicleActiveStatusBoolean,utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 
@@ -313,7 +314,17 @@ export default function OwnerVehicles() {
 
             </div>
             <div className="phoneview">
-              <div className="phoneview bordershadow">phone view goes here</div>
+              <VehiclesGridPhone
+                vehicles={vehicles}
+                role={"owner"}
+                sortColumn={sortColumn}
+                sortDirection={sortDirection}
+                handleSort={handleSort}
+                handleDetailsClick={handleDetailsClick}
+                handlePaymentClick={handlePaymentClick}
+                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                utcDateOnly={utcDateOnly}
+              />
             </div>
           </>
         ) : (

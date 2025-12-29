@@ -63,10 +63,7 @@ export default function VehicleDetails() {
     unitnumber: unitNumber,
     carownertype: role,
 
-    //  active_flag: 0,
-    // const todayStr = new Date().toLocaleDateString("en-CA"); 
-    // startdate: new Date().toISOString().substring(0, 10),
-    // enddate: edate.toISOString().substring(0, 10),
+   
     startdate: new Date().toLocaleDateString("en-CA"),
     enddate: edate.toLocaleDateString("en-CA"),
   //  checkin: new Date().toISOString().substring(0, 10),
@@ -119,10 +116,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-        // setVehicle(response.data);
-        // console.log("VD Fetched vehicle data:", response.data);
-       // let sd =  new Date(response.data.checkin).toLocaleDateString("en-CA");
-      // let ed =  new Date(response.data.checkout).toLocaleDateString("en-CA");
+       
         const sd = utcDateOnly(response.data.checkin);
         const ed = utcDateOnly(response.data.checkout);
 

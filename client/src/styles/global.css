@@ -35,6 +35,9 @@ body {
   justify-content: space-between;
    
 }
+.wid80 {
+  width: 80px
+}
 /* style={{
           backgroundColor: "white",
           padding: "20px",
@@ -475,6 +478,7 @@ section.standardsection {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border: 0px solid black;
     margin:5px;
+    width:240px
    
 }
 
