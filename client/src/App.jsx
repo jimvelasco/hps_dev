@@ -245,9 +245,8 @@ function App() {
           <Route path="/error" element={<ErrorPage />} />
          
           <Route path="/:hoaId/error" element={
-            <ProtectedRoute>
+          
               <ErrorPage />
-            </ProtectedRoute>
           } />
         </Routes>
       </HoaProvider>

@@ -84,6 +84,7 @@ const updateUser = async (req, res) => {
     const { first_name, last_name, phone, email, unitnumber, bedrooms, role, company, 
       pincode, password,is_verified, has_read_terms, inventory_allowed_owner, parking_allowed_renter, 
       parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
+      console.log("updateUser body:", req.body);  
 
     const user = await User.findById(id);
     if (!user) {

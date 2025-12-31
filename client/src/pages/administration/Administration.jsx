@@ -27,7 +27,7 @@ export default function Administration() {
 
     setDeleteLoading(true);
     try {
-      const response = await axios.delete("/vehicles/status/9");
+      const response = await axios.delete("/vehicles/status/8");
       
       if (response.status === 200) {
         alert(`Successfully deleted ${response.data.deletedCount} vehicle(s)`);

@@ -64,7 +64,7 @@ export default function VehiclesGrid({ vehicles, role, sortColumn, sortDirection
             <div className="standard-table-cell ">{vehicle.model} {vehicle.requires_payment}</div>
             <div className="standard-table-cell"><TableButton
               label={vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
-              onClick={() => handleDetailsClick(vehicle._id)}
+              onClick={() => handleDetailsClick(vehicle._id,vehicle.unitnumber)}
               className="table-button"
             />
             </div>

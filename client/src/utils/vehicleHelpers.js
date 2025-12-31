@@ -1,15 +1,25 @@
 
 
 export const getVehicleActiveStatusBoolean = (element) => {
-  const now = new Date();
-  const today = new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate()
-  ));
+  const today = new Date(); // "2025-12-03"
+  // const today = new Date(Date.UTC(
+  //   now.getUTCFullYear(),
+  //   now.getUTCMonth(),
+  //   now.getUTCDate()
+  //  ));
+  // const today = new Date();
+  // today.setHours(0, 0, 0, 0);
+  // Date.UTC(
+  //   now.getUTCFullYear(),
+  //   now.getUTCMonth(),
+  //   now.getUTCDate()
+  // ));
 const mongoDate = new Date(element.checkout);
-  if (mongoDate >= today) {
-    //console.log('returning true *******************************************************',"");
+  // console.log('returning true *******************************************************',mongoDate,today);
+  // console.log('PLATE IS ', element.plate, ' TODAY IS ', today.toISOString().split('T')[0],' VEHICLE CHECKOUT DATE IS ', mongoDate.toISOString().split('T')[0]);
+//console.log('plate is', element.plate,'modgodate is ', utcDateOnly(mongoDate), ' today is ', utcDateOnly(today));
+
+  if (utcDateOnly(mongoDate) >= today.toLocaleDateString("en-CA")) {
     return true;
   } else {
     return false;
@@ -24,7 +34,7 @@ export const getVehicleIsActiveTodayBoolean = (element) => {
     now.getUTCDate()
   ));
 const mongoDate = new Date(element.checkout);
-  if (mongoDate == today) {
+  if (utcDateOnly(mongoDate) == today.toLocaleDateString("en-CA")) {
     return true;
   } else {
     return false;

@@ -110,8 +110,16 @@ const getVehicleById = async (req, res) => {
 const getVehiclesForUnitNumber = async (req, res) => {
   try {
     const { hoaId, unitNumber } = req.params;
+    //   const now = new Date();
+    // const today = new Date(Date.UTC(
+    //   now.getUTCFullYear(),
+    //   now.getUTCMonth(),
+    //   now.getUTCDate()
+    // ));
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
 
-    const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter" };
+    const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter", checkout: { $gte: today } };
     //   console.log("getVehiclesForUnitNumber qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);

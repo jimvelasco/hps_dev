@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHoa } from "../context/HoaContext";
 import { useParams } from "react-router-dom";
 import axios from "../services/api";
+import {utcDateOnly,getVehicleActiveStatusBoolean} from "../utils/vehicleHelpers";
 
 export default function ParkingSpacesOverviewNB() {
   const { hoa } = useHoa();
@@ -9,26 +10,46 @@ export default function ParkingSpacesOverviewNB() {
   const [occupiedSpaces, setOccupiedSpaces] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  // useEffect(() => {
+  //   const fetchVehicles = async () => {
+  //     if (!hoaId) return;
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(`/vehicles/${hoaId}`);
+  //       const vehicles = response.data;
+        
+  //       const today = new Date(); //.toLocaleDateString('en-US');
+  //       today.setHours(0, 0, 0, 0);
+        
+  //       const occupied = vehicles.filter(vehicle => {
+  //         if (!vehicle.enddate) return false;
+  //          const endDate = new Date(vehicle.enddate);
+  //         endDate.setHours(0, 0, 0, 0);
+  //         return endDate >= today;
+  //       }).length;
+        
+  //       setOccupiedSpaces(occupied);
+  //     } catch (error) {
+  //       console.error("Error fetching vehicles:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+    
+  //   fetchVehicles();
+  // }, [hoaId]);
+
   useEffect(() => {
     const fetchVehicles = async () => {
       if (!hoaId) return;
-      
       try {
         setLoading(true);
-       // console.log("PSOFetching vehicles for HOA ID:", hoaId);
         const response = await axios.get(`/vehicles/${hoaId}`);
         const vehicles = response.data;
-        
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
         const occupied = vehicles.filter(vehicle => {
-          if (!vehicle.enddate) return false;
-          const endDate = new Date(vehicle.enddate);
-          endDate.setHours(0, 0, 0, 0);
-          return endDate >= today;
+          if (!vehicle.checkout) return false;
+          return getVehicleActiveStatusBoolean(vehicle);
         }).length;
-        
         setOccupiedSpaces(occupied);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
@@ -36,7 +57,6 @@ export default function ParkingSpacesOverviewNB() {
         setLoading(false);
       }
     };
-    
     fetchVehicles();
   }, [hoaId]);
 

@@ -13,6 +13,8 @@ export default function OwnersLogin() {
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
   const [email, setEmail] = useState("jim.velasco@gmail.com");
+  //  const [email, setEmail] = useState(" craigre737@icloud.com");
+ 
   // const [email, setEmail] = useState("admin@retreatia.com");
   const [password, setPassword] = useState("123456");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -53,6 +55,7 @@ export default function OwnersLogin() {
       }
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || "Login failed";
+      console.error(errorMessage);
       setAppError(errorMessage);
       navigate(`/${hoaId}/error`);
     } finally {

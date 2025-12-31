@@ -5,6 +5,7 @@ import { useError } from "../context/ErrorContext";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGrid from "../components/VehiclesGrid";
+import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import {  getVehicleActiveStatusBoolean,utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 
@@ -230,7 +231,7 @@ export default function RenterVehicles() {
           </div>
         ) : vehicles && vehicles.length > 0 ? (
           <>
-            <div className="tableview">
+            {/* <div className="tableview">
               <VehiclesGrid
                 vehicles={vehicles}
                 role={"renter"}
@@ -242,9 +243,19 @@ export default function RenterVehicles() {
                 getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                 utcDateOnly={utcDateOnly}
               />
-            </div>
-            <div className="phoneview">
-              <div className="phoneview bordershadow">phone view goes here</div>
+            </div> */}
+            <div className="xphoneview">
+              <VehiclesGridPhone
+                vehicles={vehicles}
+                role={"renter"}
+                sortColumn={sortColumn}
+                sortDirection={sortDirection}
+                handleSort={handleSort}
+                handleDetailsClick={handleDetailsClick}
+                handlePaymentClick={handlePaymentClick}
+                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                utcDateOnly={utcDateOnly}
+              />
             </div>
           </>
         ) : (

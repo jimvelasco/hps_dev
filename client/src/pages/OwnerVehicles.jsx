@@ -168,10 +168,10 @@ export default function OwnerVehicles() {
     setVehicles(filtered);
   };
 
-  const handleDetailsClick = (vid) => {
+  const handleDetailsClick = (vid,uid) => {
     const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
     // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
-    let unitNumber = loggedInUser ? loggedInUser.unitnumber : "999999999999";
+    let unitNumber = uid; //loggedInUser ? loggedInUser.unitnumber : "999999999999";
     //let arole = loggedInUser ? loggedInUser.role : "owner";
     let arole = "owner";
   //  console.log("loggedInUser", loggedInUser);
@@ -299,7 +299,7 @@ export default function OwnerVehicles() {
           </div>
         ) : vehicles && vehicles.length > 0 ? (
           <>
-            <div className="tableview">
+            {/* <div className="tableview">
               <VehiclesGrid
                 vehicles={vehicles}
                 role={"owner"}
@@ -312,8 +312,8 @@ export default function OwnerVehicles() {
                 utcDateOnly={utcDateOnly}
               />
 
-            </div>
-            <div className="phoneview">
+            </div> */}
+            <div className="xphoneview">
               <VehiclesGridPhone
                 vehicles={vehicles}
                 role={"owner"}
@@ -329,7 +329,7 @@ export default function OwnerVehicles() {
           </>
         ) : (
           <div className="noresultsfound">
-            <p style={{ color: "#666" }}>No vehicles found for this HOA. xx</p>
+            <p style={{ color: "#666" ,fontWeight:"bold" ,textAlign:"center"}}>No vehicles found for this HOA.</p>
           </div>
 
         )}
