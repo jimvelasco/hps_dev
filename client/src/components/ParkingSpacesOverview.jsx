@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useHoa } from "../context/HoaContext";
 import { useParams } from "react-router-dom";
 import axios from "../services/api";
+import {getVehicleActiveStatusBoolean} from "../utils/vehicleHelpers";
+
 
 export default function ParkingSpacesOverview() {
   const { hoa } = useHoa();
@@ -23,9 +25,7 @@ export default function ParkingSpacesOverview() {
         
         const occupied = vehicles.filter(vehicle => {
           if (!vehicle.enddate) return false;
-          const endDate = new Date(vehicle.enddate);
-          endDate.setHours(0, 0, 0, 0);
-          return endDate >= today;
+           return getVehicleActiveStatusBoolean(vehicle);
         }).length;
         
         setOccupiedSpaces(occupied);

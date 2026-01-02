@@ -1,7 +1,9 @@
 
 
 export const getVehicleActiveStatusBoolean = (element) => {
-  const today = new Date(); // "2025-12-03"
+  const todayUTC = new Date(); // "2025-12-03"
+  //const todayStr = todayUTC.toISOString().split('T')[0]; 
+  const todayStr = todayUTC.toLocaleDateString("en-CA"); 
   // const today = new Date(Date.UTC(
   //   now.getUTCFullYear(),
   //   now.getUTCMonth(),
@@ -15,11 +17,17 @@ export const getVehicleActiveStatusBoolean = (element) => {
   //   now.getUTCDate()
   // ));
 const mongoDate = new Date(element.checkout);
+const mongoDateStr = utcDateOnly(mongoDate);
   // console.log('returning true *******************************************************',mongoDate,today);
   // console.log('PLATE IS ', element.plate, ' TODAY IS ', today.toISOString().split('T')[0],' VEHICLE CHECKOUT DATE IS ', mongoDate.toISOString().split('T')[0]);
 //console.log('plate is', element.plate,'modgodate is ', utcDateOnly(mongoDate), ' today is ', utcDateOnly(today));
 
-  if (utcDateOnly(mongoDate) >= today.toLocaleDateString("en-CA")) {
+  // if (utcDateOnly(mongoDate) >= today.toLocaleDateString("en-CA")) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
+   if (mongoDateStr >= todayStr) {
     return true;
   } else {
     return false;
@@ -27,14 +35,19 @@ const mongoDate = new Date(element.checkout);
 }
 
 export const getVehicleIsActiveTodayBoolean = (element) => {
-  const now = new Date();
-  const today = new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate()
-  ));
-const mongoDate = new Date(element.checkout);
-  if (utcDateOnly(mongoDate) == today.toLocaleDateString("en-CA")) {
+  // const now = new Date();
+  // const today = new Date(Date.UTC(
+  //   now.getUTCFullYear(),
+  //   now.getUTCMonth(),
+  //   now.getUTCDate()
+  // ));
+  //const now = new Date();
+  const todayUTC = new Date();
+  //const todayStr = todayUTC.toISOString().split('T')[0];
+  const todayStr = todayUTC.toLocaleDateString("en-CA"); 
+  const mongoDate = new Date(element.checkout);
+  const mongoDateStr = utcDateOnly(mongoDate);
+  if (mongoDateStr == todayStr) {
     return true;
   } else {
     return false;
@@ -77,8 +90,8 @@ export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerO
       inactiveArray.push(v);
     }
   }
-  console.log('active length is ', activeArray.length, ' inactive length is ', inactiveArray.length );
-  console.log('owner free parking is ', ownerOfUnit.owner_free_parking); 
+ // console.log('active length is ', activeArray.length, ' inactive length is ', inactiveArray.length );
+ // console.log('owner free parking is ', ownerOfUnit.owner_free_parking); 
   let ownerFreeParking = ownerOfUnit.owner_free_parking || 0;
   let filteredActive = [];
   let filteredInActive = [];
@@ -86,48 +99,18 @@ export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerO
   if (vehicleId) {
     filteredActive = activeArray.filter(v => v._id !== vehicleId);
     filteredInActive = inactiveArray.filter(v => v._id !== vehicleId);
-   
-    
-    //  if (activeArray.length == 2 && filteredActive[0].requires_payment == 1) {
-    //   return { oktoadd: true, rpflag: 0 };
-    // }
-    // if (activeArray.length == 2 && filteredActive[0].requires_payment == 0) {
-    //   return { oktoadd: true, rpflag: 1 };
-    // }
-    // if (activeArray.length == 1 && filteredActive[0].requires_payment == 1) {
-    //   return { oktoadd: true, rpflag: 0 };
-    // }
-    // if (activeArray.length == 1 && filteredActive[0].requires_payment == 0) {
-    //   return { oktoadd: true, rpflag: 1 };
-    // }
-    // if (activeArray.length == 2 && filteredInActive.length >= 0) {
-    //   return { oktoadd: false, rpflag: 0 };
-    // }
-    //  if (activeArray.length == 0) {
-    //   return { oktoadd: true, rpflag: 0 };
-    // }
-    //  console.log('vehiclearray length is ', vehiclearray.length,activeCount);
-    //  console.log('FILTERED ACTIVE ARRAY IS ', filteredActive);
-    //   console.log('FILTERED IN ACTIVE ARRAY IS ', filteredInActive);
      
   }
- // console.log('FILTERED ACTIVE ARRAY LENGTH IS ', filteredActive.length);
    let maxallowed = ownerOfUnit.parking_allowed_owner;
-  // console.log('max allowed is ', maxallowed,'activeArray length is ', activeArray.length);
-
-  //  if (filteredActive.length == 1) {
-  //   console.log('filteredActive length is 1, returning true');
-  //   return { oktoadd: true, rpflag: filteredActive[0].requires_payment };
-  //  }
-
+ 
   if ((activeArray.length) >= maxallowed) {
-    if (todayStr > formedate) {
+    if (todayStr > formedate || filteredActive.length == 1) {
       oktoadd = true;
     } else {
       oktoadd = false;
     }
   } else {
-    console.log('we can now figure out who gets to pay flag ownerFreeParking is ', ownerFreeParking);
+  //  console.log('we can now figure out who gets to pay flag ownerFreeParking is ', ownerFreeParking);
     if (activeArray.length == ownerFreeParking) {
       rpflag = 1;
     }

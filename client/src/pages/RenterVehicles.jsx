@@ -8,6 +8,8 @@ import VehiclesGrid from "../components/VehiclesGrid";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import {  getVehicleActiveStatusBoolean,utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
+import HoaInformation from "../components/HoaInformation";
+
 
 
 export default function RenterVehicles() {
@@ -116,11 +118,15 @@ export default function RenterVehicles() {
     setVehicles(sorted);
   };
 
-  const handleDetailsClick = (vehicleId) => {
-    const qry = `/${hoaId}/vehicledetails/modify/${vehicleId}`;
+  const handleDetailsClick = (vehicle) => {
+
+     const vid = vehicle._id; 
+    const uid = vehicle.unitnumber;
+
+    const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
     navigate(qry, { 
-      state: { unitNumber: unitNumber, role: "renter", 
-        vehicles: vehicles, ownerOfUnit:  ownerOfUnit,vehid:vehicleId} 
+      state: { unitNumber: uid, role: "renter", 
+        vehicles: vehicles, ownerOfUnit:  ownerOfUnit,vehid:vid} 
     });
   }
 
@@ -169,7 +175,7 @@ export default function RenterVehicles() {
     // const { role ,num_vehicles,renter_free_parking} = location.state || {};
   };
 
-  const handlePaymentClick = (vid) => {
+  const handlePaymentClick = (vehicle) => {
     if (!ownerOfUnit) {
       alert("Unable to load unit information");
       return;
@@ -178,7 +184,7 @@ export default function RenterVehicles() {
 
     navigate(`/${hoaId}/payment`, {
       state: {
-        vehicleId: vid,
+        vehicleId: vehicle._id,
         unitNumber: unitNumber, userId: userIdForUnit, hoaId: hoaId, role: "renter"
       }
     });
@@ -263,6 +269,11 @@ export default function RenterVehicles() {
             <p className="error-text">No vehicles found for this unit.</p>
           </div>
         )}
+        <br />
+        <div className="standardtitlebar-small">
+          <h3>Welcome to {hoa?.name}</h3>
+        </div>
+        <HoaInformation hoa={hoa} />
       </div>
       <ModalAlert
         isOpen={modal.isOpen}

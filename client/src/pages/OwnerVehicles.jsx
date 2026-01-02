@@ -168,7 +168,25 @@ export default function OwnerVehicles() {
     setVehicles(filtered);
   };
 
-  const handleDetailsClick = (vid,uid) => {
+  const handleDetailsClick = (vehicle) => {
+
+    const vid = vehicle._id; 
+    const uid = vehicle.unitnumber;
+  //  console.log('ov handle details click vehicle:', vehicle.carownertype);
+    if(vehicle.carownertype==="renter"){
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: `Owners cannot modify renter vehicles.`,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
+      return;
+    }
+
     const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
     // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
     let unitNumber = uid; //loggedInUser ? loggedInUser.unitnumber : "999999999999";
@@ -219,12 +237,25 @@ export default function OwnerVehicles() {
     });
     // navigate(qry);
   };
-  const handlePaymentClick = (vid) => {
-    console.log("Payment click for vehicle id:", vid);
+  const handlePaymentClick = (vehicle) => {
+    console.log("Payment click for vehicle id:", vehicle._id);
+     if(vehicle.carownertype==="renter"){
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: `Owners cannot modify renter vehicles.`,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
+      return;
+    }
 
      navigate(`/${hoaId}/payment`, {
       state: {
-        vehicleId: vid,
+        vehicleId: vehicle._id,
         unitNumber: loggedInUser.unitnumber, userId: ownerId, hoaId: hoaId,role: "owner"
       }
     });

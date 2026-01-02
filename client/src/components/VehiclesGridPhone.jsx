@@ -168,7 +168,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
             <div className="full-row">
               <TableButton
                 label={vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
-                onClick={() => handleDetailsClick(vehicle._id, vehicle.unitnumber)}
+                onClick={() => handleDetailsClick(vehicle)}
                 className="table-button wid100"
               />
             </div>
@@ -180,6 +180,8 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
 
             <div className="grid-item-bold">Phone</div>
             <div className="grid-item-normal"> {formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
+            <div className="grid-item-bold">User</div>
+             <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
             <div className="grid-item-bold">Type</div>
 
 
@@ -197,32 +199,40 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
             <div className="grid-item-bold">Year</div>
             <div className="grid-item-normal"> {vehicle.year || "N/A"}</div>
 
-            <div className="grid-item-bold">Checkin</div>
+            <div className="grid-item-bold">Check In</div>
             <div className="grid-item-normal"> {utcDateOnly(vehicle.checkin)}</div>
-            <div className="grid-item-bold">Checkout</div>
+            <div className="grid-item-bold">Check Out</div>
 
             <div className="grid-item-normal"> {utcDateOnly(vehicle.checkout)}</div>
           
 
-            <div className="grid-item-bold">Active</div>
-              {role !== "renter" ? ( <div className="grid-item-normal"> {getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"}</div>) : null}
+          
+              {role !== "renter" ? ( 
+                <>
+                  <div className="grid-item-bold">Active</div>
+                <div className="grid-item-normal"> 
+                {getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"}</div></>) : null}
            
 
             <div className="grid-item-bold">Payment</div>
+{/* <div className="grid-item-normal"><b>Free</b></div> */}
 
 
 
-
-            <div className="grid-item-normal" style={{ marginTop: '3px' }}> {vehicle.requires_payment == 1 ? (
+            <div className="grid-item-normal"> {vehicle.requires_payment == 1 ? (
               <TableButton
                 label={"Pay Now"}
-                onClick={() => handlePaymentClick(vehicle._id)}
+                onClick={() => handlePaymentClick(vehicle)}
                 className="table-button-payment"
               />
             ) : vehicle.requires_payment == 2 ? (<b>Paid</b>) : (<b>Free</b>)}
             </div>
+
+
           </div>
         ))}
+
+
       </div>
 
 
