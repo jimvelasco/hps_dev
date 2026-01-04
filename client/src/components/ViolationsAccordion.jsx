@@ -1,7 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "../services/api";
+import { useError } from "../context/ErrorContext";
+import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
-export default function Accordion({ items }) {
+export default function ViolationsAccordion({ hoaId, onViolationCreated }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
+  const [violations, setViolations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { setAppError } = useError();
+  const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
+
+  useEffect(() => {
+    if (hoaId) {
+      fetchViolations();
+    }
+  }, [hoaId, onViolationCreated]);
+
+  const fetchViolations = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`/violations/${hoaId}`);
+      const formattedViolations = response.data.map(violation => ({
+        id : violation._id,
+        title: `${violation.violation_plate} ${violation.violation_state}`,
+        details: [
+        //   { label: "License Plate:", value: violation.violation_plate },
+        //   { label: "State:", value: violation.violation_state },
+          { label: "Location:", value: violation.violation_location },
+          { label: "Type:", value: violation.violation_type },
+          { label: "Date:", value: violation.violation_date },
+          { label: "Time:", value: violation.violation_time },
+          ...(violation.violation_reporter ? [{ label: "Reporter:", value: violation.violation_reporter }] : []),
+          ...(violation.violation_description ? [{ label: "Description:", value: violation.violation_description }] : []),
+        ],
+      }));
+      setViolations(formattedViolations);
+    } catch (err) {
+      console.error("Error fetching violations:", err);
+      setAppError(err.message || "Failed to load violations");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+    const deleteViolation = async (item) => {
+        try {
+            // Assuming each violation has a unique identifier, e.g., violationId
+            const violationId = item.id; // Adjust based on actual data structure
+            await axios.delete(`/violations/${violationId}`);
+            // Refresh the violations list after deletion
+            fetchViolations();
+        } catch (err) {
+            console.error("Error deleting violation:", err);
+            setAppError(err.message || "Failed to delete violation");
+        }
+    }
 
   const toggleItem = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -12,12 +65,13 @@ export default function Accordion({ items }) {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      position: relative;
+   
       width: 100%;
+      font-size: 14px;
     }
 
     .accordion-item {
-      border: 1px solid #e0e0e0;
+      border: 0px solid #e0e0e0;
       border-radius: 4px;
       overflow: hidden;
       background: white;
@@ -36,7 +90,14 @@ export default function Accordion({ items }) {
       transition: background-color 0.2s;
       min-height: 40px;
     }
-
+    .header-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 4px 0;
+}
     .accordion-header:hover {
       background-color: #1565c0;
     }
@@ -65,8 +126,8 @@ export default function Accordion({ items }) {
 
     .accordion-detail {
      
-      padding: 5px 0;
-      border-bottom: 1px solid #000;
+      padding: 0px 0;
+      border-bottom: 1px solid #ccc;
     }
 
      .xaccordion-detail {
@@ -92,39 +153,35 @@ export default function Accordion({ items }) {
     }
   `;
 
+  if (loading) {
+    return <p>Loading violations...</p>;
+  }
+
+  if (violations.length === 0) {
+    return <p>No violations found.</p>;
+  }
+
   return (
     <>
       <style>{accordionStyles}</style>
       <div className="accordion-container">
-        {items.map((item, index) => (
+        {violations.map((item, index) => (
           <div key={index} className="accordion-item">
-            <div
-              className="accordion-header"
-              onClick={() => toggleItem(index)}
-            >
+            <div className="accordion-header" onClick={() => toggleItem(index)} >
               <div>{item.title}</div>
-              {/* <span
-                className={`accordion-toggle ${
-                  expandedIndex === index ? "open" : ""
-                }`}
-              >
-                ▼
-              </span> */}
             </div>
-            <div
-              className={`accordion-content ${
-                expandedIndex === index ? "open" : ""
-              }`}
-            >
+            <div className={`accordion-content ${expandedIndex === index ? "open" : ""}`}>
               {item.details.map((detail, detailIndex) => (
-                <>
                 <div key={detailIndex} className="accordion-detail">
                   <div className="accordion-label">{detail.label}</div>
-                 
                   <div className="accordion-value">{detail.value}</div>
                 </div>
-                </>
               ))}
+              {loggedInUser && loggedInUser.role === 'admin' &&
+                <div style={{ textAlign: 'center', margin: '5px' }}>
+                  <button className="navbutton" onClick={() => deleteViolation(item)}>Delete</button>
+                </div>
+              }
             </div>
           </div>
         ))}

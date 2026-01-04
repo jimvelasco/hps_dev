@@ -18,7 +18,7 @@ body {
 }
 
 .page-content {
-  padding: 20px;
+  padding: 5px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -36,6 +36,21 @@ body {
   opacity: .8;
   justify-content: space-between;
 
+}
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* width: 100%; */
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 3px;
+  border-radius: 15px;
+  margin-right:10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+   position: relative;
+   width:160px
 }
 
 .wid80 {
@@ -369,6 +384,25 @@ button.navbutton:hover {
   filter: brightness(.8);
 }
 
+button.navbutton2 {
+  padding:6px;
+  font-size: 14px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: normal;
+  width:140px;
+  margin: 4px;
+
+}
+
+button.navbutton2:hover {
+  /* opacity: .8; */
+  filter: brightness(.8);
+}
+
 button.navbutton-goback {
   padding: 8px 8px;
   font-size: 14px;
@@ -501,8 +535,10 @@ section.standardsection {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
+  text-align:center;
+  width:220px
 
 }
 
@@ -610,13 +646,25 @@ section.standardsection {
 .onsite-grid-container-2 {
   display: grid;
   grid-column-gap: 0px;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 4fr 1fr;
   /* background-color: #ffffff; */
   padding: 3px;
 
   margin: 2px;
-  border: 1px solid black;
+  border: 0px solid black;
   width: 100%;
+}
+
+.grid-container-1 {
+  display: grid;
+  grid-column-gap: 0px;
+  grid-template-columns: 1fr;
+  background-color: #ffffff;
+  padding: 3px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  width:100%
+  
 }
 
 .grid-container-2 {
@@ -629,8 +677,23 @@ section.standardsection {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-  width: 220px;
-  height:200px
+  width: 200px;
+  height: 250px
+  
+}
+.grid-container-2-plate {
+  display: grid;
+  grid-column-gap: 0px;
+  grid-template-columns: 1fr 1.5fr;
+  background-color: #ffffff;
+  padding: 3px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  margin: 2px;
+  border: 0px solid black;
+  width: 200px;
+  height: 130px
+  
 }
 
 
@@ -1146,4 +1209,13 @@ These rules define how Zencoder must generate, modify, and maintain code for thi
 - Import React:
   ```jsx
   import React from "react";
+*/
+
+/*
+@media (max-width: 360px) {}. small phones
+@media (max-width: 480px) {}. most phones
+@media (min-width: 481px) and (max-width: 768px) {} phones landscape
+@media (min-width: 769px) and (max-width: 1024px) {} tablets
+@media (min-width: 1025px) and (max-width: 1280px) {} laptops
+@media (min-width: 1281px) {} large desktops monitors
 */

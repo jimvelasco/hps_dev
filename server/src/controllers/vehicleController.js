@@ -8,13 +8,13 @@ const getVehiclesByHoaId = async (req, res) => {
     //   console.log("getVehiclesByHoaId Filter received params:", req.params);
 
     const qry = { hoaid: hoaId };
-    //  console.log("getVehiclesByHoaId Filter received:", filter,qry);
+      console.log("getVehiclesByHoaId Filter received:", filter,qry);
 
-    if (filter === "owner") {
-      qry.carownertype = "owner";
-    } else if (filter === "renter") {
-      qry.carownertype = "renter";
-    }
+    // if (filter === "owner") {
+    //   qry.carownertype = "owner";
+    // } else if (filter === "renter") {
+    //   qry.carownertype = "renter";
+    // }
 
     //  qry.carownertype = "owner";
 
@@ -34,11 +34,11 @@ const getVehiclesByHoaIdOwner = async (req, res) => {
     //console.log("Filter received:", filter);
     //  console.log("getVehiclesByHoaIdOwner role received:", role,req.params);
 
-    if (filter === "owner") {
-      qry.carownertype = "owner";
-    } else if (filter === "renter") {
-      qry.carownertype = "renter";
-    }
+    // if (filter === "owner") {
+    //   qry.carownertype = "owner";
+    // } else if (filter === "renter") {
+    //   qry.carownertype = "renter";
+    // }
 
     //  qry.carownertype = "owner";
 

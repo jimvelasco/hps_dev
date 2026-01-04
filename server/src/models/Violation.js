@@ -1,16 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const ObjectId = mongoose.Schema.Types.ObjectId;
-
-
-// Create Schema
 
 const ViolationSchema = new Schema({
-  // _id: {
-  //   type: ObjectId
-  // },
-
-
   violation_plate: {
     type: String,
     required: true
@@ -41,7 +32,6 @@ const ViolationSchema = new Schema({
     type: String,
     required: true
   },
-
   hoaid: {
     type: String
   },
@@ -52,6 +42,8 @@ const ViolationSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+}, {timestamps: true});
 
-module.exports = Violation = mongoose.model("violations", ViolationSchema);
+const Violation = mongoose.model("violations", ViolationSchema);
+
+export default Violation;

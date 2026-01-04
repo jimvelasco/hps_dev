@@ -153,8 +153,8 @@ export default function OwnerVehicles() {
 
   const handleFilterApply = () => {
     let filtered = [...allVehicles];
-    if (filterType === "owner") {
-      filtered = filtered.filter(v => v.carownertype === "owner");
+    if (filterType === "owner" ) {
+      filtered = filtered.filter(v => v.carownertype === "owner" ||  v.carownertype === "friend");
     } else if (filterType === "renter") {
       filtered = filtered.filter(v => v.carownertype === "renter");
     }

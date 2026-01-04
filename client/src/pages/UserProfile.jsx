@@ -167,7 +167,8 @@ export default function UserProfile() {
   };
 
   const handleBackToDashboard = () => {
-    navigate(`/${hoaId}/dashboard`);
+    // navigate(`/${hoaId}/dashboard`);
+    navigate(-1);
   };
 
   const navButtons = [

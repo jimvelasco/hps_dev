@@ -78,9 +78,9 @@ export default function VehicleDetails() {
     }
   }, []);
 
-  useEffect(() => {
-   console.log('VehicleDetails.jsx useEffect - location.state:', location.state);
-  }, [location.state]);
+  // useEffect(() => {
+  //  console.log('VehicleDetails.jsx useEffect - location.state:', location.state);
+  // }, [location.state]);
 
 
 
@@ -121,8 +121,8 @@ export default function VehicleDetails() {
         const ed = utcDateOnly(response.data.checkout);
 
 
-          console.log("checkin date:", sd,'before local', response.data.checkin);
-           console.log("checkout date:", ed, 'before local',response.data.checkout);
+        //  console.log("checkin date:", sd,'before local', response.data.checkin);
+        //  console.log("checkout date:", ed, 'before local',response.data.checkout);
         //  console.log("checkout date:',ed );
         //  let oid = loggedInUser ? loggedInUser._id : userIdForUnit;
         setFormData({
@@ -132,9 +132,9 @@ export default function VehicleDetails() {
           carownerphone: response.data.carownerphone || "",
           //   unitnumber: response.data.unitnumber || "",
           unitnumber: unitNumber || "",
-          //  carownertype: response.data.carownertype || "owner",
+          carownertype: response.data.carownertype || "owner",
           //  carownertype: loggedInUser ? loggedInUser.role : "renter",
-          carownertype: role,
+         // carownertype: role,
           make: response.data.make || "",
           model: response.data.model || "",
           year: response.data.year || "",
@@ -495,19 +495,8 @@ renter_free_parking 1
                   />
                 </div>
 
-                <div style={{ marginBottom: "15px" }}>
-                  <label className="input-label">
-                    Unit Number
-                  </label>
-                  <input className="standardinput"
-                    type="text"
-                    name="unitnumber"
-                    value={formData.unitnumber}
-                    onChange={handleFormChange}
-                    disabled
-                  />
-                </div>
-                {/* 
+                
+                
                 <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Owner Type
@@ -525,9 +514,25 @@ renter_free_parking 1
                     }}
                   >
                     <option value="owner">Owner</option>
+                    <option value="friend">Friend</option>
                     <option value="renter">Renter</option>
                   </select>
-                </div> */}
+                </div>
+
+                  <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Unit Number
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="unitnumber"
+                    value={formData.unitnumber}
+                    onChange={handleFormChange}
+                    disabled
+                  />
+                </div>
+
+
               </div>
 
               {/* Vehicle Information */}

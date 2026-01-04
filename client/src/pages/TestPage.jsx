@@ -12,72 +12,12 @@ export default function TestPage() {
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const [htmlContent, setHtmlContent] = useState("");
-  const [violations, setViolations] = useState([]);
 
-  // useEffect(() => {
-  //   if (hoa) {
-  //     setHtmlContent(hoa.help_text.renter_tc);
-  //     fetchViolations();
-  //   }
-  // }, [hoa]);
-
-   useEffect(() => {
-   if (hoa) {
+  useEffect(() => {
+    if (hoa) {
       setHtmlContent(hoa.help_text.renter_tc);
-      fetchViolations();
     }
   }, [hoa]);
-
-  const fetchViolations = () => {
-    const mockViolations = [
-      {
-        title: "ABC 1234 MO",
-        details: [
-          { label: "License Plate:", value: "ABC 1234" },
-          { label: "State:", value: "CO" },
-          { label: "Location:", value: "Lot B, Space 15" },
-          { label: "Type:", value: "Improper Parking" },
-          { label: "Date:", value: "2024-01-15" },
-          { label: "Time:", value: "14:30" },
-          { label: "Reporter:", value: "Security" },
-          {
-            label: "Description:",
-            value: "Vehicle parked across two spaces",
-          },
-        ],
-      },
-      {
-        title: "XYZ 5678 TX",
-        details: [
-          { label: "License Plate:", value: "XYZ 5678" },
-          { label: "State:", value: "CO" },
-          { label: "Location:", value: "Lot A, Space 8" },
-          { label: "Type:", value: "Fire Hydrant Blocking" },
-          { label: "Date:", value: "2024-01-14" },
-          { label: "Time:", value: "10:15" },
-          { label: "Reporter:", value: "Management" },
-          { label: "Description:", value: "Vehicle blocking fire hydrant" },
-        ],
-      },
-      {
-        title: "DEF 9012 CO",
-        details: [
-          { label: "License Plate:", value: "DEF 9012" },
-          { label: "State:", value: "WY" },
-          { label: "Location:", value: "Lot C, Space 22" },
-          { label: "Type:", value: "Unregistered Vehicle" },
-          { label: "Date:", value: "2024-01-13" },
-          { label: "Time:", value: "22:45" },
-          { label: "Reporter:", value: "Resident" },
-          {
-            label: "Description:",
-            value: "Guest vehicle parked without registration",
-          },
-        ],
-      },
-    ];
-    setViolations(mockViolations);
-  };
 
   const handleBackClick = () => {
     navigate(`/${hoaId}/admin`);
@@ -110,11 +50,7 @@ export default function TestPage() {
           <p style={{ color: "#666", marginBottom: "20px" }}>
             Review all registered parking violations below:
           </p>
-          {violations.length > 0 ? (
-            <ViolationsAccordion items={violations} />
-          ) : (
-            <p>No violations found.</p>
-          )}
+          <ViolationsAccordion hoaId={hoaId} />
         </div>
 
         <div style={{ marginTop: "30px" }}>

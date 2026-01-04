@@ -210,6 +210,51 @@ export default function UserDetails() {
     navigate(`/${hoaId}/users`);
   };
 
+  const handleDelete = async () => {
+    setModal({
+      isOpen: true,
+      type: "confirm",
+      title: "Confirm Delete",
+      message: `Are you sure you want to delete ${formData.first_name} ${formData.last_name}? This action cannot be undone.`,
+      confirmText: "Delete",
+      cancelText: "Cancel",
+      onConfirm: async () => {
+        setModal(prev => ({ ...prev, isOpen: false }));
+        setIsSubmitting(true);
+        try {
+          await axios.delete(`/users/${userId}`);
+          setModal({
+            isOpen: true,
+            type: "alert",
+            title: "Success",
+            message: "User deleted successfully",
+            confirmText: "OK",
+            onConfirm: () => {
+              setModal(prev => ({ ...prev, isOpen: false }));
+              navigate(`/${hoaId}/users`);
+            }
+          });
+        } catch (err) {
+          setModal({
+            isOpen: true,
+            type: "alert",
+            title: "Error",
+            message: err.response?.data?.message || err.message || "Failed to delete user",
+            confirmText: "OK",
+            onConfirm: () => {
+              setModal(prev => ({ ...prev, isOpen: false }));
+            }
+          });
+        } finally {
+          setIsSubmitting(false);
+        }
+      },
+      onCancel: () => {
+        setModal(prev => ({ ...prev, isOpen: false }));
+      }
+    });
+  };
+
   const navButtons = [
     {
       label: "Back",
@@ -468,6 +513,44 @@ export default function UserDetails() {
                 >
                   Cancel
                 </button>
+                {isEditMode && (
+                  // <button
+                  //   type="button"
+                  //   onClick={handleDelete}
+                  //   disabled={isSubmitting}
+                  //   style={{
+                  //     padding: "10px 16px",
+                  //     backgroundColor: "#d32f2f",
+                  //     color: "white",
+                  //     border: "none",
+                  //     borderRadius: "4px",
+                  //     cursor: isSubmitting ? "not-allowed" : "pointer",
+                  //     fontSize: "14px",
+                  //     fontWeight: "500",
+                  //     opacity: isSubmitting ? 0.6 : 1
+                  //   }}
+                  // >
+                  //   {isSubmitting ? "Deleting..." : "Delete User"}
+                  // </button>
+                   <button className="standarddeletebutton"
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={isSubmitting}
+                    // style={{
+                    //   padding: "10px 16px",
+                    //   backgroundColor: "#d32f2f",
+                    //   color: "white",
+                    //   border: "none",
+                    //   borderRadius: "4px",
+                    //   cursor: isSubmitting ? "not-allowed" : "pointer",
+                    //   fontSize: "14px",
+                    //   fontWeight: "500",
+                    //   opacity: isSubmitting ? 0.6 : 1
+                    // }}
+                  >
+                    {isSubmitting ? "Deleting..." : "Delete User"}
+                  </button>
+                )}
               </div>
             </form>
           </div>

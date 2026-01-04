@@ -8,6 +8,7 @@ import hoaRoutes from "./routes/hoaRoutes.js";
 import vehicleRoutes from "./routes/vehicleRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import testRoutes from "./routes/testRoutes.js";
+import violationRoutes from "./routes/violationRoutes.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 dotenv.config();
 connectDB();
@@ -27,6 +28,7 @@ app.use("/api/hoas", hoaRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/tests", testRoutes);
+app.use("/api/violations", violationRoutes);
 
 
 

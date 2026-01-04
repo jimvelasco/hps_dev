@@ -58,7 +58,7 @@ export default function VehiclesGrid({ vehicles, role, sortColumn, sortDirection
             <div className="standard-table-cell">
               {vehicle.carowner_lname}, {vehicle.carowner_fname}
             </div>
-            <div className="standard-table-cell "> {vehicle.carownertype} {vehicle.unitnumber}</div>
+            <div className="standard-table-cell "> {vehicle.carownertype}</div>
             <div className="standard-table-cell ">{vehicle.vehicle_type}</div>
             <div className="standard-table-cell ">{vehicle.make}</div>
             <div className="standard-table-cell ">{vehicle.model} {vehicle.requires_payment}</div>

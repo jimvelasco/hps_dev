@@ -52,9 +52,9 @@ export default function OwnersDashboard() {
     navigate(`/${hoaId}/${tlink}`);
   };
 
-  const handleViolationsClick = () => {
-    navigate(`/${hoaId}/violations`);
-  };
+  // const handleViolationsClick = () => {
+  //   navigate(`/${hoaId}/violations`);
+  // };
 
   const handleUsersClick = () => {
     navigate(`/${hoaId}/users`);
@@ -83,37 +83,42 @@ export default function OwnersDashboard() {
       hoverColor: "#1976d2",
       which: "standard"
     },
-    {
-      label: "Violations",
-      onClick: handleViolationsClick,
-      color: "#2196f3",
-      hoverColor: "#1976d2",
-      which: "standard"
-    },
+    // {
+    //   label: "Violations",
+    //   onClick: handleViolationsClick,
+    //   color: "#2196f3",
+    //   hoverColor: "#1976d2",
+    //   which: "standard"
+    // },
     // {
     //   label: "Users",
     //   onClick: handleUsersClick,
     //   color: "#2196f3",
     //   hoverColor: "#1976d2"
     // },
-    {
-      label: "Notifications",
-      onClick: handleNotificationsClick,
-      which: "standard"
-    },
-    {
+    // {
+    //   label: "Notifications",
+    //   onClick: handleNotificationsClick,
+    //   which: "standard"
+    // },
+     ];
+      if (loggedInUser.role != "admin") {
+
+      navButtons.push({
       label: "Profile",
       onClick: handleProfileClick,
       color: "#2196f3",
       hoverColor: "#1976d2",
       which: "standard"
-    },
-    {
+    });
+    }
+     navButtons.push({
       label: "Logout",
       onClick: handleLogout,
       which: "goback"
     }
-  ];
+  )
+ 
   if (loggedInUser.role == "admin") {
     navButtons.unshift({
       label: "Users",

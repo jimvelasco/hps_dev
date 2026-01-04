@@ -19,9 +19,9 @@ router.get("/id/:vehicleId", getVehicleById);
 router.get("/:hoaId/allvehicles/:ownerid", getVehiclesByHoaIdUserId);
 router.get("/:hoaId/rentervehicles/:unitNumber", getVehiclesForUnitNumber);
 
-router.get("/:hoaId/:role(owner|renter|admin)/:ownerid", getVehiclesByHoaIdOwnerId);
+//router.get("/:hoaId/:role(owner|renter|admin)/:ownerid", getVehiclesByHoaIdOwnerId);
 
-router.get("/:hoaId/:role",getVehiclesByHoaIdOwner);
+//router.get("/:hoaId/:role",getVehiclesByHoaIdOwner);
 router.get("/:hoaId", getVehiclesByHoaId);
 
 export default router;
