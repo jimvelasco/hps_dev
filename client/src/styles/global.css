@@ -526,6 +526,17 @@ input.input-date {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.navbarphone {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  /* display: flex;
+  justify-content: space-between; */
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 
 /* ********************************************** */
 /* ****** BEGIN BOXES AND SECTIONS ************** */
@@ -539,6 +550,17 @@ section.standardsection {
   border: 0px solid black;
   text-align:center;
   width:220px
+
+}
+
+section.standardsectiondashboard {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  border: 0px solid black;
+  /* text-align:center; */
+  width:260px
 
 }
 

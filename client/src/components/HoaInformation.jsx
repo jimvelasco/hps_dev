@@ -8,7 +8,7 @@ export default function HoaInformation({ hoa }) {
       gap: '10px',
       justifyContent: 'center'
     }}>
-      <section className="standardsection">
+      <section className="standardsectiondashboard">
         <h3 style={{ color: "#1976d2", marginTop: 0 }}>HOA Information</h3>
         {hoa && (
           <div className="hoainformation">
@@ -30,7 +30,7 @@ export default function HoaInformation({ hoa }) {
         )}
       </section>
       {hoa?.contact_information && hoa.contact_information.length > 0 && (
-        <section className="standardsection">
+        <section className="standardsectiondashboard">
           <h3 style={{ color: "#1976d2", marginTop: 0 }}>Contact Information</h3>
           <div className="hoainformation">
             {hoa.contact_information.map((contact, index) => (

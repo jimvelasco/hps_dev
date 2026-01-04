@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
@@ -7,7 +7,6 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import { getVehicleActiveStatusBoolean, getVehicleIsActiveTodayBoolean, formatPhoneNumber, utcDateOnly } from "../utils/vehicleHelpers";
 import TableButton from "../components/TableButton";
 import ViolationsAccordion from "../components/ViolationsAccordion";
-import ViolationForm from "../components/ViolationForm";
 
 
 export default function OnsiteVehicles() {
@@ -18,8 +17,6 @@ export default function OnsiteVehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
   const [vehiclesError, setVehiclesError] = useState(null);
-  const [showViolationForm, setShowViolationForm] = useState(false);
-  const [violationRefreshTrigger, setViolationRefreshTrigger] = useState(0);
   const [isPlateVisible, setIsPlateVisible] = useState(false);
   const [isGridVisible, setIsGridVisible] = useState(false);
 
@@ -55,18 +52,6 @@ export default function OnsiteVehicles() {
 
   const handleBackToDashboard = () => {
     navigate(`/${hoaId}/dashboard`);
-  };
-
-  const showNewViolation = () => {
-    setShowViolationForm(true);
-  };
-
-  const handleCloseViolationForm = () => {
-    setShowViolationForm(false);
-  };
-
-  const handleViolationSuccess = () => {
-    setViolationRefreshTrigger(prev => prev + 1);
   };
 
   const navButtons = [
@@ -232,18 +217,8 @@ export default function OnsiteVehicles() {
             <div className="flex-container">
 
               <div className="header-title">Violations</div>
-              <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-                <button className="navbutton" onClick={() => showNewViolation()}>New Violation</button>
-              </div>
-              <ViolationsAccordion hoaId={hoaId} onViolationCreated={violationRefreshTrigger} />
+              <ViolationsAccordion hoaId={hoaId} />
             </div>
-
-            <ViolationForm
-              isOpen={showViolationForm}
-              hoaId={hoaId}
-              onClose={handleCloseViolationForm}
-              onSuccess={handleViolationSuccess}
-            />
           </div>
 
         ) : (

@@ -31,6 +31,7 @@ export default function UserProfile() {
     email: "",
     pincode: "",
     renter_free_parking: "",
+    owner_free_parking: "",
     password: "",
     passwordConfirm: ""
   });
@@ -52,6 +53,7 @@ export default function UserProfile() {
             email: response.data.email || "",
             pincode: response.data.pincode || "",
             renter_free_parking: response.data.renter_free_parking || "",
+            owner_free_parking: response.data.owner_free_parking || "",
             password: "",
             passwordConfirm: ""
           });
@@ -128,7 +130,8 @@ export default function UserProfile() {
         phone: formData.phone,
         email: formData.email,
         pincode: formData.pincode,
-        renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : undefined
+        renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : 1,
+        owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : 1
       };
 
       if (formData.password) {
@@ -183,6 +186,9 @@ export default function UserProfile() {
   let backgroundImage = '';
   if (hoa) {
     backgroundImage = hoa.background_image_url;
+  }
+  if (loggedInUser && loggedInUser.role === 'admin') {
+    console.log('Admin User');
   }
 
   return (
@@ -284,6 +290,12 @@ export default function UserProfile() {
               />
             </div>
 
+
+{(loggedInUser && loggedInUser.role !== 'admin') && ( 
+
+
+
+<>
             <div style={{ marginBottom: "15px" }}>
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 PIN Code
@@ -299,6 +311,18 @@ export default function UserProfile() {
 
             <div style={{ marginBottom: "15px" }}>
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                Owner Free Parking
+              </label>
+              <input
+                className="standardinput"
+                type="number"
+                name="owner_free_parking"
+                value={formData.owner_free_parking}
+                onChange={handleInputChange}
+              />
+            </div>
+             <div style={{ marginBottom: "15px" }}>
+              <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 Renter Free Parking
               </label>
               <input
@@ -309,6 +333,11 @@ export default function UserProfile() {
                 onChange={handleInputChange}
               />
             </div>
+            </>
+
+)
+}
+
 
             <div style={{ marginBottom: "15px", borderTop: "1px solid #ddd", paddingTop: "20px" }}>
               <h3 style={{ color: "#1976d2", marginBottom: "15px" }}>Change Password (Optional)</h3>

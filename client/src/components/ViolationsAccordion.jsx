@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "../services/api";
 import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
+import ViolationForm from "./ViolationForm";
 
-export default function ViolationsAccordion({ hoaId, onViolationCreated }) {
+export default function ViolationsAccordion({ hoaId }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [violations, setViolations] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showViolationForm, setShowViolationForm] = useState(false);
   const { setAppError } = useError();
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
 
@@ -14,7 +16,7 @@ export default function ViolationsAccordion({ hoaId, onViolationCreated }) {
     if (hoaId) {
       fetchViolations();
     }
-  }, [hoaId, onViolationCreated]);
+  }, [hoaId]);
 
   const fetchViolations = async () => {
     try {
@@ -43,18 +45,28 @@ export default function ViolationsAccordion({ hoaId, onViolationCreated }) {
     }
   };
 
-    const deleteViolation = async (item) => {
-        try {
-            // Assuming each violation has a unique identifier, e.g., violationId
-            const violationId = item.id; // Adjust based on actual data structure
-            await axios.delete(`/violations/${violationId}`);
-            // Refresh the violations list after deletion
-            fetchViolations();
-        } catch (err) {
-            console.error("Error deleting violation:", err);
-            setAppError(err.message || "Failed to delete violation");
-        }
+  const deleteViolation = async (item) => {
+    try {
+      const violationId = item.id;
+      await axios.delete(`/violations/${violationId}`);
+      fetchViolations();
+    } catch (err) {
+      console.error("Error deleting violation:", err);
+      setAppError(err.message || "Failed to delete violation");
     }
+  };
+
+  const handleShowNewViolation = () => {
+    setShowViolationForm(true);
+  };
+
+  const handleCloseViolationForm = () => {
+    setShowViolationForm(false);
+  };
+
+  const handleViolationSuccess = () => {
+    fetchViolations();
+  };
 
   const toggleItem = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -164,6 +176,9 @@ export default function ViolationsAccordion({ hoaId, onViolationCreated }) {
   return (
     <>
       <style>{accordionStyles}</style>
+      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+        <button className="navbutton" onClick={handleShowNewViolation}>New Violation</button>
+      </div>
       <div className="accordion-container">
         {violations.map((item, index) => (
           <div key={index} className="accordion-item">
@@ -186,6 +201,12 @@ export default function ViolationsAccordion({ hoaId, onViolationCreated }) {
           </div>
         ))}
       </div>
+      <ViolationForm
+        isOpen={showViolationForm}
+        hoaId={hoaId}
+        onClose={handleCloseViolationForm}
+        onSuccess={handleViolationSuccess}
+      />
     </>
   );
 }

@@ -190,7 +190,7 @@ const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
    // console.log("getCurrentUser userId:", req.user.userId, "user:", user);
- console.log("getCurrentUser userId:", req.user.userId);
+ //console.log("getCurrentUser userId:", req.user.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
