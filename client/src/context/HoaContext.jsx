@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useCallback } from "react";
+import React, { createContext, useState, useContext, useCallback, useEffect } from "react";
 import axios from "../services/api";
 
 const HoaContext = createContext();
@@ -7,6 +7,18 @@ export function HoaProvider({ children }) {
   const [hoa, setHoa] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const cachedHoa = localStorage.getItem('cachedHoa');
+    if (cachedHoa) {
+      try {
+        setHoa(JSON.parse(cachedHoa));
+      } catch (err) {
+        console.error("Error parsing cached HOA data:", err);
+        localStorage.removeItem('cachedHoa');
+      }
+    }
+  }, []);
 
   const fetchHoaById = useCallback(async (hoaId) => {
     setLoading(true);
@@ -18,6 +30,7 @@ export function HoaProvider({ children }) {
     try {
         const response = await axios.get(url);
       setHoa(response.data);
+      localStorage.setItem('cachedHoa', JSON.stringify(response.data));
       return response.data;
     } catch (err) {
       console.error("Error fetching HOA data:", err);
@@ -25,6 +38,7 @@ export function HoaProvider({ children }) {
       
       setError(err.message);
       setHoa(null);
+      localStorage.removeItem('cachedHoa');
     } finally {
       setLoading(false);
     }
