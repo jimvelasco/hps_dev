@@ -358,7 +358,7 @@ export default function Administration() {
           </section>
 
            <section className="standardsection">
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Payment Ranges</h3>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Profile</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Manage HOA Profile including name and phone
             </p>
