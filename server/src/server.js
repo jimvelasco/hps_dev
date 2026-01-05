@@ -48,5 +48,21 @@ app.get("/reset-password/:token", (req, res) => {
 
 //app.use(errorHandler);
 
-const PORT = process.env.VITE_PORT || 5002; 
+const PORT = process.env.VITE_PORT || 5000; 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../../client/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.join(__dirname, "../../client/build/index.html")
+    );
+  });
+}
