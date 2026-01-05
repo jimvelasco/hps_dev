@@ -61,7 +61,7 @@ function LandingPage({ backgroundImage, hoaId, hoaError }) {
       {hoaError ? (
         <div className="displayerror">
           <p style={{ color: "#d32f2f", fontSize: "16px", fontWeight: "bold" }}>
-            <div>We have a problem with your HOA ID.</div><div>Please check that you entered it correctly</div>
+            <div>We have a problem with your Hoa Id in the URL.</div><div>Please check that you entered it correctly</div>
           </p>
         </div>
       ) : (!hoaId) ? (
