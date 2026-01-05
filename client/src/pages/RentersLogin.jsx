@@ -45,6 +45,7 @@ export default function RentersLogin() {
             const unitNumbers = response.data
                 .filter(user => user.unitnumber)
                 .map(user => ({ id: user._id, unitnumber: user.unitnumber }));
+                unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
             setUnits(unitNumbers);
         } catch (err) {
            // console.error("Error fetching units:", err);
@@ -99,8 +100,8 @@ export default function RentersLogin() {
     }
 
     const handleCancelClick = () => {
-        navigate(`/${hoaId}`);
-        // navigate(-1);
+       // navigate(`/${hoaId}`);
+         navigate(-1);
     };
     let backgroundImage = '';
     if (hoa) {
