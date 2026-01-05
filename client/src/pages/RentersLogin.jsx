@@ -18,11 +18,13 @@ export default function RentersLogin() {
 
      useEffect(() => {
         localStorage.removeItem("token");
+       // console.log("RentersLogin component mounted");
+        
       }, []);
 
     useEffect(() => {
         if (hoaId) {
-            console.log("renters.jsx Fetching HOA data for ID:", hoaId);
+           // console.log("renters.jsx Fetching HOA data for ID:", hoaId);
             fetchHoaById(hoaId).catch((err) => {
                 setAppError(err.message || "Failed to load HOA data");
                 navigate("/error");
@@ -45,8 +47,9 @@ export default function RentersLogin() {
                 .map(user => ({ id: user._id, unitnumber: user.unitnumber }));
             setUnits(unitNumbers);
         } catch (err) {
-            console.error("Error fetching units:", err);
+           // console.error("Error fetching units:", err);
             setAppError("Failed to load unit numbers");
+             navigate(`/${hoaId}/error`);
         } finally {
             setLoadingUnits(false);
         }
@@ -54,10 +57,11 @@ export default function RentersLogin() {
 
     /*     */
     const handleSubmit = async (e) => {
-        console.log("handleSubmit called in renterslogin.jsx");
+      //  console.log("handleSubmit called in renterslogin.jsx");
         e.preventDefault();
          if (!selectedUnit || !pin) {
             setAppError("Please select a unit and enter a pin");
+             navigate(`/${hoaId}/error`);
             return;
         }
         try {
@@ -74,6 +78,8 @@ export default function RentersLogin() {
             navigate(`/${hoaId}/rentervehicles/${selectedUnit}`);
         } catch (err) {
             setAppError(err.response?.data?.message || "Invalid PIN");
+           // navigate("/error");
+             navigate(`/${hoaId}/error`);
         }
     };
 
@@ -81,17 +87,6 @@ export default function RentersLogin() {
     /*
     */
 
-    const xxhandleSubmit = (e) => {
-        e.preventDefault();
-        if (!selectedUnit || !pin) {
-            setAppError("Please select a unit and enter a pin");
-            return;
-        }
-        // const selectedUnitObj = units.find(u => u.id === selectedUnit);
-        // const unitNumber = selectedUnitObj ? selectedUnitObj.unitnumber : "";
-        console.log("we are about to navigate to renter vehicles for unit:", selectedUnit);
-        navigate(`/${hoaId}/rentervehicles/${selectedUnit}`);
-    };
 
     if (loading) {
         return <div style={{ padding: "20px" }}>Loading HOA data...</div>;

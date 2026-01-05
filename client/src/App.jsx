@@ -4,6 +4,8 @@ import { useParams, Routes, Route, useNavigate } from "react-router-dom";
 import axios from "./services/api";
 import { HoaProvider, useHoa } from "./context/HoaContext";
 import { ErrorProvider, useError } from "./context/ErrorContext";
+import HoaSelector from "./pages/HoaSelector";
+import LandingPage from "./pages/LandingPage";
 import RentersLogin from "./pages/RentersLogin";
 import RenterVehicles from "./pages/RenterVehicles";
 //import Renters from "./pages/xRenters";
@@ -29,111 +31,28 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-function LandingPage({ backgroundImage, hoaId, hoaError }) {
-  const navigate = useNavigate();
-  // console.log("LandingPage length hoaId:", hoaId.length);
-
-  const buttonStyle = {
-    padding: "8px 16px",
-    fontSize: "16px",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
-
-  };
-
-
-  return (
-    <div style={{
-      backgroundImage: backgroundImage,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundAttachment: "fixed",
-      minHeight: "100vh",
-      padding: "20px"
-    }}>
-      <div className="standardtitlebar">
-        <h1 style={{ fontSize: "24px" }}>HOA Parking Solutions</h1>
-      </div>
-
-      {hoaError ? (
-        <div className="displayerror">
-          <p style={{ color: "#d32f2f", fontSize: "16px", fontWeight: "bold" }}>
-            <div>We have a problem with your Hoa Id in the URL.</div><div>Please check that you entered it correctly</div>
-          </p>
-        </div>
-      ) : (!hoaId) ? (
-        <div className="displayerror">
-          <p style={{ color: "#d32f2f", fontSize: "16px", fontWeight: "bold" }}>
-            Please provide a valid Hoa Id in the Url. <br /><br />
-            (Example: www.hoaparkingsolutions.com/YV)
-          </p>
-        </div>
-      ) : (
-        <div style={{
-          marginTop: "30px", width: "350px", margin: "auto", backgroundColor: "#fff", borderRadius: "8px",
-          border: "0px solid #000000", padding: "10px",
-          display: "flex", justifyContent: "space-evenly", opacity: ".8"
-        }}>
-          <button className="standardsubmitbutton"
-            onClick={() => navigate(`/${hoaId}/ownerslogin`)}>
-            Owners
-          </button>
-          <button className="standardsubmitbutton"
-            onClick={() => navigate(`/${hoaId}/renterslogin`)} >
-            Renters
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
 function AppContent() {
   let { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
-  const [hoaError, setHoaError] = useState(null);
 
   useEffect(() => {
     if (hoaId) {
       fetchHoaById(hoaId).catch((err) => {
         setAppError(err.message || "Failed to load HOA data");
-        //navigate("/error");
         navigate(`/${hoaId}/error`);
       });
     }
   }, [hoaId, fetchHoaById, setAppError, navigate])
 
-  // useEffect(() => {
-  //   // if (hoaId || (hoaId.length === 2 )) {
-
-  //   if (hoaId) {
-  //      //console.log("app.jsxFetching HOA data for ID:", hoaId);
-  //     //  hoaId = hoaId.toUpperCase();
-  //     fetchHoaById(hoaId).catch((err) => {
-  //        setHoaError(err.message || "Failed to load HOA data");
-  //       // setHoaError("Failed to load HOA data");
-  //     });
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }, [hoaId, fetchHoaById, setAppError, navigate]);
-
   if (loading) {
     return <div>Loading HOA data...</div>;
   }
 
-  if (error) {
-    return <LandingPage backgroundImage="" hoaId={hoaId} hoaError={error} />;
-  }
+  const backgroundImage = hoa && hoa.background_image_url ? `url('${hoa.background_image_url}')` : "http://hoaparking.s3.amazonaws.com/yampa_103022.jpg";
 
-  const backgroundImage = hoa && hoa.background_image_url ? `url('${hoa.background_image_url}')` : "";
-
-  return <LandingPage backgroundImage={backgroundImage} hoaId={hoaId} hoaError={hoaError} />;
+  return <LandingPage backgroundImage={backgroundImage} hoaId={hoaId} hoaError={error} />;
 }
 
 // <Route path="/:hoaId/vehicledetails/:vehicleId" element={<VehicleDetails />} />
@@ -143,7 +62,7 @@ function App() {
     <ErrorProvider>
       <HoaProvider>
         <Routes>
-          <Route path="/" element={<LandingPage backgroundImage="" hoaId={null} />} />
+          <Route path="/" element={<HoaSelector />} />
           <Route path="/:hoaId" element={<AppContent />} />
           <Route path="/:hoaId/ownerslogin" element={
               <OwnersLogin />
@@ -242,12 +161,13 @@ function App() {
           <Route path="/:hoaId/test" element={<TestPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/reset-password-error" element={<ErrorPage />} />
-          <Route path="/error" element={<ErrorPage />} />
-         
-          <Route path="/:hoaId/error" element={
+           <Route path="/:hoaId/error" element={
           
               <ErrorPage />
           } />
+          <Route path="/error" element={<ErrorPage />} />
+         
+         
         </Routes>
       </HoaProvider>
     </ErrorProvider>
