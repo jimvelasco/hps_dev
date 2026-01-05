@@ -100,8 +100,8 @@ export default function RentersLogin() {
     }
 
     const handleCancelClick = () => {
-       // navigate(`/${hoaId}`);
-         navigate(-1);
+        navigate(`/${hoaId}`);
+       //  navigate(-1);
     };
     let backgroundImage = '';
     if (hoa) {
