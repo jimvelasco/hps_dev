@@ -290,7 +290,7 @@ export default function OwnerVehicles() {
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={`Owner Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
       <div className="page-content">
-        <div className="flexLayout" style={{width:"360px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
+        {/* <div className="flexLayout" style={{width:"340px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}> */}
           {/* <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap"}}> */}
           {/* <div className="grid-container-3-full"> */}
            {/* <div style={{
@@ -302,7 +302,15 @@ export default function OwnerVehicles() {
             backgroundColor: "white",
             opacity: 0.8
           }}> */}
-          <div>
+          <div className="standardtitlebar">
+            <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '10px',
+            justifyContent: 'center',
+            marginBottom: '0px'
+          }}>
+         <div>
             <label className="input-label">
               Type
             </label>
@@ -333,8 +341,10 @@ export default function OwnerVehicles() {
               New
             </button>
           </div>
-
-        </div>
+           </div>
+           </div>
+            
+        {/* </div> */}
         {/* </div> */}
 
 
