@@ -46,7 +46,7 @@ body {
   align-items: center;
   background-color: #ffffff;
   padding: 3px;
-  border-radius: 15px;
+  border-radius: 8px;
   margin-right:10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
    position: relative;
@@ -598,7 +598,7 @@ section.standardsectiondashboard {
   margin-top: 10px;
   /* box-shadow: 3px 3px 5px rgba(22, 162, 183, 0.5); */
   box-shadow: 4px 4px 6px #231259;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 /*
@@ -683,7 +683,7 @@ section.standardsectiondashboard {
   grid-template-columns: 1fr;
   background-color: #ffffff;
   padding: 3px;
-  border-radius: 15px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   width:100%
   
@@ -695,7 +695,7 @@ section.standardsectiondashboard {
   grid-template-columns: 1fr 1.5fr;
   background-color: #ffffff;
   padding: 3px;
-  border-radius: 15px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
@@ -709,7 +709,7 @@ section.standardsectiondashboard {
   grid-template-columns: 1fr 1.5fr;
   background-color: #ffffff;
   padding: 3px;
-  border-radius: 15px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
@@ -725,7 +725,7 @@ section.standardsectiondashboard {
   grid-template-columns: 1fr 1fr 1fr;
   background-color: #ffffff;
   padding: 3px;
-  border-radius: 15px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 1px solid black;
