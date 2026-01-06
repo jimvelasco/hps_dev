@@ -92,7 +92,7 @@ export default function OwnerVehicles() {
   useEffect(() => {
     if (allVehicles.length > 0) {
       const today = new Date();
-      const oneYearAgo = new Date(today.getFullYear(), today.getMonth()-3, today.getDate());
+      const oneYearAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate());
       //const formattedDate = oneYearAgo.toISOString().split('T')[0];
       const formattedDate = utcDateOnly(oneYearAgo);
       setFilterDate(formattedDate);
@@ -291,9 +291,9 @@ export default function OwnerVehicles() {
       <DashboardNavbar title={`Owner Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
       <div className="page-content">
         {/* <div className="flexLayout" style={{width:"340px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}> */}
-          {/* <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap"}}> */}
-          {/* <div className="grid-container-3-full"> */}
-           {/* <div style={{
+        {/* <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap"}}> */}
+        {/* <div className="grid-container-3-full"> */}
+        {/* <div style={{
             display: 'flex',
             flexWrap: 'wrap',
             gap: '10px',
@@ -302,50 +302,90 @@ export default function OwnerVehicles() {
             backgroundColor: "white",
             opacity: 0.8
           }}> */}
+        <div className="tableview">
           <div className="standardtitlebar">
             <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '10px',
-            justifyContent: 'center',
-            marginBottom: '0px'
-          }}>
-         <div>
-            <label className="input-label">
-              Type
-            </label>
-            <br />
-            <select className="standardselect"
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-            >
-              <option value="owner">Owner</option>
-              <option value="renter">Renter</option>
-              <option value="both">Both</option>
-            </select>
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              justifyContent: 'center',
+              marginBottom: '0px'
+            }}>
+              <div>
+                <label className="input-label">
+                  Type
+                </label>
+                <br />
+                <select className="standardselect"
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                >
+                  <option value="owner">Owner</option>
+                  <option value="renter">Renter</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
+              <div>
+                <label className="input-label">
+                  From
+                </label>
+                <br />
+                <input className="input-date"
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                />
+              </div>
+              <div>
+                <br />
+                <button className="standardsubmitbutton" onClick={handleCreateClick} style={{ width: 80 }}       >
+                  New
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="input-label">
-              From 
-            </label>
-            <br />
-            <input className="input-date" 
-              type="date"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
-            />
+        </div>
+        <div className="phoneview">
+          <div className="standardtitlebar">
+            <div className="grid-container-2x">
+              <div>
+                <label className="input-label">
+                  Type
+                </label>
+               </div>
+               <div>
+                <select className="standardselect"
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                >
+                  <option value="owner">Owner</option>
+                  <option value="renter">Renter</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="input-label">
+                  From
+                </label>
+               </div>
+               <div>
+                <input className="input-date"
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                />
+              </div>
+              <div>&nbsp;</div>
+                <div>
+                <button className="standardsubmitbutton" onClick={handleCreateClick} style={{ width: 80 }}       >
+                  New
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <br />
-            <button className="standardsubmitbutton" onClick={handleCreateClick} style={{ width: 80 }}       >
-              New
-            </button>
-          </div>
-           </div>
-           </div>
-            
-        {/* </div> */}
-        {/* </div> */}
+        </div>
+
 
 
 

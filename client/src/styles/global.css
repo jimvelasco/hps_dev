@@ -706,6 +706,23 @@ section.standardsectiondashboard {
   height: 250px
   
 }
+.grid-container-2x {
+  display: grid;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  background-color: #ffffff;
+  padding: 3px;
+  border-radius: 8px;
+  align-items: center;
+  border: 0px solid black;
+ 
+ 
+
+ width:260px
+ 
+  
+}
 .grid-container-2-plate {
   display: grid;
   grid-column-gap: 0px;
