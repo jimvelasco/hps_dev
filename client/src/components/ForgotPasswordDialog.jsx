@@ -111,7 +111,7 @@ export default function ForgotPasswordDialog({ isOpen, hoaId, onClose }) {
                 className="standardsubmitbutton"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Sending..." : "Send Reset Email"}
+                {isSubmitting ? "Sending..." : "Send"}
               </button>
               <button
                 type="button"
