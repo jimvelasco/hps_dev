@@ -392,7 +392,7 @@ export default function UserProfile() {
                 className="standardsubmitbutton"
                 style={{ opacity: isSubmitting ? 0.6 : 1 }}
               >
-                {isSubmitting ? "Saving..." : "Save Changes"}
+                {isSubmitting ? "Saving..." : "Save"}
               </button>
               <button
                 type="button"
