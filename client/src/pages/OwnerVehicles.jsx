@@ -315,7 +315,7 @@ export default function OwnerVehicles() {
               Type
             </label>
             <br />
-            <select className="standardselect" style={{height:"38px"}}
+            <select className="standardselect"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
@@ -329,7 +329,7 @@ export default function OwnerVehicles() {
               From 
             </label>
             <br />
-            <input className="input-date" style={{height:"38px"}}
+            <input className="input-date" 
               type="date"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
