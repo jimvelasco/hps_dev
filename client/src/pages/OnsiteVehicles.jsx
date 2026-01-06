@@ -32,11 +32,14 @@ export default function OnsiteVehicles() {
               newary.push(element);
             }
           });
+           console.log('newary', newary);
           const sorted = [...newary].sort((a, b) => {
             let valueA, valueB;
             valueA = (a.plate || "").toLowerCase();
             valueB = (b.plate || "").toLowerCase();
+            return valueA.localeCompare(valueB);
           });
+          console.log('sorted', sorted);
           setVehicles(sorted);
           setVehiclesError(null);
         } catch (err) {

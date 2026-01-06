@@ -291,7 +291,7 @@ const forgotPassword = async (req, res) => {
 
     const msg = {
       to: user.email,
-      from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparkingsolutions.com",
+      from: process.env.SENDGRID_FROM_EMAIL || "verify@hoaparkingsolutions.com",
       subject: "Password Reset Request",
       html: `
         <h2>Password Reset Request</h2>
