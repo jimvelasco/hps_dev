@@ -290,7 +290,7 @@ export default function OwnerVehicles() {
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={`Owner Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
       <div className="page-content">
-        <div className="flexLayout" style={{width:"380px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
+        <div className="flexLayout" style={{width:"360px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
           {/* <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap"}}> */}
           {/* <div className="grid-container-3-full"> */}
            {/* <div style={{
