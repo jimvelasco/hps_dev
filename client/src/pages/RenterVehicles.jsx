@@ -214,14 +214,16 @@ export default function RenterVehicles() {
       <DashboardNavbar title={`Renter Vehicles`} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="flexLayout">
+        {/* <div className="flexLayout"> */}
+                  <div className="flexLayout" style={{width:"380px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
+
           <div className="page-label">
             <label className="input-label">
               Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
             </label>
           </div>
           <button className="standardsubmitbutton" onClick={handleCreateClick}>
-            New Vehicle
+            New
           </button>
         </div>
 

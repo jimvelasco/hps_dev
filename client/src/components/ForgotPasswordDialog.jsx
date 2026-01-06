@@ -79,7 +79,7 @@ export default function ForgotPasswordDialog({ isOpen, hoaId, onClose }) {
           backgroundColor: "white",
           borderRadius: "8px",
           padding: "30px",
-          maxWidth: "400px",
+          maxWidth: "360px",
           width: "90%",
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
         }}>

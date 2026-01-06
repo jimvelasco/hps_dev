@@ -119,10 +119,19 @@ export default function ResetPassword() {
   }
 
   return (
-    <div style={{
+    // <div style={{
+    //   minHeight: "100vh",
+    //   backgroundColor: "#f5f5f5",
+    //   padding: "20px"
+    // }}>
+      <div style={{
+      backgroundImage: "url('http://hoaparking.s3.amazonaws.com/steamboat-ski-resort.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundAttachment: "fixed",
       minHeight: "100vh",
-      backgroundColor: "#f5f5f5",
-      padding: "20px"
+      padding: "20px",
+      backgroundColor: "#f5f5f5"
     }}>
       <div className="standardtitlebar">
         <h1 style={{ fontSize: "24px" }}>HOA Parking Solutions</h1>

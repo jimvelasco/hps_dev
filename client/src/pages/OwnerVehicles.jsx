@@ -7,7 +7,7 @@ import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGrid from "../components/VehiclesGrid";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
-import { getVehicleActiveStatusBoolean,utcDateOnly } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 
 
@@ -70,7 +70,7 @@ export default function OwnerVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-         
+
 
           setVehicles(updatedVehicles);
           setAllVehicles(updatedVehicles);
@@ -92,9 +92,9 @@ export default function OwnerVehicles() {
   useEffect(() => {
     if (allVehicles.length > 0) {
       const today = new Date();
-      const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+      const oneYearAgo = new Date(today.getFullYear(), today.getMonth()-3, today.getDate());
       //const formattedDate = oneYearAgo.toISOString().split('T')[0];
-       const formattedDate =  utcDateOnly(oneYearAgo);
+      const formattedDate = utcDateOnly(oneYearAgo);
       setFilterDate(formattedDate);
     }
   }, [allVehicles]);
@@ -153,8 +153,8 @@ export default function OwnerVehicles() {
 
   const handleFilterApply = () => {
     let filtered = [...allVehicles];
-    if (filterType === "owner" ) {
-      filtered = filtered.filter(v => v.carownertype === "owner" ||  v.carownertype === "friend");
+    if (filterType === "owner") {
+      filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend");
     } else if (filterType === "renter") {
       filtered = filtered.filter(v => v.carownertype === "renter");
     }
@@ -170,10 +170,10 @@ export default function OwnerVehicles() {
 
   const handleDetailsClick = (vehicle) => {
 
-    const vid = vehicle._id; 
+    const vid = vehicle._id;
     const uid = vehicle.unitnumber;
-  //  console.log('ov handle details click vehicle:', vehicle.carownertype);
-    if(vehicle.carownertype==="renter"){
+    //  console.log('ov handle details click vehicle:', vehicle.carownertype);
+    if (vehicle.carownertype === "renter") {
       setModal({
         isOpen: true,
         type: "alert",
@@ -192,15 +192,17 @@ export default function OwnerVehicles() {
     let unitNumber = uid; //loggedInUser ? loggedInUser.unitnumber : "999999999999";
     //let arole = loggedInUser ? loggedInUser.role : "owner";
     let arole = "owner";
-  //  console.log("loggedInUser", loggedInUser);
-   // console.log("****** handleDetailsClick OwnerVehicles.jsx handleDetailsClick loggedInUser:", loggedInUser);
-    navigate(qry, { state: { 
-      unitNumber: unitNumber, 
-      role: arole, 
-      vehicles: vehicles, 
-      ownerOfUnit: loggedInUser,
-      vehid:vid
-    } });
+    //  console.log("loggedInUser", loggedInUser);
+    // console.log("****** handleDetailsClick OwnerVehicles.jsx handleDetailsClick loggedInUser:", loggedInUser);
+    navigate(qry, {
+      state: {
+        unitNumber: unitNumber,
+        role: arole,
+        vehicles: vehicles,
+        ownerOfUnit: loggedInUser,
+        vehid: vid
+      }
+    });
     //vid } });
     //navigate(qry);
   };
@@ -228,18 +230,18 @@ export default function OwnerVehicles() {
 
     navigate(qry, {
       state: {
-        unitNumber: uid, 
+        unitNumber: uid,
         role: arole,
         numberOfVehicles: vehicles.length,
         vehicles: vehicles,
-        vehid:null
+        vehid: null
       }
     });
     // navigate(qry);
   };
   const handlePaymentClick = (vehicle) => {
     console.log("Payment click for vehicle id:", vehicle._id);
-     if(vehicle.carownertype==="renter"){
+    if (vehicle.carownertype === "renter") {
       setModal({
         isOpen: true,
         type: "alert",
@@ -253,10 +255,10 @@ export default function OwnerVehicles() {
       return;
     }
 
-     navigate(`/${hoaId}/payment`, {
+    navigate(`/${hoaId}/payment`, {
       state: {
         vehicleId: vehicle._id,
-        unitNumber: loggedInUser.unitnumber, userId: ownerId, hoaId: hoaId,role: "owner"
+        unitNumber: loggedInUser.unitnumber, userId: ownerId, hoaId: hoaId, role: "owner"
       }
     });
     // if (role !== "owner") {
@@ -288,11 +290,23 @@ export default function OwnerVehicles() {
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={`Owner Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
       <div className="page-content">
-        <div className="flexLayout">
-          <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
+        <div className="flexLayout" style={{width:"380px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
+          {/* <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap"}}> */}
+          {/* <div className="grid-container-3-full"> */}
+           {/* <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '10px',
+            justifyContent: 'center',
+            marginBottom: '10px',
+            backgroundColor: "white",
+            opacity: 0.8
+          }}> */}
+          <div>
             <label className="input-label">
-              Filter Vehicles:
+              Type
             </label>
+            <br />
             <select className="standardselect"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
@@ -301,20 +315,27 @@ export default function OwnerVehicles() {
               <option value="renter">Renter</option>
               <option value="both">Both</option>
             </select>
+          </div>
+          <div>
             <label className="input-label">
-              From Date:
+              From 
             </label>
+            <br />
             <input className="input-date"
               type="date"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
             />
           </div>
-          <button className="standardsubmitbutton" onClick={handleCreateClick}          >
-            New Vehicle
-          </button>
+          <div>
+            <br />
+            <button className="standardsubmitbutton wid60" onClick={handleCreateClick} style={{ width: 80 }}       >
+              New
+            </button>
+          </div>
 
         </div>
+        {/* </div> */}
 
 
 
@@ -360,7 +381,7 @@ export default function OwnerVehicles() {
           </>
         ) : (
           <div className="noresultsfound">
-            <p style={{ color: "#666" ,fontWeight:"bold" ,textAlign:"center"}}>No vehicles found for this HOA.</p>
+            <p style={{ color: "#666", fontWeight: "bold", textAlign: "center" }}>No vehicles found for this HOA.</p>
           </div>
 
         )}
