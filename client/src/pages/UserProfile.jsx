@@ -394,7 +394,7 @@ export default function UserProfile() {
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </button>
-              <button
+              <button  className="standardcancelbutton"
                 type="button"
                 onClick={handleBackToDashboard}
                 style={{
