@@ -71,18 +71,18 @@ export default function OnsiteVehicles() {
     return (<div className="grid-container-2-plate"
       key={vehicle._id}>
       <div className="full-row">
-        <h4 style={{
+        <h3 style={{
           margin: "5px", color: "#1976d2", borderBottom: "2px solid #1976d2", padding: "5px"
         }}>
           {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`}
-        </h4>
+        </h3>
       </div>
-      <div className="grid-item-bold">Name</div>
-      <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div>
+      {/* <div className="grid-item-bold">Name</div>
+      <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
       <div className="grid-item-bold">User</div>
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
-      <div className="grid-item-bold">Make</div>
-      <div className="grid-item-normal">{vehicle.make}, {vehicle.model}</div>
+      {/* <div className="grid-item-bold">Make</div>
+      <div className="grid-item-normal">{vehicle.make}, {vehicle.model}</div> */}
       <div className="grid-item-bold">Checkout</div>
       {getVehicleIsActiveTodayBoolean(vehicle) ? (
         <div className="grid-item-normal-highlight">

@@ -613,6 +613,7 @@ renter_free_parking 1
                   </label>
                   <input className="standardinput"
                     type="text"
+                    maxLength={2}
                     name="plate_state"
                     value={formData.plate_state}
                     onChange={handleFormChange}
