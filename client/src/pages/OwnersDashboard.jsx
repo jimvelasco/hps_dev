@@ -147,7 +147,7 @@ export default function OwnersDashboard() {
   // console.log("OwnersDashboard render loggedInUser", loggedInUser);
 
   return (
-    <div style={{ marginTop: "-1px",minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+    <div style={{ marginTop: "0px",minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={`${ttitle} Dashboard`} buttons={navButtons} />
 
 

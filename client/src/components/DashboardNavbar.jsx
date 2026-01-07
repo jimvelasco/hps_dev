@@ -10,7 +10,7 @@ export default function DashboardNavbar({ title, buttons }) {
 
   return (
     <>
-      <div className="tableview">
+    <div className="tableview">
         <nav className="navbar">
           <div>
             <h2 style={{ color: "white", margin: 0 }}>{title}</h2>
@@ -30,10 +30,8 @@ export default function DashboardNavbar({ title, buttons }) {
               </div>
             ))}
           </div>
-
         </nav>
-      </div>
-
+   </div>
       <div className="phoneview">
         <nav className="navbarphone">
           <div>
