@@ -152,7 +152,7 @@ export default function OwnersDashboard() {
 
 
       <div className="page-content">
-        <div className="standardtitlebar">
+        <div className="standardtitlebar" style={{marginTop:"10px"}}>
           <h1>Welcome to {hoa?.name}</h1>
         </div>
 
