@@ -631,7 +631,7 @@ section.standardsectiondashboard {
 /* ****** BEGIN MEDIA QUERIES ******************* */
 /* ********************************************** */
 
-@media only screen and (max-width: 799px) {
+@media only screen and (max-width: 479px) {
   .tableview {
     display: none;
   }
@@ -643,7 +643,7 @@ section.standardsectiondashboard {
 
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 480px) {
   .tableview {
     display: block;
     margin: 0px;
