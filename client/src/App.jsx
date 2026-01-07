@@ -36,7 +36,7 @@ function AppContent() {
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
-
+  const bimage = 'http://hoaparking.s3.amazonaws.com/steamboat-ski-resort.jpg';
   useEffect(() => {
     if (hoaId) {
       fetchHoaById(hoaId).catch((err) => {
@@ -47,7 +47,17 @@ function AppContent() {
   }, [hoaId, fetchHoaById, setAppError, navigate])
 
   if (loading) {
-    return <div>Loading HOA data...</div>;
+    return <div style={{
+      minHeight: "100vh", backgroundColor: "#f5f5f5",
+      backgroundImage: `url('${bimage}')`, backgroundSize: "cover",
+      backgroundPosition: "center", backgroundAttachment: "fixed"
+    }}>
+      <div  style={{paddingTop:"20px"}}>
+      <div className="standardtitlebar">
+        <h1>Loading HOA data...</h1>
+      </div>
+      </div>
+    </div>;
   }
 
   const backgroundImage = hoa && hoa.background_image_url ? `url('${hoa.background_image_url}')` : "http://hoaparking.s3.amazonaws.com/yampa_103022.jpg";
@@ -65,7 +75,7 @@ function App() {
           <Route path="/" element={<HoaSelector />} />
           <Route path="/:hoaId" element={<AppContent />} />
           <Route path="/:hoaId/ownerslogin" element={
-              <OwnersLogin />
+            <OwnersLogin />
           } />
           <Route path="/:hoaId/dashboard" element={
             <ProtectedRoute>
@@ -98,18 +108,18 @@ function App() {
             <ProtectedRoute>
               < UserDetails />
             </ProtectedRoute>
-              } />
+          } />
           <Route path="/:hoaId/user/:userId" element={
             <ProtectedRoute>
               <UserDetails />
             </ProtectedRoute>
           } />
           <Route path="/:hoaId/renterslogin" element={
-              <RentersLogin />
+            <RentersLogin />
           } />
-          
+
           <Route path="/:hoaId/rentervehicles/:unitNumber" element={
-              <RenterVehicles />
+            <RenterVehicles />
           } />
 
           {/* <Route path="/:hoaId/rentervehicles" element={<RenterVehicles />} /> */}
@@ -128,16 +138,16 @@ function App() {
           <Route path="/:hoaId/vehicledetails/:which/:vehicleId" element={
             <ProtectedRoute>
               <VehicleDetails />
-              </ProtectedRoute>
+            </ProtectedRoute>
           } />
           <Route path="/:hoaId/terms-and-conditions" element={
             <ProtectedRoute>
               <TermsAndConditions />
             </ProtectedRoute>
           } />
-          
+
           <Route path="/:hoaId/admin" element={
-              <Administration />
+            <Administration />
           } />
           <Route path="/:hoaId/hoa-settings" element={
             <ProtectedRoute>
@@ -154,20 +164,20 @@ function App() {
               <ContactInformation />
             </ProtectedRoute>
           } />
-           <Route path="/:hoaId/payment" element={
-             <ParkingPayment />
+          <Route path="/:hoaId/payment" element={
+            <ParkingPayment />
           } />
 
           <Route path="/:hoaId/test" element={<TestPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/reset-password-error" element={<ErrorPage />} />
-           <Route path="/:hoaId/error" element={
-          
-              <ErrorPage />
+          <Route path="/:hoaId/error" element={
+
+            <ErrorPage />
           } />
           <Route path="/error" element={<ErrorPage />} />
-         
-         
+
+
         </Routes>
       </HoaProvider>
     </ErrorProvider>
