@@ -6,8 +6,23 @@ export default function HoaInformation({ hoa }) {
       display: 'flex',
       flexWrap: 'wrap',
       gap: '10px',
-      justifyContent: 'center'
+      justifyContent: 'center',
+     
     }}>
+        <section className="standardsectiondashboard">
+          <h3 style={{ color: "#1976d2", marginTop: 0 }}>Contact Information</h3>
+           {hoa?.contact_information && hoa.contact_information.length > 0 && (
+          <div className="hoainformation">
+            {hoa.contact_information.map((contact, index) => (
+              <div key={index}>
+                <strong>{contact.phone_description || "Contact"}:</strong><br />
+                {contact.phone_number && <span>Phone: {contact.phone_number}<br /></span>}
+                {contact.email && <span>Email: {contact.email}</span>}
+              </div>
+            ))}
+          </div>
+           )}
+        </section>
       <section className="standardsectiondashboard">
         <h3 style={{ color: "#1976d2", marginTop: 0 }}>HOA Information</h3>
         {hoa && (
@@ -30,20 +45,7 @@ export default function HoaInformation({ hoa }) {
         )}
       </section>
      
-        <section className="standardsectiondashboard">
-          <h3 style={{ color: "#1976d2", marginTop: 0 }}>Contact Information</h3>
-           {hoa?.contact_information && hoa.contact_information.length > 0 && (
-          <div className="hoainformation">
-            {hoa.contact_information.map((contact, index) => (
-              <div key={index}>
-                <strong>{contact.phone_description || "Contact"}:</strong><br />
-                {contact.phone_number && <span>Phone: {contact.phone_number}<br /></span>}
-                {contact.email && <span>Email: {contact.email}</span>}
-              </div>
-            ))}
-          </div>
-           )}
-        </section>
+      
      
     </div>
   );
