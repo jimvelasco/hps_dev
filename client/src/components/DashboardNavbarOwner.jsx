@@ -19,15 +19,15 @@ export default function DashboardNavbarOwner({ title, buttons }) {
  
 
   return (
+    <>
     <nav className="navbar">
-      <div>
         <h2 style={{ color: "white", margin: 0 }}>{title}</h2>
         {!loggedInUser && (
           <div style={{ color: "#bbb", margin: "5px 0 5px 0", fontSize: "12px" }}>
             <ParkingSpacesOverviewNB />
           </div>
         )}
-      </div>
+        <div >
       <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", border: "0px solid white" }}>
         {buttons && buttons.map((button, index) => (
           <div key={index}>
@@ -40,7 +40,8 @@ export default function DashboardNavbarOwner({ title, buttons }) {
           </div>
         ))}
       </div>
-
+      </div>
     </nav>
+    </>
   );
 }

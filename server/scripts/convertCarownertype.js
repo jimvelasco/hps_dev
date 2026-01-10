@@ -12,7 +12,7 @@ const convert = async () => {
     console.log("========================================\n");
 
     // === STEP 1: CONNECT TO DATABASE ===
-    const dbUri = process.env.MONGODB_URI || "mongodb://localhost:27017/hps-v1";
+    const dbUri = process.env.xMONGODB_URI || "mongodb://localhost:27017/hps-v1";
     const connection = await mongoose.createConnection(dbUri);
     console.log("✓ Connected to database: hps-v1");
 

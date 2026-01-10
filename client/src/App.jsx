@@ -24,6 +24,7 @@ import Administration from "./pages/administration/Administration";
 import PaymentRanges from "./pages/administration/PaymentRanges";
 import ContactInformation from "./pages/administration/ContactInformation";
 import HoaSettings from "./pages/administration/HoaSettings";
+import ImageUpload from "./pages/ImageUpload";
 import TestPage from "./pages/TestPage";
 import UserProfile from "./pages/UserProfile";
 import ParkingPayment from "./pages/ParkingPayment";
@@ -157,6 +158,11 @@ function App() {
 
           <Route path="/:hoaId/admin" element={
             <Administration />
+          } />
+          <Route path="/:hoaId/image-upload" element={
+            <ProtectedRoute>
+              <ImageUpload />
+            </ProtectedRoute>
           } />
           <Route path="/:hoaId/hoa-settings" element={
             <ProtectedRoute>

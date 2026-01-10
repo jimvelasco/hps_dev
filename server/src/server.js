@@ -12,6 +12,7 @@ import vehicleRoutes from "./routes/vehicleRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import testRoutes from "./routes/testRoutes.js";
 import violationRoutes from "./routes/violationRoutes.js";
+import imageRoutes from "./routes/imageRoutes.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/tests", testRoutes);
 app.use("/api/violations", violationRoutes);
+app.use("/api/images", imageRoutes);
 
 // Reset password redirect
 app.get("/reset-password/:token", (req, res) => {

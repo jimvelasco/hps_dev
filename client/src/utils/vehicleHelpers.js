@@ -136,7 +136,7 @@ export const okToActivateRenterVehicle = (formvehicle, vehiclearray, role, owner
     if (activeArray.length == 0) {
       return { oktoadd: true, rpflag: 0 };
     }
-    if (activeArray.length == 1 && activeArray[0].requires_payment == 1) {
+    if (activeArray.length == 1 && (activeArray[0].requires_payment == 1 || activeArray[0].requires_payment == 2)) {
       return { oktoadd: true, rpflag: 0 };
     }
     if (activeArray.length == 1 && activeArray[0].requires_payment == 0) {

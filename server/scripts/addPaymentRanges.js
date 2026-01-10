@@ -6,7 +6,7 @@ dotenv.config();
 
 const migrate = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/hps-v1");
+    await mongoose.connect(process.env.xMONGODB_URI || "mongodb://localhost:27017/hps-v1");
     console.log("Connected to MongoDB");
 
     const result = await Hoa.updateMany(
