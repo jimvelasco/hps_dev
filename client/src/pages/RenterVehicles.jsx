@@ -215,7 +215,7 @@ export default function RenterVehicles() {
       <div className="page-content">
 
         {/* <div className="flexLayout"> */}
-                  <div className="flexLayout" style={{width:"380px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
+                  <div className="flexLayout" style={{width:"360px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
 
           <div className="page-label">
             <label className="input-label">
@@ -273,7 +273,7 @@ export default function RenterVehicles() {
         )}
         <br />
         {/* <div className="standardtitlebar-small"> */}
-           <div className="flexLayout" style={{width:"380px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"center"}}>
+           <div className="flexLayout" style={{width:"360px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"center"}}>
              <div className="page-label">
             <label className="input-label">
              Welcome to {hoa?.name}
