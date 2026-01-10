@@ -222,7 +222,7 @@ export default function RenterVehicles() {
             <label className="input-label">
               Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
             </label><br />
-            <button className="standardsubmitbutton180"  onClick={handleCreateClick}>
+            <button className="standardsubmitbutton"  style={{ width: "180px",marginTop:"5px" }} onClick={handleCreateClick}>
               New Vehicle
             </button>
           </div>
@@ -239,7 +239,7 @@ export default function RenterVehicles() {
               {ownerOfUnit.phone}
             </label>
             <br />
-            <button className="standardsubmitbutton180"  onClick={handleCreateClick}>
+            <button className="standardsubmitbutton" style={{ width: "180px" ,marginTop:"5px"}}onClick={handleCreateClick}>
               New Vehicle
             </button>
           </div>

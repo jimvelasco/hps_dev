@@ -23,8 +23,15 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
       minHeight: "100vh",
       padding: "20px"
     }}>
-      <div className="standardtitlebar">
-        <h1 style={{ fontSize: "24px" }}>HOA Parking Solutions</h1>
+      <div className="tableview">
+        <div className="standardtitlebar">
+          <h1 style={{ fontSize: "24px" }} onClick={() => navigate("/")}>HOA Parking Solutions</h1>
+        </div>
+      </div>
+      <div className="phoneview">
+        <div className="standardtitlebar">
+          <h1 style={{ fontSize: "24px" }} onClick={() => navigate("/")}>HOA<br />Parking<br />Solutions</h1>
+        </div>
       </div>
 
       {hoaError ? (
