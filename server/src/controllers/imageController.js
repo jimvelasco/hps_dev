@@ -6,6 +6,12 @@ const uploadImageToS3 = async (req, res) => {
       return res.status(400).json({ message: "No file provided" });
     }
 
+    const { hoaId } = req.body;
+
+    if (!hoaId) {
+      return res.status(400).json({ message: "HOA ID is required" });
+    }
+
     const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
 
     if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
@@ -20,22 +26,24 @@ const uploadImageToS3 = async (req, res) => {
       },
     });
 
-    const fileName = `${Date.now()}-${req.file.originalname}`;
+    //const fileName = `${Date.now()}-${req.file.originalname}`;
+    const fileName = `${hoaId}-${req.file.originalname}`;
+    const fileKey = `${hoaId}/${fileName}`;
     const params = {
       Bucket: AWS_S3_BUCKET,
-      Key: fileName,
+      Key: fileKey,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
     };
 
     await s3Client.send(new PutObjectCommand(params));
 
-    const imageUrl = `https://${AWS_S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${fileName}`;
+    const imageUrl = `https://${AWS_S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${fileKey}`;
 
     res.json({
       message: "Image uploaded successfully",
       imageUrl: imageUrl,
-      key: fileName,
+      key: fileKey,
     });
   } catch (error) {
     console.error("Error uploading image:", error);
