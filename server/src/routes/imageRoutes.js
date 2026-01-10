@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { uploadImageToS3 } from "../controllers/imageController.js";
+import { uploadImageToS3, createFolder } from "../controllers/imageController.js";
 
 const router = express.Router();
 
@@ -19,5 +19,6 @@ const upload = multer({
 });
 
 router.post("/upload", upload.single("image"), uploadImageToS3);
+router.post("/create-folder", createFolder);
 
 export default router;

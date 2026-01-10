@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
 import DashboardNavbar from "../../components/DashboardNavbar";
+import CreateFolderModal from "../../components/CreateFolderModal";
 import { useHoa } from "../../context/HoaContext";
 
 export default function Administration() {
@@ -11,6 +12,9 @@ export default function Administration() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [updateDateLoading, setUpdateDateLoading] = useState(false);
   const [jjvrunqueryLoading, setJjvrunqueryLoading] = useState(false);
+  const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const [createFolderLoading, setCreateFolderLoading] = useState(false);
+  const [createFolderMessage, setCreateFolderMessage] = useState(null);
 
   const handleBackClick = () => {
     navigate(`/${hoaId}/dashboard`);
@@ -130,6 +134,30 @@ export default function Administration() {
 
    const handleShowProfile = () => {
     navigate(`/${hoaId}/profile`);
+  };
+
+  const handleCreateFolder = async (folderName) => {
+    setCreateFolderLoading(true);
+    setCreateFolderMessage(null);
+    try {
+      const response = await axios.post("/images/create-folder", { folderName });
+      setCreateFolderMessage({
+        type: "success",
+        text: `Folder "${response.data.folderName}" created successfully in S3 bucket!`
+      });
+      setShowCreateFolderModal(false);
+      setTimeout(() => {
+        setCreateFolderMessage(null);
+      }, 5000);
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || error.message || "Error creating folder";
+      setCreateFolderMessage({
+        type: "error",
+        text: errorMsg
+      });
+    } finally {
+      setCreateFolderLoading(false);
+    }
   };
 
   const navButtons = [
@@ -385,6 +413,18 @@ export default function Administration() {
             </button>
           </section>
 
+          <section className="standardsection">
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Create S3 Folder</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Create a new folder in the HOA parking S3 bucket
+            </p>
+            <button className="standardsubmitbutton"
+              onClick={() => setShowCreateFolderModal(true)}
+              style={{width:"200px"}}>
+             Create Folder
+            </button>
+          </section>
+
          
 
          
@@ -457,6 +497,33 @@ export default function Administration() {
 
 
         </div>
+
+        {createFolderMessage && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              padding: "15px 20px",
+              borderRadius: "4px",
+              backgroundColor: createFolderMessage.type === "success" ? "#d4edda" : "#f8d7da",
+              color: createFolderMessage.type === "success" ? "#155724" : "#721c24",
+              border: `1px solid ${createFolderMessage.type === "success" ? "#c3e6cb" : "#f5c6cb"}`,
+              fontSize: "14px",
+              maxWidth: "400px",
+              zIndex: 999
+            }}
+          >
+            {createFolderMessage.text}
+          </div>
+        )}
+
+        <CreateFolderModal
+          isOpen={showCreateFolderModal}
+          onClose={() => setShowCreateFolderModal(false)}
+          onCreateFolder={handleCreateFolder}
+          isLoading={createFolderLoading}
+        />
       </div>
     </div>
   );

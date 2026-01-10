@@ -71,7 +71,9 @@ function AppContent() {
   // }
 
   const backgroundImage = hoa && hoa.background_image_url ? `url('${hoa.background_image_url}')` : "http://hoaparking.s3.amazonaws.com/yampa_103022.jpg";
-
+// if (hoa) {
+//   console.log('background image is',hoa.background_image_url);
+// }
   return <LandingPage backgroundImage={backgroundImage} hoaId={hoaId} hoaError={error} />;
 }
 

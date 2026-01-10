@@ -43,4 +43,48 @@ const uploadImageToS3 = async (req, res) => {
   }
 };
 
-export { uploadImageToS3 };
+const createFolder = async (req, res) => {
+  try {
+    const { folderName } = req.body;
+
+    if (!folderName || folderName.trim() === "") {
+      return res.status(400).json({ message: "Folder name is required" });
+    }
+
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
+
+    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
+      return res.status(500).json({ message: "AWS configuration is missing" });
+    }
+
+    const s3Client = new S3Client({
+      region: AWS_REGION,
+      credentials: {
+        accessKeyId: AWS_ACCESS_KEY_ID,
+        secretAccessKey: AWS_SECRET_ACCESS_KEY,
+      },
+    });
+
+    const upperCaseFolderName = folderName.trim().toUpperCase();
+    const folderKey = `${upperCaseFolderName}/`;
+
+    const params = {
+      Bucket: AWS_S3_BUCKET,
+      Key: folderKey,
+      Body: "",
+    };
+
+    await s3Client.send(new PutObjectCommand(params));
+
+    res.json({
+      message: "Folder created successfully",
+      folderName: upperCaseFolderName,
+      folderKey: folderKey,
+    });
+  } catch (error) {
+    console.error("Error creating folder:", error);
+    res.status(500).json({ message: error.message || "Error creating folder" });
+  }
+};
+
+export { uploadImageToS3, createFolder };
