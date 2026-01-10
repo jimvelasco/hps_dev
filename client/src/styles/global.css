@@ -63,6 +63,9 @@ body {
 .wid100 {
   width: 100px
 }
+.width180 {
+  width: 180px !important
+}
 
 /* style={{
           backgroundColor: "white",
@@ -239,7 +242,7 @@ button.standardbutton:hover {
 }
 
 
-button.standardsubmitbutton {
+.standardsubmitbutton {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #1976d2;
@@ -248,25 +251,46 @@ button.standardsubmitbutton {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  /* width:100%; */
+  /* width:100%; */ 
   width: 120px;
   transition: background-color 0.3s ease
 }
 
-button.standardsubmitbutton:disabled {
+.standardsubmitbutton:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-button.standardsubmitbutton:hover {
+.standardsubmitbutton:hover {
   /* background-color: #4845a0 */
   filter: brightness(.8);
   /* opacity: .8; */
 }
 
-button.standardsubmitbutton:hover:disabled {
+.standardsubmitbutton:hover:disabled {
   background-color: #ccc;
 }
+
+.standardsubmitbutton180 {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top:5px;
+  /* width:100%; */ 
+  width: 180px;
+  transition: background-color 0.3s ease
+}
+.standardsubmitbutton180:hover {
+  /* background-color: #4845a0 */
+  filter: brightness(.8);
+  /* opacity: .8; */
+}
+
 
 button.standardcancelbutton {
   padding: 10px 20px;

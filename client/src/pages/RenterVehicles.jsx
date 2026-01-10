@@ -217,18 +217,32 @@ export default function RenterVehicles() {
       <DashboardNavbar title={`Renter Vehicles`} buttons={navButtons} />
       <div className="page-content">
 
-        {/* <div className="flexLayout"> */}
-            {/* <div className="flexLayout" style={{ width: "360px", alignItems: "center", margin:"auto",marginBottom: "20px", justifyContent: "space-between" }}> */}
-<div className="standardtitlebar">
-        
-          <div className="xpage-label">
+        <div className="standardtitlebar">
+          <div className="tableview">
             <label className="input-label">
-              Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name}<br /> {ownerOfUnit.phone}
-            </label>
+              Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
+            </label><br />
+            <button className="standardsubmitbutton180"  onClick={handleCreateClick}>
+              New Vehicle
+            </button>
           </div>
-          <button className="standardsubmitbutton" onClick={handleCreateClick}>
-            New
-          </button>
+           <div className="phoneview">
+            <label className="input-label">
+              Unit: {unitNumber} 
+            </label>
+            <br />
+             <label className="input-label">
+              {ownerOfUnit.first_name} {ownerOfUnit.last_name} 
+            </label>
+            <br />
+             <label className="input-label">
+              {ownerOfUnit.phone}
+            </label>
+            <br />
+            <button className="standardsubmitbutton180"  onClick={handleCreateClick}>
+              New Vehicle
+            </button>
+          </div>
         </div>
 
         {vehiclesError && (
@@ -277,12 +291,9 @@ export default function RenterVehicles() {
         )}
         <br />
         <div className="standardtitlebar">
-          <div className="xpage-label">
-            <label className="input-label">
-              Welcome to {hoa?.name}
-            </label>
-          </div>
-          {/* <h3>Welcome to {hoa?.name}</h3> */}
+          <label className="input-label">
+            Welcome to {hoa?.name}
+          </label>
         </div>
         <HoaInformation hoa={hoa} />
       </div>
