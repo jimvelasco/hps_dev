@@ -218,11 +218,12 @@ export default function RenterVehicles() {
       <div className="page-content">
 
         {/* <div className="flexLayout"> */}
-        <div className="flexLayout" style={{ width: "360px", alignItems: "center", margin:"auto",marginBottom: "20px", justifyContent: "space-between" }}>
-
+            {/* <div className="flexLayout" style={{ width: "360px", alignItems: "center", margin:"auto",marginBottom: "20px", justifyContent: "space-between" }}> */}
+<div className="standardtitlebar">
+        
           <div className="xpage-label">
             <label className="input-label">
-              Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
+              Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name}<br /> {ownerOfUnit.phone}
             </label>
           </div>
           <button className="standardsubmitbutton" onClick={handleCreateClick}>
