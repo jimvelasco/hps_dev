@@ -6,7 +6,7 @@ import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGrid from "../components/VehiclesGrid";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
-import {  getVehicleActiveStatusBoolean,utcDateOnly } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 import HoaInformation from "../components/HoaInformation";
 
@@ -35,7 +35,7 @@ export default function RenterVehicles() {
           const response = await axios.get("/users", { params: { hoaId } });
           const user = response.data.find(u => u.unitnumber === unitNumber);
           if (user) {
-           // console.log('we found a user for unit:', unitNumber, user);
+            // console.log('we found a user for unit:', unitNumber, user);
             setUserIdForUnit(user._id);
             setOwnerOfUnit(user);
           }
@@ -120,13 +120,15 @@ export default function RenterVehicles() {
 
   const handleDetailsClick = (vehicle) => {
 
-     const vid = vehicle._id; 
+    const vid = vehicle._id;
     const uid = vehicle.unitnumber;
 
     const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
-    navigate(qry, { 
-      state: { unitNumber: uid, role: "renter", 
-        vehicles: vehicles, ownerOfUnit:  ownerOfUnit,vehid:vid} 
+    navigate(qry, {
+      state: {
+        unitNumber: uid, role: "renter",
+        vehicles: vehicles, ownerOfUnit: ownerOfUnit, vehid: vid
+      }
     });
   }
 
@@ -162,14 +164,15 @@ export default function RenterVehicles() {
     }
     const fakevid = null
     const qry = `/${hoaId}/vehicledetails/create/${userIdForUnit}`;
-   //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
-    navigate(qry, { 
-      state: { unitNumber: unitNumber, role: "renter", 
+    //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
+    navigate(qry, {
+      state: {
+        unitNumber: unitNumber, role: "renter",
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
         vehid: null
-        } 
-      });
+      }
+    });
     // console.log("Create navigating to:", qry);
     // navigate(qry, { state: { unitNumber } });
     // const { role ,num_vehicles,renter_free_parking} = location.state || {};
@@ -180,7 +183,7 @@ export default function RenterVehicles() {
       alert("Unable to load unit information");
       return;
     }
-   // console.log("Payment click for vehicle id:", vid);
+    // console.log("Payment click for vehicle id:", vid);
 
     navigate(`/${hoaId}/payment`, {
       state: {
@@ -205,7 +208,7 @@ export default function RenterVehicles() {
     backgroundImage = hoa.background_image_url;
   }
   if (!ownerOfUnit) {
-    return (<div style={{ padding: "20px" }}>Loading unit information...</div>);    
+    return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }
 
   return (
@@ -215,9 +218,9 @@ export default function RenterVehicles() {
       <div className="page-content">
 
         {/* <div className="flexLayout"> */}
-                  <div className="flexLayout" style={{width:"320px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}>
+        <div className="flexLayout" style={{ width: "360px", alignItems: "center", margin:"auto",marginBottom: "20px", justifyContent: "space-between" }}>
 
-          <div className="page-label">
+          <div className="xpage-label">
             <label className="input-label">
               Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
             </label>
@@ -272,11 +275,10 @@ export default function RenterVehicles() {
           </div>
         )}
         <br />
-        {/* <div className="standardtitlebar-small"> */}
-           <div className="flexLayout" style={{width:"320px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"center"}}>
-             <div className="page-label">
+        <div className="standardtitlebar">
+          <div className="xpage-label">
             <label className="input-label">
-             Welcome to {hoa?.name}
+              Welcome to {hoa?.name}
             </label>
           </div>
           {/* <h3>Welcome to {hoa?.name}</h3> */}
