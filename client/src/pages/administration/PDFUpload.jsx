@@ -9,6 +9,7 @@ export default function PDFUpload() {
   const navigate = useNavigate();
   const { hoa } = useHoa();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [filePrefix, setFilePrefix] = useState("");
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
@@ -54,6 +55,9 @@ export default function PDFUpload() {
       const formData = new FormData();
       formData.append("pdf", selectedFile);
       formData.append("hoaId", hoaId);
+      if (filePrefix.trim()) {
+        formData.append("filePrefix", filePrefix.trim());
+      }
 
       const response = await axios.post("/images/upload-pdf", formData, {
         headers: {
@@ -111,6 +115,43 @@ export default function PDFUpload() {
             </h3>
 
             <form onSubmit={handleUpload}>
+              <div style={{ marginBottom: "20px" }}>
+                <label
+                  htmlFor="prefixInput"
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    color: "#333",
+                  }}
+                >
+                  File Prefix (Optional)
+                </label>
+                <input
+                  id="prefixInput"
+                  type="text"
+                  value={filePrefix}
+                  onChange={(e) => setFilePrefix(e.target.value)}
+                  placeholder="e.g., Document, Report, Invoice..."
+                  disabled={uploading}
+                  style={{
+                    display: "block",
+                    padding: "10px",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
+                    width: "100%",
+                    boxSizing: "border-box",
+                    fontSize: "14px",
+                    opacity: uploading ? 0.6 : 1,
+                    cursor: uploading ? "not-allowed" : "auto",
+                  }}
+                />
+                <p style={{ fontSize: "12px", color: "#666", marginTop: "6px", marginBottom: "16px" }}>
+                  If provided, this will be prepended to the filename with a dash (e.g., "Report-filename.pdf")
+                </p>
+              </div>
+
               <div style={{ marginBottom: "20px" }}>
                 <label
                   htmlFor="fileInput"
@@ -183,6 +224,7 @@ export default function PDFUpload() {
                 style={{
                   opacity: uploading || !selectedFile ? 0.6 : 1,
                   cursor: uploading || !selectedFile ? "not-allowed" : "pointer",
+                  width: "180px"
                 }}
               >
                 {uploading ? "Uploading..." : "Upload PDF"}

@@ -101,7 +101,7 @@ const uploadPdfToS3 = async (req, res) => {
       return res.status(400).json({ message: "No file provided" });
     }
 
-    const { hoaId } = req.body;
+    const { hoaId, filePrefix } = req.body;
 
     if (!hoaId) {
       return res.status(400).json({ message: "HOA ID is required" });
@@ -113,6 +113,8 @@ const uploadPdfToS3 = async (req, res) => {
       return res.status(500).json({ message: "AWS configuration is missing" });
     }
 
+    
+
     const s3Client = new S3Client({
       region: AWS_REGION,
       credentials: {
@@ -121,7 +123,11 @@ const uploadPdfToS3 = async (req, res) => {
       },
     });
 
-    const fileName = `${hoaId}-${req.file.originalname}`;
+    let fileName = `${hoaId}-${req.file.originalname}`;
+    if (filePrefix && filePrefix.trim()) {
+       const upperCasePrefixName = filePrefix.trim().toUpperCase();
+      fileName = `${hoaId}-${upperCasePrefixName.trim()}-${req.file.originalname}`;
+    }
     const fileKey = `${hoaId}/${fileName}`;
     const params = {
       Bucket: AWS_S3_BUCKET,
