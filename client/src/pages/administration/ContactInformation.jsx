@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
 import DashboardNavbar from "../../components/DashboardNavbar";
+import ModalAlert from "../../components/ModalAlert";
+
 
 export default function ContactInformation() {
   const { hoaId } = useParams();
@@ -13,6 +15,8 @@ export default function ContactInformation() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [validationError, setValidationError] = useState(null);
+  const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
+
 
   useEffect(() => {
     fetchContactInformation();
@@ -24,7 +28,7 @@ export default function ContactInformation() {
       const response = await axios.get(`/hoas/${hoaId}`);
       const hoaData = response.data;
       const contactInfo = hoaData.contact_information || [];
-      
+
       if (contactInfo.length === 0) {
         const emptyRows = Array.from({ length: 10 }, (_, i) => ({
           _id: `temp-${i}`,
@@ -55,7 +59,7 @@ export default function ContactInformation() {
   const handleSave = (rowIndex, field) => {
     const updated = [...contacts];
     updated[rowIndex][field] = tempValue;
-    
+
     if (field === "email" && tempValue) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(tempValue)) {
@@ -105,9 +109,22 @@ export default function ContactInformation() {
       await axios.put(`/hoas/${hoaId}`, {
         contact_information: filledContacts
       });
-      alert("Contact information updated successfully!");
-      setValidationError(null);
-      navigate(`/${hoaId}/admin`);
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Success",
+        message: `Contact information updated successfully!`,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+          setValidationError(null);
+          navigate(`/${hoaId}/admin`);
+        },
+      });
+
+      //   alert("Contact information updated successfully!");
+      //   setValidationError(null);
+      //  navigate(`/${hoaId}/admin`);
     } catch (err) {
       setError("Failed to save contact information");
       console.error("Error saving contact information:", err);
@@ -145,7 +162,7 @@ export default function ContactInformation() {
 
       <div className="editable-table-content">
         <h1 className="editable-table-title">Manage Contact Information</h1>
-        
+
         {error && (
           <div className="editable-table-error">
             {error}
@@ -286,6 +303,16 @@ export default function ContactInformation() {
           </ul>
         </div>
       </div>
+      <ModalAlert
+        isOpen={modal.isOpen}
+        type={modal.type}
+        title={modal.title}
+        message={modal.message}
+        confirmText={modal.confirmText}
+        cancelText={modal.cancelText}
+        onConfirm={modal.onConfirm}
+        onCancel={modal.onCancel}
+      />
     </div>
   );
 }

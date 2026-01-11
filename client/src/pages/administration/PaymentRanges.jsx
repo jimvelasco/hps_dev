@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
 import DashboardNavbar from "../../components/DashboardNavbar";
+import ModalAlert from "../../components/ModalAlert";
+
 
 export default function PaymentRanges() {
   const { hoaId } = useParams();
@@ -13,6 +15,8 @@ export default function PaymentRanges() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [validationError, setValidationError] = useState(null);
+  const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
+
 
   useEffect(() => {
     fetchPaymentRanges();
@@ -25,7 +29,7 @@ export default function PaymentRanges() {
       const hoaData = response.data;
       console.log('hoaData:', hoaData);
       const paymentRanges = hoaData.payment_ranges || [];
-      
+
       if (paymentRanges.length === 0) {
         setRanges([{
           _id: `temp-0`,
@@ -48,12 +52,12 @@ export default function PaymentRanges() {
 
   const checkOverlap = (rangesArray) => {
     const filledRanges = rangesArray.filter(r => r.startDayMo && r.endDayMo);
-    
+
     for (let i = 0; i < filledRanges.length; i++) {
       for (let j = i + 1; j < filledRanges.length; j++) {
         const r1 = filledRanges[i];
         const r2 = filledRanges[j];
-        
+
         if (!(r1.endDayMo < r2.startDayMo || r2.endDayMo < r1.startDayMo)) {
           return {
             hasOverlap: true,
@@ -74,7 +78,7 @@ export default function PaymentRanges() {
   const handleSave = (rowIndex, field) => {
     const updated = [...ranges];
     updated[rowIndex][field] = tempValue;
-    
+
     if (field === "startDayMo" || field === "endDayMo") {
       const dateRegex = /^\d{2}-\d{2}$/;
       if (tempValue && !dateRegex.test(tempValue)) {
@@ -82,7 +86,7 @@ export default function PaymentRanges() {
         return;
       }
     }
-    
+
     if (field === "rate" && tempValue) {
       const rateNum = parseFloat(tempValue);
       if (isNaN(rateNum) || rateNum < 0) {
@@ -90,7 +94,7 @@ export default function PaymentRanges() {
         return;
       }
     }
-    
+
     const overlapCheck = checkOverlap(updated);
     if (overlapCheck.hasOverlap) {
       setValidationError(overlapCheck.message);
@@ -129,9 +133,9 @@ export default function PaymentRanges() {
   };
 
   const handleSaveAll = async () => {
- //   console.log('handleSaveAll called with ranges:', ranges);
+    //   console.log('handleSaveAll called with ranges:', ranges);
     const filledRanges = ranges.filter(r => r.startDayMo || r.endDayMo || r.rate || r.description);
-     console.log('handleSaveAll called with filled ranges:', filledRanges);
+    console.log('handleSaveAll called with filled ranges:', filledRanges);
     const overlapCheck = checkOverlap(filledRanges);
     if (overlapCheck.hasOverlap) {
       setValidationError(overlapCheck.message);
@@ -150,9 +154,21 @@ export default function PaymentRanges() {
       await axios.put(`/hoas/${hoaId}`, {
         payment_ranges: filledRanges
       });
-      alert("Payment ranges updated successfully!");
-      setValidationError(null);
-      navigate(`/${hoaId}/admin`);
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Success",
+        message: `Payment ranges updated successfully!`,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+          setValidationError(null);
+          navigate(`/${hoaId}/admin`);
+        },
+      });
+      // alert("Payment ranges updated successfully!");
+      // setValidationError(null);
+      // navigate(`/${hoaId}/admin`);
     } catch (err) {
       setError("Failed to save payment ranges");
       console.error("Error saving payment ranges:", err);
@@ -190,7 +206,7 @@ export default function PaymentRanges() {
 
       <div className="editable-table-content">
         <h1 className="editable-table-title">Manage Payment Ranges</h1>
-        
+
         {error && (
           <div className="editable-table-error">
             {error}
@@ -333,6 +349,16 @@ export default function PaymentRanges() {
           </ul>
         </div>
       </div>
+      <ModalAlert
+        isOpen={modal.isOpen}
+        type={modal.type}
+        title={modal.title}
+        message={modal.message}
+        confirmText={modal.confirmText}
+        cancelText={modal.cancelText}
+        onConfirm={modal.onConfirm}
+        onCancel={modal.onCancel}
+      />
     </div>
   );
 }

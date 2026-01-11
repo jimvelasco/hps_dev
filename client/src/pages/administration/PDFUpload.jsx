@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "../services/api";
-import DashboardNavbar from "../components/DashboardNavbar";
-import { useHoa } from "../context/HoaContext";
+import axios from "../../services/api";
+import DashboardNavbar from "../../components/DashboardNavbar";
+import { useHoa } from "../../context/HoaContext";
 
-export default function ImageUpload() {
+export default function PDFUpload() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa } = useHoa();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [preview, setPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
@@ -21,25 +20,20 @@ export default function ImageUpload() {
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (!file.type.startsWith("image/")) {
-        setMessage("Please select a valid image file");
+      if (file.type !== "application/pdf") {
+        setMessage("Please select a valid PDF file");
         setMessageType("error");
         return;
       }
 
-      const maxSize = 10 * 1024 * 1024;
+      const maxSize = 50 * 1024 * 1024;
       if (file.size > maxSize) {
-        setMessage("File size must be less than 10MB");
+        setMessage("File size must be less than 50MB");
         setMessageType("error");
         return;
       }
 
       setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
       setMessage(null);
     }
   };
@@ -58,22 +52,21 @@ export default function ImageUpload() {
 
     try {
       const formData = new FormData();
-      formData.append("image", selectedFile);
+      formData.append("pdf", selectedFile);
       formData.append("hoaId", hoaId);
 
-      const response = await axios.post("/images/upload", formData, {
+      const response = await axios.post("/images/upload-pdf", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      setMessage(`Image uploaded successfully! URL: ${response.data.imageUrl}`);
+      setMessage(`PDF uploaded successfully! URL: ${response.data.pdfUrl}`);
       setMessageType("success");
       setSelectedFile(null);
-      setPreview(null);
       document.getElementById("fileInput").value = "";
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error uploading image");
+      setMessage(error.response?.data?.message || "Error uploading PDF");
       setMessageType("error");
     } finally {
       setUploading(false);
@@ -104,17 +97,17 @@ export default function ImageUpload() {
         backgroundAttachment: "fixed",
       }}
     >
-      <DashboardNavbar title="Upload Image" buttons={navButtons} />
+      <DashboardNavbar title="Upload PDF" buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">
-          <h1 style={{ fontSize: "24px" }}>Image Upload</h1>
+          <h1 style={{ fontSize: "24px" }}>PDF Upload</h1>
         </div>
 
         <div className="grid-flex-container">
           <section className="standardsection-wide">
             <h3 style={{ color: "#1976d2", marginTop: 0 }}>
-              Upload Image to AWS
+              Upload PDF to AWS
             </h3>
 
             <form onSubmit={handleUpload}>
@@ -129,12 +122,12 @@ export default function ImageUpload() {
                     color: "#333",
                   }}
                 >
-                  Select Image
+                  Select PDF File
                 </label>
                 <input
                   id="fileInput"
                   type="file"
-                  accept="image/*"
+                  accept=".pdf"
                   onChange={handleFileSelect}
                   disabled={uploading}
                   style={{
@@ -149,26 +142,18 @@ export default function ImageUpload() {
                   }}
                 />
                 <p style={{ fontSize: "12px", color: "#666", marginTop: "8px" }}>
-                  Maximum file size: 10MB. Supported formats: JPG, PNG, GIF,
-                  WebP
+                  Maximum file size: 50MB
                 </p>
               </div>
 
-              {preview && (
-                <div style={{ marginBottom: "20px", textAlign: "center" }}>
-                  <p style={{ fontSize: "12px", color: "#666", marginBottom: "10px" }}>
-                    Preview:
+              {selectedFile && (
+                <div style={{ marginBottom: "20px", padding: "10px", backgroundColor: "#f0f0f0", borderRadius: "4px" }}>
+                  <p style={{ fontSize: "14px", color: "#333", marginTop: 0 }}>
+                    <strong>Selected file:</strong> {selectedFile.name}
                   </p>
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "300px",
-                      borderRadius: "4px",
-                      border: "1px solid #ddd",
-                    }}
-                  />
+                  <p style={{ fontSize: "12px", color: "#666", marginBottom: 0 }}>
+                    Size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
                 </div>
               )}
 
@@ -200,7 +185,7 @@ export default function ImageUpload() {
                   cursor: uploading || !selectedFile ? "not-allowed" : "pointer",
                 }}
               >
-                {uploading ? "Uploading..." : "Upload Image"}
+                {uploading ? "Uploading..." : "Upload PDF"}
               </button>
             </form>
           </section>

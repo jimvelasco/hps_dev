@@ -95,4 +95,54 @@ const createFolder = async (req, res) => {
   }
 };
 
-export { uploadImageToS3, createFolder };
+const uploadPdfToS3 = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file provided" });
+    }
+
+    const { hoaId } = req.body;
+
+    if (!hoaId) {
+      return res.status(400).json({ message: "HOA ID is required" });
+    }
+
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
+
+    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
+      return res.status(500).json({ message: "AWS configuration is missing" });
+    }
+
+    const s3Client = new S3Client({
+      region: AWS_REGION,
+      credentials: {
+        accessKeyId: AWS_ACCESS_KEY_ID,
+        secretAccessKey: AWS_SECRET_ACCESS_KEY,
+      },
+    });
+
+    const fileName = `${hoaId}-${req.file.originalname}`;
+    const fileKey = `${hoaId}/${fileName}`;
+    const params = {
+      Bucket: AWS_S3_BUCKET,
+      Key: fileKey,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+
+    await s3Client.send(new PutObjectCommand(params));
+
+    const pdfUrl = `https://${AWS_S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${fileKey}`;
+
+    res.json({
+      message: "PDF uploaded successfully",
+      pdfUrl: pdfUrl,
+      key: fileKey,
+    });
+  } catch (error) {
+    console.error("Error uploading PDF:", error);
+    res.status(500).json({ message: error.message || "Error uploading PDF" });
+  }
+};
+
+export { uploadImageToS3, createFolder, uploadPdfToS3 };

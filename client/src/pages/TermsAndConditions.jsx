@@ -71,8 +71,10 @@ export default function TermsAndConditions() {
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title="Terms and Conditions" buttons={navButtons} />
+       <embed src="https://hoaparking.s3.us-east-1.amazonaws.com/YV/YV-Terms_and_Conditions.pdf" 
+       type="application/pdf" width="100%" height="600px" />
 
-      <div className="page-content">
+       <div className="page-content">
         <div style={{
           backgroundColor: "white",
           padding: "30px",
@@ -147,6 +149,8 @@ export default function TermsAndConditions() {
           </div>
         </div>
       </div>
+     
+
     </div>
   );
 }
