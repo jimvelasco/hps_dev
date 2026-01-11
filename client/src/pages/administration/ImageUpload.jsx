@@ -198,6 +198,7 @@ export default function ImageUpload() {
                 style={{
                   opacity: uploading || !selectedFile ? 0.6 : 1,
                   cursor: uploading || !selectedFile ? "not-allowed" : "pointer",
+                  width: "180px"
                 }}
               >
                 {uploading ? "Uploading..." : "Upload Image"}

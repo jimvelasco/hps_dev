@@ -2,11 +2,12 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 const uploadImageToS3 = async (req, res) => {
   try {
-    if (!req.file) {
+    const file = req.files?.image?.[0];
+    if (!file) {
       return res.status(400).json({ message: "No file provided" });
     }
 
-    const { hoaId } = req.body;
+    const hoaId = req.fields?.hoaId?.[0] || req.body.hoaId;
 
     if (!hoaId) {
       return res.status(400).json({ message: "HOA ID is required" });
@@ -26,14 +27,14 @@ const uploadImageToS3 = async (req, res) => {
       },
     });
 
-    //const fileName = `${Date.now()}-${req.file.originalname}`;
-    const fileName = `${hoaId}-${req.file.originalname}`;
+    //const fileName = `${Date.now()}-${file.originalname}`;
+    const fileName = `${hoaId}-${file.originalname}`;
     const fileKey = `${hoaId}/${fileName}`;
     const params = {
       Bucket: AWS_S3_BUCKET,
       Key: fileKey,
-      Body: req.file.buffer,
-      ContentType: req.file.mimetype,
+      Body: file.buffer,
+      ContentType: file.mimetype,
     };
 
     await s3Client.send(new PutObjectCommand(params));
@@ -97,11 +98,13 @@ const createFolder = async (req, res) => {
 
 const uploadPdfToS3 = async (req, res) => {
   try {
-    if (!req.file) {
+    const file = req.files?.pdf?.[0];
+    if (!file) {
       return res.status(400).json({ message: "No file provided" });
     }
 
-    const { hoaId, filePrefix } = req.body;
+    const hoaId = req.fields?.hoaId?.[0] || req.body.hoaId;
+    const filePrefix = req.fields?.filePrefix?.[0] || req.body.filePrefix;
 
     if (!hoaId) {
       return res.status(400).json({ message: "HOA ID is required" });
@@ -123,17 +126,17 @@ const uploadPdfToS3 = async (req, res) => {
       },
     });
 
-    let fileName = `${hoaId}-${req.file.originalname}`;
+    let fileName = `${hoaId}-${file.originalname}`;
     if (filePrefix && filePrefix.trim()) {
        const upperCasePrefixName = filePrefix.trim().toUpperCase();
-      fileName = `${hoaId}-${upperCasePrefixName.trim()}-${req.file.originalname}`;
+      fileName = `${hoaId}-${upperCasePrefixName.trim()}-${file.originalname}`;
     }
     const fileKey = `${hoaId}/${fileName}`;
     const params = {
       Bucket: AWS_S3_BUCKET,
       Key: fileKey,
-      Body: req.file.buffer,
-      ContentType: req.file.mimetype,
+      Body: file.buffer,
+      ContentType: file.mimetype,
     };
 
     await s3Client.send(new PutObjectCommand(params));
