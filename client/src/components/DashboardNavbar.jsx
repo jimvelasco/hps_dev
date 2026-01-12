@@ -10,7 +10,7 @@ export default function DashboardNavbar({ title, buttons }) {
 // <div style={{ color: "#bbb", margin: "5px 0 5px 0", fontSize: "12px" }}>
   return (
     <>
-    <div className="tableview">
+    <div className="xtableview">
         <nav className="xnavbar" style={{backgroundColor:"#333",padding:"10px"}}>
            <div className="button-grid">
              <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
