@@ -92,15 +92,9 @@ export default function OwnersLogin() {
       </div>
 
       <div className="loginboxes">
-        <div style={{
-          display: "flex", justifyContent: "space-between",
-          alignItems: "center", border: "0px solid black"
-        }}>
+        <div style={{marginTop:"10px", textAlign: "center"}}>
           <h2>Owner Login</h2>
-          {/* <button className="windowclosebutton"
-            onClick={() => navigate(-1)}>
-            <FontAwesomeIcon icon={faXmark} />
-          </button> */}
+          
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
           <div style={{ marginBottom: "15px" }}>

@@ -217,9 +217,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .noresultsfound {
   background-color: white;
-  padding: 20px;
+  padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  width:360px;
+  margin: 0px auto
 }
 
 /* ********************************************** */
@@ -319,6 +321,86 @@ button.standarddeletebutton:hover {
 button.standarddeletebutton:hover:disabled {
   background-color: #ccc;
 }
+
+/*.  */
+
+.standardsubmitbutton180 {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  /* width:100%; */ 
+  width: 180px;
+  transition: background-color 0.3s ease
+}
+
+.standardsubmitbutton180:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.standardsubmitbutton180:hover {
+  /* background-color: #4845a0 */
+  filter: brightness(.8);
+  /* opacity: .8; */
+}
+
+.standardsubmitbutton180:hover:disabled {
+  background-color: #ccc;
+}
+
+
+
+button.standardcancelbutton180 {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 180px;
+  transition: background-color 0.3s ease
+}
+
+button.standardcancelbutton180:hover {
+  filter: brightness(.8);
+  /* opacity: .8; */
+}
+
+button.standarddeletebutton180 {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 180px;
+  transition: background-color 0.3s ease
+}
+
+button.standarddeletebutton180:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button.standarddeletebutton180:hover {
+  filter: brightness(.8);
+}
+
+button.standarddeletebutton180:hover:disabled {
+  background-color: #ccc;
+}
+
+
+
 
 
 button.windowclosebutton {
@@ -602,7 +684,7 @@ section.standardsectiondashboard {
   display: flex;
   border: 0px solid #000000;
   flex-direction: column;
-  max-width: 350px;
+  max-width: 360px;
   margin: auto;
   border-radius: 8px;
   background-color: #fff;

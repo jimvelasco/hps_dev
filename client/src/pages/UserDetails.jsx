@@ -500,13 +500,13 @@ export default function UserDetails() {
 
 
               <div style={{ display: "flex", gap: "10px" }}>
-                <button className="standardsubmitbutton"
+                <button className="standardsubmitbutton180"
                   type="submit"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Saving..." : isEditMode ? "Update User" : "Create User"}
                 </button>
-                <button className="standardcancelbutton"
+                <button className="standardcancelbutton180"
                   type="button"
                   onClick={handleBackToUsers}
                   disabled={isSubmitting}
@@ -514,39 +514,12 @@ export default function UserDetails() {
                   Cancel
                 </button>
                 {isEditMode && (
-                  // <button
-                  //   type="button"
-                  //   onClick={handleDelete}
-                  //   disabled={isSubmitting}
-                  //   style={{
-                  //     padding: "10px 16px",
-                  //     backgroundColor: "#d32f2f",
-                  //     color: "white",
-                  //     border: "none",
-                  //     borderRadius: "4px",
-                  //     cursor: isSubmitting ? "not-allowed" : "pointer",
-                  //     fontSize: "14px",
-                  //     fontWeight: "500",
-                  //     opacity: isSubmitting ? 0.6 : 1
-                  //   }}
-                  // >
-                  //   {isSubmitting ? "Deleting..." : "Delete User"}
-                  // </button>
-                   <button className="standarddeletebutton"
+                 
+                   <button className="standarddeletebutton180"
                     type="button"
                     onClick={handleDelete}
                     disabled={isSubmitting}
-                    // style={{
-                    //   padding: "10px 16px",
-                    //   backgroundColor: "#d32f2f",
-                    //   color: "white",
-                    //   border: "none",
-                    //   borderRadius: "4px",
-                    //   cursor: isSubmitting ? "not-allowed" : "pointer",
-                    //   fontSize: "14px",
-                    //   fontWeight: "500",
-                    //   opacity: isSubmitting ? 0.6 : 1
-                    // }}
+                   
                   >
                     {isSubmitting ? "Deleting..." : "Delete User"}
                   </button>

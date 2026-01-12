@@ -5,8 +5,8 @@ import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import DashboardNavbar from "../components/DashboardNavbar";
 
-const tableStyles = `
-  @media (width >= 800px) {
+/*
+ @media (width >= 800px) {
     .standard-table {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -21,7 +21,10 @@ const tableStyles = `
       gap: 10px;
     }
   }
+    */
 
+const tableStyles = `
+ 
   .standard-table-header {
     background-color: #1976d2;
     color: white;
@@ -171,15 +174,15 @@ export default function Users() {
 
       <div className="page-content">
 
-        <div className="flexLayout">
-          {hoa && (
+        <div className="flexLayout" style={{justifyContent: "flex-end"}}>
+          {/* {hoa && (
             <React.Fragment>
 
               <div>HOA Parking Allowed: {hoa.parking_allowed_hoa}</div>
               <div>Owner Free Spots: {hoa.owner_free_parking_spots}</div>
               <div>Renter Free Spots: {hoa.renter_free_parking_spots}</div>
             </React.Fragment >
-          )}
+          )} */}
 
           <button className="standardsubmitbutton"
             onClick={handleCreateUserClick}

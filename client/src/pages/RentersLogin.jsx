@@ -124,14 +124,10 @@ export default function RentersLogin() {
             </div>
 
             <div className="loginboxes">
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "0px solid black" }}>
-                    <h2>Renters</h2>
-                    {/* <button className="windowclosebutton "
-                        onClick={() => navigate(-1)}
-                    >
-                        <FontAwesomeIcon icon={faXmark} />
-                    </button> */}
-                </div>
+                 <div style={{marginTop:"10px", textAlign: "center"}}>
+          <h2>Renter Unit Select</h2>
+          
+        </div>
 
                 {loadingUnits ? (
                     <p>Loading units...</p>
