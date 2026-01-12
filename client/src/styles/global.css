@@ -1337,11 +1337,26 @@ input.standardinput:disabled {
   gap: 0.75rem;
 }
 
+.button-grid-nc {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+
+}
+
 .button-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.75rem;
+  place-items: center;
   /* border:1px solid white; */
+}
+
+/* .button-grid:has(> :only-child) {
+  justify-content: end;
+} */
+.button-grid > :only-child {
+  justify-self: end;
 }
 
 
@@ -1374,7 +1389,7 @@ input.standardinput:disabled {
   width: 100%;
   min-height: 32px;
   padding: 0.5rem 0.25rem;
-  /* max-width: 200px; */
+  max-width: 200px;
 
   border-radius: 4px;
   border: 1px solid #ccc;

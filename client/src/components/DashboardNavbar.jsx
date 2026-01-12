@@ -12,7 +12,7 @@ export default function DashboardNavbar({ title, buttons }) {
     <>
       <div className="tableview">
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
-          <div className="button-grid">
+          <div className="button-grid-nc">
             <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
             <ParkingSpacesOverviewNB />
           </div>
