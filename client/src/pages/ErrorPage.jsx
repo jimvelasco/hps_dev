@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useError } from "../context/ErrorContext";
 import { useHoa } from "../context/HoaContext";
+import { getAWSResource } from "../utils/awsHelper";
 
 export default function ErrorPage() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function ErrorPage() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
 
 

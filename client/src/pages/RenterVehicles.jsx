@@ -9,6 +9,7 @@ import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 import HoaInformation from "../components/HoaInformation";
+import { getAWSResource } from "../utils/awsHelper";
 
 
 
@@ -205,8 +206,8 @@ export default function RenterVehicles() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
-  }
+    backgroundImage = getAWSResource(hoa, 'BI');
+  }  
   if (!ownerOfUnit) {
     return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }

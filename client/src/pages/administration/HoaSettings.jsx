@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
 import { useHoa } from "../../context/HoaContext";
 import DashboardNavbar from "../../components/DashboardNavbar";
+import { getAWSResource } from "../../utils/awsHelper";
 
 export default function HoaSettings() {
   const { hoaId } = useParams();

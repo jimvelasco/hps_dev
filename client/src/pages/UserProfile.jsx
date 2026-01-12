@@ -6,6 +6,7 @@ import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
+import { getAWSResource } from "../utils/awsHelper";
 
 export default function UserProfile() {
   const { hoaId } = useParams();
@@ -184,8 +185,9 @@ export default function UserProfile() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
+
   if (loggedInUser && loggedInUser.role === 'admin') {
     console.log('Admin User');
   }

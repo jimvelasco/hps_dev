@@ -4,6 +4,7 @@ import axios from "../../services/api";
 import DashboardNavbar from "../../components/DashboardNavbar";
 import CreateFolderModal from "../../components/CreateFolderModal";
 import { useHoa } from "../../context/HoaContext";
+import { getAWSResource } from "../../utils/awsHelper";
 
 export default function Administration() {
   const { hoaId } = useParams();

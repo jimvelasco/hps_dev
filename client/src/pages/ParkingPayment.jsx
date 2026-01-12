@@ -7,6 +7,7 @@ import { useSquarePayments } from "../hooks/useSquarePayments";
 import { useSquareCard } from "../hooks/useSquareCard";
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
+import { getAWSResource } from "../utils/awsHelper";
 
 
 export default function ParkingPayment() {
@@ -247,9 +248,8 @@ export default function ParkingPayment() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
-
   const pageTitle = "Parking Space Payment";
   if (!vehicle) {
     return <div>Loading...</div>;

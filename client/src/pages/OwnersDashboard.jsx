@@ -5,6 +5,7 @@ import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
 import HoaInformation from "../components/HoaInformation";
+import { getAWSResource } from "../utils/awsHelper";
 
 export default function OwnersDashboard() {
   const { hoaId } = useParams();
@@ -115,9 +116,12 @@ export default function OwnersDashboard() {
   }
 
   let backgroundImage = '';
+  if (hoa) {
+    backgroundImage = getAWSResource(hoa, 'BI');
+  }  
+  
   let ttitle = "Administrator";
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
     if (loggedInUser.role == "owner") {
       ttitle = "Owner";
     } else if (loggedInUser.role == "renter") {

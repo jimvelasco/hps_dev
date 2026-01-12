@@ -4,6 +4,7 @@ import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import DashboardNavbar from "../components/DashboardNavbar";
+import { getAWSResource } from "../utils/awsHelper";
 
 /*
  @media (width >= 800px) {
@@ -164,9 +165,9 @@ export default function Users() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
-
+  
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`,
      backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>

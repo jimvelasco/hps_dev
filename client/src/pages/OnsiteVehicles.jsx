@@ -7,6 +7,7 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import { getVehicleActiveStatusBoolean, getVehicleIsActiveTodayBoolean, formatPhoneNumber, utcDateOnly } from "../utils/vehicleHelpers";
 import TableButton from "../components/TableButton";
 import ViolationsAccordion from "../components/ViolationsAccordion";
+import { getAWSResource } from "../utils/awsHelper";
 
 
 export default function OnsiteVehicles() {
@@ -64,7 +65,7 @@ export default function OnsiteVehicles() {
   ];
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
 
   const renderVehiclePlate = (vehicle) => {

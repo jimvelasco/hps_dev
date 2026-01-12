@@ -5,6 +5,7 @@ import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
+import { getAWSResource } from "../utils/awsHelper";
 
 
 export default function UserDetails() {
@@ -266,9 +267,8 @@ export default function UserDetails() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
-
   const isEditMode = !!userId;
 
   return (

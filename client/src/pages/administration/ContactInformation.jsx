@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
 import DashboardNavbar from "../../components/DashboardNavbar";
 import ModalAlert from "../../components/ModalAlert";
+import { getAWSResource } from "../../utils/awsHelper";
 
 
 export default function ContactInformation() {

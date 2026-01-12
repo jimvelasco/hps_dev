@@ -4,6 +4,7 @@ import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
+import { getAWSResource } from "../utils/awsHelper";
 
 export default function Notifications() {
   const { hoaId } = useParams();
@@ -31,35 +32,35 @@ export default function Notifications() {
     return null;
   }
 
-  
+
 
   const handleBackToDashboard = () => {
     navigate(`/${hoaId}/dashboard`);
   };
- 
+
 
   const navButtons = [
     {
       label: "Back",
       onClick: handleBackToDashboard,
-      which:"goback"
+      which: "goback"
     }
   ];
-   let backgroundImage = '';
+  let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed"   }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title="Notifications" buttons={navButtons} />
 
       <div className="page-content">
 
-         <div className="standardtitlebar">
+        <div className="standardtitlebar">
           <h1>Notifications</h1>
         </div>
-      
+
 
         <div style={{
           backgroundColor: "white",

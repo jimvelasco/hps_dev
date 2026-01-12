@@ -7,6 +7,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { okToActivateOwnerVehicle , okToActivateRenterVehicle,utcDateOnly } from "../utils/vehicleHelpers";
+import { getAWSResource } from "../utils/awsHelper";
 
 import mongoose from "mongoose";
 
@@ -431,11 +432,10 @@ renter_free_parking 1
     );
   }
 
-  let backgroundImage = '';
+let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
-
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={pageTitle} buttons={navButtons} />

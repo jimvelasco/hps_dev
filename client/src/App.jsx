@@ -55,21 +55,6 @@ function AppContent() {
      
   }
 
-  // if (loading) {
-  //   return <div 
-  //   style={{
-  //     minHeight: "100vh", backgroundColor: "#f5f5f5",
-  //     backgroundImage: `url('${bimage}')`, backgroundSize: "cover",
-  //     backgroundPosition: "center", backgroundAttachment: "fixed"
-  //   }}
-  //   >
-  //     <div  style={{paddingTop:"20px"}}>
-  //     <div className="standardtitlebar">
-  //       <h1>Loading HOA data...</h1>
-  //     </div>
-  //     </div>
-  //   </div>
-  // }
 
   const backgroundImage = hoa && hoa.background_image_url ? `url('${hoa.background_image_url}')` : "http://hoaparking.s3.amazonaws.com/yampa_103022.jpg";
 // if (hoa) {

@@ -1,8 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useHoa } from "../context/HoaContext";
 
 export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
   const navigate = useNavigate();
+  const { hoa, loading, error, fetchHoaById } = useHoa();
+ // console.log("Landing Page",hoa);
 
   const buttonStyle = {
     padding: "8px 16px",
@@ -13,6 +16,8 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
     cursor: "pointer",
     transition: "background-color 0.3s",
   };
+  
+  
 
   return (
     <div style={{

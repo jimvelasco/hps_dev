@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
+import { getAWSResource } from "../utils/awsHelper";
 
 export default function RentersLogin() {
     const { hoaId } = useParams();
@@ -103,11 +104,10 @@ export default function RentersLogin() {
         navigate(`/${hoaId}`);
         //  navigate(-1);
     };
-    let backgroundImage = '';
-    if (hoa) {
-        backgroundImage = hoa.background_image_url;
-    }
-
+  let backgroundImage = '';
+  if (hoa) {
+    backgroundImage = getAWSResource(hoa, 'BI');
+  }
 
     return (
         <div style={{

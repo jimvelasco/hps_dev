@@ -6,6 +6,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import ForgotPasswordDialog from "../components/ForgotPasswordDialog";
+import { getAWSResource } from "../utils/awsHelper";
 
 export default function OwnersLogin() {
   const { hoaId } = useParams();
@@ -75,7 +76,9 @@ export default function OwnersLogin() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa,'BI');
+   // console.log('OTC',getAWSResource(hoa,'OTC'));
+    // console.log('RTC',getAWSResource(hoa,'RTC'));
   }
 
   return (

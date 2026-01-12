@@ -5,6 +5,7 @@ import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
 import "../styles/global.css";
+import { getAWSResource } from "../utils/awsHelper";
 
 export default function TermsAndConditions() {
   const { hoaId } = useParams();
@@ -45,7 +46,7 @@ export default function TermsAndConditions() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
 
   // const userRole = loggedInUser?.role || null;

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import DashboardNavbar from "../components/DashboardNavbar";
+import { getAWSResource } from "../utils/awsHelper";
 
 const tableStyles = `
   @media (width >= 800px) {
@@ -100,11 +101,11 @@ export default function Violations() {
       which: 'goback'
     }
   ];
-  let backgroundImage = '';
+let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
-
+  
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed"   }}>
       <DashboardNavbar title="Violations" buttons={navButtons} />
