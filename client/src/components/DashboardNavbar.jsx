@@ -31,10 +31,10 @@ export default function DashboardNavbar({ title, buttons }) {
       </div>
       <div className="phoneview">
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
-          <div className="xbutton-grid">
-            <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
+          <div>
+            <h2 style={{ color: "white", marginBottom: "1px" }}>{title}</h2>
           </div>
-          <div style={{ marginBottom: "10px"  }}>
+          <div style={{ marginBottom: "10px", alignItems:"center", justifyContent:"center", display:"flex" }}>
           <ParkingSpacesOverviewNB />
           </div>
 
