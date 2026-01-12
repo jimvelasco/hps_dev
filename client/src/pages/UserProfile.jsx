@@ -385,28 +385,19 @@ export default function UserProfile() {
               </div>
             </div>
 
-            <div style={{ marginTop: "30px", display: "flex", gap: "10px" }}>
+            <div className="button-grid">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="standardsubmitbutton"
+                className="btn btn-primary"
                 style={{ opacity: isSubmitting ? 0.6 : 1 }}
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </button>
-              <button  className="standardcancelbutton"
+              <button  className="btn btn-default"
                 type="button"
                 onClick={handleBackToDashboard}
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#999",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                  fontWeight: "bold"
-                }}
+               
               >
                 Cancel
               </button>
