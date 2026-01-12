@@ -1331,11 +1331,6 @@ input.standardinput:disabled {
 
 /* ********************grid buttons test************************** */
 
-.xxxbutton-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: 0.75rem;
-}
 
 .button-grid-nc {
   display: grid;
@@ -1352,11 +1347,19 @@ input.standardinput:disabled {
   /* border:1px solid white; */
 }
 
-/* .button-grid:has(> :only-child) {
-  justify-content: end;
-} */
 .button-grid > :only-child {
   justify-self: end;
+}
+.button-grid-lc {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  place-items: center;
+  /* border:1px solid white; */
+}
+
+.button-grid-lc > :only-child {
+  justify-self: center;
 }
 
 

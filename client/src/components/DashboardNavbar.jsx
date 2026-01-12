@@ -29,7 +29,7 @@ export default function DashboardNavbar({ title, buttons }) {
           </div>
         </nav>
       </div>
-      <div className="phoneview">
+      <div className="xphoneview">
         <nav style={{ backgroundColor: "#333", padding: "10px"  }}>
           <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
             <h2 style={{ color: "white", marginBottom: "0px" }}>{title}</h2>
@@ -38,7 +38,7 @@ export default function DashboardNavbar({ title, buttons }) {
           <ParkingSpacesOverviewNB />
           </div>
 
-          <div className="button-grid">
+          <div className="button-grid-lc">
             {buttons && buttons.map((button, index) => (
               <NavButton key={index}
                 label={button.label}
