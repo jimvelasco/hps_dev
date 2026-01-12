@@ -83,27 +83,8 @@ export default function OwnersDashboard() {
       hoverColor: "#1976d2",
       which: "standard"
     },
-    // {
-    //   label: "Violations",
-    //   onClick: handleViolationsClick,
-    //   color: "#2196f3",
-    //   hoverColor: "#1976d2",
-    //   which: "standard"
-    // },
-    // {
-    //   label: "Users",
-    //   onClick: handleUsersClick,
-    //   color: "#2196f3",
-    //   hoverColor: "#1976d2"
-    // },
-    // {
-    //   label: "Notifications",
-    //   onClick: handleNotificationsClick,
-    //   which: "standard"
-    // },
      ];
       if (loggedInUser.role != "admin") {
-
       navButtons.push({
       label: "Profile",
       onClick: handleProfileClick,

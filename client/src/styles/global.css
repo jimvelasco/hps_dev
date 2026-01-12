@@ -1405,7 +1405,7 @@ input.standardinput:disabled {
    /* background-color: #1976d2; */
     background-color: gray;
   color: white;
-  border-color: #ccc;
+  border-color: gray;
 }
 
 .btn-primary {

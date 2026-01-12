@@ -7,53 +7,49 @@ export default function DashboardNavbar({ title, buttons }) {
   let role = null;
   let roletitle = "Administrator";
   // const loggedInUserString = localStorage.getItem("loggedInUser");
-// <div style={{ color: "#bbb", margin: "5px 0 5px 0", fontSize: "12px" }}>
+  // <div style={{ color: "#bbb", margin: "5px 0 5px 0", fontSize: "12px" }}>
   return (
     <>
-    <div className="xtableview">
-        <nav className="xnavbar" style={{backgroundColor:"#333",padding:"10px"}}>
-           <div className="button-grid">
-             <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
-             <ParkingSpacesOverviewNB />
-              </div>
+      <div className="tableview">
+        <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div className="button-grid">
-             
-            {buttons && buttons.map((button, index) => (
-                <NavButton key={index}
-                  label={button.label}
-                  onClick={button.onClick}
-                  className="navbutton"
-                  which={button.which}
-                />
-            ))}
+            <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
+            <ParkingSpacesOverviewNB />
           </div>
-         
-        </nav>
-   </div>
-      {/* <div className="phoneview">
-        <nav className="navbarphone">
-          <div>
-            <h2 style={{ color: "white", margin: 0 }}>{title}</h2>
-            <div style={{ color: "#bbb", margin: "5px 0 5px 0", fontSize: "12px" }}>
-              <ParkingSpacesOverviewNB />
-            </div>
-          </div>
-          <div style={{ marginTop:"10px",display: "flex", flexWrap: "wrap", gap: "5px", border: "0px solid white", justifyContent:"center" }}>
+          <div className="button-grid">
+
             {buttons && buttons.map((button, index) => (
-              <div key={index}>
-                <NavButton
-                  label={button.label}
-                  onClick={button.onClick}
-                  className="navbutton"
-                  which={button.which}
-                />
-              </div>
+              <NavButton key={index}
+                label={button.label}
+                onClick={button.onClick}
+                className="navbutton"
+                which={button.which}
+              />
             ))}
           </div>
         </nav>
-      </div> */}
+      </div>
+      <div className="phoneview">
+        <nav style={{ backgroundColor: "#333", padding: "10px" }}>
+          <div className="xbutton-grid">
+            <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
+          </div>
+          <div style={{ marginBottom: "10px"  }}>
+          <ParkingSpacesOverviewNB />
+          </div>
 
-
+          <div className="button-grid">
+            {buttons && buttons.map((button, index) => (
+              <NavButton key={index}
+                label={button.label}
+                onClick={button.onClick}
+                className="navbutton"
+                which={button.which}
+              />
+            ))}
+          </div>
+        </nav>
+      </div>
     </>
 
   );
