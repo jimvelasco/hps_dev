@@ -178,8 +178,7 @@ export default function UserProfile() {
     {
       label: "Back",
       onClick: handleBackToDashboard,
-      color: "#1976d2",
-      hoverColor: "#1565c0"
+       which: "goback"
     }
   ];
 
