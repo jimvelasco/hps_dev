@@ -291,15 +291,11 @@ export default function OwnerVehicles() {
       <DashboardNavbar title={`Owner Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="tableview">
+        <div className="xtableview">
           <div className="standardtitlebar">
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '10px',
-              justifyContent: 'center',
-              marginBottom: '0px'
-            }}>
+          
+            <div className="button-grid">
+              <div><br /><b>Filter  </b></div>
               <div>
                 <label className="input-label">
                   Type
@@ -328,6 +324,9 @@ export default function OwnerVehicles() {
               <div>
                 {loggedInUser && loggedInUser.role !== "admin" && (
                   <>
+                  <label className="input-label">
+                  Vehicle
+                </label>
                     <br />
                     <button className="standardsubmitbutton" onClick={() => handleCreateClick()} style={{ width: 80 }}       >
                       New
@@ -335,13 +334,11 @@ export default function OwnerVehicles() {
                   </>
                 )
                 }
-
-
               </div>
             </div>
           </div>
         </div>
-        <div className="phoneview">
+        {/* <div className="phoneview">
           <div className="standardtitlebar">
             <div className="grid-container-2x">
               <div>
@@ -384,7 +381,7 @@ export default function OwnerVehicles() {
               }
             </div>
           </div>
-        </div>
+        </div> */}
 
 
 
