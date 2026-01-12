@@ -71,7 +71,7 @@ export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerO
 
   const formedate = formvehicle.enddate;
   const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
-  console.log('formedate is ', formedate, ' todayStr is ', todayStr);
+ // console.log('formedate is ', formedate, ' todayStr is ', todayStr);
 
   let activeCount = 0;
   let activeArray = [];

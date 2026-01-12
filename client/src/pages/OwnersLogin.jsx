@@ -88,7 +88,7 @@ export default function OwnersLogin() {
       padding: "20px"
     }}>
       <div className="standardtitlebar">
-        <h1 style={{ fontSize: "24px" }}>HOA Parking Solutions</h1>
+        <h2 >HOA Parking Solutions</h2>
       </div>
 
       <div className="loginboxes">

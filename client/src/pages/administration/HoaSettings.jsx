@@ -115,7 +115,7 @@ export default function HoaSettings() {
 
       <div className="page-content">
         <div className="standardtitlebar">
-          <h1>HOA Settings</h1>
+          <h2>HOA Settings</h2>
         </div>
 
         {error && (

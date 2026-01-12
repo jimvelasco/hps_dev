@@ -8,7 +8,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
     <div>
       {role !== "renter" ? (
         <div className="standardtitlebar">
-          <div><b>Sort Order</b></div><br />
+          <div><b>Sort Order</b></div>
           <div style={{
             display: 'flex',
             flexWrap: 'wrap',

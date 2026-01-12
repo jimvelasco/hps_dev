@@ -290,18 +290,7 @@ export default function OwnerVehicles() {
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={`Owner Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
       <div className="page-content">
-        {/* <div className="flexLayout" style={{width:"340px",alignItems:"center",margin:"auto",marginBottom:"20px",justifyContent:"space-between"}}> */}
-        {/* <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap"}}> */}
-        {/* <div className="grid-container-3-full"> */}
-        {/* <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '10px',
-            justifyContent: 'center',
-            marginBottom: '10px',
-            backgroundColor: "white",
-            opacity: 0.8
-          }}> */}
+
         <div className="tableview">
           <div className="standardtitlebar">
             <div style={{
@@ -337,10 +326,17 @@ export default function OwnerVehicles() {
                 />
               </div>
               <div>
-                <br />
-                <button className="standardsubmitbutton" onClick={handleCreateClick} style={{ width: 80 }}       >
-                  New
-                </button>
+                {loggedInUser && loggedInUser.role !== "admin" && (
+                  <>
+                    <br />
+                    <button className="standardsubmitbutton" onClick={() => handleCreateClick()} style={{ width: 80 }}       >
+                      New
+                    </button>
+                  </>
+                )
+                }
+
+
               </div>
             </div>
           </div>
@@ -352,8 +348,8 @@ export default function OwnerVehicles() {
                 <label className="input-label">
                   Type
                 </label>
-               </div>
-               <div>
+              </div>
+              <div>
                 <select className="standardselect"
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value)}
@@ -368,8 +364,8 @@ export default function OwnerVehicles() {
                 <label className="input-label">
                   From
                 </label>
-               </div>
-               <div>
+              </div>
+              <div>
                 <input className="input-date"
                   type="date"
                   value={filterDate}
@@ -377,11 +373,15 @@ export default function OwnerVehicles() {
                 />
               </div>
               <div>&nbsp;</div>
+
+              {loggedInUser && loggedInUser.role !== "admin" && (
                 <div>
-                <button className="standardsubmitbutton" onClick={handleCreateClick} style={{ width: 80 }}       >
-                  New
-                </button>
-              </div>
+                  <button className="standardsubmitbutton" onClick={() => handleCreateClick()} style={{ width: 80 }}       >
+                    New
+                  </button>
+                </div>
+              )
+              }
             </div>
           </div>
         </div>

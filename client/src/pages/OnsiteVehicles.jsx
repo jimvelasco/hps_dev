@@ -175,7 +175,7 @@ export default function OnsiteVehicles() {
       <div className="page-content">
 
         <div className="standardtitlebar">
-          <h1 style={{ fontSize: "24px" }}>Onsite Vehicles</h1>
+          <h2>Onsite Vehicles</h2>
           <div style={{ marginTop: '5px' }}>
 
             <button className="navbutton2" onClick={handleShowPlate}>
