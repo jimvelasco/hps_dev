@@ -49,7 +49,26 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
           </p>
         </div>
       ) : (
-        <div style={{
+        <>
+        <div style={{margin:"0px auto", textAlign:"center",border:"0px solid black",
+          padding:"4px",maxWidth:"360px", backgroundColor: "#fff",
+          borderRadius: "8px", padding: "10px", opacity: ".8"}}>
+        <div className="button-grid">
+              <button
+             className="btn btn-primary"
+             onClick={() => navigate(`/${hoaId}/ownerslogin`)}
+           >
+             Owners
+           </button>
+           <button
+             className="btn btn-primary"
+             onClick={() => navigate(`/${hoaId}/renterslogin`)}
+           >
+             Renters
+           </button>
+        </div>
+        </div>
+        {/* <div style={{
           marginTop: "30px",
           width: "350px",
           margin: "auto",
@@ -73,7 +92,8 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
           >
             Renters
           </button>
-        </div>
+        </div> */}
+        </>
       )}
     </div>
   );

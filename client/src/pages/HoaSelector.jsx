@@ -17,8 +17,8 @@ export default function HoaSelector() {
         let tary = [];
         tary.push(response.data)
         //console.log(tary)
-         setHoas(tary);
-       // setHoas(response.data);
+        setHoas(tary);
+        // setHoas(response.data);
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load HOAs");
@@ -38,8 +38,8 @@ export default function HoaSelector() {
   };
 
   //https://hoaparking.s3.us-east-1.amazonaws.com/timber_run.jpg
-//https://hoaparking.s3.us-east-1.amazonaws.com/Rockies-Condominiums-08.jpg
-//http://hoaparking.s3.amazonaws.com/yampa_103022.jpg
+  //https://hoaparking.s3.us-east-1.amazonaws.com/Rockies-Condominiums-08.jpg
+  //http://hoaparking.s3.amazonaws.com/yampa_103022.jpg
   return (
     <div style={{
       backgroundImage: "url('http://hoaparking.s3.amazonaws.com/steamboat-ski-resort.jpg')",
@@ -111,7 +111,7 @@ export default function HoaSelector() {
               </select>
             </div>
 
-            <button
+            {/* <button
               type="submit"
               className="standardsubmitbutton"
               disabled={!selectedHoaId}
@@ -124,7 +124,23 @@ export default function HoaSelector() {
               }}
             >
               Continue
-            </button>
+            </button> */}
+            <div className="button-grid">
+              <button className="btn btn-primary"
+                type="submit"
+                disabled={!selectedHoaId}
+                style={{
+                  maxWidth: '100%',
+                  cursor: selectedHoaId ? "pointer" : "not-allowed",
+                  opacity: selectedHoaId ? 1 : 0.6
+                }
+                }
+
+              >
+                Continue
+              </button>
+              
+            </div>
           </form>
         )}
       </div>

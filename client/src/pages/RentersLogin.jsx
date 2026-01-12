@@ -16,15 +16,15 @@ export default function RentersLogin() {
     const [pin, setPin] = useState("111");
     const [loadingUnits, setLoadingUnits] = useState(false);
 
-     useEffect(() => {
+    useEffect(() => {
         localStorage.removeItem("token");
-       // console.log("RentersLogin component mounted");
-        
-      }, []);
+        // console.log("RentersLogin component mounted");
+
+    }, []);
 
     useEffect(() => {
         if (hoaId) {
-           // console.log("renters.jsx Fetching HOA data for ID:", hoaId);
+            // console.log("renters.jsx Fetching HOA data for ID:", hoaId);
             fetchHoaById(hoaId).catch((err) => {
                 setAppError(err.message || "Failed to load HOA data");
                 navigate("/error");
@@ -45,12 +45,12 @@ export default function RentersLogin() {
             const unitNumbers = response.data
                 .filter(user => user.unitnumber)
                 .map(user => ({ id: user._id, unitnumber: user.unitnumber }));
-                unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
+            unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
             setUnits(unitNumbers);
         } catch (err) {
-           // console.error("Error fetching units:", err);
+            // console.error("Error fetching units:", err);
             setAppError("Failed to load unit numbers");
-             navigate(`/${hoaId}/error`);
+            navigate(`/${hoaId}/error`);
         } finally {
             setLoadingUnits(false);
         }
@@ -58,11 +58,11 @@ export default function RentersLogin() {
 
     /*     */
     const handleSubmit = async (e) => {
-      //  console.log("handleSubmit called in renterslogin.jsx");
+        //  console.log("handleSubmit called in renterslogin.jsx");
         e.preventDefault();
-         if (!selectedUnit || !pin) {
+        if (!selectedUnit || !pin) {
             setAppError("Please select a unit and enter a pin");
-             navigate(`/${hoaId}/error`);
+            navigate(`/${hoaId}/error`);
             return;
         }
         try {
@@ -79,8 +79,8 @@ export default function RentersLogin() {
             navigate(`/${hoaId}/rentervehicles/${selectedUnit}`);
         } catch (err) {
             setAppError(err.response?.data?.message || "Invalid PIN");
-           // navigate("/error");
-             navigate(`/${hoaId}/error`);
+            // navigate("/error");
+            navigate(`/${hoaId}/error`);
         }
     };
 
@@ -101,7 +101,7 @@ export default function RentersLogin() {
 
     const handleCancelClick = () => {
         navigate(`/${hoaId}`);
-       //  navigate(-1);
+        //  navigate(-1);
     };
     let backgroundImage = '';
     if (hoa) {
@@ -124,10 +124,10 @@ export default function RentersLogin() {
             </div>
 
             <div className="loginboxes">
-                 <div style={{marginTop:"10px", textAlign: "center"}}>
-          <h2>Renter Unit Select</h2>
-          
-        </div>
+                <div style={{ marginTop: "10px", textAlign: "center" }}>
+                    <h2>Renter Unit Select</h2>
+
+                </div>
 
                 {loadingUnits ? (
                     <p>Loading units...</p>
@@ -167,7 +167,23 @@ export default function RentersLogin() {
                                 required
                             />
                         </div>
-                        <div style={{ display: 'flex', justifyContent: "space-between" }}>
+
+
+                        <div className="button-grid">
+                            <button className="btn btn-primary"
+                                type="submit"
+                            >
+                                Submit
+                            </button>
+                            <button className="btn btn-default"
+                                type="button"
+                                onClick={handleCancelClick}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+
+                        {/* <div style={{ display: 'flex', justifyContent: "space-between" }}>
 
                             <button className="standardsubmitbutton"
                                 type="submit"
@@ -181,7 +197,7 @@ export default function RentersLogin() {
                             >
                                 Cancel
                             </button>
-                        </div>
+                        </div> */}
                     </form>
                 )}
             </div>

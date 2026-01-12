@@ -498,8 +498,35 @@ export default function UserDetails() {
               </div>
 
 
+               <div className="button-grid">
+                <button className="btn btn-primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Saving..." : isEditMode ? "Update User" : "Create User"}
+                </button>
 
-              <div style={{ display: "flex", gap: "10px" }}>
+                <button className="btn btn-default"
+                 
+                  onClick={handleBackToUsers}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </button>
+                {isEditMode && (
+                  <button className="btn btn-danger"
+                    
+                    onClick={handleDelete}
+                    disabled={isSubmitting}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+
+
+
+              {/* <div style={{ display: "flex", gap: "10px" }}>
                 <button className="standardsubmitbutton180"
                   type="submit"
                   disabled={isSubmitting}
@@ -524,7 +551,17 @@ export default function UserDetails() {
                     {isSubmitting ? "Deleting..." : "Delete User"}
                   </button>
                 )}
-              </div>
+              </div> */}
+
+
+
+
+
+
+
+
+
+
             </form>
           </div>
         )}

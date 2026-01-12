@@ -135,7 +135,24 @@ export default function OwnersLogin() {
               </a>
             </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: "space-between" }}>
+
+          <div className="button-grid">
+            <button className="btn btn-primary"
+              type="submit"
+              disabled={isLoggingIn}
+            >
+              {isLoggingIn ? "Logging in..." : "Submit"}
+            </button>
+            <button className="btn btn-default"
+              type="button"
+              disabled={isLoggingIn}
+              onClick={() => navigate(-1)}
+            >
+              {isLoggingIn ? "Logging in..." : "Cancel"}
+            </button>
+          </div>
+
+          {/* <div style={{ display: 'flex', justifyContent: "space-between" }}>
 
             <button className="standardsubmitbutton"
               type="submit"
@@ -150,7 +167,9 @@ export default function OwnersLogin() {
             >
               {isLoggingIn ? "Logging in..." : "Cancel"}
             </button>
-          </div>
+          </div> */}
+
+
         </form>
         {/* 
         {hoa && (
