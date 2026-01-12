@@ -29,7 +29,7 @@ export default function DashboardNavbar({ title, buttons }) {
           </div>
         </nav>
       </div>
-      <div className="xphoneview">
+      <div className="phoneview">
         <nav style={{ backgroundColor: "#333", padding: "10px"  }}>
           <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
             <h2 style={{ color: "white", marginBottom: "0px" }}>{title}</h2>
