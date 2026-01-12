@@ -690,7 +690,8 @@ renter_free_parking 1
                 </label>
               </div>
 
-              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+
+              {/* <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                 <button className="standardsubmitbutton"
                   type="submit"
                   disabled={formSubmitting || !termsAcknowledged}
@@ -712,7 +713,42 @@ renter_free_parking 1
                     Delete
                   </button>
                 )}
+              </div> */}
+
+               <div className="button-grid">
+                <button className="btn btn-primary"
+                  type="submit"
+                  disabled={formSubmitting || !termsAcknowledged}
+                >
+                  {formSubmitting ? (isModifyMode ? "Updating..." : "Creating...") : (isModifyMode ? "Update" : "Create")}
+                </button>
+
+                <button className="btn btn-default"
+                 
+                  onClick={handleBackClick}
+                >
+                  Cancel
+                </button>
+                {isModifyMode && (
+                  <button className="btn btn-danger"
+                    
+                    onClick={handleDeleteClick}
+                    disabled={formSubmitting || !termsAcknowledged}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
+
+
+
+
+
+              {/* <div className="button-grid">
+                <button>one</button>
+                <button>two</button>
+                <button>three</button>
+              </div> */}
             </div>
           </form>
         </div>

@@ -6,7 +6,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
   //  console.log('role in VehiclesGrid:', role);
   return (
     <div>
-      {role !== "renter" ? (
+      {/* {role !== "renter" ? (
         <div className="standardtitlebar">
           <div><b>Sort Order</b></div>
           <div style={{
@@ -29,6 +29,30 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
               Checkout
             </button>
             <button className="navbutton wid80"
+              onClick={() => handleSort("active")}>
+              Active
+            </button>
+          </div>
+        </div>
+      ) : null} */}
+
+       {role !== "renter" ? (
+        <div className="standardtitlebar">
+          <div><b>Sort Order</b></div>
+          <div className="button-grid">
+            <button className="btns btn-primary"
+              onClick={() => handleSort("owner")}>
+              Owner
+            </button>
+            <button className="btns btn-primary"
+              onClick={() => handleSort("plate")}>
+              Plate
+            </button>
+            <button className="btns btn-primary  "
+              onClick={() => handleSort("enddate")}>
+              Checkout
+            </button>
+            <button className="btns btn-primary"
               onClick={() => handleSort("active")}>
               Active
             </button>
