@@ -3,7 +3,9 @@ import React from "react";
 export default function NavButton({ label, onClick,  className ,which }) {
   let type="button";
   if (which === "goback") {
-    className = "navbutton-goback";
+    className = "btns btn-default";
+  } else {
+    className = "btns btn-primary";
   }
     return (
     <button
