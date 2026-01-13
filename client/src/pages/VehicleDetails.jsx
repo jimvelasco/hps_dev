@@ -6,7 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
-import { okToActivateOwnerVehicle , okToActivateRenterVehicle,utcDateOnly } from "../utils/vehicleHelpers";
+import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
 
 import mongoose from "mongoose";
@@ -28,7 +28,7 @@ export default function VehicleDetails() {
   const location = useLocation();
   // the unitNumber is passed via state when navigating to create a vehicle from RenterVehicles.jsx
   // if we get to the page from OwnerVehicles.jsx the loggedInUser will have the unitnumber so we can use that
-  const { unitNumber, role, vehicles, ownerOfUnit ,vehid} = location.state || {};
+  const { unitNumber, role, vehicles, ownerOfUnit, vehid } = location.state || {};
   const [userIdForUnit, setUserIdForUnit] = useState();
   const [unitOwner, setUnitOwner] = useState();
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
@@ -64,11 +64,11 @@ export default function VehicleDetails() {
     unitnumber: unitNumber,
     carownertype: role,
 
-   
+
     startdate: new Date().toLocaleDateString("en-CA"),
     enddate: edate.toLocaleDateString("en-CA"),
-  //  checkin: new Date().toISOString().substring(0, 10),
-  // checkout: new Date().toISOString().substring(0, 10)
+    //  checkin: new Date().toISOString().substring(0, 10),
+    // checkout: new Date().toISOString().substring(0, 10)
   });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
 
@@ -117,7 +117,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-       
+
         const sd = utcDateOnly(response.data.checkin);
         const ed = utcDateOnly(response.data.checkout);
 
@@ -135,7 +135,7 @@ export default function VehicleDetails() {
           unitnumber: unitNumber || "",
           carownertype: response.data.carownertype || "owner",
           //  carownertype: loggedInUser ? loggedInUser.role : "renter",
-         // carownertype: role,
+          // carownertype: role,
           make: response.data.make || "",
           model: response.data.model || "",
           year: response.data.year || "",
@@ -260,8 +260,8 @@ renter_free_parking 1
     if (role === 'renter') {
       const todayStr = new Date().toLocaleDateString("en-CA");
       const edate = formData.enddate;
-    //  console.log('Renter enddate is:', edate);
-    //  console.log('todayStr is:', todayStr);
+      //  console.log('Renter enddate is:', edate);
+      //  console.log('todayStr is:', todayStr);
       const startDate = new Date(todayStr).getTime();
       const endDate = new Date(edate).getTime();
       if (startDate > endDate) {
@@ -292,12 +292,12 @@ renter_free_parking 1
     // console.log('unitOwner:', unitOwner);
     let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
 
-   //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
-   let oktoaddobj =  { oktoadd: false, activecount: 0 };;
+    //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
+    let oktoaddobj = { oktoadd: false, activecount: 0 };;
     let rpflag = 0;
     if (role === 'owner') {
-     // rpflag = 0;
-       oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner,vehid);
+      // rpflag = 0;
+      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid);
       console.log('oktoaddobj:', oktoaddobj);
       if (!oktoaddobj.oktoadd) {
         setModal({
@@ -312,23 +312,23 @@ renter_free_parking 1
         });
         return;
       } else {
-      rpflag = oktoaddobj.rpflag; //0;
+        rpflag = oktoaddobj.rpflag; //0;
       }
     }
     if (role === 'renter') {
-      console.log('renter vehid',vehid,vehicles.length);
-       oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner,vehid);
+      console.log('renter vehid', vehid, vehicles.length);
+      oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid);
       if (vehicles.length < renterFreeParking) {
         rpflag = 0;
       } else {
         if (!vehid) {
           rpflag = oktoaddobj.rpflag;
         } else {
-         rpflag = oktoaddobj.rpflag;
+          rpflag = oktoaddobj.rpflag;
         }
       }
     }
-  
+
     setFormSubmitting(true);
 
 
@@ -359,7 +359,7 @@ renter_free_parking 1
           });
         }
       } else {
-      //  console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
+        //  console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
         const response = await axios.post("/vehicles", vehiclePayload);
 
         if (response.status === 201) {
@@ -393,7 +393,7 @@ renter_free_parking 1
       });
       // return
     } finally {
-     // console.log('finally block reached');
+      // console.log('finally block reached');
       setFormSubmitting(false);
     }
   };
@@ -432,7 +432,7 @@ renter_free_parking 1
     );
   }
 
-let backgroundImage = '';
+  let backgroundImage = '';
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
@@ -495,8 +495,8 @@ let backgroundImage = '';
                   />
                 </div>
 
-                
-                
+
+
                 <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Owner Type
@@ -519,7 +519,7 @@ let backgroundImage = '';
                   </select>
                 </div>
 
-                  <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
                     Unit Number
                   </label>
@@ -674,7 +674,7 @@ let backgroundImage = '';
                 />
                 <label htmlFor="termsCheckbox" style={{ margin: 0, cursor: "pointer", color: "#666" }}>
                   I have read and acknowledge the{" "}
-                  <a 
+                  <a
                     onClick={(e) => {
                       e.preventDefault();
                       navigate(`/${hoaId}/terms-and-conditions`, {
@@ -683,11 +683,15 @@ let backgroundImage = '';
                         }
                       });
                     }}
-                    href="#" 
+                    href="#"
                     style={{ color: "#1976d2", textDecoration: "underline", cursor: "pointer" }}>
                     Terms and Conditions
                   </a>
                 </label>
+                <a href={getAWSResource(hoa, 'OTC')} target="_blank" rel="noopener noreferrer">
+                  View Terms and Conditions directly
+                </a>
+
               </div>
 
 
@@ -715,7 +719,7 @@ let backgroundImage = '';
                 )}
               </div> */}
 
-               <div className="button-grid">
+              <div className="button-grid">
                 <button className="btn btn-primary"
                   type="submit"
                   disabled={formSubmitting || !termsAcknowledged}
@@ -724,14 +728,14 @@ let backgroundImage = '';
                 </button>
 
                 <button className="btn btn-default"
-                 
+
                   onClick={handleBackClick}
                 >
                   Cancel
                 </button>
                 {isModifyMode && (
                   <button className="btn btn-danger"
-                    
+
                     onClick={handleDeleteClick}
                     disabled={formSubmitting || !termsAcknowledged}
                   >
