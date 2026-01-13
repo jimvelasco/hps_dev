@@ -672,7 +672,7 @@ renter_free_parking 1
                   onChange={handleTermsAcknowledged}
                   style={{ width: "18px", height: "18px", cursor: "pointer" }}
                 />
-                <label htmlFor="termsCheckbox" style={{ margin: 0, cursor: "pointer", color: "#666" }}>
+                {/* <label htmlFor="termsCheckbox" style={{ margin: 0, cursor: "pointer", color: "#666" }}>
                   I have read and acknowledge the{" "}
                   <a
                     onClick={(e) => {
@@ -687,10 +687,25 @@ renter_free_parking 1
                     style={{ color: "#1976d2", textDecoration: "underline", cursor: "pointer" }}>
                     Terms and Conditions
                   </a>
+                </label> */}
+
+                <label htmlFor="termsCheckbox" style={{ margin: 0, cursor: "pointer", color: "#666" }}>
+                  I have read and acknowledge the{" "}
+                  {role === 'owner' ? (
+                    <a href={getAWSResource(hoa, 'OTC')} target="_blank" rel="noopener noreferrer">
+                      Terms and Conditions
+                    </a>
+                  ) : (
+                    <a href={getAWSResource(hoa, 'RTC')} target="_blank" rel="noopener noreferrer">
+                      Terms and Conditions
+                    </a>
+                  )}
+
                 </label>
-                <a href={getAWSResource(hoa, 'OTC')} target="_blank" rel="noopener noreferrer">
+
+                {/* <a href={getAWSResource(hoa, 'OTC')} target="_blank" rel="noopener noreferrer">
                   View Terms and Conditions directly
-                </a>
+                </a> */}
 
               </div>
 
