@@ -126,6 +126,14 @@ const uploadPdfToS3 = async (req, res) => {
       },
     });
 
+//     let fileName;
+// if (filePrefix && filePrefix.trim()) {
+//   const upperCasePrefixName = filePrefix.trim().toUpperCase();
+//   fileName = `${hoaId}-${upperCasePrefixName}-terms-conditions.pdf`;
+// } else {
+//   fileName = `${hoaId}-${file.originalname}`;
+// }
+
     let fileName = `${hoaId}-${file.originalname}`;
     if (filePrefix && filePrefix.trim()) {
        const upperCasePrefixName = filePrefix.trim().toUpperCase();

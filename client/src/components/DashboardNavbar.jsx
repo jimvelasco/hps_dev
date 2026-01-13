@@ -9,14 +9,14 @@ export default function DashboardNavbar({ title, buttons }) {
   // const loggedInUserString = localStorage.getItem("loggedInUser");
   // <div style={{ color: "#bbb", margin: "5px 0 5px 0", fontSize: "12px" }}>
   return (
-    <>
+    <div style={{marginBottom:"15px"}}>
       <div className="tableview">
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
-          <div className="button-grid-nc">
+          <div className="button-grid">
             <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
             <ParkingSpacesOverviewNB />
           </div>
-          <div className="button-grid">
+          <div className="button-grid" style={{ marginBottom: "5px" }}>
 
             {buttons && buttons.map((button, index) => (
               <NavButton key={index}
@@ -50,7 +50,7 @@ export default function DashboardNavbar({ title, buttons }) {
           </div>
         </nav>
       </div>
-    </>
+    </div>
 
   );
 }

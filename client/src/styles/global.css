@@ -1348,7 +1348,7 @@ input.standardinput:disabled {
 }
 
 .button-grid > :only-child {
-  justify-self: end;
+  justify-self: center;
 }
 .button-grid-lc {
   display: grid;

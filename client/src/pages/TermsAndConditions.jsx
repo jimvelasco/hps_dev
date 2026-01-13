@@ -72,8 +72,10 @@ export default function TermsAndConditions() {
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title="Terms and Conditions" buttons={navButtons} />
-       <embed src="https://hoaparking.s3.us-east-1.amazonaws.com/YV/YV-Terms_and_Conditions.pdf" 
-       type="application/pdf" width="100%" height="600px" />
+     
+
+        {/* <embed src="https://hoaparking.s3.us-east-1.amazonaws.com/YV/YV-Terms_and_Conditions.pdf" 
+       type="application/pdf" width="100%" height="600px" /> */}
 
        <div className="page-content">
         <div style={{
@@ -82,6 +84,9 @@ export default function TermsAndConditions() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
+
+            <embed src={`${getAWSResource(hoa,'OTC')}`} type="application/pdf" width="100%" height="600px" />
+            
           <h2 style={{ color: "#333", marginTop: 0 }}>Terms and Conditions</h2>
 
           {/* General Terms and Conditions - Always Shown */}
