@@ -73,7 +73,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
         justifyContent: 'center'
       }}>
         {vehicles.map((vehicle, index) => (
-          <div className="grid-container-2"
+          <div className="grid-container-4"
             key={vehicle._id}>
             <div className="full-row">
               <TableButton
@@ -87,11 +87,12 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
 
             {/* <div className="grid-item-bold">Unit </div>
             <div className="grid-item-normal">{vehicle.unitnumber || "N/A"}</div> */}
+             <div className="grid-item-bold">User</div>
+             <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
 
             <div className="grid-item-bold">Phone</div>
             <div className="grid-item-normal"> {formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
-            <div className="grid-item-bold">User</div>
-             <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
+           
             <div className="grid-item-bold">Type</div>
 
 
@@ -102,12 +103,16 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
             <div className="grid-item-bold">Make</div>
             <div className="grid-item-normal">{vehicle.make || "N/A"}</div>
             <div className="grid-item-bold">Model</div>
-
-
             <div className="grid-item-normal"> {vehicle.model || "N/A"}</div>
 
             <div className="grid-item-bold">Year</div>
             <div className="grid-item-normal"> {vehicle.year || "N/A"}</div>
+
+             {role !== "renter" ? ( 
+                <>
+                  <div className="grid-item-bold">Active</div>
+                <div className="grid-item-normal"> 
+                {getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"}</div></>) : null}
 
             <div className="grid-item-bold">Check In</div>
             <div className="grid-item-normal"> {utcDateOnly(vehicle.checkin)}</div>
@@ -117,17 +122,10 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           
 
           
-              {role !== "renter" ? ( 
-                <>
-                  <div className="grid-item-bold">Active</div>
-                <div className="grid-item-normal"> 
-                {getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"}</div></>) : null}
+             
            
 
             <div className="grid-item-bold">Payment</div>
-{/* <div className="grid-item-normal"><b>Free</b></div> */}
-
-
 
             <div className="grid-item-normal"> {vehicle.requires_payment == 1 ? (
               <TableButton
