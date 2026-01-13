@@ -9,11 +9,11 @@ export const getAWSResource = (hoa, resourceType) => {
       return image_filename;
       //return hoa?.background_image_url || null;
     case 'OTC':
-      pdf_filename = `${awsbucket}/${hoa.hoaid}/${hoa.hoaid}-OWNER-terms-conditions.pdf`;
+      pdf_filename = `${awsbucket}/${hoa.hoaid}/OWNER-terms-conditions.pdf`;
      //console.log('pdf filename', pdf_filename);
       return pdf_filename;
     case 'RTC':
-       pdf_filename = `${awsbucket}/${hoa.hoaid}/${hoa.hoaid}-RENTER-terms-conditions.pdf`;
+       pdf_filename = `${awsbucket}/${hoa.hoaid}/RENTER-terms-conditions.pdf`;
       return pdf_filename;
     default:
       return null;

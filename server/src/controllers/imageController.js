@@ -104,7 +104,8 @@ const uploadPdfToS3 = async (req, res) => {
     }
 
     const hoaId = req.fields?.hoaId?.[0] || req.body.hoaId;
-    const filePrefix = req.fields?.filePrefix?.[0] || req.body.filePrefix;
+    // const filePrefix = req.fields?.filePrefix?.[0] || req.body.filePrefix;
+     const selectedFileType = req.fields?.selectedFileType?.[0] || req.body.selectedFileType;
 
     if (!hoaId) {
       return res.status(400).json({ message: "HOA ID is required" });
@@ -134,10 +135,16 @@ const uploadPdfToS3 = async (req, res) => {
 //   fileName = `${hoaId}-${file.originalname}`;
 // }
 
-    let fileName = `${hoaId}-${file.originalname}`;
-    if (filePrefix && filePrefix.trim()) {
-       const upperCasePrefixName = filePrefix.trim().toUpperCase();
-      fileName = `${hoaId}-${upperCasePrefixName.trim()}-${file.originalname}`;
+    // let fileName = `${hoaId}-${file.originalname}`;
+    // if (filePrefix && filePrefix.trim()) {
+    //    const upperCasePrefixName = filePrefix.trim().toUpperCase();
+    //   fileName = `${hoaId}-${upperCasePrefixName.trim()}-${file.originalname}`;
+    // }
+     let fileName = `${hoaId}-${file.originalname}`;
+    if (selectedFileType && selectedFileType.trim()) {
+       const upperCasePrefixName = selectedFileType.trim().toUpperCase();
+      // fileName = `${hoaId}-${upperCasePrefixName.trim()}-${file.originalname}`;
+       fileName = `${upperCasePrefixName}-terms-conditions.pdf`;
     }
     const fileKey = `${hoaId}/${fileName}`;
     const params = {

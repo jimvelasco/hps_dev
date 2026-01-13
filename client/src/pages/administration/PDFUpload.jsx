@@ -14,6 +14,8 @@ export default function PDFUpload() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
+  const [selectedFileType, setSelectedFileType] = useState("Owner"); // State for selected HOA ID
+  const [hoas, setHoas] = useState([]); // State to store available HOAs
 
   const handleBackClick = () => {
     navigate(`/${hoaId}/admin`);
@@ -56,9 +58,9 @@ export default function PDFUpload() {
       const formData = new FormData();
       formData.append("pdf", selectedFile);
       formData.append("hoaId", hoaId);
-      if (filePrefix.trim()) {
-        formData.append("filePrefix", filePrefix.trim());
-      }
+      // if (filePrefix.trim()) {
+        formData.append("selectedFileType", selectedFileType);
+     // }
 
       const response = await axios.post("/images/upload-pdf", formData, {
         headers: {
@@ -117,7 +119,7 @@ export default function PDFUpload() {
 
             <form onSubmit={handleUpload}>
               <div style={{ marginBottom: "20px" }}>
-                <label
+                {/* <label
                   htmlFor="prefixInput"
                   style={{
                     display: "block",
@@ -147,7 +149,41 @@ export default function PDFUpload() {
                     opacity: uploading ? 0.6 : 1,
                     cursor: uploading ? "not-allowed" : "auto",
                   }}
-                />
+                /> */}
+
+
+                 <select
+                value={selectedFileType}
+                onChange={(e) => setSelectedFileType(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  border: "1px solid #ddd",
+                  borderRadius: "4px",
+                  fontSize: "14px",
+                  boxSizing: "border-box"
+                }}
+                required
+              >
+               
+               
+                  <option  value="Owner">
+                    Owner
+                  </option>
+                   <option  value="Renter">
+                    Renter
+                  </option>
+              </select>
+
+
+
+
+
+
+
+
+
+
                 <p style={{ fontSize: "12px", color: "#666", marginTop: "6px", marginBottom: "16px" }}>
                   If provided, this will be prepended to the filename with a dash (e.g., "Report-filename.pdf")
                 </p>
