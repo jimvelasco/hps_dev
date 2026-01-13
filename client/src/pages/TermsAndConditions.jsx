@@ -85,10 +85,40 @@ export default function TermsAndConditions() {
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
           {userRole === "owner" ? (
-            <embed src={`${getAWSResource(hoa, 'OTC')}`} type="application/pdf" width="100%" height="600px" />
+            // <embed src={`${getAWSResource(hoa, 'OTC')}`} type="application/pdf" width="100%" height="600px" />
+            <>
+              <iframe
+                src={`${getAWSResource(hoa, 'OTC')}`}
+                type="application/pdf"
+                width="100%"
+                height="600px"
+              />
+              <a
+                href={`${getAWSResource(hoa, 'OTC')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Download PDF
+              </a>
+            </>
 
           ) : (
-            <embed src={`${getAWSResource(hoa, 'RTC')}`} type="application/pdf" width="100%" height="600px" />
+            <>
+            <iframe
+              src={`${getAWSResource(hoa, 'RTC')}`}
+              type="application/pdf"
+              width="100%"
+              height="600px"
+            />
+            <a
+                href={`${getAWSResource(hoa, 'RTC')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Download PDF
+              </a>
+            </>
+            // <embed src={`${getAWSResource(hoa, 'RTC')}`} type="application/pdf" width="100%" height="600px" />
           )}
 
 
