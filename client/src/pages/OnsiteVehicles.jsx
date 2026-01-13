@@ -95,7 +95,7 @@ export default function OnsiteVehicles() {
     </div>)
   }
   const renderVehicleCard = (vehicle) => {
-    return (<div className="grid-container-2"
+    return (<div className="grid-container-4"
       key={vehicle._id}>
 
       <div className="full-row">
