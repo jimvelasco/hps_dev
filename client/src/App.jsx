@@ -32,6 +32,8 @@ import ParkingPayment from "./pages/ParkingPayment";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { getAWSResource } from "./utils/awsHelper";
+
 
 function AppContent() {
   let { hoaId } = useParams();
@@ -56,9 +58,19 @@ function AppContent() {
   }
 
 
-  const backgroundImage = hoa && hoa.background_image_url ? `url('${hoa.background_image_url}')` : "http://hoaparking.s3.amazonaws.com/yampa_103022.jpg";
+  // let backgroundImage = hoa && hoa.background_image_url ? 
+  // `url('${hoa.background_image_url}')` :
+  //  "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg";
+
+  // src={`${getAWSResource(hoa, 'RTC')}`}
+
+  let backgroundImage = hoa && hoa.background_image_url ? 
+`url(${getAWSResource(hoa, 'BI')})` : "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg"
+
 // if (hoa) {
 //   console.log('background image is',hoa.background_image_url);
+//    backgroundImage = getAWSResource(hoa, 'BI');
+//     console.log('aws background image is',backgroundImage);
 // }
   return <LandingPage backgroundImage={backgroundImage} hoaId={hoaId} hoaError={error} />;
 }

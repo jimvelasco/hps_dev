@@ -13,12 +13,11 @@ export default function HoaSelector() {
     const fetchHoas = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/hoas/YV");
-        let tary = [];
-        tary.push(response.data)
-        //console.log(tary)
-        setHoas(tary);
-        // setHoas(response.data);
+        const response = await axios.get("/hoas");
+        // let tary = [];
+        // tary.push(response.data)
+        //setHoas(tary);
+         setHoas(response.data);
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load HOAs");

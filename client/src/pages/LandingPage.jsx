@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
+import { getAWSResource } from "../utils/awsHelper";
+
 
 export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
   const navigate = useNavigate();
@@ -17,7 +19,14 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
     transition: "background-color 0.3s",
   };
   
-  
+  //  let backImage = '';
+  //   if (hoa) {
+  //     backImage = getAWSResource(hoa, 'BI');
+  //     console.log('lp', hoa);
+  //   } else {
+  //      console.log('lp no bueno');
+  //    return '<div>no buedo</div>';
+  //   }
 
   return (
     <div style={{
@@ -56,7 +65,7 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
       ) : (
         <>
         <div style={{margin:"0px auto", textAlign:"center",border:"0px solid black",
-          padding:"4px",maxWidth:"360px", backgroundColor: "#fff",
+          maxWidth:"360px", backgroundColor: "#fff",
           borderRadius: "8px", padding: "10px", opacity: ".8"}}>
         <div className="button-grid">
               <button
