@@ -838,17 +838,18 @@ section.standardsectiondashboard {
   
 }
 .grid-container-2-plate {
-  display: grid;
+ display: grid;
   grid-column-gap: 0px;
-  grid-template-columns: 1fr 1.5fr;
-  background-color: #ffffff;
-  padding: 3px;
+  grid-template-columns: 1fr 2fr;
+  background-color: white;
+  padding: 5px;
+  
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-  width: 200px;
-  height: 100px
+  width: 190px;
+  /* height: 100px */
   
 }
 
@@ -864,6 +865,22 @@ section.standardsectiondashboard {
   margin: 2px;
   border: 1px solid black;
   max-width: 300px;
+}
+
+
+.grid-container-3_oldhoa {
+  display: grid;
+  grid-column-gap: 0px;
+  grid-template-columns: 1.5fr 1.5fr .7fr;
+  background-color: white;
+  padding: 5px;
+  
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  margin: 2px;
+  border: 0px solid black;
+  width: 380px;
+  /* height: 170px */
 }
 
 .grid-container-3-full {
@@ -904,7 +921,7 @@ section.standardsectiondashboard {
   border-bottom: 0px solid #dddddd;
   /*  rgba(0, 0, 0, 0.8); */
   margin-bottom: 3px;
-  font-size: 10pt;
+  font-size: 12pt;
   text-align: left;
   margin: 1px;
   overflow-x: hidden;
@@ -926,9 +943,9 @@ section.standardsectiondashboard {
   background-color: rgba(255, 255, 255, 0.8);
   border-bottom: 0px solid rgba(0, 0, 0, 0.8);
   margin-bottom: 3px;
-  font-size: 10pt;
+  font-size: 12pt;
   text-align: left;
-  margin: 1px;
+  margin-top: 5px;
   overflow-x: hidden;
   font-weight: bold;
 }
