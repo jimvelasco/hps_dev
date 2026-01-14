@@ -88,7 +88,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
 
             <div className="grid-item-bold">Phone</div>
             <div className="grid-item-bold">Unit</div>
-            <div className="grid-item-bold">Owner</div>
+            <div className="grid-item-bold">Type</div>
 
             <div className="grid-item-normal">{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
             <div className="grid-item-normal">{vehicle.unitnumber || "N/A"}</div>
