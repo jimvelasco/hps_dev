@@ -650,6 +650,7 @@ section.standardsection-wide {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
+  box-sizing: border-box;
   text-align:center;
   width:360px;
 
