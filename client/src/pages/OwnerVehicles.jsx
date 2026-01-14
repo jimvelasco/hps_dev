@@ -303,6 +303,11 @@ export default function OwnerVehicles() {
                 onClick={() => handleShowHidenClick()}>
                Show/Hide Filters
               </button>
+               {loggedInUser && loggedInUser.role !== "admin" && (
+              <button className="btns btn-primary"
+                onClick={() => handleCreateClick()}>
+               New Vehicle
+              </button>)}
             </div>
             </div>
           <div style={{ display: isVisible ? "block" : "none" }}>
@@ -314,15 +319,13 @@ export default function OwnerVehicles() {
 
 
 
-            <div className="standardtitlebar">
+            <div className="standardtitlebar" style={{width:"50%"}}>
+              <div style={{marginBottom:"10px"}}><b>Filter</b></div>
 
               <div className="button-grid">
-                <div><br /><b>Filter  </b></div>
+              
                 <div>
-                  <label className="input-label">
-                    Type
-                  </label>
-                  <br />
+                 <div style={{marginBottom:"10px"}}><b>Type</b></div>
                   <select className="standardselect"
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value)}
@@ -333,37 +336,21 @@ export default function OwnerVehicles() {
                   </select>
                 </div>
                 <div>
-                  <label className="input-label">
-                    From
-                  </label>
-                  <br />
+                  <div style={{marginBottom:"10px"}}><b>From</b></div>
                   <input className="input-date"
                     type="date"
                     value={filterDate}
                     onChange={(e) => setFilterDate(e.target.value)}
                   />
                 </div>
-                <div>
-                  {loggedInUser && loggedInUser.role !== "admin" && (
-                    <>
-                      <label className="input-label">
-                        Vehicle
-                      </label>
-                      <br />
-                      <button className="standardsubmitbutton" onClick={() => handleCreateClick()} style={{ width: 80 }}       >
-                        New
-                      </button>
-                    </>
-                  )
-                  }
-                </div>
+               
               </div>
             </div>
 
 
 
             <div className="standardtitlebar">
-              <div><b>Sort Order</b></div>
+              <div style={{marginBottom:"10px"}}><b>Sort Order</b></div>
               <div className="button-grid">
                 <button className="btns btn-primary"
                   onClick={() => handleSort("owner")}>
