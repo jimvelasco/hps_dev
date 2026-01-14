@@ -80,6 +80,7 @@ export default function ForgotPasswordDialog({ isOpen, hoaId, onClose }) {
           borderRadius: "8px",
           padding: "30px",
           maxWidth: "360px",
+          boxSizing: "border-box",
           width: "90%",
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
         }}>
@@ -105,17 +106,17 @@ export default function ForgotPasswordDialog({ isOpen, hoaId, onClose }) {
               />
             </div>
 
-            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+            <div className="button-grid"> 
               <button
                 type="submit"
-                className="standardsubmitbutton"
+                className="btn btn-primary"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Sending..." : "Send"}
               </button>
               <button
                 type="button"
-                className="standardcancelbutton"
+                className="btn btn-default"
                 onClick={onClose}
                 disabled={isSubmitting}
               >
