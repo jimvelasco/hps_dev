@@ -230,3 +230,40 @@ hoa_phone_office              hoa_phone_office
 inventory_allowed_owner       parking_allowed
 name                          first_name
 */
+
+/* payment schema from zencoder
+
+const paymentSchema = new mongoose.Schema({
+  hoaId: {
+    type: ObjectId,
+    ref: "Hoa",
+    required: true
+  },
+  customerId: {
+    type: String,  // Square customer ID
+    required: true
+  },
+  cardToken: {
+    type: String,  // Square card token/nonce (not the actual card)
+    required: false
+  },
+  squarePaymentId: {
+    type: String,  // From Square after charging
+    unique: true
+  },
+  amount: Number,
+  currency: { type: String, default: "USD" },
+  status: {
+    type: String,
+    enum: ["pending", "completed", "failed", "refunded"],
+    default: "pending"
+  },
+  description: String,
+  lastFourDigits: String,  // For display only (e.g., "****4242")
+  cardBrand: String,  // visa, mastercard, etc
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+
+*/

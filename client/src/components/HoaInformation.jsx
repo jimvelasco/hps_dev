@@ -1,6 +1,13 @@
 import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function HoaInformation({ hoa }) {
+  const { hoaId } = useParams();
+  const navigate = useNavigate();
+
+  const handleEmailClick = () => {
+    navigate(`/${hoaId}/email-from-hoa`);
+  };
   return (
     <div style={{
       display: 'flex',
@@ -22,6 +29,9 @@ export default function HoaInformation({ hoa }) {
             ))}
           </div>
            )}
+           <div className="button-grid">
+            <button className="btns btn-primary" onClick={() =>{handleEmailClick()}}>Email HOA</button>
+           </div>
         </section>
       <section className="standardsectiondashboard">
         <h3 style={{ color: "#1976d2", marginTop: 0 }}>HOA Information</h3>

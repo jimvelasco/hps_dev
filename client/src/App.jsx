@@ -31,6 +31,7 @@ import UserProfile from "./pages/UserProfile";
 import ParkingPayment from "./pages/ParkingPayment";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import ResetPassword from "./pages/ResetPassword";
+import EmailFromHoa from "./pages/EmailFromHoa";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getAWSResource } from "./utils/awsHelper";
 
@@ -183,6 +184,9 @@ function App() {
             <ProtectedRoute>
               <ContactInformation />
             </ProtectedRoute>
+          } />
+          <Route path="/:hoaId/email-from-hoa" element={
+            <EmailFromHoa />
           } />
           <Route path="/:hoaId/payment" element={
             <ParkingPayment />

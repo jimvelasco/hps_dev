@@ -376,6 +376,61 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export { getUsers, getUserById, createUser, updateUser, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword, deleteUser };
+const sendEmailFromHoa = async (req, res) => {
+  try {
+    const { hoaId, subject, returnEmail, message } = req.body;
+
+    if (!hoaId || !subject || !returnEmail || !message) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(returnEmail)) {
+      return res.status(400).json({ message: "Invalid email address" });
+    }
+
+    if (message.length > 5000) {
+      return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
+    }
+
+    const HOA_EMAIL = process.env.HOA_EMAIL || "web.master@hoaparkingsolutions.com";
+    const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+
+    if (!SENDGRID_API_KEY) {
+      return res.status(500).json({ message: "Email service not configured" });
+    }
+
+    sgMail.setApiKey(SENDGRID_API_KEY);
+
+    const emailContent = `
+      <h2>New Email from HOA Portal</h2>
+      <p><strong>Subject:</strong> ${subject}</p>
+      <p><strong>From (Return Email):</strong> ${returnEmail}</p>
+      <p><strong>HOA ID:</strong> ${hoaId}</p>
+      <hr>
+      <h3>Message:</h3>
+      <p>${message.replace(/\n/g, '<br>')}</p>
+    `;
+
+    const msg = {
+      to: HOA_EMAIL,
+      from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparking.com",
+      replyTo: returnEmail,
+      subject: `[${hoaId}] ${subject}`,
+      html: emailContent
+    };
+
+    await sgMail.send(msg);
+
+    res.json({
+      message: "Email sent successfully"
+    });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: error.message || "Error sending email" });
+  }
+};
+
+export { getUsers, getUserById, createUser, updateUser, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword, deleteUser, sendEmailFromHoa };
 
 
