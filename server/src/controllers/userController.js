@@ -411,10 +411,10 @@ const sendEmailFromHoa = async (req, res) => {
       <h3>Message:</h3>
       <p>${message.replace(/\n/g, '<br>')}</p>
     `;
-
+// from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparkingsolutions.com",
     const msg = {
       to: HOA_EMAIL,
-      from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparking.com",
+      from:  "noreply@hoaparkingsolutions.com",
       replyTo: returnEmail,
       subject: `[${hoaId}] ${subject}`,
       html: emailContent
