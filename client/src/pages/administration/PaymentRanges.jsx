@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
+import { useHoa } from "../../context/HoaContext";
+
 import DashboardNavbar from "../../components/DashboardNavbar";
 import ModalAlert from "../../components/ModalAlert";
 import { getAWSResource } from "../../utils/awsHelper";
@@ -9,6 +11,8 @@ import { getAWSResource } from "../../utils/awsHelper";
 export default function PaymentRanges() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
+  const { hoa, loading: hoaLoading, fetchHoaById } = useHoa();
+  
   const [ranges, setRanges] = useState([]);
   const [editCell, setEditCell] = useState(null);
   const [tempValue, setTempValue] = useState("");
@@ -28,7 +32,7 @@ export default function PaymentRanges() {
       setLoading(true);
       const response = await axios.get(`/hoas/${hoaId}`);
       const hoaData = response.data;
-      console.log('hoaData:', hoaData);
+    //  console.log('hoaData:', hoaData);
       const paymentRanges = hoaData.payment_ranges || [];
 
       if (paymentRanges.length === 0) {
@@ -200,10 +204,16 @@ export default function PaymentRanges() {
       </div>
     );
   }
+  let backgroundImage = '';
+    if (hoa) {
+      backgroundImage = getAWSResource(hoa, 'BI');
+    }
 
   return (
-    <div className="editable-table-container">
-      <DashboardNavbar title="Payment Ranges" buttons={navButtons} />
+    <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+     <DashboardNavbar title="Payment Ranges" buttons={navButtons} />
+    <div className="editable-table-container"  style={{width:"80%",margin:"auto"}}>
+    
 
       <div className="editable-table-content">
         <h1 className="editable-table-title">Manage Payment Ranges</h1>
@@ -360,6 +370,7 @@ export default function PaymentRanges() {
         onConfirm={modal.onConfirm}
         onCancel={modal.onCancel}
       />
+    </div>
     </div>
   );
 }

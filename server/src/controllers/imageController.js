@@ -1,56 +1,5 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-
-const uploadImageToS3 = async (req, res) => {
-  try {
-    const file = req.files?.image?.[0];
-    if (!file) {
-      return res.status(400).json({ message: "No file provided" });
-    }
-
-    const hoaId = req.fields?.hoaId?.[0] || req.body.hoaId;
-
-    if (!hoaId) {
-      return res.status(400).json({ message: "HOA ID is required" });
-    }
-
-    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
-
-    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
-      return res.status(500).json({ message: "AWS configuration is missing" });
-    }
-
-    const s3Client = new S3Client({
-      region: AWS_REGION,
-      credentials: {
-        accessKeyId: AWS_ACCESS_KEY_ID,
-        secretAccessKey: AWS_SECRET_ACCESS_KEY,
-      },
-    });
-
-    //const fileName = `${Date.now()}-${file.originalname}`;
-    const fileName = `${hoaId}-${file.originalname}`;
-    const fileKey = `${hoaId}/${fileName}`;
-    const params = {
-      Bucket: AWS_S3_BUCKET,
-      Key: fileKey,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-    };
-
-    await s3Client.send(new PutObjectCommand(params));
-
-    const imageUrl = `https://${AWS_S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${fileKey}`;
-
-    res.json({
-      message: "Image uploaded successfully",
-      imageUrl: imageUrl,
-      key: fileKey,
-    });
-  } catch (error) {
-    console.error("Error uploading image:", error);
-    res.status(500).json({ message: error.message || "Error uploading image" });
-  }
-};
+import sharp from "sharp";
 
 const createFolder = async (req, res) => {
   try {
@@ -96,16 +45,14 @@ const createFolder = async (req, res) => {
   }
 };
 
-const uploadPdfToS3 = async (req, res) => {
+const uploadImageToS3 = async (req, res) => {
   try {
-    const file = req.files?.pdf?.[0];
+    const file = req.files?.image?.[0];
     if (!file) {
       return res.status(400).json({ message: "No file provided" });
     }
 
     const hoaId = req.fields?.hoaId?.[0] || req.body.hoaId;
-    // const filePrefix = req.fields?.filePrefix?.[0] || req.body.filePrefix;
-     const selectedFileType = req.fields?.selectedFileType?.[0] || req.body.selectedFileType;
 
     if (!hoaId) {
       return res.status(400).json({ message: "HOA ID is required" });
@@ -117,7 +64,7 @@ const uploadPdfToS3 = async (req, res) => {
       return res.status(500).json({ message: "AWS configuration is missing" });
     }
 
-    
+    const jpegBuffer = await sharp(file.buffer).jpeg({ quality: 85 }).toBuffer();
 
     const s3Client = new S3Client({
       region: AWS_REGION,
@@ -127,25 +74,61 @@ const uploadPdfToS3 = async (req, res) => {
       },
     });
 
-//     let fileName;
-// if (filePrefix && filePrefix.trim()) {
-//   const upperCasePrefixName = filePrefix.trim().toUpperCase();
-//   fileName = `${hoaId}-${upperCasePrefixName}-terms-conditions.pdf`;
-// } else {
-//   fileName = `${hoaId}-${file.originalname}`;
-// }
+    const fileName = "background-image.jpeg";
+    const fileKey = `${hoaId}/${fileName}`;
+    const params = {
+      Bucket: AWS_S3_BUCKET,
+      Key: fileKey,
+      Body: jpegBuffer,
+      ContentType: "image/jpeg",
+    };
 
-    // let fileName = `${hoaId}-${file.originalname}`;
-    // if (filePrefix && filePrefix.trim()) {
-    //    const upperCasePrefixName = filePrefix.trim().toUpperCase();
-    //   fileName = `${hoaId}-${upperCasePrefixName.trim()}-${file.originalname}`;
-    // }
-     let fileName = `${hoaId}-${file.originalname}`;
-    if (selectedFileType && selectedFileType.trim()) {
-       const upperCasePrefixName = selectedFileType.trim().toUpperCase();
-      // fileName = `${hoaId}-${upperCasePrefixName.trim()}-${file.originalname}`;
-       fileName = `${upperCasePrefixName}-terms-conditions.pdf`;
+    await s3Client.send(new PutObjectCommand(params));
+
+    const imageUrl = `https://${AWS_S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${fileKey}`;
+
+    res.json({
+      message: "Image uploaded successfully",
+      fileUrl: imageUrl,
+      key: fileKey,
+    });
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    res.status(500).json({ message: error.message || "Error uploading image" });
+  }
+};
+
+const uploadPdfToS3 = async (req, res) => {
+  try {
+    const file = req.files?.pdf?.[0];
+    if (!file) {
+      return res.status(400).json({ message: "No file provided" });
     }
+
+    const hoaId = req.fields?.hoaId?.[0] || req.body.hoaId;
+    // const filePrefix = req.fields?.filePrefix?.[0] || req.body.filePrefix;
+    const selectedFileType = req.fields?.selectedFileType?.[0] || req.body.selectedFileType;
+
+    if (!hoaId) {
+      return res.status(400).json({ message: "HOA ID is required" });
+    }
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
+    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
+      return res.status(500).json({ message: "AWS configuration is missing" });
+    }
+
+    const s3Client = new S3Client({
+      region: AWS_REGION,
+      credentials: {
+        accessKeyId: AWS_ACCESS_KEY_ID,
+        secretAccessKey: AWS_SECRET_ACCESS_KEY,
+      },
+    });
+
+    let fileName = `${hoaId}-${file.originalname}`;
+    const upperCasePrefixName = selectedFileType.trim().toUpperCase();
+    fileName = `${upperCasePrefixName}-terms-conditions.pdf`;
+
     const fileKey = `${hoaId}/${fileName}`;
     const params = {
       Bucket: AWS_S3_BUCKET,
@@ -160,7 +143,7 @@ const uploadPdfToS3 = async (req, res) => {
 
     res.json({
       message: "PDF uploaded successfully",
-      pdfUrl: pdfUrl,
+      fileUrl: pdfUrl,
       key: fileKey,
     });
   } catch (error) {

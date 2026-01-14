@@ -4,7 +4,7 @@ export const getAWSResource = (hoa, resourceType) => {
   let pdf_filename = '';
   switch (resourceType) {
     case 'BI':
-      const image_filename = `${awsbucket}/${hoa.hoaid}/background-image.jpg`;
+      const image_filename = `${awsbucket}/${hoa.hoaid}/background-image.jpeg`;
     //  console.log('getAWSResource image filename', image_filename);
       return image_filename;
       //return hoa?.background_image_url || null;

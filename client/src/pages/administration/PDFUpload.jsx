@@ -62,13 +62,23 @@ export default function PDFUpload() {
         formData.append("selectedFileType", selectedFileType);
      // }
 
-      const response = await axios.post("/images/upload-pdf", formData, {
+    // console.log('selected file type', selectedFileType);
+
+     let uploadroute = "/images/upload-pdf";
+    //  if (selectedFileType === "BI") {
+    //   uploadroute = "/images/upload"; 
+    //  }
+
+
+
+// const response = await axios.post("/images/upload", formData, {
+      const response = await axios.post(uploadroute, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      setMessage(`PDF uploaded successfully! URL: ${response.data.pdfUrl}`);
+      setMessage(`PDF uploaded successfully! URL: ${response.data.fileUrl}`);
       setMessageType("success");
       setSelectedFile(null);
       document.getElementById("fileInput").value = "";
@@ -88,10 +98,10 @@ export default function PDFUpload() {
     },
   ];
 
-  let backgroundImage = "";
-  if (hoa) {
-    backgroundImage = hoa.background_image_url;
-  }
+ let backgroundImage = '';
+   if (hoa) {
+     backgroundImage = getAWSResource(hoa, 'BI');
+   }
 
   return (
     <div
@@ -168,11 +178,14 @@ export default function PDFUpload() {
                
                
                   <option  value="Owner">
-                    Owner
+                    Owner Terms and Conditions
                   </option>
                    <option  value="Renter">
-                    Renter
+                    Renter Terms and Conditions
                   </option>
+                   {/* <option  value="BI">
+                    Background Image
+                  </option> */}
               </select>
 
 

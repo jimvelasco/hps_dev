@@ -105,9 +105,10 @@ export default function HoaSettings() {
   if (hoaLoading) {
     return <div>Loading...</div>;
   }
-   let backgroundImage = '';
+
+let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
 
   return (
@@ -287,17 +288,17 @@ export default function HoaSettings() {
             </div>
           </div>
 
-          <div className="hoa-settings-buttons">
+          <div className="button-grid">
             <button
               onClick={handleSave}
               disabled={saving}
-              className="standardsubmitbutton"
+              className="btn btn-primary"
             >
               {saving ? "Saving..." : "Save Settings"}
             </button>
             <button
               onClick={handleBackClick}
-              className="standardcancelbutton"
+              className="btn btn-default"
             >
               Cancel
             </button>

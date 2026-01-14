@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
+import { useHoa } from "../../context/HoaContext";
 import DashboardNavbar from "../../components/DashboardNavbar";
 import ModalAlert from "../../components/ModalAlert";
 import { getAWSResource } from "../../utils/awsHelper";
@@ -9,6 +10,7 @@ import { getAWSResource } from "../../utils/awsHelper";
 export default function ContactInformation() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
+   const { hoa, loading: hoaLoading, fetchHoaById } = useHoa();
   const [contacts, setContacts] = useState([]);
   const [editCell, setEditCell] = useState(null);
   const [tempValue, setTempValue] = useState("");
@@ -157,11 +159,22 @@ export default function ContactInformation() {
     );
   }
 
-  return (
-    <div className="editable-table-container">
-      <DashboardNavbar title="Contact Information" buttons={navButtons} />
 
-      <div className="editable-table-content">
+let backgroundImage = '';
+  if (hoa) {
+    backgroundImage = getAWSResource(hoa, 'BI');
+  }
+  //console.log('HOA:', hoa,backgroundImage);
+
+
+  return (
+    <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+      <DashboardNavbar title="Contact Information" buttons={navButtons} />
+          <div className="editable-table-container" style={{width:"80%",margin:"auto"}}>
+
+      <div className="page-content">
+
+      <div className="editable-table-content" >
         <h1 className="editable-table-title">Manage Contact Information</h1>
 
         {error && (
@@ -304,6 +317,8 @@ export default function ContactInformation() {
           </ul>
         </div>
       </div>
+      </div>
+       </div>
       <ModalAlert
         isOpen={modal.isOpen}
         type={modal.type}
@@ -314,6 +329,7 @@ export default function ContactInformation() {
         onConfirm={modal.onConfirm}
         onCancel={modal.onCancel}
       />
+     
     </div>
   );
 }

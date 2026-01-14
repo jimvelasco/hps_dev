@@ -68,7 +68,7 @@ export default function ImageUpload() {
         },
       });
 
-      setMessage(`Image uploaded successfully! URL: ${response.data.imageUrl}`);
+      setMessage(`Image uploaded successfully! URL: ${response.data.fileUrl}`);
       setMessageType("success");
       setSelectedFile(null);
       setPreview(null);
@@ -89,9 +89,9 @@ export default function ImageUpload() {
     },
   ];
 
-  let backgroundImage = "";
+let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
 
   return (

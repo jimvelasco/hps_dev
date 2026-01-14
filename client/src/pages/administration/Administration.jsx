@@ -173,9 +173,9 @@ export default function Administration() {
     }
   ];
 
-   let backgroundImage = '';
+let backgroundImage = '';
   if (hoa) {
-    backgroundImage = hoa.background_image_url;
+    backgroundImage = getAWSResource(hoa, 'BI');
   }
 
   return (
