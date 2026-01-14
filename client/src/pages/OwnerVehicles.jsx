@@ -28,6 +28,7 @@ export default function OwnerVehicles() {
   const [filterType, setFilterType] = useState("owner");
   const [filterDate, setFilterDate] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
 
 
@@ -275,6 +276,10 @@ export default function OwnerVehicles() {
     //   });
     //   }
   }
+ const handleShowHidenClick = () => {
+  setIsVisible(!isVisible)
+ }
+
   const navButtons = [
     {
       label: "Back",
@@ -292,52 +297,105 @@ export default function OwnerVehicles() {
       <div className="page-content">
 
         <div className="xtableview">
-          <div className="standardtitlebar">
-          
+          <div className="standardtitlebar" style={{width:"50%"}}>
             <div className="button-grid">
-              <div><br /><b>Filter  </b></div>
-              <div>
-                <label className="input-label">
-                  Type
-                </label>
-                <br />
-                <select className="standardselect"
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                >
-                  <option value="owner">Owner</option>
-                  <option value="renter">Renter</option>
-                  <option value="both">Both</option>
-                </select>
-              </div>
-              <div>
-                <label className="input-label">
-                  From
-                </label>
-                <br />
-                <input className="input-date"
-                  type="date"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
-                />
-              </div>
-              <div>
-                {loggedInUser && loggedInUser.role !== "admin" && (
-                  <>
+              <button className="btns btn-primary"
+                onClick={() => handleShowHidenClick()}>
+               Show/Hide Filters
+              </button>
+            </div>
+            </div>
+          <div style={{ display: isVisible ? "block" : "none" }}>
+
+
+
+
+
+
+
+
+            <div className="standardtitlebar">
+
+              <div className="button-grid">
+                <div><br /><b>Filter  </b></div>
+                <div>
                   <label className="input-label">
-                  Vehicle
-                </label>
-                    <br />
-                    <button className="standardsubmitbutton" onClick={() => handleCreateClick()} style={{ width: 80 }}       >
-                      New
-                    </button>
-                  </>
-                )
-                }
+                    Type
+                  </label>
+                  <br />
+                  <select className="standardselect"
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value)}
+                  >
+                    <option value="owner">Owner</option>
+                    <option value="renter">Renter</option>
+                    <option value="both">Both</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="input-label">
+                    From
+                  </label>
+                  <br />
+                  <input className="input-date"
+                    type="date"
+                    value={filterDate}
+                    onChange={(e) => setFilterDate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  {loggedInUser && loggedInUser.role !== "admin" && (
+                    <>
+                      <label className="input-label">
+                        Vehicle
+                      </label>
+                      <br />
+                      <button className="standardsubmitbutton" onClick={() => handleCreateClick()} style={{ width: 80 }}       >
+                        New
+                      </button>
+                    </>
+                  )
+                  }
+                </div>
               </div>
             </div>
+
+
+
+            <div className="standardtitlebar">
+              <div><b>Sort Order</b></div>
+              <div className="button-grid">
+                <button className="btns btn-primary"
+                  onClick={() => handleSort("owner")}>
+                  Owner
+                </button>
+                <button className="btns btn-primary"
+                  onClick={() => handleSort("plate")}>
+                  Plate
+                </button>
+                <button className="btns btn-primary  "
+                  onClick={() => handleSort("enddate")}>
+                  Checkout
+                </button>
+                <button className="btns btn-primary"
+                  onClick={() => handleSort("active")}>
+                  Active
+                </button>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
           </div>
         </div>
+
         {/* <div className="phoneview">
           <div className="standardtitlebar">
             <div className="grid-container-2x">
@@ -413,12 +471,23 @@ export default function OwnerVehicles() {
 
             </div> */}
             <div className="xphoneview">
-              <VehiclesGridPhone
+              {/* <VehiclesGridPhone
                 vehicles={vehicles}
                 role={"owner"}
                 sortColumn={sortColumn}
                 sortDirection={sortDirection}
                 handleSort={handleSort}
+                handleDetailsClick={handleDetailsClick}
+                handlePaymentClick={handlePaymentClick}
+                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                utcDateOnly={utcDateOnly}
+              /> */}
+              <VehiclesGridPhone
+                vehicles={vehicles}
+                role={"owner"}
+                // sortColumn={sortColumn}
+                // sortDirection={sortDirection}
+                // handleSort={handleSort}
                 handleDetailsClick={handleDetailsClick}
                 handlePaymentClick={handlePaymentClick}
                 getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}

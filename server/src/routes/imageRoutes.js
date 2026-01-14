@@ -32,8 +32,31 @@ const pdfUpload = multer({
   },
 });
 
-router.post("/upload", upload.fields([{ name: "image", maxCount: 1 }]), uploadImageToS3);
-router.post("/upload-pdf", pdfUpload.fields([{ name: "pdf", maxCount: 1 }]), uploadPdfToS3);
+router.post("/upload", upload.fields([
+  { name: "image", maxCount: 1 },
+  { name: "hoaId", maxCount: 1 }
+]), uploadImageToS3);
+
+router.post("/upload-pdf", pdfUpload.fields([
+  { name: "pdf", maxCount: 1 },
+  { name: "hoaId", maxCount: 1 },
+  { name: "selectedFileType", maxCount: 1 }
+]), uploadPdfToS3);
+
 router.post("/create-folder", createFolder);
 
 export default router;
+
+/* zen coder recommends
+router.post("/upload", upload.fields([
+  { name: "image", maxCount: 1 },
+  { name: "hoaId", maxCount: 1 }
+]), uploadImageToS3);
+
+router.post("/upload-pdf", pdfUpload.fields([
+  { name: "pdf", maxCount: 1 },
+  { name: "hoaId", maxCount: 1 },
+  { name: "selectedFileType", maxCount: 1 }
+]), uploadPdfToS3);
+
+*/
