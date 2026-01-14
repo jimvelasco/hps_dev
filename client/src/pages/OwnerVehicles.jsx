@@ -301,7 +301,7 @@ export default function OwnerVehicles() {
             <div className="button-grid">
               <button className="btns btn-primary"
                 onClick={() => handleShowHidenClick()}>
-               Show/Hide Filters
+                  {!isVisible ? "Show Filters" : "Hide Filters"}
               </button>
                {loggedInUser && loggedInUser.role !== "admin" && (
               <button className="btns btn-primary"

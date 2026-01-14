@@ -15,7 +15,7 @@ export default function OwnersLogin() {
   const { setAppError } = useError();
   const [email, setEmail] = useState("jim.velasco@gmail.com");
   //  const [email, setEmail] = useState(" craigre737@icloud.com");
- 
+
   // const [email, setEmail] = useState("admin@retreatia.com");
   const [password, setPassword] = useState("123456");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -27,6 +27,14 @@ export default function OwnersLogin() {
 
   useEffect(() => {
     if (hoaId) {
+      if (hoaId === 'LODGE') {
+        setEmail('jim.lodge@gmail.com');
+      }
+      if (hoaId === 'TIMBER') {
+        setEmail('jim.timber@gmail.com');
+      }
+      
+
       fetchHoaById(hoaId).catch((err) => {
         setAppError(err.message || "Failed to load HOA data");
         navigate(`/${hoaId}/error`);
@@ -76,8 +84,10 @@ export default function OwnersLogin() {
 
   let backgroundImage = '';
   if (hoa) {
-    backgroundImage = getAWSResource(hoa,'BI');
-   // console.log('OTC',getAWSResource(hoa,'OTC'));
+    backgroundImage = getAWSResource(hoa, 'BI');
+    // console.log('hoaid',hoa.hoaid)
+
+    // console.log('OTC',getAWSResource(hoa,'OTC'));
     // console.log('RTC',getAWSResource(hoa,'RTC'));
   }
 
@@ -95,9 +105,9 @@ export default function OwnersLogin() {
       </div>
 
       <div className="loginboxes">
-        <div style={{marginTop:"10px", textAlign: "center"}}>
+        <div style={{ marginTop: "10px", textAlign: "center" }}>
           <h2>Owner Login</h2>
-          
+
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
           <div style={{ marginBottom: "15px" }}>

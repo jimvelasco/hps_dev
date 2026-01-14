@@ -207,7 +207,7 @@ export default function RenterVehicles() {
   let backgroundImage = '';
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
-  }  
+  }
   if (!ownerOfUnit) {
     return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }
@@ -218,29 +218,33 @@ export default function RenterVehicles() {
       <DashboardNavbar title={`Renter Vehicles`} buttons={navButtons} />
       <div className="page-content">
 
+          <div className="standardtitlebar">
+              <h2>Welcome to {hoa?.name}</h2>
+            </div>
+
         <div className="standardtitlebar">
           <div className="tableview">
             <label className="input-label">
               Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
             </label><br />
-            <button className="standardsubmitbutton"  style={{ width: "180px",marginTop:"5px" }} onClick={handleCreateClick}>
+            <button className="standardsubmitbutton" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
               New Vehicle
             </button>
           </div>
-           <div className="phoneview">
+          <div className="phoneview">
             <label className="input-label">
-              Unit: {unitNumber} 
+              Unit: {unitNumber}
             </label>
             <br />
-             <label className="input-label">
-              {ownerOfUnit.first_name} {ownerOfUnit.last_name} 
+            <label className="input-label">
+              {ownerOfUnit.first_name} {ownerOfUnit.last_name}
             </label>
             <br />
-             <label className="input-label">
+            <label className="input-label">
               {ownerOfUnit.phone}
             </label>
             <br />
-            <button className="standardsubmitbutton" style={{ width: "180px" ,marginTop:"5px"}}onClick={handleCreateClick}>
+            <button className="standardsubmitbutton" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
               New Vehicle
             </button>
           </div>
@@ -271,6 +275,7 @@ export default function RenterVehicles() {
                 utcDateOnly={utcDateOnly}
               />
             </div> */}
+          
             <div className="xphoneview">
               <VehiclesGridPhone
                 vehicles={vehicles}
@@ -291,11 +296,11 @@ export default function RenterVehicles() {
           </div>
         )}
         <br />
-        <div className="standardtitlebar">
+        {/* <div className="standardtitlebar">
           <label className="input-label">
             Welcome to {hoa?.name}
           </label>
-        </div>
+        </div> */}
         <HoaInformation hoa={hoa} />
       </div>
       <ModalAlert
