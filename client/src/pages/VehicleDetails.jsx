@@ -186,6 +186,7 @@ export default function VehicleDetails() {
   };
 
   const handleDeleteClick = () => {
+    console.log('delete button clicked');
     setModal({
       isOpen: true,
       type: "confirm",
@@ -743,13 +744,14 @@ renter_free_parking 1
                 </button>
 
                 <button className="btn btn-default"
-
+                  type="button"
                   onClick={handleBackClick}
                 >
                   Cancel
                 </button>
                 {isModifyMode && (
                   <button className="btn btn-danger"
+                    type="button"
 
                     onClick={handleDeleteClick}
                     disabled={formSubmitting || !termsAcknowledged}
