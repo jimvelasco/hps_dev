@@ -41,7 +41,7 @@ const recordParkingPayment = async (req, res) => {
   const { hoaid,vehicleId, checkin, checkout,unitnumber,
     amountInCents,numdays,sq_paymentId,sq_amount,sq_cardLastFour,sq_paymentDate } = req.body.state;
 
- 
+ console.log("SERVER STATE recordParkingPayment", req.body.state);
   const rval = { message: "Parking payment recorded successfully" };
   res.json(rval);
 };
