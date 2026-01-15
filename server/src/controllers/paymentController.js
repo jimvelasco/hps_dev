@@ -36,6 +36,8 @@ const convertBigInt = (obj) => {
             year: vehicle.year,
             amountInCents:amountInCents,
             numdays:numdays,
+            pricePerNight:pricePerNight,
+            totalAmount:totalAmount,
             sq_paymentId:paymentId,
             sq_amount:amount,
             sq_cardLastFour:cardLastFour,
@@ -46,7 +48,7 @@ const recordParkingPayment = async (req, res) => {
   console.log("SERVER recordParkingPayment", req.body);
 
   const { hoaid,vehicleId, checkin, checkout,unitnumber,lastname,firstname,plate,plate_state,make,model,year,
-    amountInCents,numdays,sq_paymentId,sq_amount,sq_cardLastFour,sq_paymentDate } = req.body.state;
+    amountInCents,numdays,pricePerNight,totalAmount,sq_paymentId,sq_amount,sq_cardLastFour,sq_paymentDate } = req.body.state;
 
  //console.log("SERVER STATE recordParkingPayment", req.body.state);
   const rval = { message: "Parking payment recorded successfully" };

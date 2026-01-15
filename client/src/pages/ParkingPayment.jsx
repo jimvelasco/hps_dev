@@ -131,6 +131,8 @@ export default function ParkingPayment() {
             year: vehicle.year,
             amountInCents:amountInCents,
             numdays:numdays,
+            pricePerNight:pricePerNight,
+            totalAmount:totalAmount,
             sq_paymentId:paymentId,
             sq_amount:amount,
             sq_cardLastFour:cardLastFour,
