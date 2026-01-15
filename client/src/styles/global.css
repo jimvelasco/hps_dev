@@ -642,6 +642,7 @@ section.standardsection {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
   text-align:center;
+  box-sizing: border-box;
   width:220px
 }
 section.standardsection-wide {
@@ -881,6 +882,7 @@ section.standardsectiondashboard {
   margin: 2px;
   border: 0px solid black;
   width: 360px;
+  box-sizing: border-box;
   /* height: 170px */
 }
 

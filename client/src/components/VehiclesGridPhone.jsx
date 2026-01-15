@@ -75,7 +75,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
         {vehicles.map((vehicle, index) => (
           <div className="grid-container-3_oldhoa" key={vehicle._id}>
             <div className="full-row">
-              <div className="button-grid" style={{ marginBottom: '8px' }}>
+              <div className="button-grid" style={{ marginBottom: '10px' }}>
 
                 <button className="btns btn-primary"
                   onClick={() => handleDetailsClick(vehicle)}>
@@ -83,8 +83,8 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
                 </button>
               </div>
             </div>
-            <div className="full-row"><b>Name</b></div>
-            <div className="full-row">{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div>
+            {/* <div className="full-row"><b>Name</b></div> */}
+            <div className="full-row"  style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div>
 
             <div className="grid-item-bold">Phone</div>
             <div className="grid-item-bold">Unit</div>
@@ -118,8 +118,13 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
                     Pay Now
                   </button>
                 </div>
-              ) : vehicle.requires_payment == 2 ? (<b>Paid</b>) : (<b>Free</b>)}
+              ) : vehicle.requires_payment == 2 ? (
+              <div className="grid-item-bold">Paid</div>
+              ) : (
+              <div className="grid-item-bold">Free</div>
+              )}
             </div>
+            {/* <div><b>{vehicle.carownertype}</b></div> */}
           </div>
         ))}
       </div>
