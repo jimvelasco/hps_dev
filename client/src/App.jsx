@@ -22,6 +22,7 @@ import VehicleDetails from "./pages/VehicleDetails";
 import OwnersLogin from "./pages/OwnersLogin";
 import Administration from "./pages/administration/Administration";
 import PaymentRanges from "./pages/administration/PaymentRanges";
+import PaymentRefund from "./pages/administration/PaymentRefund";
 import ContactInformation from "./pages/administration/ContactInformation";
 import HoaSettings from "./pages/administration/HoaSettings";
 import ImageUpload from "./pages/administration/ImageUpload";
@@ -178,6 +179,11 @@ function App() {
           <Route path="/:hoaId/payment-ranges" element={
             <ProtectedRoute>
               <PaymentRanges />
+            </ProtectedRoute>
+          } />
+          <Route path="/:hoaId/payment-refund" element={
+            <ProtectedRoute>
+              <PaymentRefund />
             </ProtectedRoute>
           } />
           <Route path="/:hoaId/contact-information" element={

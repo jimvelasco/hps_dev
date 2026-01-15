@@ -141,6 +141,10 @@ export default function Administration() {
     navigate(`/${hoaId}/profile`);
   };
 
+  const handlePaymentRefund = () => {
+    navigate(`/${hoaId}/payment-refund`);
+  };
+
   const handleCreateFolder = async (folderName) => {
     setCreateFolderLoading(true);
     setCreateFolderMessage(null);
@@ -284,11 +288,17 @@ let backgroundImage = '';
             </button>
           </section>
 
-          
-
-         
-
-         
+          <section className="standardsection">
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Payment Refunds</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Process refunds for completed parking payments
+            </p>
+            <button className="standardsubmitbutton"
+              onClick={handlePaymentRefund}
+              style={{width:"200px"}}>
+              Process Refund
+            </button>
+          </section>
 
         </div>
 
