@@ -332,7 +332,7 @@ export default function OwnerVehicles() {
                   >
                     <option value="owner">Owner</option>
                     <option value="renter">Renter</option>
-                    <option value="both">Both</option>
+                    {/* <option value="both">Both</option> */}
                   </select>
                 </div>
                 <div>
