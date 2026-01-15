@@ -396,22 +396,26 @@ export default function PaymentRefund() {
               }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
                   <div>
-                    <strong>Owner:</strong> {selectedPayment.firstname} {selectedPayment.lastname}
+                    <strong>Owner:</strong>  {selectedPayment.firstname},<br />{selectedPayment.lastname}
+                  </div>
+                 
+                 
+                   <div>
+                    <strong>Unit:</strong><br /> {selectedPayment.unitnumber}
+                  </div>
+                  
+                 
+                  <div>
+                    <strong>Plate:</strong><br /> {selectedPayment.plate}
                   </div>
                   <div>
-                    <strong>Unit:</strong> {selectedPayment.unitnumber}
+                    <strong>Original Amount:</strong><br /> ${(selectedPayment.sq_amount / 100).toFixed(2)}
                   </div>
                   <div>
-                    <strong>Plate:</strong> {selectedPayment.plate}
+                    <strong>Payment Date:</strong><br /> {new Date(selectedPayment.sq_paymentDate).toLocaleDateString()}
                   </div>
                   <div>
-                    <strong>Original Amount:</strong> ${(selectedPayment.sq_amount / 100).toFixed(2)}
-                  </div>
-                  <div>
-                    <strong>Payment Date:</strong> {new Date(selectedPayment.sq_paymentDate).toLocaleDateString()}
-                  </div>
-                  <div>
-                    <strong>Days Paid:</strong> {selectedPayment.numdays}
+                    <strong>Days Paid:</strong><br /> {selectedPayment.numdays}
                   </div>
                 </div>
               </div>
