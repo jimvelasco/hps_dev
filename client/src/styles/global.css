@@ -769,6 +769,16 @@ section.standardsectiondashboard {
   justify-content: center;
 }
 
+
+.grid-flex-container380 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 380px;
+  margin: auto;
+}
+
 .onsite-grid-container-2 {
   display: grid;
   grid-column-gap: 0px;
@@ -779,6 +789,19 @@ section.standardsectiondashboard {
   margin: 2px;
   border: 0px solid black;
   width: 100%;
+}
+
+.grid-container-1a {
+  display: grid;
+  grid-column-gap: 0px;
+  grid-template-columns: 1fr;
+  background-color: #ffffff;
+  padding: 3px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  width:380px
+  
 }
 
 .grid-container-1 {

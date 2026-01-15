@@ -198,7 +198,7 @@ export default function PaymentRefund() {
           <h1 style={{ fontSize: "24px" }}>Process Payment Refunds</h1>
         </div>
 
-        <div className="grid-flex-container">
+        <div className="grid-flex-container380">
           <section className="standardsection-wide">
             <h3 style={{ color: "#1976d2", marginTop: 0 }}>Search Payments</h3>
             <form onSubmit={handleSearch}>
@@ -279,7 +279,8 @@ export default function PaymentRefund() {
                     value={searchFilters.startDate}
                     onChange={handleFilterChange}
                     style={{
-                      width: "100%",
+                      // width: "100%",
+                       maxWidth: "160px",
                       padding: "10px",
                       border: "1px solid #ddd",
                       borderRadius: "4px",
@@ -295,7 +296,8 @@ export default function PaymentRefund() {
                     value={searchFilters.endDate}
                     onChange={handleFilterChange}
                     style={{
-                      width: "100%",
+                      // width: "100%",
+                      maxWidth: "160px",
                       padding: "10px",
                       border: "1px solid #ddd",
                       borderRadius: "4px",
@@ -304,10 +306,11 @@ export default function PaymentRefund() {
                   />
                 </div>
               </div>
+              <div className="button-grid">
               <button
                 type="submit"
                 disabled={searching}
-                className="standardsubmitbutton"
+                className="btn btn-primary"
                 style={{
                   opacity: searching ? 0.6 : 1,
                   cursor: searching ? "not-allowed" : "pointer"
@@ -315,6 +318,7 @@ export default function PaymentRefund() {
               >
                 {searching ? "Searching..." : "Search Payments"}
               </button>
+              </div>
             </form>
           </section>
 
@@ -461,11 +465,11 @@ export default function PaymentRefund() {
                   </select>
                 </div>
 
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div className="button-grid">
                   <button
                     type="submit"
                     disabled={loading}
-                    className="standardsubmitbutton"
+                    className="btn btn-primary"
                     style={{
                       opacity: loading ? 0.6 : 1,
                       cursor: loading ? "not-allowed" : "pointer"
@@ -477,7 +481,7 @@ export default function PaymentRefund() {
                     type="button"
                     onClick={() => setSelectedPayment(null)}
                     disabled={loading}
-                    className="standardsubmitbutton"
+                    className="btn btn-default"
                     style={{
                       backgroundColor: "#999",
                       opacity: loading ? 0.6 : 1,
