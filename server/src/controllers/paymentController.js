@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Payment from "../models/Payment.js";
 import jwt from "jsonwebtoken";
 import { squareClient } from "../config/square.js";
 import crypto from "crypto";
@@ -45,14 +46,41 @@ const convertBigInt = (obj) => {
 */
 
 const recordParkingPayment = async (req, res) => {
-  console.log("SERVER recordParkingPayment", req.body);
+  try {
+    console.log("SERVER recordParkingPayment", req.body);
 
-  const { hoaid,vehicleId, checkin, checkout,unitnumber,lastname,firstname,plate,plate_state,make,model,year,
-    amountInCents,numdays,pricePerNight,totalAmount,sq_paymentId,sq_amount,sq_cardLastFour,sq_paymentDate } = req.body.state;
+    const { hoaid, vehicleId, checkin, checkout, unitnumber, lastname, firstname, plate, plate_state, make, model, year,
+      amountInCents, numdays, pricePerNight, totalAmount, sq_paymentId, sq_amount, sq_cardLastFour, sq_paymentDate } = req.body.state;
 
- //console.log("SERVER STATE recordParkingPayment", req.body.state);
-  const rval = { message: "Parking payment recorded successfully" };
-  res.json(rval);
+    if (!hoaid || !vehicleId || !sq_paymentId || !sq_amount || !unitnumber || !lastname || !firstname || !plate) {
+      return res.status(400).json({ message: "Missing required payment fields" });
+    }
+
+    const payment = await Payment.create({
+      hoaid,
+      vehicleId,
+      sq_paymentId,
+      sq_amount,
+      sq_cardLastFour,
+      sq_paymentDate: new Date(sq_paymentDate),
+      numdays,
+      pricePerNight,
+      unitnumber,
+      firstname,
+      lastname,
+      plate,
+      status: "completed"
+    });
+
+    const rval = { 
+      message: "Parking payment recorded successfully",
+      payment: payment
+    };
+    res.json(rval);
+  } catch (error) {
+    console.error("Error recording parking payment:", error);
+    res.status(500).json({ message: error.message || "Error recording payment" });
+  }
 };
 
 const processSquarePayment = async (req, res) => {
@@ -99,5 +127,79 @@ const processSquarePayment = async (req, res) => {
   }
 };
 
-export { recordParkingPayment, processSquarePayment };
+const getPayments = async (req, res) => {
+  try {
+    const { hoaid, unitnumber, plate, firstname, lastname, startDate, endDate } = req.query;
+
+    const filter = {};
+    if (hoaid) filter.hoaid = hoaid;
+    if (unitnumber) filter.unitnumber = unitnumber;
+    if (plate) filter.plate = plate;
+    if (firstname) filter.firstname = new RegExp(firstname, "i");
+    if (lastname) filter.lastname = new RegExp(lastname, "i");
+    
+    if (startDate || endDate) {
+      filter.sq_paymentDate = {};
+      if (startDate) filter.sq_paymentDate.$gte = new Date(startDate);
+      if (endDate) filter.sq_paymentDate.$lte = new Date(endDate);
+    }
+
+    const payments = await Payment.find(filter).sort({ sq_paymentDate: -1 });
+    res.json(payments);
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    res.status(500).json({ message: error.message || "Error fetching payments" });
+  }
+};
+
+const processRefund = async (req, res) => {
+  try {
+    const { paymentId, refundAmount, refundReason } = req.body;
+
+    if (!paymentId || !refundAmount) {
+      return res.status(400).json({ message: "Payment ID and refund amount are required" });
+    }
+
+    const payment = await Payment.findById(paymentId);
+    if (!payment) {
+      return res.status(404).json({ message: "Payment not found" });
+    }
+
+    const refundAmountCents = Math.round(refundAmount * 100);
+    if (refundAmountCents > payment.sq_amount) {
+      return res.status(400).json({ message: "Refund amount cannot exceed original payment amount" });
+    }
+
+    const squareRefund = await squareClient.refundsApi.createRefund({
+      paymentId: payment.sq_paymentId,
+      amountMoney: {
+        amount: refundAmountCents,
+        currency: "USD"
+      },
+      reason: refundReason || "Partial refund issued"
+    });
+
+    let newStatus = "partial_refund";
+    if (refundAmountCents === payment.sq_amount) {
+      newStatus = "refunded";
+    }
+
+    payment.status = newStatus;
+    payment.refundAmount = refundAmountCents;
+    payment.refundDate = new Date();
+    payment.refundReason = refundReason;
+    await payment.save();
+
+    res.json({
+      message: "Refund processed successfully",
+      refund: squareRefund.result.refund,
+      payment: payment
+    });
+  } catch (error) {
+    console.error("Error processing refund:", error);
+    res.status(500).json({ message: error.message || "Error processing refund" });
+  }
+};
+
+export { recordParkingPayment, processSquarePayment, getPayments, processRefund };
 
