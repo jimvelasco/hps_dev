@@ -52,6 +52,7 @@ export default function PaymentRefund() {
       if (searchFilters.lastname) params.append("lastname", searchFilters.lastname);
       if (searchFilters.startDate) params.append("startDate", searchFilters.startDate);
       if (searchFilters.endDate) params.append("endDate", searchFilters.endDate);
+      console.log('PAYMENT REFUND search params are',params.toString())
 
       const response = await axios.get(`/payments?${params}`);
       setPayments(response.data);
