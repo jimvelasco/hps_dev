@@ -110,13 +110,24 @@ export default function ParkingPayment() {
 
       if (squareResponse.data.success) {
         console.log("Square payment successful:", squareResponse.data.payment);
-
+        const paymentId = squareResponse.data.payment.id;
+         const amount = squareResponse.data.payment.totalMoney.amount;
+         const cardLastFour = squareResponse.data.payment.cardDetails.card.last4;
+         const paymentDate = squareResponse.data.payment.createdAt;
         console.log('Recording parking payment for vid', vehicleId);
         await axios.post("/payments/record-parking", {
           state: {
+            hoaid: hoa.hoaid,
             vehicleId: vehicleId,
             checkin: vehicle.checkin,
-            checkout: vehicle.checkout
+            checkout: vehicle.checkout,
+            unitnumber: vehicle.unitnumber,
+            amountInCents:amountInCents,
+            numdays:numdays,
+            sq_paymentId:paymentId,
+            sq_amount:amount,
+            sq_cardLastFour:cardLastFour,
+            sq_paymentDate:paymentDate
           }
         });
 

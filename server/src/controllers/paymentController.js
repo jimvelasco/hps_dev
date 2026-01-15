@@ -20,13 +20,28 @@ const convertBigInt = (obj) => {
   return obj;
 };
 
-const makeParkingPayment = async (req, res) => {
+/*
+ state: {
+            hoaid:hoa.hoaid,
+            vehicleId: vehicleId,
+            checkin: vehicle.checkin,
+            checkout: vehicle.checkout,
+            unitnumber: vehicle.unitnumber,
+            amountInCents:amountInCents,
+            numdays:numdays,
+            sq_paymentId:paymentId,
+            sq_amount:amount,
+            sq_cardLastFour:cardLastFour,
+            sq_paymentDate:paymentDate
+*/
+
+const recordParkingPayment = async (req, res) => {
+  console.log("SERVER recordParkingPayment", req.body);
+
+  const { hoaid,vehicleId, checkin, checkout,unitnumber,
+    amountInCents,numdays,sq_paymentId,sq_amount,sq_cardLastFour,sq_paymentDate } = req.body.state;
+
  
-  const {  vehicleId,checkin,checkout } = req.body.state;
-// console.log('makeParkingPayment',vehicleId,checkin,checkout);
-  // const filter = hoaId ? { hoaid:hoaId } : {};
-  //  console.log("getUsers and hoaId:", hoaId,filter);
-  // const users = await User.find(filter);
   const rval = { message: "Parking payment recorded successfully" };
   res.json(rval);
 };
@@ -35,7 +50,9 @@ const processSquarePayment = async (req, res) => {
   try {
     const { token, amount, parkingSessionId } = req.body;
 
-    //console.log('TRYING TO SEND A PAYMENT TO SQUARE   ')
+    console.log('**************************************************************************************')
+    console.log('TRYING TO SEND A PAYMENT TO SQUARE token=', token, 'amount=', amount, 'parkingSessionId=', parkingSessionId, '********')
+    console.log('***************************************************************************************')
 
     if (!token || !amount) {
       return res.status(400).json({
@@ -73,5 +90,5 @@ const processSquarePayment = async (req, res) => {
   }
 };
 
-export { makeParkingPayment, processSquarePayment };
+export { recordParkingPayment, processSquarePayment };
 
