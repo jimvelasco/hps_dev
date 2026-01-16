@@ -170,7 +170,9 @@ const processRefund = async (req, res) => {
       return res.status(400).json({ message: "Refund amount cannot exceed original payment amount" });
     }
 
-    const squareRefund = await squareClient.refundsApi.refund({
+    const idempotencyKey = crypto.randomUUID();
+    const squareRefund = await squareClient.refundsApi.createRefund({
+      idempotencyKey,
       paymentId: payment.sq_paymentId,
       amountMoney: {
         amount: refundAmountCents,
