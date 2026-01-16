@@ -55,7 +55,7 @@ const recordParkingPayment = async (req, res) => {
     if (!hoaid || !vehicleId || !sq_paymentId || !sq_amount || !unitnumber || !lastname || !firstname || !plate) {
       return res.status(400).json({ message: "Missing required payment fields" });
     }
-
+    console.log("SERVER STATE recordParkingPayment", req.body.state);
     const payment = await Payment.create({
       hoaid,
       vehicleId,
