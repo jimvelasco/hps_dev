@@ -45,10 +45,10 @@ export default function ModalAlert({ isOpen, title, message, type = "alert", onC
           {message}
         </p>
 
-        <div className="button-grid"
+        <div className="button-grid">
         
            <button
-            className={type === "delete" ? "btn btn-danger" : "btn btn-primar"}
+            className={type === "delete" ? "btn btn-danger" : "btn btn-primary"}
             onClick={onConfirm}
           >
             {confirmText}
