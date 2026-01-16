@@ -45,21 +45,17 @@ export default function ModalAlert({ isOpen, title, message, type = "alert", onC
           {message}
         </p>
 
-        <div style={{
-          display: "flex",
-          gap: "10px",
-          justifyContent: "center",
-          flexWrap: "wrap"
-        }}>
+        <div className="button-grid"
+        
            <button
-            className={type === "delete" ? "standarddeletebutton" : "standardsubmitbutton"}
+            className={type === "delete" ? "btn btn-danger" : "btn btn-primar"}
             onClick={onConfirm}
           >
             {confirmText}
           </button>
           {type === "confirm" && (
             <button
-              className="standardcancelbutton"
+              className="btn btn-default"
               onClick={onCancel}
             >
               {cancelText}

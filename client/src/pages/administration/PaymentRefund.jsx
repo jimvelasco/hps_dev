@@ -128,7 +128,7 @@ export default function PaymentRefund() {
       type: "confirm",
       title: "Confirm Refund",
       message: `Process refund of $${parseFloat(refundAmount).toFixed(2)} for ${selectedPayment.firstname} ${selectedPayment.lastname} (${selectedPayment.plate})?`,
-      confirmText: "Process Refund",
+      confirmText:"Process",
       cancelText: "Cancel",
       onConfirm: processRefund,
       onCancel: () => setModal({ ...modal, isOpen: false })
