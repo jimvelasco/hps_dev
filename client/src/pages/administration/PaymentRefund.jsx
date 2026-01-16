@@ -397,7 +397,7 @@ export default function PaymentRefund() {
               }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
                   <div>
-                    <strong>Owner:</strong>  {selectedPayment.firstname},<br />{selectedPayment.lastname}
+                    <strong>Owner:</strong> <br /> {selectedPayment.firstname}, {selectedPayment.lastname}
                   </div>
                  
                  
