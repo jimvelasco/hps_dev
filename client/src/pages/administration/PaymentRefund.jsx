@@ -272,7 +272,7 @@ export default function PaymentRefund() {
                     // }}
                   />
                 </div>
-                <div className="full-row">
+                <div className="xfull-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Start Date</label>
                   <input  className="input-date"
                     type="date"
@@ -289,7 +289,7 @@ export default function PaymentRefund() {
                     // }}
                   />
                 </div>
-                <div  className="full-row">
+                <div  className="xfull-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>End Date</label>
                   <input  className="input-date"
                     type="date"
