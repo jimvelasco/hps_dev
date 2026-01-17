@@ -13,9 +13,9 @@ if (!locationId) {
   console.error("❌ SQUARE_LOCATION_ID is not set!");
 }
 
-console.log("Square config:");
-console.log("  Access Token:", token ? `${token}` : "NOT SET");
-console.log("  Location ID:", locationId || "NOT SET");
+// console.log("Square config:");
+// console.log("  Access Token:", token ? `${token}` : "NOT SET");
+// console.log("  Location ID:", locationId || "NOT SET");
 
 export const squareClient = new Client({
   accessToken: token,

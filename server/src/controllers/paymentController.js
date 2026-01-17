@@ -47,7 +47,7 @@ const convertBigInt = (obj) => {
 
 const recordParkingPayment = async (req, res) => {
   try {
-    console.log("SERVER recordParkingPayment", req.body);
+  //  console.log("SERVER recordParkingPayment", req.body);
 
     const { hoaid, vehicleId, checkin, checkout, unitnumber, lastname, firstname, plate, plate_state, make, model, year,
       amountInCents, numdays, pricePerNight, totalAmount, sq_paymentId, sq_amount, sq_cardLastFour, sq_paymentDate } = req.body.state;
@@ -55,7 +55,7 @@ const recordParkingPayment = async (req, res) => {
     if (!hoaid || !vehicleId || !sq_paymentId || !sq_amount || !unitnumber || !lastname || !firstname || !plate) {
       return res.status(400).json({ message: "Missing required payment fields" });
     }
-    console.log("SERVER STATE recordParkingPayment", req.body.state);
+  //  console.log("SERVER STATE recordParkingPayment", req.body.state);
     const payment = await Payment.create({
       hoaid,
       vehicleId,
@@ -165,9 +165,9 @@ const processRefund = async (req, res) => {
       return res.status(404).json({ message: "Payment not found" });
     }
 
-    console.log("Payment sq_amount from DB:", payment.sq_amount);
+  //  console.log("Payment sq_amount from DB:", payment.sq_amount);
     const refundAmountCents = Math.round(refundAmount * 100);
-    console.log("Refund amount in cents:", refundAmountCents);
+  //  console.log("Refund amount in cents:", refundAmountCents);
     
     const alreadyRefunded = payment.refundAmount || 0;
     const availableToRefund = payment.sq_amount - alreadyRefunded;
@@ -180,7 +180,7 @@ const processRefund = async (req, res) => {
     }
 
     const idempotencyKey = crypto.randomUUID();
-    console.log("Sending refund request with paymentId:", payment.sq_paymentId);
+  //  console.log("Sending refund request with paymentId:", payment.sq_paymentId);
     const squareRefund = await squareClient.refundsApi.refundPayment({
       idempotencyKey,
       paymentId: payment.sq_paymentId,

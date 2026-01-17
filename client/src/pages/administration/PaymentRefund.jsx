@@ -52,7 +52,7 @@ export default function PaymentRefund() {
       if (searchFilters.lastname) params.append("lastname", searchFilters.lastname);
       if (searchFilters.startDate) params.append("startDate", searchFilters.startDate);
       if (searchFilters.endDate) params.append("endDate", searchFilters.endDate);
-      console.log('PAYMENT REFUND search params are',params.toString())
+      console.log('PAYMENT REFUND search params are', params.toString())
 
       const response = await axios.get(`/payments?${params}`);
       setPayments(response.data);
@@ -128,7 +128,7 @@ export default function PaymentRefund() {
       type: "confirm",
       title: "Confirm Refund",
       message: `Process refund of $${parseFloat(refundAmount).toFixed(2)} for ${selectedPayment.firstname} ${selectedPayment.lastname} (${selectedPayment.plate})?`,
-      confirmText:"Process",
+      confirmText: "Process",
       cancelText: "Cancel",
       onConfirm: processRefund,
       onCancel: () => setModal({ ...modal, isOpen: false })
@@ -151,7 +151,7 @@ export default function PaymentRefund() {
         message: `Refund of $${parseFloat(refundAmount).toFixed(2)} has been successfully processed`,
         onConfirm: () => {
           setModal({ ...modal, isOpen: false });
-          handleSearch({ preventDefault: () => {} });
+          handleSearch({ preventDefault: () => { } });
           setSelectedPayment(null);
           setRefundAmount("");
           setRefundReason("");
@@ -199,7 +199,7 @@ export default function PaymentRefund() {
           <h1 style={{ fontSize: "24px" }}>Process Payment Refunds</h1>
         </div>
 
-        <div className="grid-flex-container380">
+        <div className="grid-flex-container">
           <section className="standardsection-wide">
             <h3 style={{ color: "#1976d2", marginTop: 0 }}>Search Payments</h3>
             <form onSubmit={handleSearch}>
@@ -281,7 +281,7 @@ export default function PaymentRefund() {
                     onChange={handleFilterChange}
                     style={{
                       // width: "100%",
-                       maxWidth: "160px",
+                      maxWidth: "160px",
                       padding: "10px",
                       border: "1px solid #ddd",
                       borderRadius: "4px",
@@ -308,81 +308,92 @@ export default function PaymentRefund() {
                 </div>
               </div>
               <div className="button-grid">
-              <button
-                type="submit"
-                disabled={searching}
-                className="btn btn-primary"
-                style={{
-                  opacity: searching ? 0.6 : 1,
-                  cursor: searching ? "not-allowed" : "pointer"
-                }}
-              >
-                {searching ? "Searching..." : "Search Payments"}
-              </button>
+                <button
+                  type="submit"
+                  disabled={searching}
+                  className="btn btn-primary"
+                  style={{
+                    opacity: searching ? 0.6 : 1,
+                    cursor: searching ? "not-allowed" : "pointer"
+                  }}
+                >
+                  {searching ? "Searching..." : "Search Payments"}
+                </button>
               </div>
             </form>
           </section>
 
           {payments.length > 0 && (
-            <section className="standardsection-wide" style={{ marginTop: "30px" }}>
-              <h3 style={{ color: "#1976d2", marginTop: 0 }}>Payment Results ({payments.length})</h3>
-              <div style={{ overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                  <thead>
-                    <tr style={{ backgroundColor: "#f5f5f5" }}>
-                      <th style={{ padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" }}>Date</th>
-                      <th style={{ padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" }}>Unit</th>
-                      <th style={{ padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" }}>Owner</th>
-                      <th style={{ padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" }}>Plate</th>
-                      <th style={{ padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" }}>Amount</th>
-                      <th style={{ padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" }}>Days</th>
-                      <th style={{ padding: "10px", textAlign: "left", borderBottom: "2px solid #ddd" }}>Status</th>
-                      <th style={{ padding: "10px", textAlign: "center", borderBottom: "2px solid #ddd" }}>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {payments.map((payment) => (
-                      <tr key={payment._id} style={{ borderBottom: "1px solid #ddd" }}>
-                        <td style={{ padding: "10px" }}>{new Date(payment.sq_paymentDate).toLocaleDateString()}</td>
-                        <td style={{ padding: "10px" }}>{payment.unitnumber}</td>
-                        <td style={{ padding: "10px" }}>{payment.firstname} {payment.lastname}</td>
-                        <td style={{ padding: "10px" }}>{payment.plate}</td>
-                        <td style={{ padding: "10px" }}>${(payment.sq_amount / 100).toFixed(2)}</td>
-                        <td style={{ padding: "10px" }}>{payment.numdays}</td>
-                        <td style={{ padding: "10px" }}>
-                          <span style={{
-                            padding: "4px 8px",
-                            borderRadius: "4px",
-                            fontSize: "12px",
-                            fontWeight: "bold",
-                            backgroundColor: payment.status === "completed" ? "#d4edda" : "#f8d7da",
-                            color: payment.status === "completed" ? "#155724" : "#721c24"
-                          }}>
-                            {payment.status}
-                          </span>
-                        </td>
-                        <td style={{ padding: "10px", textAlign: "center" }}>
-                          <button
-                            onClick={() => handleSelectPayment(payment)}
-                            style={{
-                              padding: "6px 12px",
-                              backgroundColor: selectedPayment?._id === payment._id ? "#1976d2" : "#007bff",
-                              color: "white",
-                              border: "none",
-                              borderRadius: "4px",
-                              cursor: "pointer",
-                              fontSize: "12px"
-                            }}
-                          >
-                            {selectedPayment?._id === payment._id ? "Selected" : "Select"}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '10px',
+                justifyContent: 'center',
+                marginTop: '20px'
+              }}>
+
+                {payments.map((payment) => (
+                  <div className="grid-container-3_oldhoa" key={payment._id}>
+
+                    <div className="grid-item-bold">Date</div>
+                    <div className="grid-item-bold">Name</div>
+                    <div className="grid-item-bold">Days</div>
+
+
+                    <div className="grid-item-normal" >{new Date(payment.sq_paymentDate).toLocaleDateString()}</div>
+                    <div className="grid-item-normal">{payment.lastname}, {payment.firstname}</div>
+                    <div className="grid-item-normal">{payment.numdays}</div>
+
+                    <div className="grid-item-bold">Unit</div>
+                    <div className="grid-item-bold">Plate</div>
+                    <div className="grid-item-bold">Amount</div>
+
+                    <div className="grid-item-normal">{payment.unitnumber}</div>
+                    <div className="grid-item-normal">{payment.plate}</div>
+                    <div className="grid-item-normal">${(payment.sq_amount / 100).toFixed(2)}</div>
+
+                    <div className="grid-item-normal">
+                      <span style={{
+                        padding: "4px 8px",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        backgroundColor: payment.status === "completed" ? "#d4edda" : "#f8d7da",
+                        color: payment.status === "completed" ? "#155724" : "#721c24"
+                      }}>
+                        {payment.status}
+                      </span>
+                    </div>
+                    <div className="grid-item-normal">
+                      <div className="button-grid">
+                      {/* <button
+                        onClick={() => handleSelectPayment(payment)}
+                        style={{
+                          padding: "6px 12px",
+                          backgroundColor: selectedPayment?._id === payment._id ? "#1976d2" : "#007bff",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          fontSize: "12px",
+                          minWidth: "80px"
+                        }}
+                      >
+                        {selectedPayment?._id === payment._id ? "Selected" : "Select"}
+                      </button> */}
+                       <button
+                        onClick={() => handleSelectPayment(payment)}
+                        className="btns btn-primary"
+                      >
+                        {selectedPayment?._id === payment._id ? "Selected" : "Select"}
+                      </button>
+                      </div>
+                    </div>
+                    <div className="grid-item-normal">&nbsp;</div>
+
+                  </div>
+                ))}
               </div>
-            </section>
           )}
 
           {selectedPayment && (
@@ -399,13 +410,13 @@ export default function PaymentRefund() {
                   <div>
                     <strong>Owner:</strong> <br /> {selectedPayment.firstname}, {selectedPayment.lastname}
                   </div>
-                 
-                 
-                   <div>
+
+
+                  <div>
                     <strong>Unit:</strong><br /> {selectedPayment.unitnumber}
                   </div>
-                  
-                 
+
+
                   <div>
                     <strong>Plate:</strong><br /> {selectedPayment.plate}
                   </div>
