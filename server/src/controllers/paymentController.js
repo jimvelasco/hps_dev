@@ -194,7 +194,7 @@ const processRefund = async (req, res) => {
 
     res.json({
       message: "Refund processed successfully",
-      refund: squareRefund.result.refund,
+      refund: convertBigInt(squareRefund.result.refund),
       payment: payment
     });
   } catch (error) {
