@@ -23,5 +23,6 @@ export const squareClient = new Client({
 });
 
 console.log("Available APIs on squareClient:", Object.keys(squareClient));
+console.log("refundsApi methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(squareClient.refundsApi)));
 
 
