@@ -171,7 +171,7 @@ const processRefund = async (req, res) => {
     }
 
     const idempotencyKey = crypto.randomUUID();
-    const squareRefund = await squareClient.refundsApi.createRefund({
+    const squareRefund = await squareClient.refundsApi.refundPayment({
       idempotencyKey,
       paymentId: payment.sq_paymentId,
       amountMoney: {
