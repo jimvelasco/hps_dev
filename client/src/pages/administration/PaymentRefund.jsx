@@ -272,7 +272,7 @@ export default function PaymentRefund() {
                     }}
                   />
                 </div>
-                <div>
+                <div className="full-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Start Date</label>
                   <input
                     type="date"
@@ -281,7 +281,7 @@ export default function PaymentRefund() {
                     onChange={handleFilterChange}
                     style={{
                       // width: "100%",
-                      maxWidth: "160px",
+                      // maxWidth: "160px",
                       padding: "10px",
                       border: "1px solid #ddd",
                       borderRadius: "4px",
@@ -289,7 +289,7 @@ export default function PaymentRefund() {
                     }}
                   />
                 </div>
-                <div>
+                <div  className="full-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>End Date</label>
                   <input
                     type="date"
@@ -298,7 +298,7 @@ export default function PaymentRefund() {
                     onChange={handleFilterChange}
                     style={{
                       // width: "100%",
-                      maxWidth: "160px",
+                      // maxWidth: "160px",
                       padding: "10px",
                       border: "1px solid #ddd",
                       borderRadius: "4px",
@@ -366,21 +366,7 @@ export default function PaymentRefund() {
                     </div>
                     <div className="grid-item-normal">
                       <div className="button-grid">
-                      {/* <button
-                        onClick={() => handleSelectPayment(payment)}
-                        style={{
-                          padding: "6px 12px",
-                          backgroundColor: selectedPayment?._id === payment._id ? "#1976d2" : "#007bff",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          fontSize: "12px",
-                          minWidth: "80px"
-                        }}
-                      >
-                        {selectedPayment?._id === payment._id ? "Selected" : "Select"}
-                      </button> */}
+                     
                        <button
                         onClick={() => handleSelectPayment(payment)}
                         className="btns btn-primary"
