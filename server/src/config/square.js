@@ -22,6 +22,6 @@ export const squareClient = new Client({
   environment: "sandbox"
 });
 
-console.log("Available APIs on squareClient:", Object.keys(squareClient));
+//console.log("Available APIs on squareClient:", Object.keys(squareClient));
 
 
