@@ -1,4 +1,4 @@
-import { Client } from "square/legacy";
+import { Client } from "square";
 
 const token = process.env.SQUARE_ACCESS_TOKEN;
 const locationId = process.env.SQUARE_LOCATION_ID;
@@ -21,5 +21,7 @@ export const squareClient = new Client({
   accessToken: token,
   environment: "sandbox"
 });
+
+console.log("Available APIs on squareClient:", Object.keys(squareClient));
 
 
