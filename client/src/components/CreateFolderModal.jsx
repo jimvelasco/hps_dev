@@ -112,27 +112,11 @@ export default function CreateFolderModal({ isOpen, onClose, onCreateFolder, isL
             </div>
           )}
 
-          <div style={{
-            display: "flex",
-            gap: "10px",
-            justifyContent: "flex-end"
-          }}>
-            <button
-              type="button"
-              onClick={handleClose}
-              disabled={isLoading}
-              className="standardcancelbutton"
-              style={{
-                opacity: isLoading ? 0.6 : 1,
-                cursor: isLoading ? "not-allowed" : "pointer"
-              }}
-            >
-              Cancel
-            </button>
-            <button
+          <div className="button-grid"
+          > <button
               type="submit"
               disabled={isLoading || !folderName.trim()}
-              className="standardsubmitbutton"
+              className="btn btn-primary"
               style={{
                 opacity: isLoading || !folderName.trim() ? 0.6 : 1,
                 cursor: isLoading || !folderName.trim() ? "not-allowed" : "pointer"
@@ -140,6 +124,19 @@ export default function CreateFolderModal({ isOpen, onClose, onCreateFolder, isL
             >
               {isLoading ? "Creating..." : "Create Folder"}
             </button>
+            <button
+              type="button"
+              onClick={handleClose}
+              disabled={isLoading}
+              className="btn btn-default"
+              style={{
+                opacity: isLoading ? 0.6 : 1,
+                cursor: isLoading ? "not-allowed" : "pointer"
+              }}
+            >
+              Cancel
+            </button>
+           
           </div>
         </form>
       </div>

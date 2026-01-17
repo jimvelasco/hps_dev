@@ -92,7 +92,7 @@ export default function PDFUpload() {
 
   const navButtons = [
     {
-      label: "Back to Administration",
+      label: "Back",
       onClick: handleBackClick,
       which: "goback",
     },

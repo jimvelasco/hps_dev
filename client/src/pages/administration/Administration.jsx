@@ -171,7 +171,7 @@ export default function Administration() {
 
   const navButtons = [
     {
-      label: "Back to Dashboard",
+      label: "Back",
       onClick: handleBackClick,
       which: "goback"
     }

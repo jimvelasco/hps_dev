@@ -142,7 +142,7 @@ export default function ContactInformation() {
 
   const navButtons = [
     {
-      label: "Back to Administration",
+      label: "Back",
       onClick: handleBackClick,
       which: "goback"
     }
@@ -289,16 +289,16 @@ let backgroundImage = '';
           </table>
         </div>
 
-        <div className="editable-table-button-container">
+        <div className="button-grid">
           <button
-            className="editable-table-add-button"
+            className="btn btn-primary"
             onClick={handleAddRow}
           >
             + Add Row
           </button>
 
           <button
-            className="editable-table-save-button"
+            className="btn btn-primary"
             onClick={handleSaveAll}
             disabled={saving}
           >

@@ -83,7 +83,7 @@ export default function ImageUpload() {
 
   const navButtons = [
     {
-      label: "Back to Administration",
+      label: "Back",
       onClick: handleBackClick,
       which: "goback",
     },

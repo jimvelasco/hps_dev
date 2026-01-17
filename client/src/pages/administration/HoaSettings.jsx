@@ -96,7 +96,7 @@ export default function HoaSettings() {
 
   const navButtons = [
     {
-      label: "Back to Administration",
+      label: "Back",
       onClick: handleBackClick,
       which: "goback"
     }

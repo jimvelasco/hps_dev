@@ -172,7 +172,7 @@ export default function PaymentRefund() {
 
   const navButtons = [
     {
-      label: "Back to Administration",
+      label: "Back",
       onClick: handleBackClick,
       which: "goback"
     }
@@ -365,11 +365,11 @@ export default function PaymentRefund() {
                       </span>
                     </div>
                     <div className="grid-item-normal">
-                      <div className="button-grid">
+                      <div className="button-grid" style={{display:'flex',width:"100px",justifySelf:"start"}}>
                      
                        <button
                         onClick={() => handleSelectPayment(payment)}
-                        className="btns btn-primary"
+                        className="btnxs btn-primary"
                       >
                         {selectedPayment?._id === payment._id ? "Selected" : "Select"}
                       </button>
