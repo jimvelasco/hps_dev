@@ -206,70 +206,70 @@ export default function PaymentRefund() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "20px" }}>
                 <div>
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Unit Number</label>
-                  <input
+                  <input className="standardinput"
                     type="text"
                     name="unitnumber"
                     value={searchFilters.unitnumber}
                     onChange={handleFilterChange}
                     placeholder="e.g., 101"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px",
-                      boxSizing: "border-box"
-                    }}
+                    // style={{
+                    //   width: "100%",
+                    //   padding: "10px",
+                    //   border: "1px solid #ddd",
+                    //   borderRadius: "4px",
+                    //   boxSizing: "border-box"
+                    // }}
                   />
                 </div>
                 <div>
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>License Plate</label>
-                  <input
+                  <input className="standardinput"
                     type="text"
                     name="plate"
                     value={searchFilters.plate}
                     onChange={handleFilterChange}
                     placeholder="e.g., ABC123"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px",
-                      boxSizing: "border-box"
-                    }}
+                    // style={{
+                    //   width: "100%",
+                    //   padding: "10px",
+                    //   border: "1px solid #ddd",
+                    //   borderRadius: "4px",
+                    //   boxSizing: "border-box"
+                    // }}
                   />
                 </div>
                 <div>
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>First Name</label>
-                  <input
+                  <input className="standardinput"
                     type="text"
                     name="firstname"
                     value={searchFilters.firstname}
                     onChange={handleFilterChange}
                     placeholder="Owner first name"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px",
-                      boxSizing: "border-box"
-                    }}
+                    // style={{
+                    //   width: "100%",
+                    //   padding: "10px",
+                    //   border: "1px solid #ddd",
+                    //   borderRadius: "4px",
+                    //   boxSizing: "border-box"
+                    // }}
                   />
                 </div>
                 <div>
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Last Name</label>
-                  <input
+                  <input className="standardinput"
                     type="text"
                     name="lastname"
                     value={searchFilters.lastname}
                     onChange={handleFilterChange}
                     placeholder="Owner last name"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px",
-                      boxSizing: "border-box"
-                    }}
+                    // style={{
+                    //   width: "100%",
+                    //   padding: "10px",
+                    //   border: "1px solid #ddd",
+                    //   borderRadius: "4px",
+                    //   boxSizing: "border-box"
+                    // }}
                   />
                 </div>
                 <div className="full-row">
