@@ -168,11 +168,19 @@ const processRefund = async (req, res) => {
     console.log("Payment sq_amount from DB:", payment.sq_amount);
     const refundAmountCents = Math.round(refundAmount * 100);
     console.log("Refund amount in cents:", refundAmountCents);
-    if (refundAmountCents > payment.sq_amount) {
-      return res.status(400).json({ message: "Refund amount cannot exceed original payment amount" });
+    
+    const alreadyRefunded = payment.refundAmount || 0;
+    const availableToRefund = payment.sq_amount - alreadyRefunded;
+    console.log("Already refunded:", alreadyRefunded, "Available to refund:", availableToRefund);
+    
+    if (refundAmountCents > availableToRefund) {
+      return res.status(400).json({ 
+        message: `Refund amount cannot exceed available amount. Available: $${(availableToRefund / 100).toFixed(2)}, Requested: $${refundAmount.toFixed(2)}` 
+      });
     }
 
     const idempotencyKey = crypto.randomUUID();
+    console.log("Sending refund request with paymentId:", payment.sq_paymentId);
     const squareRefund = await squareClient.refundsApi.refundPayment({
       idempotencyKey,
       paymentId: payment.sq_paymentId,
@@ -201,7 +209,8 @@ const processRefund = async (req, res) => {
     });
   } catch (error) {
     console.error("Error processing refund:", error);
-    res.status(500).json({ message: error.message || "Error processing refund" });
+    const errorMessage = error.errors?.[0]?.detail || error.message || "Error processing refund";
+    res.status(500).json({ message: errorMessage });
   }
 };
 
