@@ -165,7 +165,9 @@ const processRefund = async (req, res) => {
       return res.status(404).json({ message: "Payment not found" });
     }
 
+    console.log("Payment sq_amount from DB:", payment.sq_amount);
     const refundAmountCents = Math.round(refundAmount * 100);
+    console.log("Refund amount in cents:", refundAmountCents);
     if (refundAmountCents > payment.sq_amount) {
       return res.status(400).json({ message: "Refund amount cannot exceed original payment amount" });
     }
