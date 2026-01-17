@@ -1,4 +1,4 @@
-import { Client } from "square";
+import { Client } from "square/legacy";
 
 const token = process.env.SQUARE_ACCESS_TOKEN;
 const locationId = process.env.SQUARE_LOCATION_ID;
