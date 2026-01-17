@@ -274,36 +274,36 @@ export default function PaymentRefund() {
                 </div>
                 <div className="full-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Start Date</label>
-                  <input
+                  <input  className="input-date"
                     type="date"
                     name="startDate"
                     value={searchFilters.startDate}
                     onChange={handleFilterChange}
-                    style={{
-                      // width: "100%",
-                      // maxWidth: "160px",
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px",
-                      boxSizing: "border-box"
-                    }}
+                    // style={{
+                    //   // width: "100%",
+                    //   // maxWidth: "160px",
+                    //   padding: "10px",
+                    //   border: "1px solid #ddd",
+                    //   borderRadius: "4px",
+                    //   boxSizing: "border-box"
+                    // }}
                   />
                 </div>
                 <div  className="full-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>End Date</label>
-                  <input
+                  <input  className="input-date"
                     type="date"
                     name="endDate"
                     value={searchFilters.endDate}
                     onChange={handleFilterChange}
-                    style={{
-                      // width: "100%",
-                      // maxWidth: "160px",
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px",
-                      boxSizing: "border-box"
-                    }}
+                    // style={{
+                    //   // width: "100%",
+                    //   // maxWidth: "160px",
+                    //   padding: "10px",
+                    //   border: "1px solid #ddd",
+                    //   borderRadius: "4px",
+                    //   boxSizing: "border-box"
+                    // }}
                   />
                 </div>
               </div>
