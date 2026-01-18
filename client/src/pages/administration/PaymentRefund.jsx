@@ -354,7 +354,7 @@ export default function PaymentRefund() {
 
                      <div className="grid-item-bold">Status</div>
                     <div className="grid-item-bold">&nbsp;</div>
-                    <div className="grid-item-bold">Total R</div>
+                    <div className="grid-item-bold">Refunded</div>
 
                     <div className="grid-item-normal">
                       <span style={{
