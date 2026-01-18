@@ -212,13 +212,13 @@ export default function PaymentRefund() {
                     value={searchFilters.unitnumber}
                     onChange={handleFilterChange}
                     placeholder="e.g., 101"
-                    // style={{
-                    //   width: "100%",
-                    //   padding: "10px",
-                    //   border: "1px solid #ddd",
-                    //   borderRadius: "4px",
-                    //   boxSizing: "border-box"
-                    // }}
+                  // style={{
+                  //   width: "100%",
+                  //   padding: "10px",
+                  //   border: "1px solid #ddd",
+                  //   borderRadius: "4px",
+                  //   boxSizing: "border-box"
+                  // }}
                   />
                 </div>
                 <div>
@@ -229,13 +229,13 @@ export default function PaymentRefund() {
                     value={searchFilters.plate}
                     onChange={handleFilterChange}
                     placeholder="e.g., ABC123"
-                    // style={{
-                    //   width: "100%",
-                    //   padding: "10px",
-                    //   border: "1px solid #ddd",
-                    //   borderRadius: "4px",
-                    //   boxSizing: "border-box"
-                    // }}
+                  // style={{
+                  //   width: "100%",
+                  //   padding: "10px",
+                  //   border: "1px solid #ddd",
+                  //   borderRadius: "4px",
+                  //   boxSizing: "border-box"
+                  // }}
                   />
                 </div>
                 <div>
@@ -246,13 +246,13 @@ export default function PaymentRefund() {
                     value={searchFilters.firstname}
                     onChange={handleFilterChange}
                     placeholder="Owner first name"
-                    // style={{
-                    //   width: "100%",
-                    //   padding: "10px",
-                    //   border: "1px solid #ddd",
-                    //   borderRadius: "4px",
-                    //   boxSizing: "border-box"
-                    // }}
+                  // style={{
+                  //   width: "100%",
+                  //   padding: "10px",
+                  //   border: "1px solid #ddd",
+                  //   borderRadius: "4px",
+                  //   boxSizing: "border-box"
+                  // }}
                   />
                 </div>
                 <div>
@@ -263,47 +263,47 @@ export default function PaymentRefund() {
                     value={searchFilters.lastname}
                     onChange={handleFilterChange}
                     placeholder="Owner last name"
-                    // style={{
-                    //   width: "100%",
-                    //   padding: "10px",
-                    //   border: "1px solid #ddd",
-                    //   borderRadius: "4px",
-                    //   boxSizing: "border-box"
-                    // }}
+                  // style={{
+                  //   width: "100%",
+                  //   padding: "10px",
+                  //   border: "1px solid #ddd",
+                  //   borderRadius: "4px",
+                  //   boxSizing: "border-box"
+                  // }}
                   />
                 </div>
                 <div className="xfull-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Start Date</label>
-                  <input  className="input-date"
+                  <input className="input-date"
                     type="date"
                     name="startDate"
                     value={searchFilters.startDate}
                     onChange={handleFilterChange}
-                    // style={{
-                    //   // width: "100%",
-                    //   // maxWidth: "160px",
-                    //   padding: "10px",
-                    //   border: "1px solid #ddd",
-                    //   borderRadius: "4px",
-                    //   boxSizing: "border-box"
-                    // }}
+                  // style={{
+                  //   // width: "100%",
+                  //   // maxWidth: "160px",
+                  //   padding: "10px",
+                  //   border: "1px solid #ddd",
+                  //   borderRadius: "4px",
+                  //   boxSizing: "border-box"
+                  // }}
                   />
                 </div>
-                <div  className="xfull-row">
+                <div className="xfull-row">
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>End Date</label>
-                  <input  className="input-date"
+                  <input className="input-date"
                     type="date"
                     name="endDate"
                     value={searchFilters.endDate}
                     onChange={handleFilterChange}
-                    // style={{
-                    //   // width: "100%",
-                    //   // maxWidth: "160px",
-                    //   padding: "10px",
-                    //   border: "1px solid #ddd",
-                    //   borderRadius: "4px",
-                    //   boxSizing: "border-box"
-                    // }}
+                  // style={{
+                  //   // width: "100%",
+                  //   // maxWidth: "160px",
+                  //   padding: "10px",
+                  //   border: "1px solid #ddd",
+                  //   borderRadius: "4px",
+                  //   boxSizing: "border-box"
+                  // }}
                   />
                 </div>
               </div>
@@ -324,65 +324,75 @@ export default function PaymentRefund() {
           </section>
 
           {payments.length > 0 && (
-              <div style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '10px',
-                justifyContent: 'center',
-                marginTop: '20px'
-              }}>
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              justifyContent: 'center',
+              marginTop: '20px'
+            }}>
 
-                {payments.map((payment) => (
-                  <div className="grid-container-3_oldhoa" key={payment._id}>
+              {payments.map((payment) => (
+                <div className="grid-container-3_oldhoa" key={payment._id} 
+                style={{gridTemplateColumns:"1fr 1fr 1fr"}}>
+                  <div className="full-row">{payment.lastname}, {payment.firstname}</div>
 
-                    <div className="grid-item-bold">Date</div>
-                    <div className="grid-item-bold">Name</div>
-                    <div className="grid-item-bold">Days</div>
+                  <div className="grid-item-bold">Date</div>
+                  <div className="grid-item-bold">Unit</div>
+                  <div className="grid-item-bold">Days</div>
 
 
-                    <div className="grid-item-normal" >{new Date(payment.sq_paymentDate).toLocaleDateString()}</div>
-                    <div className="grid-item-normal">{payment.lastname}, {payment.firstname}</div>
-                    <div className="grid-item-normal">{payment.numdays}</div>
+                  <div className="grid-item-normal" >{new Date(payment.sq_paymentDate).toLocaleDateString()}</div>
+                  <div className="grid-item-normal">{payment.unitnumber}</div>
+                  <div className="grid-item-normal">{payment.numdays}</div>
 
-                    <div className="grid-item-bold">Unit</div>
-                    <div className="grid-item-bold">Plate</div>
-                    <div className="grid-item-bold">Amount</div>
 
-                    <div className="grid-item-normal">{payment.unitnumber}</div>
-                    <div className="grid-item-normal">{payment.plate}</div>
-                    <div className="grid-item-normal">${(payment.sq_amount / 100).toFixed(2)}</div>
+                  <div className="grid-item-bold">Plate</div>
+                  <div className="grid-item-bold">Amount</div>
+                  <div className="grid-item-bold">Refunded</div>
 
-                     <div className="grid-item-bold">Status</div>
-                    <div className="grid-item-bold">&nbsp;</div>
-                    <div className="grid-item-bold">Refunded</div>
 
-                    <div className="grid-item-normal">
-                      <span style={{
-                        padding: "4px 8px",
-                        borderRadius: "4px",
-                        fontSize: "12px",
-                        fontWeight: "bold",
-                        backgroundColor: payment.status === "completed" ? "#d4edda" : "#f8d7da",
-                        color: payment.status === "completed" ? "#155724" : "#721c24"
-                      }}>
-                        {payment.status}
-                      </span>
+                  <div className="grid-item-normal">{payment.plate}</div>
+                  <div className="grid-item-normal">${(payment.sq_amount / 100).toFixed(2)}</div>
+                  <div className="grid-item-normal">
+                    <div className="grid-item-normal">${(payment.totalRefunded / 100).toFixed(2)}</div>
                     </div>
-                    <div className="grid-item-normal">
-                      <div className="button-grid" style={{display:'flex',width:"100px",justifySelf:"start"}}>
-                     
-                       <button
+   <div className="grid-item-normal">
+                    <span style={{
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      backgroundColor: payment.status === "completed" ? "#d4edda" : "#f8d7da",
+                      color: payment.status === "completed" ? "#155724" : "#721c24"
+                    }}>
+                      {payment.status}
+                    </span>
+                   
+                  </div>
+                 
+                  <div className="grid-item-bold">&nbsp;</div>
+
+                 
+
+               
+
+
+                  <div className="grid-item-normal">
+                    <div className="button-grid" style={{ display: 'flex', width: "100px", justifySelf: "start" }}>
+
+                      <button
                         onClick={() => handleSelectPayment(payment)}
                         className="btnxs btn-primary"
                       >
                         {selectedPayment?._id === payment._id ? "Selected" : "Select"}
                       </button>
-                      </div>
                     </div>
-                    <div className="grid-item-normal">${(payment.totalRefunded/100).toFixed(2)}</div>
                   </div>
-                ))}
-              </div>
+
+                </div>
+              ))}
+            </div>
           )}
 
           {selectedPayment && (

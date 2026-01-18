@@ -904,7 +904,8 @@ section.standardsectiondashboard {
 .grid-container-3_oldhoa {
   display: grid;
   grid-column-gap: 0px;
-  grid-template-columns: 1.5fr 1.5fr .7fr;
+  grid-template-columns: 1.5fr 1.5fr .8fr;
+   /* grid-template-columns: 1fr 1fr 1fr; */
   background-color: white;
   padding: 5px;
   
@@ -912,7 +913,7 @@ section.standardsectiondashboard {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-  width: 360px;
+  max-width: 380px;
   box-sizing: border-box;
   /* height: 170px */
 }
@@ -955,7 +956,7 @@ section.standardsectiondashboard {
   border-bottom: 0px solid #dddddd;
   /*  rgba(0, 0, 0, 0.8); */
   margin-bottom: 3px;
-  font-size: 12pt;
+  font-size: 11pt;
   text-align: left;
   margin: 1px;
   overflow-x: hidden;
@@ -977,11 +978,11 @@ section.standardsectiondashboard {
   background-color: rgba(255, 255, 255, 0.8);
   border-bottom: 0px solid rgba(0, 0, 0, 0.8);
   margin-bottom: 3px;
-  font-size: 12pt;
+  font-size: 10pt;
   text-align: left;
   margin-top: 5px;
   overflow-x: hidden;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 /* ********************************************** */
