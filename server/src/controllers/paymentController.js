@@ -165,13 +165,10 @@ const processRefund = async (req, res) => {
       return res.status(404).json({ message: "Payment not found" });
     }
 
-  //  console.log("Payment sq_amount from DB:", payment.sq_amount);
     const refundAmountCents = Math.round(refundAmount * 100);
-  //  console.log("Refund amount in cents:", refundAmountCents);
     
-    const alreadyRefunded = payment.refundAmount || 0;
-    const availableToRefund = payment.sq_amount - alreadyRefunded;
-    console.log("Already refunded:", alreadyRefunded, "Available to refund:", availableToRefund);
+    const totalRefunded = payment.totalRefunded || 0;
+    const availableToRefund = payment.sq_amount - totalRefunded;
     
     if (refundAmountCents > availableToRefund) {
       return res.status(400).json({ 
@@ -180,7 +177,6 @@ const processRefund = async (req, res) => {
     }
 
     const idempotencyKey = crypto.randomUUID();
-  //  console.log("Sending refund request with paymentId:", payment.sq_paymentId);
     const squareRefund = await squareClient.refundsApi.refundPayment({
       idempotencyKey,
       paymentId: payment.sq_paymentId,
@@ -192,12 +188,14 @@ const processRefund = async (req, res) => {
     });
 
     let newStatus = "partial_refund";
-    if (refundAmountCents === payment.sq_amount) {
+    const newTotalRefunded = totalRefunded + refundAmountCents;
+    if (newTotalRefunded === payment.sq_amount) {
       newStatus = "refunded";
     }
 
     payment.status = newStatus;
     payment.refundAmount = refundAmountCents;
+    payment.totalRefunded = newTotalRefunded;
     payment.refundDate = new Date();
     payment.refundReason = refundReason;
     await payment.save();

@@ -70,6 +70,10 @@ const paymentSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
+    totalRefunded: {
+      type: Number,
+      default: 0
+    },
     refundDate: {
       type: Date,
       default: null
