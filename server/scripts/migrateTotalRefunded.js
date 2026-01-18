@@ -7,7 +7,7 @@ dotenv.config();
 const migratePayments = async () => {
   try {
     console.log("Connecting to MongoDB...");
-    await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/hps_dev");
+    await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/hps_dev");
     console.log("Connected to MongoDB");
 
     console.log("Checking for totalRefunded field...");
