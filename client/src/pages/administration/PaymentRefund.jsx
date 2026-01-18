@@ -352,6 +352,10 @@ export default function PaymentRefund() {
                     <div className="grid-item-normal">{payment.plate}</div>
                     <div className="grid-item-normal">${(payment.sq_amount / 100).toFixed(2)}</div>
 
+                     <div className="grid-item-bold">Status</div>
+                    <div className="grid-item-bold">&nbsp;</div>
+                    <div className="grid-item-bold">Total R</div>
+
                     <div className="grid-item-normal">
                       <span style={{
                         padding: "4px 8px",
@@ -375,7 +379,7 @@ export default function PaymentRefund() {
                       </button>
                       </div>
                     </div>
-                    <div className="grid-item-normal">&nbsp;</div>
+                    <div className="grid-item-normal">${payment.totalRefunded }</div>
 
                   </div>
                 ))}
