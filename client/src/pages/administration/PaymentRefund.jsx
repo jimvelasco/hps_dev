@@ -379,8 +379,7 @@ export default function PaymentRefund() {
                       </button>
                       </div>
                     </div>
-                    <div className="grid-item-normal">${payment.totalRefunded }</div>
-
+                    <div className="grid-item-normal">${(payment.totalRefunded/100).toFixed(2)}</div>
                   </div>
                 ))}
               </div>
