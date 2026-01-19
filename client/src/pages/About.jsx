@@ -89,7 +89,7 @@ export default function About() {
             onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
            
           >
-            {hoaId ? "Back to Landing" : "Back to Home"}
+            {hoaId ? "Back" : "Back"}
           </button>
         </div>
       </div>
