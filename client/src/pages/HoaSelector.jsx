@@ -140,7 +140,7 @@ export default function HoaSelector() {
               </button>
               
             </div>
-            <div className="button-grid" style={{ marginTop: "10px" }}>
+            <div className="button-grid" style={{ marginTop: "15px" }}>
               <button
                 type="button"
                 className="btnxs btn-primary"
