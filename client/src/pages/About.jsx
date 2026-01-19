@@ -138,6 +138,57 @@ export default function About() {
 
 
 
+<div style={{marginTop:"70px", textAlign:"center"}}>
+  Version 3
+</div>
+
+ <h1>About the HOA Parking Management System</h1>
+
+  <p>
+    This web-based platform is designed to help Homeowners Associations efficiently manage residential
+    parking. It provides a flexible and easy-to-use solution for both property owners and renters,
+    without requiring the installation of a mobile application.
+  </p>
+
+  <h2>Purpose</h2>
+  <p>
+    HOAs frequently encounter challenges related to limited parking availability, particularly in
+    high-demand resort and vacation communities. This system enables associations to reduce
+    overcrowding, enforce parking policies, and, where appropriate, generate revenue from
+    excess parking demand.
+  </p>
+
+  <h2>System Overview</h2>
+  <ul>
+    <li>Accessible through any modern web browser on phones, tablets, and computers</li>
+    <li>Requires only a phone number and vehicle details for registration — no email address is needed</li>
+    <li>Allows property owners to maintain an inventory of vehicles and designate occupancy dates</li>
+    <li>Supports customizable parking rules for owners, renters, and additional vehicles</li>
+    <li>Includes an administrative interface for managing rates, date ranges, and contact information</li>
+  </ul>
+
+  <h2>Key Features</h2>
+  <ul>
+    <li>Web-based access with no software installation required</li>
+    <li>Configurable parking policies tailored to each HOA’s needs</li>
+    <li>Secure storage of vehicle images, rules, and terms and conditions using Amazon Web Services</li>
+    <li>Automated tracking of parking usage and availability</li>
+    <li>Administrative controls for adjusting pricing and permitted dates</li>
+  </ul>
+
+  <h2>Benefits to the Association</h2>
+  <ul>
+    <li>Improves parking availability and fairness for residents and guests</li>
+    <li>Reduces administrative overhead and eliminates the need for physical permits</li>
+    <li>Provides a mechanism for managing peak demand periods</li>
+    <li>Offers the option to create a new revenue stream through paid parking</li>
+  </ul>
+
+  <p>
+    The HOA Parking Management System is built to support responsible and transparent parking
+    practices, helping associations maintain order, improve resident satisfaction, and adapt
+    to the unique demands of their communities.
+  </p>
 
 
         <div className="button-grid">
