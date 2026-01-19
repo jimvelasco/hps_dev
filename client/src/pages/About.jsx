@@ -86,7 +86,7 @@ export default function About() {
 
 
 
-
+{/* 
 <div style={{marginTop:"70px", textAlign:"center"}}>
   Version 2
 </div>
@@ -134,10 +134,10 @@ export default function About() {
   <p>
     Whether your HOA wants to reduce congestion, make parking more fair, or create a new revenue stream,
     this system keeps things easy for everyone.
-  </p>
+  </p> */}
 
 
-
+{/* 
 <div style={{marginTop:"70px", textAlign:"center"}}>
   Version 3
 </div>
@@ -188,7 +188,7 @@ export default function About() {
     The HOA Parking Management System is built to support responsible and transparent parking
     practices, helping associations maintain order, improve resident satisfaction, and adapt
     to the unique demands of their communities.
-  </p>
+  </p> */}
 
 
         <div className="button-grid">
