@@ -83,6 +83,63 @@ export default function About() {
           crowding, improve convenience for owners, or create additional income for the association.
         </p>
 
+
+
+
+
+<div style={{marginTop:"70px", textAlign:"center"}}>
+  Version 2
+</div>
+  <h1>About This HOA Parking App</h1>
+
+  <p>
+    This website makes parking at HOAs easier — especially in busy places like ski resorts and vacation communities.
+    It helps HOAs manage parking fairly for owners and renters, and can even help associations earn money when
+    parking demand is high.
+  </p>
+
+  <h2>What’s the Idea?</h2>
+  <p>
+    Some HOAs are always short on parking. Others have extra spaces that just sit unused.
+    This app gives HOAs the tools to handle both situations. You can discourage overcrowding
+    when things get tight, or turn extra spots into a revenue source when you have room.
+  </p>
+
+  <h2>How It Works</h2>
+  <ul>
+    <li>No download needed — just use it in your web browser on your phone, tablet, or computer.</li>
+    <li>Register your car using only your phone number and vehicle details. No email required.</li>
+    <li>Owners can keep a list of their vehicles and simply mark when they’re leaving.</li>
+    <li>HOAs can set rules like “owners park free” or “renters pay for extra vehicles.”</li>
+    <li>Administrators can easily manage dates, pricing, and HOA contact information.</li>
+  </ul>
+
+  <h2>Why People Like It</h2>
+  <ul>
+    <li>It’s simple and quick to use</li>
+    <li>Works from any device</li>
+    <li>Flexible for different HOA rules</li>
+    <li>Secure — all documents and images are stored safely on AWS</li>
+    <li>Helps keep parking fair and organized</li>
+  </ul>
+
+  <h2>Good for HOAs</h2>
+  <ul>
+    <li>Keeps parking from getting out of hand</li>
+    <li>Makes it easy to manage owners and renters</li>
+    <li>Can generate extra income when needed</li>
+    <li>No more paper permits or guessing who belongs there</li>
+  </ul>
+
+  <p>
+    Whether your HOA wants to reduce congestion, make parking more fair, or create a new revenue stream,
+    this system keeps things easy for everyone.
+  </p>
+
+
+
+
+
         <div className="button-grid">
           <button
             className="btnxs btn-primary"
