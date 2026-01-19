@@ -33,6 +33,7 @@ import ParkingPayment from "./pages/ParkingPayment";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import ResetPassword from "./pages/ResetPassword";
 import EmailFromHoa from "./pages/EmailFromHoa";
+import About from "./pages/About";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getAWSResource } from "./utils/awsHelper";
 
@@ -77,7 +78,11 @@ function AppContent() {
   return <LandingPage backgroundImage={backgroundImage} hoaId={hoaId} hoaError={error} />;
 }
 
+
+
 // <Route path="/:hoaId/vehicledetails/:vehicleId" element={<VehicleDetails />} />
+
+
 
 function App() {
   return (
@@ -85,6 +90,7 @@ function App() {
       <HoaProvider>
         <Routes>
           <Route path="/" element={<HoaSelector />} />
+          <Route path="/about" element={<About />} />
           <Route path="/:hoaId" element={<AppContent />} />
           <Route path="/:hoaId/ownerslogin" element={
             <OwnersLogin />
@@ -194,6 +200,7 @@ function App() {
           <Route path="/:hoaId/email-from-hoa" element={
             <EmailFromHoa />
           } />
+
           <Route path="/:hoaId/payment" element={
             <ParkingPayment />
           } />

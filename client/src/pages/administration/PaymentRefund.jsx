@@ -333,8 +333,8 @@ export default function PaymentRefund() {
             }}>
 
               {payments.map((payment) => (
-                <div className="grid-container-3_oldhoa" key={payment._id} 
-                style={{gridTemplateColumns:"1fr 1fr 1fr"}}>
+                <div className="grid-container-3_oldhoa" key={payment._id}
+                  style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
                   <div className="full-row">{payment.lastname}, {payment.firstname}</div>
 
                   <div className="grid-item-bold">Date</div>
@@ -356,8 +356,8 @@ export default function PaymentRefund() {
                   <div className="grid-item-normal">${(payment.sq_amount / 100).toFixed(2)}</div>
                   <div className="grid-item-normal">
                     <div className="grid-item-normal">${(payment.totalRefunded / 100).toFixed(2)}</div>
-                    </div>
-   <div className="grid-item-normal">
+                  </div>
+                  <div className="grid-item-normal">
                     <span style={{
                       padding: "4px 8px",
                       borderRadius: "4px",
@@ -368,14 +368,14 @@ export default function PaymentRefund() {
                     }}>
                       {payment.status}
                     </span>
-                   
+
                   </div>
-                 
+
                   <div className="grid-item-bold">&nbsp;</div>
 
-                 
 
-               
+
+
 
 
                   <div className="grid-item-normal">

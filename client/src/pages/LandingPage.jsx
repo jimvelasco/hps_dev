@@ -81,6 +81,25 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
              Renters
            </button>
         </div>
+        <div style={{ marginTop: "15px", textAlign: "center" }}>
+          <button
+            style={{
+              padding: "6px 12px",
+              fontSize: "14px",
+              color: "white",
+              backgroundColor: "#666",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              transition: "background-color 0.3s"
+            }}
+            onClick={() => navigate("/about")}
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#555"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#666"}
+          >
+            About
+          </button>
+        </div>
         </div>
         {/* <div style={{
           marginTop: "30px",
