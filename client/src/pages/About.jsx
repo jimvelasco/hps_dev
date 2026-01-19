@@ -1,8 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function About() {
   const navigate = useNavigate();
+  const { hoaId } = useParams();
 
   return (
     <div style={{
@@ -14,7 +15,7 @@ export default function About() {
       padding: "20px"
     }}>
         <div className="standardtitlebar">
-          <h2 onClick={() => navigate("/")}>HOA Parking Solutions</h2>
+          <h2 onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}>HOA Parking Solutions</h2>
         </div>
 
       <div style={{
@@ -85,10 +86,10 @@ export default function About() {
         <div className="button-grid">
           <button
             className="btnxs btn-primary"
-            onClick={() => navigate("/")}
+            onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
            
           >
-            Back to Home
+            {hoaId ? "Back to Landing" : "Back to Home"}
           </button>
         </div>
       </div>

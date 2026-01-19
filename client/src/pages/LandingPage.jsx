@@ -93,7 +93,7 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
               cursor: "pointer",
               transition: "background-color 0.3s"
             }}
-            onClick={() => navigate("/about")}
+            onClick={() => navigate(`/${hoaId}/about`)}
             onMouseEnter={(e) => e.target.style.backgroundColor = "#555"}
             onMouseLeave={(e) => e.target.style.backgroundColor = "#666"}
           >
