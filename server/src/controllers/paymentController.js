@@ -103,7 +103,7 @@ const processSquarePayment = async (req, res) => {
     // console.log('TRYING TO SEND A PAYMENT TOKEN TO SQUARE ',token);
     //  console.log('TRYING TO SEND A PAYMENT LOCATION ID TO SQUARE ',process.env.SQUARE_LOCATION_ID);
     //  console.log('TRYING TO SEND A PAYMENT ACCESS TOKEN TO SQUARE ',process.env.SQUARE_ACCESS_TOKEN)
-    const response = await squareClient.paymentsApi.createPayment({
+    const response = await squareClient.payments.create({
       sourceId: token,
       idempotencyKey,
       amountMoney: {
@@ -177,7 +177,7 @@ const processRefund = async (req, res) => {
     }
 
     const idempotencyKey = crypto.randomUUID();
-    const squareRefund = await squareClient.refundsApi.refundPayment({
+    const squareRefund = await squareClient.refunds.refund({
       idempotencyKey,
       paymentId: payment.sq_paymentId,
       amountMoney: {
