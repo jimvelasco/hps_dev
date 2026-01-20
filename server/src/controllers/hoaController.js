@@ -75,13 +75,13 @@ const initiateSquareAuth = async (req, res) => {
     const { sandbox } = req.query; // e.g. YV_sandbox
     
     const clientId = process.env.SQUARE_APPLICATION_ID;
-    // const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
-    //   ? "https://connect.squareup.com" 
-    //   : "https://connect.squareupsandbox.com";
+    const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
+      ? "https://connect.squareup.com" 
+      : "https://connect.squareupsandbox.com";
 
-     const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
-      ? "https://squareup.com" 
-      : "https://squareupsandbox.com";
+    //  const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
+    //   ? "https://squareup.com" 
+    //   : "https://squareupsandbox.com";
     
     // Scopes needed for payments and merchant info
     const scopes = [
@@ -91,12 +91,13 @@ const initiateSquareAuth = async (req, res) => {
       "OFFLINE_ACCESS"
     ];
     
-    const state = id; //JSON.stringify({ hoaid: id, sandbox });
+    //const state = id; //
+     const state = JSON.stringify({ hoaid: id, sandbox:sandbox });
    //const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${state}`;
    // const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${encodeURIComponent(state)}`;
-   const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${encodeURIComponent(state)}&session=false`;
+   const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${encodeURIComponent(state)}`;
  
-   console.log('*************** authUrl', authUrl)
+   console.log('***************XXXXX authUrl', authUrl)
     res.json({ authUrl });
   } catch (error) {
     console.error("Initiate Square Auth error:", error);
