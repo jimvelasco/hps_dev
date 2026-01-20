@@ -168,7 +168,6 @@ const squareOAuthCallback = async (req, res) => {
 export { getHoaById, getHoas, updateHoaById, initiateSquareAuth, squareOAuthCallback };
 
 /*
-https://connect.squareupsandbox.com/oauth2/authorize?client_id=sandbox-sq0idb-JTTVY1Et_XAASFn7mmGG6g&scope=PAYMENTS_WRITE+PAYMENTS_READ+MERCHANT_READ+OFFLINE_ACCESS&state=YV&session=false
 
-https://squareupsandbox.com/oauth2/authorize?client_id=sandbox-sq0idb-JTTVY1Et_XAASFn7mmGG6g&scope=PAYMENTS_WRITE+PAYMENTS_READ+MERCHANT_READ+OFFLINE_ACCESS&state=YV&session=false
+
 */

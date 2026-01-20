@@ -74,7 +74,10 @@ export default function HoaSettings() {
   const handleConnectSquare = async () => {
     try {
       const sandbox = `${hoaId.toUpperCase()}_sandbox`;
-      const response = await axios.get(`/hoas/${hoaId}/square/auth?sandbox=${sandbox}`);
+      // Add a timestamp to the end of the URL to force the browser to get a fresh response
+const response = await axios.get(`/hoas/${hoaId}/square/auth?sandbox=${sandbox}&t=${Date.now()}`);
+
+   //   const response = await axios.get(`/hoas/${hoaId}/square/auth?sandbox=${sandbox}`);
       if (response.data.authUrl) {
         console.log("Square auth URL:", response.data.authUrl);
         window.location.href = response.data.authUrl;
