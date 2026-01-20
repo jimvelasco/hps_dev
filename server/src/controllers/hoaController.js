@@ -75,13 +75,13 @@ const initiateSquareAuth = async (req, res) => {
     const { sandbox } = req.query; // e.g. YV_sandbox
     
     const clientId = process.env.SQUARE_APPLICATION_ID;
-    const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
-      ? "https://connect.squareup.com" 
-      : "https://connect.squareupsandbox.com";
+    // const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
+    //   ? "https://connect.squareup.com" 
+    //   : "https://connect.squareupsandbox.com";
 
-    //  const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
-    //   ? "https://squareup.com" 
-    //   : "https://squareupsandbox.com";
+     const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
+      ? "https://squareup.com" 
+      : "https://squareupsandbox.com";
     
     // Scopes needed for payments and merchant info
     const scopes = [
