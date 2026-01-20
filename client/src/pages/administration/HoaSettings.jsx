@@ -76,6 +76,7 @@ export default function HoaSettings() {
       const sandbox = `${hoaId.toUpperCase()}_sandbox`;
       const response = await axios.get(`/hoas/${hoaId}/square/auth?sandbox=${sandbox}`);
       if (response.data.authUrl) {
+        console.log("Square auth URL:", response.data.authUrl);
         window.location.href = response.data.authUrl;
       }
     } catch (err) {
