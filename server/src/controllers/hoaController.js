@@ -89,8 +89,10 @@ const initiateSquareAuth = async (req, res) => {
     
     const state = id; //JSON.stringify({ hoaid: id, sandbox });
    //const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${state}`;
-    const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${encodeURIComponent(state)}`;
-    console.log('*************** authUrl', authUrl)
+   // const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${encodeURIComponent(state)}`;
+   const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${encodeURIComponent(state)}&session=false`;
+ 
+   console.log('*************** authUrl', authUrl)
     res.json({ authUrl });
   } catch (error) {
     console.error("Initiate Square Auth error:", error);
