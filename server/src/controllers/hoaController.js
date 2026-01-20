@@ -75,9 +75,13 @@ const initiateSquareAuth = async (req, res) => {
     const { sandbox } = req.query; // e.g. YV_sandbox
     
     const clientId = process.env.SQUARE_APPLICATION_ID;
-    const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
-      ? "https://connect.squareup.com" 
-      : "https://connect.squareupsandbox.com";
+    // const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
+    //   ? "https://connect.squareup.com" 
+    //   : "https://connect.squareupsandbox.com";
+
+     const baseUrl = process.env.SQUARE_ENVIRONMENT === "production" 
+      ? "https://squareup.com" 
+      : "https://squareupsandbox.com";
     
     // Scopes needed for payments and merchant info
     const scopes = [
@@ -162,3 +166,9 @@ const squareOAuthCallback = async (req, res) => {
 };
 
 export { getHoaById, getHoas, updateHoaById, initiateSquareAuth, squareOAuthCallback };
+
+/*
+https://connect.squareupsandbox.com/oauth2/authorize?client_id=sandbox-sq0idb-JTTVY1Et_XAASFn7mmGG6g&scope=PAYMENTS_WRITE+PAYMENTS_READ+MERCHANT_READ+OFFLINE_ACCESS&state=YV&session=false
+
+https://squareupsandbox.com/oauth2/authorize?client_id=sandbox-sq0idb-JTTVY1Et_XAASFn7mmGG6g&scope=PAYMENTS_WRITE+PAYMENTS_READ+MERCHANT_READ+OFFLINE_ACCESS&state=YV&session=false
+*/
