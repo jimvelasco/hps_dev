@@ -107,7 +107,7 @@ const processSquarePayment = async (req, res) => {
       sourceId: token,
       idempotencyKey,
       amountMoney: {
-        amount: Math.round(amount),
+        amount: BigInt(Math.round(amount)),
         currency: "USD"
       },
       locationId: process.env.SQUARE_LOCATION_ID,
@@ -181,7 +181,7 @@ const processRefund = async (req, res) => {
       idempotencyKey,
       paymentId: payment.sq_paymentId,
       amountMoney: {
-        amount: refundAmountCents,
+        amount: BigInt(refundAmountCents),
         currency: "USD"
       },
       reason: refundReason || "Partial refund issued"

@@ -308,3 +308,10 @@ let backgroundImage = '';
     </div>
   );
 }
+
+/*
+on the HoaSettings page in the administration folder I need a 
+"Connect Square" button that will connect to the hoaparkingsolutions 
+square account and return a token for payments to be routed to the 
+JJV Consulting LLC square account
+*/
