@@ -1,8 +1,30 @@
 import User from "../models/User.js";
 import Payment from "../models/Payment.js";
+import Hoa from "../models/Hoa.js";
 import jwt from "jsonwebtoken";
-import { squareClient } from "../config/square.js";
+import { squareClient as globalSquareClient } from "../config/square.js";
 import crypto from "crypto";
+import pkg from 'square';
+const { SquareClient, SquareEnvironment } = pkg;
+
+const getSquareClientForHoa = async (hoaid) => {
+  const hoa = await Hoa.findOne({ hoaid });
+  if (hoa && hoa.square_access_token) {
+    return {
+      client: new SquareClient({
+        token: hoa.square_access_token,
+        environment: process.env.SQUARE_ENVIRONMENT === "production" 
+          ? SquareEnvironment.Production 
+          : SquareEnvironment.Sandbox
+      }),
+      locationId: hoa.square_location_id || process.env.SQUARE_LOCATION_ID
+    };
+  }
+  return {
+    client: globalSquareClient,
+    locationId: process.env.SQUARE_LOCATION_ID
+  };
+};
 
 const convertBigInt = (obj) => {
   if (typeof obj === "bigint") {
@@ -85,10 +107,10 @@ const recordParkingPayment = async (req, res) => {
 
 const processSquarePayment = async (req, res) => {
   try {
-    const { token, amount, parkingSessionId } = req.body;
+    const { token, amount, parkingSessionId, hoaid } = req.body;
 
     console.log('**************************************************************************************')
-    console.log('TRYING TO SEND A PAYMENT TO SQUARE token=', token, 'amount=', amount, 'parkingSessionId=', parkingSessionId, '********')
+    console.log('TRYING TO SEND A PAYMENT TO SQUARE token=', token, 'amount=', amount, 'parkingSessionId=', parkingSessionId, 'hoaid=', hoaid, '********')
     console.log('***************************************************************************************')
 
     if (!token || !amount) {
@@ -98,19 +120,17 @@ const processSquarePayment = async (req, res) => {
       });
     }
 
+    const { client, locationId } = await getSquareClientForHoa(hoaid);
+
     const idempotencyKey = crypto.randomUUID();
-    // console.log('TRYING TO SEND A PAYMENT IDEMPOTENCY KEY TO SQUARE ',idempotencyKey)
-    // console.log('TRYING TO SEND A PAYMENT TOKEN TO SQUARE ',token);
-    //  console.log('TRYING TO SEND A PAYMENT LOCATION ID TO SQUARE ',process.env.SQUARE_LOCATION_ID);
-    //  console.log('TRYING TO SEND A PAYMENT ACCESS TOKEN TO SQUARE ',process.env.SQUARE_ACCESS_TOKEN)
-    const response = await squareClient.payments.create({
+    const response = await client.payments.create({
       sourceId: token,
       idempotencyKey,
       amountMoney: {
         amount: BigInt(Math.round(amount)),
         currency: "USD"
       },
-      locationId: process.env.SQUARE_LOCATION_ID,
+      locationId: locationId,
       note: parkingSessionId ? `Parking session ${parkingSessionId}` : "Parking payment"
     });
 
@@ -165,6 +185,8 @@ const processRefund = async (req, res) => {
       return res.status(404).json({ message: "Payment not found" });
     }
 
+    const { client } = await getSquareClientForHoa(payment.hoaid);
+
     const refundAmountCents = Math.round(refundAmount * 100);
     
     const totalRefunded = payment.totalRefunded || 0;
@@ -177,7 +199,7 @@ const processRefund = async (req, res) => {
     }
 
     const idempotencyKey = crypto.randomUUID();
-    const squareRefund = await squareClient.refunds.refundPayment({
+    const squareRefund = await client.refunds.refundPayment({
       idempotencyKey,
       paymentId: payment.sq_paymentId,
       amountMoney: {

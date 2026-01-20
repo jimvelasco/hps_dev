@@ -105,7 +105,8 @@ export default function ParkingPayment() {
       const squareResponse = await axios.post("/payments/square", {
         token,
         amount: amountInCents,
-        parkingSessionId: vehicleId
+        parkingSessionId: vehicleId,
+        hoaid: hoa.hoaid
       });
 
       if (squareResponse.data.success) {

@@ -71,6 +71,19 @@ export default function HoaSettings() {
     setSuccess(null);
   };
 
+  const handleConnectSquare = async () => {
+    try {
+      const sandbox = `${hoaId.toUpperCase()}_sandbox`;
+      const response = await axios.get(`/hoas/${hoaId}/square/auth?sandbox=${sandbox}`);
+      if (response.data.authUrl) {
+        window.location.href = response.data.authUrl;
+      }
+    } catch (err) {
+      setError("Failed to initiate Square connection");
+      console.error("Square auth error:", err);
+    }
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError(null);
@@ -288,6 +301,22 @@ let backgroundImage = '';
             </div>
           </div>
 
+          <div className="hoa-settings-section" style={{ marginTop: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '4px' }}>
+            <h3 style={{ marginTop: 0 }}>Square Integration</h3>
+            {hoa?.square_access_token ? (
+              <div style={{ color: 'green', marginBottom: '10px' }}>
+                ✅ Square Connected (Merchant ID: {hoa.square_merchant_id})
+                <br />
+                Connected to Sandbox: {hoa.square_sandbox_id}
+              </div>
+            ) : (
+              <div style={{ color: '#666', marginBottom: '10px' }}>
+                Square is not connected for this HOA.
+              </div>
+            )}
+           
+          </div>
+
           <div className="button-grid">
             <button
               onClick={handleSave}
@@ -295,6 +324,12 @@ let backgroundImage = '';
               className="btn btn-primary"
             >
               {saving ? "Saving..." : "Save Settings"}
+            </button>
+             <button
+              onClick={handleConnectSquare}
+              className="btn btn-primary"
+            >
+              {hoa?.square_access_token ? "Reconnect Square" : "Connect Square"}
             </button>
             <button
               onClick={handleBackClick}

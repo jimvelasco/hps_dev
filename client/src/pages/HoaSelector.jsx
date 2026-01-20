@@ -1,13 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../services/api";
 
 export default function HoaSelector() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [hoas, setHoas] = useState([]);
   const [selectedHoaId, setSelectedHoaId] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [processingSquare, setProcessingSquare] = useState(false);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const code = queryParams.get("code");
+    const state = queryParams.get("state");
+
+    if (code && state) {
+      const completeSquareAuth = async () => {
+        setProcessingSquare(true);
+        try {
+          const response = await axios.post("/hoas/square/callback", { code, state });
+          if (response.data.hoa) {
+            alert("Square connected successfully for " + response.data.hoa.name);
+            navigate(`/${response.data.hoa.hoaid}/hoa-settings`);
+          }
+        } catch (err) {
+          console.error("Square callback error:", err);
+          setError("Failed to complete Square connection: " + (err.response?.data?.message || err.message));
+        } finally {
+          setProcessingSquare(false);
+        }
+      };
+      completeSquareAuth();
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     const fetchHoas = async () => {
@@ -75,7 +102,9 @@ export default function HoaSelector() {
           </div>
         )}
 
-        {loading ? (
+        {processingSquare ? (
+          <p style={{ textAlign: "center", color: "#666" }}>Connecting to Square...</p>
+        ) : loading ? (
           <p style={{ textAlign: "center", color: "#666" }}>Loading HOAs...</p>
         ) : (
           <form onSubmit={handleSubmit}>

@@ -169,6 +169,12 @@ const HoaSchema = new mongoose.Schema({
     renter_tc: { type: String },
     other: { type: String }
   },
+  square_access_token: { type: String },
+  square_refresh_token: { type: String },
+  square_token_expires_at: { type: Date },
+  square_merchant_id: { type: String },
+  square_sandbox_id: { type: String },
+  square_location_id: { type: String },
   date: {
     type: Date,
     default: Date.now
