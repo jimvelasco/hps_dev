@@ -83,11 +83,11 @@ const initiateSquareAuth = async (req, res) => {
     const scopes = [
       "PAYMENTS_WRITE",
       "PAYMENTS_READ",
-      "MERCHANT_PROFILE_READ",
+      "MERCHANT_READ",
       "OFFLINE_ACCESS"
     ];
     
-    const state = JSON.stringify({ hoaid: id, sandbox });
+    const state = id; //JSON.stringify({ hoaid: id, sandbox });
    //const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${state}`;
     const authUrl = `${baseUrl}/oauth2/authorize?client_id=${clientId}&scope=${scopes.join("+")}&state=${encodeURIComponent(state)}`;
     console.log('*************** authUrl', authUrl)
