@@ -116,7 +116,7 @@ const processSquarePayment = async (req, res) => {
 
     res.json({
       success: true,
-      payment: convertBigInt(response.result.payment)
+      payment: convertBigInt(response.payment)
     });
   } catch (err) {
     console.error("[SQUARE ERROR]", err);
@@ -177,7 +177,7 @@ const processRefund = async (req, res) => {
     }
 
     const idempotencyKey = crypto.randomUUID();
-    const squareRefund = await squareClient.refunds.refund({
+    const squareRefund = await squareClient.refunds.refundPayment({
       idempotencyKey,
       paymentId: payment.sq_paymentId,
       amountMoney: {
@@ -202,7 +202,7 @@ const processRefund = async (req, res) => {
 
     res.json({
       message: "Refund processed successfully",
-      refund: convertBigInt(squareRefund.result.refund),
+      refund: convertBigInt(squareRefund.refund),
       payment: payment
     });
   } catch (error) {
