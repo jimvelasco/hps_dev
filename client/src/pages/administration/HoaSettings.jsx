@@ -310,8 +310,13 @@ let backgroundImage = '';
 }
 
 /*
-on the HoaSettings page in the administration folder I need a 
-"Connect Square" button that will connect to the hoaparkingsolutions 
-square account and return a token for payments to be routed to the 
-JJV Consulting LLC square account
+On the HoaSettings page in the administration folder I need a 
+"Connect Square" button that will connect to the sandbox of my choice on the hoaparkingsolutions 
+square account.  The redirect url will be my development site on heroku
+which is https://hps-dev-3b2912f737e0.herokuapp.com/
+ Payments made from my application should show up on the sandboxes I have set up
+ on my hoaparkingsolutions square account.  Please modify the Hoa model to accomodate
+ the OAuth tokens for each Hoa and their respective sandboxes. I have set up three of them:
+ YV_sandbox, LODGE_sandbox and TIMBER_sandbox.  The capital letters for each sandbox coincide
+ with the hoaids for the particular hoa that has been logged onto.
 */
