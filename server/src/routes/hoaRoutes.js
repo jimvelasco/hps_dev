@@ -9,4 +9,5 @@ router.get("/:id", getHoaById);
 router.put("/:id", updateHoaById);
 router.get("/:id/square/auth", initiateSquareAuth);
 
+
 export default router;
