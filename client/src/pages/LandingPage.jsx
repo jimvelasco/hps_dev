@@ -83,7 +83,7 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
         </div>
         <div className="button-grid" style={{ marginTop: "15px" }}>
           <button
-            className="btnxs btn-primary"
+            className="btnxs btn-secondary"
             onClick={() => navigate(`/${hoaId}/about`)}
           >
             About
