@@ -87,7 +87,7 @@ const initiateSquareAuth = async (req, res) => {
     const scopes = [
       "PAYMENTS_WRITE",
       "PAYMENTS_READ",
-      "MERCHANT_READ",
+      "MERCHANT_PROFILE_READ",
       "OFFLINE_ACCESS"
     ];
     
