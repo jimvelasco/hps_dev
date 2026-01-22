@@ -3,8 +3,6 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
-//import { useSquarePayments } from "../hooks/useSquarePayments";
-//import { useSquareCard } from "../hooks/useSquareCard";
 import { useStripe, useElements, PaymentElement, Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import DashboardNavbar from "../components/DashboardNavbar";
@@ -122,8 +120,7 @@ export default function ParkingPayment() {
     fetchPaymentIntent();
   }, [vehicle, pricePerNight, numdays, vehicleId, hoa, unitNumber]);
 
-  //const { payments, error: squareError } = useSquarePayments();
-  // const { cardRef, tokenize, loading: cardLoading, error: cardError } = useSquareCard(payments);
+
 
 
   const getTodayInMMDD = () => {
@@ -139,6 +136,8 @@ export default function ParkingPayment() {
     }
 
     const todayMMDD = getTodayInMMDD();
+    console.log('todayMMDD', todayMMDD);
+
     const matchingRange = hoa.payment_ranges.find(range => {
       if (!range.startDayMo || !range.endDayMo) return false;
 
@@ -266,189 +265,6 @@ export default function ParkingPayment() {
     }
   };
 
-   const handlePayment = async () => {
-    setLoading(true);
-    try {
-      const totalAmount = pricePerNight * numdays;
-      const amountInCents = Math.round(totalAmount * 100);
-      const pricePerNightCents = Math.round(pricePerNight * 100);
-
-      // all of these were square things
-
-      // console.log('Tokenizing card for payment:', { vehicleId, totalAmount });
-      // const token = vehicleId; //await tokenize();
-
-
-      // console.log('Sending payment to Square:', { token, amount: amountInCents });
-      // const squareResponse = await axios.post("/payments/square", {
-      //   token,
-      //   amount: amountInCents,
-      //   parkingSessionId: vehicleId
-      // });
-      //  if (squareResponse.data.success) {
- // END all of these were square things
-
-      if (true) {
-       // console.log("Square payment successful:", squareResponse.data.payment);
-        const paymentId = vehicleId; //squareResponse.data.payment.id;
-         const amount = amountInCents; //squareResponse.data.payment.totalMoney.amount;
-         const cardLastFour = "1234"; //squareResponse.data.payment.cardDetails.card.last4;
-         const paymentDate = new Date().toLocaleDateString("en-CA"); //quareResponse.data.payment.createdAt;
-        console.log('Recording parking payment for vid', vehicleId);
-        await axios.post("/payments/record-parking", {
-          state: {
-            hoaid: hoa.hoaid,
-            vehicleId: vehicleId,
-            checkin: vehicle.checkin,
-            checkout: vehicle.checkout,
-            unitnumber: vehicle.unitnumber,
-            lastname: vehicle.carowner_lname,
-            firstname: vehicle.carowner_fname,
-            plate: vehicle.plate,
-            plate_state: vehicle.plate_state,
-            make: vehicle.make,
-            model: vehicle.model,
-            year: vehicle.year,
-            amountInCents:amountInCents,
-            numdays:numdays,
-            pricePerNight:pricePerNightCents,
-            totalAmount:amountInCents,
-            sq_paymentId:paymentId,
-            sq_amount:amount,
-            sq_cardLastFour:cardLastFour,
-            sq_paymentDate:paymentDate
-          }
-        });
-
-        console.log("Payment recorded successfully. Updating vehicle status...");
-        await axios.put(`/vehicles/payment/${vehicleId}`, {
-          state: {
-            requires_payment: 2
-          }
-        });
-
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Payment Successful",
-          message: `Payment of $${totalAmount.toFixed(2)} processed successfully!`,
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }));
-            if (role === "renter") {
-              navigate(`/${hoaId}/rentervehicles/${unitNumber}`);
-            } else {
-              navigate(`/${hoaId}/ownervehicles`);
-            }
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error processing payment:", error);
-      setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Payment Failed",
-        message: error.response?.data?.message || error.message || "Payment processing failed",
-        confirmText: "OK",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        }
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // const square_handlePayment = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const totalAmount = pricePerNight * numdays;
-  //     const amountInCents = Math.round(totalAmount * 100);
-
-  //     console.log('Tokenizing card for payment:', { vehicleId, totalAmount });
-  //     const token = await tokenize();
-
-
-  //     console.log('Sending payment to Square:', { token, amount: amountInCents });
-  //     const squareResponse = await axios.post("/payments/square", {
-  //       token,
-  //       amount: amountInCents,
-  //       parkingSessionId: vehicleId
-  //     });
-
-  //     if (squareResponse.data.success) {
-  //       console.log("Square payment successful:", squareResponse.data.payment);
-  //       const paymentId = squareResponse.data.payment.id;
-  //        const amount = squareResponse.data.payment.totalMoney.amount;
-  //        const cardLastFour = squareResponse.data.payment.cardDetails.card.last4;
-  //        const paymentDate = squareResponse.data.payment.createdAt;
-  //       console.log('Recording parking payment for vid', vehicleId);
-  //       await axios.post("/payments/record-parking", {
-  //         state: {
-  //           hoaid: hoa.hoaid,
-  //           vehicleId: vehicleId,
-  //           checkin: vehicle.checkin,
-  //           checkout: vehicle.checkout,
-  //           unitnumber: vehicle.unitnumber,
-  //           lastname: vehicle.carowner_lname,
-  //           firstname: vehicle.carowner_fname,
-  //           plate: vehicle.plate,
-  //           plate_state: vehicle.plate_state,
-  //           make: vehicle.make,
-  //           model: vehicle.model,
-  //           year: vehicle.year,
-  //           amountInCents:amountInCents,
-  //           numdays:numdays,
-  //           pricePerNight:pricePerNight,
-  //           totalAmount:totalAmount,
-  //           sq_paymentId:paymentId,
-  //           sq_amount:amount,
-  //           sq_cardLastFour:cardLastFour,
-  //           sq_paymentDate:paymentDate
-  //         }
-  //       });
-
-  //       console.log("Payment recorded successfully. Updating vehicle status...");
-  //       await axios.put(`/vehicles/payment/${vehicleId}`, {
-  //         state: {
-  //           requires_payment: 2
-  //         }
-  //       });
-
-  //       setModal({
-  //         isOpen: true,
-  //         type: "alert",
-  //         title: "Payment Successful",
-  //         message: `Payment of $${totalAmount.toFixed(2)} processed successfully!`,
-  //         confirmText: "OK",
-  //         onConfirm: () => {
-  //           setModal(prev => ({ ...prev, isOpen: false }));
-  //           if (role === "renter") {
-  //             navigate(`/${hoaId}/rentervehicles/${unitNumber}`);
-  //           } else {
-  //             navigate(`/${hoaId}/ownervehicles`);
-  //           }
-  //         }
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error processing payment:", error);
-  //     setModal({
-  //       isOpen: true,
-  //       type: "alert",
-  //       title: "Payment Failed",
-  //       message: error.response?.data?.message || error.message || "Payment processing failed",
-  //       confirmText: "OK",
-  //       onConfirm: () => {
-  //         setModal(prev => ({ ...prev, isOpen: false }));
-  //       }
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleBackClick = () => {
     // console.log('back clicked in Vehicle Details')
     // navigate(`/${hoaId}/ownervehicles`);
@@ -493,16 +309,7 @@ export default function ParkingPayment() {
 
           <div style={{ backgroundColor: "#f0f0f0", padding: "20px", borderRadius: "8px", width: "360px", margin: "0 auto", textAlign: "left" }}>
            
-            {/* {squareError && (
-              <div style={{ backgroundColor: "#ffebee", border: "1px solid #f44336", color: "#c62828", padding: "10px", borderRadius: "4px", marginBottom: "15px" }}>
-                {squareError}
-              </div>
-            )}
-            {cardError && (
-              <div style={{ backgroundColor: "#ffebee", border: "1px solid #f44336", color: "#c62828", padding: "10px", borderRadius: "4px", marginBottom: "15px" }}>
-                {cardError}
-              </div>
-            )} */}
+
 
             <div className="grid-container-2-full">
               <div className="full-row"><h3>Pricing Breakdown</h3></div>
@@ -517,21 +324,6 @@ export default function ParkingPayment() {
               <div>Price per Night</div><div>${pricePerNight.toFixed(2)}</div>
               <div>Total Payment</div><div>${(pricePerNight * numdays).toFixed(2)}</div>
             </div>
-
-            {/* square
-            <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "white", borderRadius: "4px", border: "1px solid #ddd" }}>
-              <h4 style={{ marginTop: 0, marginBottom: "15px" }}>Credit Card Information</h4>
-              <div ref={cardRef} style={{ minHeight: "56px", marginBottom: "15px" }} className="sq-card" />
-              {cardLoading && <p style={{ color: "#666", fontSize: "12px" }}>Loading card form...</p>}
-            </div> */}
-
-            {/* <div style={{ marginTop: "20px" }}>
-              <h4 style={{ marginTop: 0, marginBottom: "15px" }}>Test Credit Card Info:</h4>
-              <div>Card: 4111 1111 1111 1111</div>
-              <div>Exp: 12/26</div>
-              <div>CVV: 111</div>
-              <div>Zip: 12345</div>
-            </div> */}
 
             {clientSecret ? (
               <Elements stripe={loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)} options={{ clientSecret }}>

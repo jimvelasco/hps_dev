@@ -112,7 +112,7 @@ export default function PaymentRefund() {
       return;
     }
 
-    const originalAmount = selectedPayment.sq_amount || selectedPayment.stripeAmount || 0;
+    const originalAmount = selectedPayment.stripeAmount || 0;
     const maxRefund = originalAmount / 100;
     const alreadyRefunded = (selectedPayment.totalRefunded || 0) / 100;
     const availableRefund = maxRefund - alreadyRefunded;
@@ -348,7 +348,7 @@ export default function PaymentRefund() {
                   <div className="grid-item-bold">Days</div>
 
 
-                  <div className="grid-item-normal" >{new Date(payment.sq_paymentDate || payment.stripePaymentDate || payment.createdAt).toLocaleDateString()}</div>
+                  <div className="grid-item-normal" >{new Date(payment.stripePaymentDate || payment.createdAt).toLocaleDateString()}</div>
                   <div className="grid-item-normal">{payment.unitnumber}</div>
                   <div className="grid-item-normal">{payment.numdays}</div>
 
@@ -359,7 +359,7 @@ export default function PaymentRefund() {
 
 
                   <div className="grid-item-normal">{payment.plate}</div>
-                  <div className="grid-item-normal">${((payment.sq_amount || payment.stripeAmount || 0) / 100).toFixed(2)}</div>
+                  <div className="grid-item-normal">${((payment.stripeAmount || 0) / 100).toFixed(2)}</div>
                   <div className="grid-item-normal">
                     <div className="grid-item-normal">${(payment.totalRefunded / 100).toFixed(2)}</div>
                   </div>
@@ -426,10 +426,10 @@ export default function PaymentRefund() {
                     <strong>Plate:</strong><br /> {selectedPayment.plate}
                   </div>
                   <div>
-                    <strong>Original Amount:</strong><br /> ${((selectedPayment.sq_amount || selectedPayment.stripeAmount || 0) / 100).toFixed(2)}
+                    <strong>Original Amount:</strong><br /> ${((selectedPayment.stripeAmount || 0) / 100).toFixed(2)}
                   </div>
                   <div>
-                    <strong>Payment Date:</strong><br /> {new Date(selectedPayment.sq_paymentDate || selectedPayment.stripePaymentDate || selectedPayment.createdAt).toLocaleDateString()}
+                    <strong>Payment Date:</strong><br /> {new Date(selectedPayment.stripePaymentDate || selectedPayment.createdAt).toLocaleDateString()}
                   </div>
                   <div>
                     <strong>Days Paid:</strong><br /> {selectedPayment.numdays}
@@ -438,7 +438,7 @@ export default function PaymentRefund() {
                     <strong>Refunded</strong><br />  ${(selectedPayment.totalRefunded / 100).toFixed(2)}
                   </div>
                    <div>
-                    <strong>Available</strong><br />  ${(((selectedPayment.sq_amount || selectedPayment.stripeAmount || 0) - (selectedPayment.totalRefunded || 0)) / 100).toFixed(2)}
+                    <strong>Available</strong><br />  ${(((selectedPayment.stripeAmount || 0) - (selectedPayment.totalRefunded || 0)) / 100).toFixed(2)}
                   </div>
                 </div>
               </div>

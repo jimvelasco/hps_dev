@@ -1,7 +1,6 @@
 import User from "../models/User.js";
 import Payment from "../models/Payment.js";
 import jwt from "jsonwebtoken";
-import { squareClient } from "../config/square.js";
 import { stripe } from "../config/stripe.js";
 import crypto from "crypto";
 
@@ -23,27 +22,25 @@ const convertBigInt = (obj) => {
 };
 
 /*
- state: {
-            hoaid: hoa.hoaid,
-            vehicleId: vehicleId,
-            checkin: vehicle.checkin,
-            checkout: vehicle.checkout,
-            unitnumber: vehicle.unitnumber,
-            lastname: vehicle.carowner_lname,
-            firstname: vehicle.carowner_fname,
-            plate: vehicle.plate,
-            plate_state: vehicle.plate_state,
-            make: vehicle.make,
-            model: vehicle.model,
-            year: vehicle.year,
-            amountInCents:amountInCents,
-            numdays:numdays,
-            pricePerNight:pricePerNight,
-            totalAmount:totalAmount,
-            sq_paymentId:paymentId,
-            sq_amount:amount,
-            sq_cardLastFour:cardLastFour,
-            sq_paymentDate:paymentDate
+ hoaid: hoa.hoaid,
+          vehicleId: vehicleId,
+          checkin: vehicle.checkin,
+          checkout: vehicle.checkout,
+          unitnumber: vehicle.unitnumber,
+          lastname: vehicle.carowner_lname,
+          firstname: vehicle.carowner_fname,
+          plate: vehicle.plate,
+          plate_state: vehicle.plate_state,
+          make: vehicle.make,
+          model: vehicle.model,
+          year: vehicle.year,
+          numdays: numdays,
+          pricePerNight: pricePerNightCents,
+          totalAmount: amountInCents,
+          stripePaymentIntentId: paymentId,
+          stripeAmount: amount,
+          stripeCardLastFour: cardLastFour,
+          stripePaymentDate: paymentDate
 */
 
 const recordParkingPayment = async (req, res) => {
@@ -51,12 +48,15 @@ const recordParkingPayment = async (req, res) => {
     const { 
       hoaid, vehicleId, checkin, checkout, unitnumber, lastname, firstname, plate, plate_state, make, model, year,
       numdays, pricePerNight, totalAmount, 
-      sq_paymentId, sq_amount, sq_cardLastFour, sq_paymentDate,
       stripePaymentIntentId, stripeAmount, stripeCardLastFour, stripePaymentDate
     } = req.body.state;
 
     if (!hoaid || !vehicleId || !unitnumber || !lastname || !firstname || !plate) {
       return res.status(400).json({ message: "Missing required payment fields" });
+    }
+
+    if (!stripePaymentIntentId) {
+      return res.status(400).json({ message: "No payment ID provided (Stripe)" });
     }
 
     const paymentData = {
@@ -68,22 +68,12 @@ const recordParkingPayment = async (req, res) => {
       firstname,
       lastname,
       plate,
-      status: "completed"
+      status: "completed",
+      stripePaymentIntentId,
+      stripeAmount,
+      stripeCardLastFour,
+      stripePaymentDate: new Date(stripePaymentDate)
     };
-
-    if (sq_paymentId) {
-      paymentData.sq_paymentId = sq_paymentId;
-      paymentData.sq_amount = sq_amount;
-      paymentData.sq_cardLastFour = sq_cardLastFour;
-      paymentData.sq_paymentDate = new Date(sq_paymentDate);
-    } else if (stripePaymentIntentId) {
-      paymentData.stripePaymentIntentId = stripePaymentIntentId;
-      paymentData.stripeAmount = stripeAmount;
-      paymentData.stripeCardLastFour = stripeCardLastFour;
-      paymentData.stripePaymentDate = new Date(stripePaymentDate);
-    } else {
-      return res.status(400).json({ message: "No payment ID provided (Square or Stripe)" });
-    }
 
     const payment = await Payment.create(paymentData);
 
@@ -123,53 +113,6 @@ const createStripePaymentIntent = async (req, res) => {
   }
 };
 
-// this is never called
-const processSquarePayment = async (req, res) => {
-  try {
-    const { token, amount, parkingSessionId } = req.body;
-
-    console.log('**************************************************************************************')
-    console.log('TRYING TO SEND A PAYMENT TO SQUARE token=', token, 'amount=', amount, 'parkingSessionId=', parkingSessionId, '********')
-    console.log('***************************************************************************************')
-
-    if (!token || !amount) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required fields: token and amount"
-      });
-    }
-
-    const idempotencyKey = crypto.randomUUID();
-    console.log('TRYING TO SEND A PAYMENT IDEMPOTENCY KEY TO SQUARE ',idempotencyKey)
-    console.log('TRYING TO SEND A PAYMENT TOKEN TO SQUARE ',token);
-     console.log('TRYING TO SEND A PAYMENT LOCATION ID TO SQUARE ',process.env.SQUARE_LOCATION_ID);
-     console.log('TRYING TO SEND A PAYMENT ACCESS TOKEN TO SQUARE ',process.env.SQUARE_ACCESS_TOKEN)
-    const response = await squareClient.payments.create({
-      sourceId: token,
-      idempotencyKey,
-      amountMoney: {
-        amount: BigInt(Math.round(amount)),
-        currency: "USD"
-      },
-      locationId: process.env.SQUARE_LOCATION_ID,
-      note: parkingSessionId ? `Parking session ${parkingSessionId}` : "Parking payment"
-    });
-
-   
-
-    res.json({
-      success: true,
-      payment: convertBigInt(response.payment)
-    });
-  } catch (err) {
-    console.error("[SQUARE ERROR]", err);
-    res.status(500).json({
-      success: false,
-      message: err.message || "Payment processing failed"
-    });
-  }
-};
-
 const getPayments = async (req, res) => {
   try {
     const { hoaid, unitnumber, plate, firstname, lastname, startDate, endDate } = req.query;
@@ -186,11 +129,7 @@ const getPayments = async (req, res) => {
       if (startDate) dateFilter.$gte = new Date(startDate);
       if (endDate) dateFilter.$lte = new Date(endDate);
       
-      // Filter by either Square or Stripe payment date
-      filter.$or = [
-        { sq_paymentDate: dateFilter },
-        { stripePaymentDate: dateFilter }
-      ];
+      filter.stripePaymentDate = dateFilter;
     }
 
     const payments = await Payment.find(filter).sort({ createdAt: -1 });
@@ -215,7 +154,7 @@ const processRefund = async (req, res) => {
       return res.status(404).json({ message: "Payment not found" });
     }
 
-    const originalAmount = payment.sq_amount || payment.stripeAmount || 0;
+    const originalAmount = payment.stripeAmount || 0;
     const totalRefunded = payment.totalRefunded || 0;
     const availableToRefund = originalAmount - totalRefunded;
     
@@ -235,9 +174,6 @@ const processRefund = async (req, res) => {
         }
       });
       payment.stripeRefundId = refund.id;
-    } else if (payment.sq_paymentId) {
-      // Square refund logic if needed, but it was commented out
-      // Keeping it as a placeholder or you can implement it
     }
 
     let newStatus = "partial_refund";
@@ -263,5 +199,5 @@ const processRefund = async (req, res) => {
   }
 };
 
-export { recordParkingPayment, processSquarePayment, getPayments, processRefund, createStripePaymentIntent };
+export { recordParkingPayment, getPayments, processRefund, createStripePaymentIntent };
 
