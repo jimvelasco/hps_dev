@@ -3,8 +3,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
-//import { useSquarePayments } from "../hooks/useSquarePayments";
-//import { useSquareCard } from "../hooks/useSquareCard";
+import { useSquarePayments } from "../hooks/useSquarePayments";
+import { useSquareCard } from "../hooks/useSquareCard";
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
@@ -22,7 +22,7 @@ export default function ParkingPayment() {
   const [error, setError] = useState(null);
   const [pricePerNight, setPricePerNight] = useState(0);
 
-  //const { payments, error: squareError } = useSquarePayments();
+  const { payments, error: squareError } = useSquarePayments();
   // const { cardRef, tokenize, loading: cardLoading, error: cardError } = useSquareCard(payments);
 
 
@@ -96,12 +96,11 @@ export default function ParkingPayment() {
     try {
       const totalAmount = pricePerNight * numdays;
       const amountInCents = Math.round(totalAmount * 100);
-      const pricePerNightCents = Math.round(pricePerNight * 100);
 
       // all of these were square things
 
       // console.log('Tokenizing card for payment:', { vehicleId, totalAmount });
-      // const token = vehicleId; //await tokenize();
+      // const token = await tokenize();
 
 
       // console.log('Sending payment to Square:', { token, amount: amountInCents });
@@ -110,13 +109,12 @@ export default function ParkingPayment() {
       //   amount: amountInCents,
       //   parkingSessionId: vehicleId
       // });
-      //  if (squareResponse.data.success) {
+      // if (squareResponse.data.success) {
  // END all of these were square things
-
       if (true) {
        // console.log("Square payment successful:", squareResponse.data.payment);
         const paymentId = vehicleId; //squareResponse.data.payment.id;
-         const amount = amountInCents; //squareResponse.data.payment.totalMoney.amount;
+         const amount = totalAmount; //squareResponse.data.payment.totalMoney.amount;
          const cardLastFour = "1234"; //squareResponse.data.payment.cardDetails.card.last4;
          const paymentDate = new Date().toLocaleDateString("en-CA"); //quareResponse.data.payment.createdAt;
         console.log('Recording parking payment for vid', vehicleId);
@@ -136,8 +134,8 @@ export default function ParkingPayment() {
             year: vehicle.year,
             amountInCents:amountInCents,
             numdays:numdays,
-            pricePerNight:pricePerNightCents,
-            totalAmount:amountInCents,
+            pricePerNight:pricePerNight,
+            totalAmount:totalAmount,
             sq_paymentId:paymentId,
             sq_amount:amount,
             sq_cardLastFour:cardLastFour,
@@ -274,6 +272,77 @@ export default function ParkingPayment() {
   //   }
   // };
 
+  const stubhandlePayment = async () => {
+    setLoading(true);
+    try {
+      const totalAmount = pricePerNight * numdays;
+      const amountInCents = Math.round(totalAmount * 100);
+
+      console.log('Tokenizing card for payment:', { vehicleId, totalAmount });
+
+
+      // const token = await tokenize();
+
+      // console.log('Sending payment to Square:', { token, amount: amountInCents });
+      // const squareResponse = await axios.post("/payments/square", {
+      //   token,
+      //   amount: amountInCents,
+      //   parkingSessionId: vehicleId
+      // });
+
+      // if (squareResponse.data.success) {
+      //   console.log("Square payment successful:", squareResponse.data.payment);
+
+      //   console.log('Recording parking payment for vid', vehicleId);
+      //   await axios.post("/payments/record-parking", {
+      //     state: {
+      //       vehicleId: vehicleId,
+      //       checkin: vehicle.checkin,
+      //       checkout: vehicle.checkout
+      //     }
+      //   });
+
+      console.log("Payment recorded successfully. Updating vehicle status...");
+      await axios.put(`/vehicles/payment/${vehicleId}`, {
+        state: {
+          requires_payment: 2
+        }
+      });
+
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Payment Successful",
+        message: `Payment of $${totalAmount.toFixed(2)} processed successfully!`,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+          if (role === "renter") {
+            navigate(`/${hoaId}/rentervehicles/${unitNumber}`);
+          } else {
+            navigate(`/${hoaId}/ownervehicles`);
+          }
+        }
+      });
+      //  }
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Payment Failed",
+        message: error.response?.data?.message || error.message || "Payment processing failed",
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        }
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   const handleBackClick = () => {
     // console.log('back clicked in Vehicle Details')
     // navigate(`/${hoaId}/ownervehicles`);
@@ -317,8 +386,7 @@ export default function ParkingPayment() {
 
 
           <div style={{ backgroundColor: "#f0f0f0", padding: "20px", borderRadius: "8px", width: "360px", margin: "0 auto", textAlign: "left" }}>
-           
-            {/* {squareError && (
+            {squareError && (
               <div style={{ backgroundColor: "#ffebee", border: "1px solid #f44336", color: "#c62828", padding: "10px", borderRadius: "4px", marginBottom: "15px" }}>
                 {squareError}
               </div>
@@ -327,7 +395,7 @@ export default function ParkingPayment() {
               <div style={{ backgroundColor: "#ffebee", border: "1px solid #f44336", color: "#c62828", padding: "10px", borderRadius: "4px", marginBottom: "15px" }}>
                 {cardError}
               </div>
-            )} */}
+            )}
 
             <div className="grid-container-2-full">
               <div className="full-row"><h3>Pricing Breakdown</h3></div>
@@ -350,19 +418,18 @@ export default function ParkingPayment() {
               {cardLoading && <p style={{ color: "#666", fontSize: "12px" }}>Loading card form...</p>}
             </div> */}
 
-            {/* <div style={{ marginTop: "20px" }}>
+            <div style={{ marginTop: "20px" }}>
               <h4 style={{ marginTop: 0, marginBottom: "15px" }}>Test Credit Card Info:</h4>
               <div>Card: 4111 1111 1111 1111</div>
               <div>Exp: 12/26</div>
               <div>CVV: 111</div>
               <div>Zip: 12345</div>
-            </div> */}
-
+            </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
               <button
                 className="standardsubmitbutton"
                 onClick={handlePayment}
-                // disabled={loading || cardLoading || !payments}
+                disabled={loading || cardLoading || !payments}
 
               >
                 {loading ? "Processing..." : "Pay"}

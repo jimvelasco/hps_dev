@@ -88,6 +88,7 @@ export default function PaymentRefund() {
 
   const handleRefundSubmit = async (e) => {
     e.preventDefault();
+    console.log('handleRefundSubmit called  ',selectedPayment,refundAmount,refundReason);
 
     if (!selectedPayment) {
       setModal({
@@ -111,7 +112,7 @@ export default function PaymentRefund() {
       return;
     }
 
-    const maxRefund = selectedPayment.sq_amount / 100;
+    const maxRefund = selectedPayment.sq_amount / 1;
     if (parseFloat(refundAmount) > maxRefund) {
       setModal({
         isOpen: true,
@@ -137,6 +138,7 @@ export default function PaymentRefund() {
 
   const processRefund = async () => {
     setLoading(true);
+     console.log('processRefund called  ',selectedPayment,refundAmount,refundReason);
     try {
       await axios.post("/payments/refund", {
         paymentId: selectedPayment._id,
@@ -428,13 +430,19 @@ export default function PaymentRefund() {
                   <div>
                     <strong>Days Paid:</strong><br /> {selectedPayment.numdays}
                   </div>
+                   <div>
+                    <strong>Refunded</strong><br />  ${(selectedPayment.totalRefunded / 100).toFixed(2)}
+                  </div>
+                   <div>
+                    <strong>Available</strong><br />  ${( (selectedPayment.sq_amount - selectedPayment.totalRefunded) / 100).toFixed(2)}
+                  </div>
                 </div>
               </div>
 
               <form onSubmit={handleRefundSubmit}>
                 <div style={{ marginBottom: "20px" }}>
                   <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
-                    Refund Amount (Max: ${(selectedPayment.sq_amount / 100).toFixed(2)})
+                    Refund Amount 
                   </label>
                   <input
                     type="number"

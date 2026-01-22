@@ -184,7 +184,7 @@ export default function RenterVehicles() {
       alert("Unable to load unit information");
       return;
     }
-    // console.log("Payment click for vehicle id:", vid);
+     console.log("Payment click for vehicle id:", vehicle._id);
 
     navigate(`/${hoaId}/payment`, {
       state: {

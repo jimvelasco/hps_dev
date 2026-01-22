@@ -83,6 +83,7 @@ const recordParkingPayment = async (req, res) => {
   }
 };
 
+// this is never called
 const processSquarePayment = async (req, res) => {
   try {
     const { token, amount, parkingSessionId } = req.body;
@@ -99,10 +100,10 @@ const processSquarePayment = async (req, res) => {
     }
 
     const idempotencyKey = crypto.randomUUID();
-    // console.log('TRYING TO SEND A PAYMENT IDEMPOTENCY KEY TO SQUARE ',idempotencyKey)
-    // console.log('TRYING TO SEND A PAYMENT TOKEN TO SQUARE ',token);
-    //  console.log('TRYING TO SEND A PAYMENT LOCATION ID TO SQUARE ',process.env.SQUARE_LOCATION_ID);
-    //  console.log('TRYING TO SEND A PAYMENT ACCESS TOKEN TO SQUARE ',process.env.SQUARE_ACCESS_TOKEN)
+    console.log('TRYING TO SEND A PAYMENT IDEMPOTENCY KEY TO SQUARE ',idempotencyKey)
+    console.log('TRYING TO SEND A PAYMENT TOKEN TO SQUARE ',token);
+     console.log('TRYING TO SEND A PAYMENT LOCATION ID TO SQUARE ',process.env.SQUARE_LOCATION_ID);
+     console.log('TRYING TO SEND A PAYMENT ACCESS TOKEN TO SQUARE ',process.env.SQUARE_ACCESS_TOKEN)
     const response = await squareClient.payments.create({
       sourceId: token,
       idempotencyKey,
@@ -113,6 +114,8 @@ const processSquarePayment = async (req, res) => {
       locationId: process.env.SQUARE_LOCATION_ID,
       note: parkingSessionId ? `Parking session ${parkingSessionId}` : "Parking payment"
     });
+
+   
 
     res.json({
       success: true,
@@ -152,6 +155,9 @@ const getPayments = async (req, res) => {
   }
 };
 
+
+
+
 const processRefund = async (req, res) => {
   try {
     const { paymentId, refundAmount, refundReason } = req.body;
@@ -159,37 +165,38 @@ const processRefund = async (req, res) => {
     if (!paymentId || !refundAmount) {
       return res.status(400).json({ message: "Payment ID and refund amount are required" });
     }
+    const refundAmountCents =  Math.round(refundAmount * 100);
 
     const payment = await Payment.findById(paymentId);
     if (!payment) {
       return res.status(404).json({ message: "Payment not found" });
     }
 
-    const refundAmountCents = Math.round(refundAmount * 100);
-    
+    // const refundAmountCents = Math.round(refundAmount * 1);
+     const originalAmount = payment.sq_amount || 0;
     const totalRefunded = payment.totalRefunded || 0;
-    const availableToRefund = payment.sq_amount - totalRefunded;
+    const availableToRefund = originalAmount - (totalRefunded );
     
     if (refundAmountCents > availableToRefund) {
       return res.status(400).json({ 
-        message: `Refund amount cannot exceed available amount. Available: $${(availableToRefund / 100).toFixed(2)}, Requested: $${refundAmount.toFixed(2)}` 
+        message: `Refund amount cannot exceed available amount. Available: $${( (originalAmount - totalRefunded) / 100).toFixed(2)}, Requested: $${refundAmount.toFixed(2)}` 
       });
     }
 
-    const idempotencyKey = crypto.randomUUID();
-    const squareRefund = await squareClient.refunds.refundPayment({
-      idempotencyKey,
-      paymentId: payment.sq_paymentId,
-      amountMoney: {
-        amount: BigInt(refundAmountCents),
-        currency: "USD"
-      },
-      reason: refundReason || "Partial refund issued"
-    });
+    // const idempotencyKey = crypto.randomUUID();
+    // const squareRefund = await squareClient.refunds.refundPayment({
+    //   idempotencyKey,
+    //   paymentId: payment.sq_paymentId,
+    //   amountMoney: {
+    //     amount: BigInt(refundAmountCents),
+    //     currency: "USD"
+    //   },
+    //   reason: refundReason || "Partial refund issued"
+    // });
 
     let newStatus = "partial_refund";
     const newTotalRefunded = totalRefunded + refundAmountCents;
-    if (newTotalRefunded === payment.sq_amount) {
+    if (newTotalRefunded === refundAmountCents) {
       newStatus = "refunded";
     }
 
@@ -202,7 +209,8 @@ const processRefund = async (req, res) => {
 
     res.json({
       message: "Refund processed successfully",
-      refund: convertBigInt(squareRefund.refund),
+      // refund: convertBigInt(squareRefund.refund),
+       refund: convertBigInt(payment.sq_amount),
       payment: payment
     });
   } catch (error) {
