@@ -143,7 +143,7 @@ export default function HoaSelector() {
             <div className="button-grid" style={{ marginTop: "15px" }}>
               <button
                 type="button"
-                className="btnxs btn-primary"
+                className="btnxs btn-secondary"
                 onClick={() => navigate("/about")}
               >
                 About

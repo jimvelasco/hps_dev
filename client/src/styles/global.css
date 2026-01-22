@@ -1530,6 +1530,11 @@ input.standardinput:disabled {
   color: #ffffff;
   border-color: #2563eb;
 }
+.btn-secondary {
+  background-color: #1c3e5f;
+  color: #ffffff;
+  border-color: #2563eb;
+}
 
 .btn-danger {
   background-color: #d32f2f;
