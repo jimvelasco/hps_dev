@@ -49,7 +49,7 @@ const StripePaymentForm = ({ amount, vehicle, hoa, onSuccess, onCancel }) => {
     <form onSubmit={handleSubmit}>
       <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "white", borderRadius: "4px", border: "1px solid #ddd" }}>
         <h4 style={{ marginTop: 0, marginBottom: "15px" }}>Credit Card Information</h4>
-        <PaymentElement />
+        <PaymentElement options={{ layout: "tabs" }} />
         {errorMessage && <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>}
       </div>
       <div>

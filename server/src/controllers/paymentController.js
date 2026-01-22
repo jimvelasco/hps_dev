@@ -109,6 +109,7 @@ const createStripePaymentIntent = async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount), // Amount in cents
       currency: 'usd',
+      payment_method_types: ['card'],
       metadata: metadata || {}
     });
 
