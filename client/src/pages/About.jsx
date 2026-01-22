@@ -193,7 +193,7 @@ export default function About() {
 
         <div className="button-grid">
           <button
-            className="btnxs btn-primary"
+            className="btnxs btn-secondary"
             onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
            
           >
