@@ -66,7 +66,7 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
         <>
         <div style={{margin:"0px auto", textAlign:"center",border:"0px solid black",
           maxWidth:"360px", backgroundColor: "#fff",
-          borderRadius: "8px", padding: "15px", opacity: ".8"}}>
+          borderRadius: "8px", padding: "10px", opacity: ".8"}}>
         <div className="button-grid">
               <button
              className="btn btn-primary"
