@@ -5,10 +5,83 @@ import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 //import { useSquarePayments } from "../hooks/useSquarePayments";
 //import { useSquareCard } from "../hooks/useSquareCard";
+import { useStripe, useElements, PaymentElement, Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
 
+
+const StripePaymentForm = ({ amount, vehicle, hoa, onSuccess, onCancel }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        // Return URL is required for some payment methods, but for card it might not be if we handle it here
+        // However, Stripe often expects one. Since we want to handle the post-payment logic ourselves:
+        return_url: window.location.href,
+      },
+      redirect: 'if_required',
+    });
+
+    if (error) {
+      setErrorMessage(error.message);
+      setIsProcessing(false);
+    } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+      onSuccess(paymentIntent);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "white", borderRadius: "4px", border: "1px solid #ddd" }}>
+        <h4 style={{ marginTop: 0, marginBottom: "15px" }}>Credit Card Information</h4>
+        <PaymentElement />
+        {errorMessage && <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>}
+      </div>
+      <div>
+        <div>4242 4242 4242 4242</div>
+        <div>12/34</div>
+        <div>123</div>
+        <div>12345</div>
+        <div>matercard</div>
+        <div>5555 5555 5555 4444</div>
+        <div>decline</div>
+        <div>4000 0000 0000 9995</div>
+        <div>insuffecient funds</div>
+        <div>4000 0000 0000 9995</div>
+        <div>incorrect cvc</div>
+        <div>4000 0000 0000 0127</div>
+         <div>espired card</div>
+        <div>4000 0000 0000 0069</div>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
+        <button
+          type="submit"
+          className="standardsubmitbutton"
+          disabled={!stripe || isProcessing}
+        >
+          {isProcessing ? "Processing..." : `Pay $${(amount / 100).toFixed(2)}`}
+        </button>
+        <button type="button" className="standardcancelbutton" onClick={onCancel}>Cancel</button>
+      </div>
+    </form>
+  );
+};
 
 export default function ParkingPayment() {
   const navigate = useNavigate();
@@ -21,6 +94,32 @@ export default function ParkingPayment() {
   const [numdays, setNumdays] = useState(0);
   const [error, setError] = useState(null);
   const [pricePerNight, setPricePerNight] = useState(0);
+  const [clientSecret, setClientSecret] = useState("");
+
+  useEffect(() => {
+    const fetchPaymentIntent = async () => {
+      if (vehicle && pricePerNight && numdays && hoa) {
+        try {
+          const totalAmount = pricePerNight * numdays;
+          const amountInCents = Math.round(totalAmount * 100);
+          
+          const response = await axios.post("/payments/create-payment-intent", {
+            amount: amountInCents,
+            metadata: {
+              vehicleId,
+              hoaId: hoa.hoaid,
+              unitNumber
+            }
+          });
+          setClientSecret(response.data.clientSecret);
+        } catch (error) {
+          console.error("Error fetching payment intent:", error);
+        }
+      }
+    };
+
+    fetchPaymentIntent();
+  }, [vehicle, pricePerNight, numdays, vehicleId, hoa, unitNumber]);
 
   //const { payments, error: squareError } = useSquarePayments();
   // const { cardRef, tokenize, loading: cardLoading, error: cardError } = useSquareCard(payments);
@@ -90,6 +189,81 @@ export default function ParkingPayment() {
     };
     fetchVehicle();
   }, [vehicleId]);
+
+  const handleStripeSuccess = async (paymentIntent) => {
+    setLoading(true);
+    try {
+      const totalAmount = pricePerNight * numdays;
+      const amountInCents = Math.round(totalAmount * 100);
+      const pricePerNightCents = Math.round(pricePerNight * 100);
+
+      const paymentId = paymentIntent.id;
+      const amount = paymentIntent.amount;
+      const cardLastFour = paymentIntent.payment_method_types.includes('card') ? 'xxxx' : 'xxxx'; // Stripe doesn't give last4 in paymentIntent easily without expansion
+      // To get last4, we'd need to expand payment_method or use what's available
+      const paymentDate = new Date().toISOString();
+
+      console.log('Recording parking payment for vid', vehicleId);
+      await axios.post("/payments/record-parking", {
+        state: {
+          hoaid: hoa.hoaid,
+          vehicleId: vehicleId,
+          checkin: vehicle.checkin,
+          checkout: vehicle.checkout,
+          unitnumber: vehicle.unitnumber,
+          lastname: vehicle.carowner_lname,
+          firstname: vehicle.carowner_fname,
+          plate: vehicle.plate,
+          plate_state: vehicle.plate_state,
+          make: vehicle.make,
+          model: vehicle.model,
+          year: vehicle.year,
+          numdays: numdays,
+          pricePerNight: pricePerNightCents,
+          totalAmount: amountInCents,
+          stripePaymentIntentId: paymentId,
+          stripeAmount: amount,
+          stripeCardLastFour: cardLastFour,
+          stripePaymentDate: paymentDate
+        }
+      });
+
+      console.log("Payment recorded successfully. Updating vehicle status...");
+      await axios.put(`/vehicles/payment/${vehicleId}`, {
+        state: {
+          requires_payment: 2
+        }
+      });
+
+      setModal({
+        isOpen: true,
+        type: "success",
+        title: "Payment Successful",
+        message: "Your parking payment has been processed successfully.",
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+          if (role === "renter") {
+            navigate(`/${hoaId}/rentervehicles/${unitNumber}`);
+          } else {
+            navigate(`/${hoaId}/ownervehicles`);
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error recording payment:", error);
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Error Recording Payment",
+        message: "Your payment was successful but we failed to record it. Please contact support.",
+        confirmText: "OK",
+        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
    const handlePayment = async () => {
     setLoading(true);
@@ -358,18 +532,21 @@ export default function ParkingPayment() {
               <div>Zip: 12345</div>
             </div> */}
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
-              <button
-                className="standardsubmitbutton"
-                onClick={handlePayment}
-                // disabled={loading || cardLoading || !payments}
-
-              >
-                {loading ? "Processing..." : "Pay"}
-              </button>
-              <div>${(pricePerNight * numdays).toFixed(2)}</div>
-              <button className="standardcancelbutton" onClick={() => navigate(-1)}>Cancel</button>
-            </div>
+            {clientSecret ? (
+              <Elements stripe={loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)} options={{ clientSecret }}>
+                <StripePaymentForm 
+                  amount={Math.round(pricePerNight * numdays * 100)} 
+                  vehicle={vehicle} 
+                  hoa={hoa} 
+                  onSuccess={handleStripeSuccess} 
+                  onCancel={() => navigate(-1)} 
+                />
+              </Elements>
+            ) : (
+              <div style={{ textAlign: "center", padding: "20px" }}>
+                <p>Loading payment form...</p>
+              </div>
+            )}
           </div>
 
 

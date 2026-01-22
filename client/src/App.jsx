@@ -36,6 +36,10 @@ import EmailFromHoa from "./pages/EmailFromHoa";
 import About from "./pages/About";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getAWSResource } from "./utils/awsHelper";
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 
 function AppContent() {
@@ -88,7 +92,8 @@ function App() {
   return (
     <ErrorProvider>
       <HoaProvider>
-        <Routes>
+        <Elements stripe={stripePromise}>
+          <Routes>
           <Route path="/" element={<HoaSelector />} />
           <Route path="/about" element={<About />} />
           <Route path="/:hoaId/about" element={<About />} />
@@ -217,6 +222,7 @@ function App() {
 
 
         </Routes>
+        </Elements>
       </HoaProvider>
     </ErrorProvider>
   );

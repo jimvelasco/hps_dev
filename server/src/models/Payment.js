@@ -17,21 +17,43 @@ const paymentSchema = new mongoose.Schema(
     },
     sq_paymentId: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
-      index: true
+      index: true,
+      sparse: true
     },
     sq_amount: {
       type: Number,
-      required: true
+      required: false
     },
     sq_cardLastFour: {
       type: String,
-      required: true
+      required: false
     },
     sq_paymentDate: {
       type: Date,
-      required: true
+      required: false
+    },
+    stripePaymentIntentId: {
+      type: String,
+      unique: true,
+      index: true,
+      sparse: true
+    },
+    stripeRefundId: {
+      type: String,
+      unique: true,
+      index: true,
+      sparse: true
+    },
+    stripeAmount: {
+      type: Number
+    },
+    stripeCardLastFour: {
+      type: String
+    },
+    stripePaymentDate: {
+      type: Date
     },
     numdays: {
       type: Number,

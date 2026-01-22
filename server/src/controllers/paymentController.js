@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Payment from "../models/Payment.js";
 import jwt from "jsonwebtoken";
 import { squareClient } from "../config/square.js";
+import { stripe } from "../config/stripe.js";
 import crypto from "crypto";
 
 const convertBigInt = (obj) => {
@@ -47,22 +48,20 @@ const convertBigInt = (obj) => {
 
 const recordParkingPayment = async (req, res) => {
   try {
-  //  console.log("SERVER recordParkingPayment", req.body);
+    const { 
+      hoaid, vehicleId, checkin, checkout, unitnumber, lastname, firstname, plate, plate_state, make, model, year,
+      numdays, pricePerNight, totalAmount, 
+      sq_paymentId, sq_amount, sq_cardLastFour, sq_paymentDate,
+      stripePaymentIntentId, stripeAmount, stripeCardLastFour, stripePaymentDate
+    } = req.body.state;
 
-    const { hoaid, vehicleId, checkin, checkout, unitnumber, lastname, firstname, plate, plate_state, make, model, year,
-      amountInCents, numdays, pricePerNight, totalAmount, sq_paymentId, sq_amount, sq_cardLastFour, sq_paymentDate } = req.body.state;
-
-    if (!hoaid || !vehicleId || !sq_paymentId || !sq_amount || !unitnumber || !lastname || !firstname || !plate) {
+    if (!hoaid || !vehicleId || !unitnumber || !lastname || !firstname || !plate) {
       return res.status(400).json({ message: "Missing required payment fields" });
     }
-  //  console.log("SERVER STATE recordParkingPayment", req.body.state);
-    const payment = await Payment.create({
+
+    const paymentData = {
       hoaid,
       vehicleId,
-      sq_paymentId,
-      sq_amount,
-      sq_cardLastFour,
-      sq_paymentDate: new Date(sq_paymentDate),
       numdays,
       pricePerNight,
       unitnumber,
@@ -70,7 +69,23 @@ const recordParkingPayment = async (req, res) => {
       lastname,
       plate,
       status: "completed"
-    });
+    };
+
+    if (sq_paymentId) {
+      paymentData.sq_paymentId = sq_paymentId;
+      paymentData.sq_amount = sq_amount;
+      paymentData.sq_cardLastFour = sq_cardLastFour;
+      paymentData.sq_paymentDate = new Date(sq_paymentDate);
+    } else if (stripePaymentIntentId) {
+      paymentData.stripePaymentIntentId = stripePaymentIntentId;
+      paymentData.stripeAmount = stripeAmount;
+      paymentData.stripeCardLastFour = stripeCardLastFour;
+      paymentData.stripePaymentDate = new Date(stripePaymentDate);
+    } else {
+      return res.status(400).json({ message: "No payment ID provided (Square or Stripe)" });
+    }
+
+    const payment = await Payment.create(paymentData);
 
     const rval = { 
       message: "Parking payment recorded successfully",
@@ -80,6 +95,29 @@ const recordParkingPayment = async (req, res) => {
   } catch (error) {
     console.error("Error recording parking payment:", error);
     res.status(500).json({ message: error.message || "Error recording payment" });
+  }
+};
+
+const createStripePaymentIntent = async (req, res) => {
+  try {
+    const { amount, metadata } = req.body;
+
+    if (!amount) {
+      return res.status(400).json({ message: "Amount is required" });
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(amount), // Amount in cents
+      currency: 'usd',
+      metadata: metadata || {}
+    });
+
+    res.json({
+      clientSecret: paymentIntent.client_secret
+    });
+  } catch (error) {
+    console.error("Error creating Stripe PaymentIntent:", error);
+    res.status(500).json({ message: error.message || "Error creating PaymentIntent" });
   }
 };
 
@@ -142,21 +180,24 @@ const getPayments = async (req, res) => {
     if (lastname) filter.lastname = new RegExp(lastname, "i");
     
     if (startDate || endDate) {
-      filter.sq_paymentDate = {};
-      if (startDate) filter.sq_paymentDate.$gte = new Date(startDate);
-      if (endDate) filter.sq_paymentDate.$lte = new Date(endDate);
+      const dateFilter = {};
+      if (startDate) dateFilter.$gte = new Date(startDate);
+      if (endDate) dateFilter.$lte = new Date(endDate);
+      
+      // Filter by either Square or Stripe payment date
+      filter.$or = [
+        { sq_paymentDate: dateFilter },
+        { stripePaymentDate: dateFilter }
+      ];
     }
 
-    const payments = await Payment.find(filter).sort({ sq_paymentDate: -1 });
+    const payments = await Payment.find(filter).sort({ createdAt: -1 });
     res.json(payments);
   } catch (error) {
     console.error("Error fetching payments:", error);
     res.status(500).json({ message: error.message || "Error fetching payments" });
   }
 };
-
-
-
 
 const processRefund = async (req, res) => {
   try {
@@ -172,31 +213,34 @@ const processRefund = async (req, res) => {
       return res.status(404).json({ message: "Payment not found" });
     }
 
-    // const refundAmountCents = Math.round(refundAmount * 1);
-     const originalAmount = payment.sq_amount || 0;
+    const originalAmount = payment.sq_amount || payment.stripeAmount || 0;
     const totalRefunded = payment.totalRefunded || 0;
-    const availableToRefund = originalAmount - (totalRefunded );
+    const availableToRefund = originalAmount - totalRefunded;
     
     if (refundAmountCents > availableToRefund) {
       return res.status(400).json({ 
-        message: `Refund amount cannot exceed available amount. Available: $${( (originalAmount - totalRefunded) / 100).toFixed(2)}, Requested: $${refundAmount.toFixed(2)}` 
+        message: `Refund amount cannot exceed available amount. Available: $${((originalAmount - totalRefunded) / 100).toFixed(2)}, Requested: $${refundAmount.toFixed(2)}` 
       });
     }
 
-    // const idempotencyKey = crypto.randomUUID();
-    // const squareRefund = await squareClient.refunds.refundPayment({
-    //   idempotencyKey,
-    //   paymentId: payment.sq_paymentId,
-    //   amountMoney: {
-    //     amount: BigInt(refundAmountCents),
-    //     currency: "USD"
-    //   },
-    //   reason: refundReason || "Partial refund issued"
-    // });
+    if (payment.stripePaymentIntentId) {
+      const refund = await stripe.refunds.create({
+        payment_intent: payment.stripePaymentIntentId,
+        amount: refundAmountCents,
+        reason: 'requested_by_customer',
+        metadata: {
+          reason: refundReason || "Partial refund issued"
+        }
+      });
+      payment.stripeRefundId = refund.id;
+    } else if (payment.sq_paymentId) {
+      // Square refund logic if needed, but it was commented out
+      // Keeping it as a placeholder or you can implement it
+    }
 
     let newStatus = "partial_refund";
     const newTotalRefunded = totalRefunded + refundAmountCents;
-    if (newTotalRefunded === refundAmountCents) {
+    if (newTotalRefunded >= originalAmount) {
       newStatus = "refunded";
     }
 
@@ -209,16 +253,13 @@ const processRefund = async (req, res) => {
 
     res.json({
       message: "Refund processed successfully",
-      // refund: convertBigInt(squareRefund.refund),
-       refund: convertBigInt(payment.sq_amount),
       payment: payment
     });
   } catch (error) {
     console.error("Error processing refund:", error);
-    const errorMessage = error.errors?.[0]?.detail || error.message || "Error processing refund";
-    res.status(500).json({ message: errorMessage });
+    res.status(500).json({ message: error.message || "Error processing refund" });
   }
 };
 
-export { recordParkingPayment, processSquarePayment, getPayments, processRefund };
+export { recordParkingPayment, processSquarePayment, getPayments, processRefund, createStripePaymentIntent };
 
