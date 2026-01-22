@@ -105,6 +105,7 @@ const createStripePaymentIntent = async (req, res) => {
     if (!amount) {
       return res.status(400).json({ message: "Amount is required" });
     }
+    console.log('createStripePaymentIntent metadata is',metadata)
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount), // Amount in cents

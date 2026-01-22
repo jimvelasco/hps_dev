@@ -69,15 +69,16 @@ const StripePaymentForm = ({ amount, vehicle, hoa, onSuccess, onCancel }) => {
         <div>4000 0000 0000 0069</div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}>
+      <div className="button-grid" style={{ marginTop: "20px" }}>
+       {/* // <style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "20px" }}> */}
         <button
           type="submit"
-          className="standardsubmitbutton"
+          className="btn btn-primary"
           disabled={!stripe || isProcessing}
         >
           {isProcessing ? "Processing..." : `Pay $${(amount / 100).toFixed(2)}`}
         </button>
-        <button type="button" className="standardcancelbutton" onClick={onCancel}>Cancel</button>
+        <button type="button" className="btn btn-default" onClick={onCancel}>Cancel</button>
       </div>
     </form>
   );
