@@ -1,23 +1,71 @@
-import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
 import HoaInformation from "../components/HoaInformation";
 import { getAWSResource } from "../utils/awsHelper";
+import axios from "../services/api";
 
 export default function OwnersDashboard() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const role = loggedInUser ? loggedInUser.role : null;
+  const [stripeStatus, setStripeStatus] = useState({ onboardingComplete: false });
+  const [stripeLoading, setStripeLoading] = useState(false);
+  const [stripeSuccess, setStripeSuccess] = useState(null);
+  const [stripeErrorMsg, setStripeErrorMsg] = useState(null);
+
   let tlink = "ownervehicles";
   if (role === "admin") {
     tlink = "ownervehicles";
   }
+
+  useEffect(() => {
+    if (role === "admin" && hoa) {
+      checkStripeStatus();
+    }
+  }, [role, hoa]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("stripe_onboarding") === "success") {
+      setStripeSuccess("Stripe onboarding completed successfully!");
+      checkStripeStatus();
+    } else if (params.get("stripe_onboarding") === "refresh") {
+      setStripeErrorMsg("Stripe onboarding was interrupted. Please try again.");
+    }
+  }, [location]);
+
+  const checkStripeStatus = async () => {
+    try {
+      const response = await axios.get(`/hoas/${hoaId}/stripe-status`);
+      setStripeStatus(response.data);
+    } catch (err) {
+      console.error("Error checking Stripe status:", err);
+    }
+  };
+
+  const handleConnectStripe = async () => {
+    setStripeLoading(true);
+    setStripeErrorMsg(null);
+    try {
+      const response = await axios.post(`/hoas/${hoaId}/stripe-connect`);
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (err) {
+      setStripeErrorMsg("Failed to initialize Stripe onboarding");
+      console.error("Stripe connect error:", err);
+    } finally {
+      setStripeLoading(false);
+    }
+  };
 
   // useEffect(() => {
   //   if (hoaId) {
@@ -142,6 +190,68 @@ export default function OwnersDashboard() {
         </div>
 
         <HoaInformation hoa={hoa} />
+
+        {stripeErrorMsg && (
+          <div className="editable-table-error" style={{ maxWidth: "320px", margin: "10px auto" }}>
+            {stripeErrorMsg}
+          </div>
+        )}
+
+        {stripeSuccess && (
+          <div className="editable-table-success" style={{ maxWidth: "320px", margin: "10px auto" }}>
+            {stripeSuccess}
+          </div>
+        )}
+
+        {role === "admin" && (
+          <section className="standardsection-wide" style={{  justifyItems: "center", alignItems: "center", display: "flex", flexDirection: "column", maxWidth: "320px", margin: "20px auto" }}>
+            <h3 style={{ color: "#1976d2", marginTop: 0 }}>Stripe Payouts</h3>
+            <p style={{ fontSize: "14px", marginBottom: "15px" }}>
+              To receive payments, you must connect your Stripe account. 
+              HOA Parking Solutions takes a small fee from each transaction and deposits the rest directly into your account.
+            </p>
+            
+            {stripeStatus.onboardingComplete ? (
+              <div style={{  padding: "15px", backgroundColor: "#e8f5e9", borderRadius: "4px", border: "1px solid #c8e6c9", display: "flex", alignItems: "center", gap: "10px" }}>
+                <span style={{ color: "#2e7d32", fontSize: "20px" }}>✅</span>
+                <div>
+                  <strong style={{ color: "#2e7d32" }}>Stripe Connected & Ready</strong>
+                  <div style={{ fontSize: "12px", color: "#4caf50" }}>
+                    Payments and transfers are active.
+                  </div>
+                </div>
+              </div>
+            ) : stripeStatus.details_submitted ? (
+              <div style={{  padding: "15px", backgroundColor: "#fff3e0", borderRadius: "4px", border: "1px solid #ffe0b2" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                  <span style={{ color: "#ef6c00", fontSize: "20px" }}>⏳</span>
+                  <strong style={{ color: "#ef6c00" }}>Pending Verification</strong>
+                </div>
+                <p style={{ fontSize: "13px", margin: "0 0 10px 0" }}>
+                  Your details have been submitted, but Stripe is still verifying your account for transfers. 
+                  This usually takes a few minutes but can take up to 24 hours.
+                </p>
+                <button
+                  onClick={handleConnectStripe}
+                  disabled={stripeLoading}
+                  className="btn btn-default"
+                  style={{ width: "auto", fontSize: "12px" }}
+                >
+                  {stripeLoading ? "Checking..." : "Check Status on Stripe"}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleConnectStripe}
+                disabled={stripeLoading}
+                className="btn btn-primary"
+                style={{ width: "auto" }}
+              >
+                {stripeLoading ? "Connecting..." : "Connect Stripe Express"}
+              </button>
+            )}
+          </section>
+        )}
       </div>
     </div>
   );

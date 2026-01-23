@@ -14,7 +14,6 @@ export default function HoaSettings() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [stripeStatus, setStripeStatus] = useState({ onboardingComplete: false });
   const [formData, setFormData] = useState({
     hoaid: "",
     name: "",
@@ -52,44 +51,8 @@ export default function HoaSettings() {
         background_image_url: hoa.background_image_url || "",
         parking_information_url: hoa.parking_information_url || ""
       });
-      checkStripeStatus();
     }
   }, [hoaId, hoa, fetchHoaById]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("stripe_onboarding") === "success") {
-      setSuccess("Stripe onboarding completed successfully!");
-      checkStripeStatus();
-    } else if (params.get("stripe_onboarding") === "refresh") {
-      setError("Stripe onboarding was interrupted. Please try again.");
-    }
-  }, [location]);
-
-  const checkStripeStatus = async () => {
-    try {
-      const response = await axios.get(`/hoas/${hoaId}/stripe-status`);
-      setStripeStatus(response.data);
-    } catch (err) {
-      console.error("Error checking Stripe status:", err);
-    }
-  };
-
-  const handleConnectStripe = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.post(`/hoas/${hoaId}/stripe-connect`);
-      if (response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (err) {
-      setError("Failed to initialize Stripe onboarding");
-      console.error("Stripe connect error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -148,8 +111,6 @@ let backgroundImage = '';
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
-
-  const oktoshowonboarding = true;
 
   return (
       <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
@@ -327,58 +288,6 @@ let backgroundImage = '';
               />
             </div>
           </div>
-
-          {oktoshowonboarding && (
-         
-          <section className="standardsection-wide" style={{ marginTop: "20px",justifyItems: "center", alignItems: "center", display: "flex", flexDirection: "column",maxWidth:"320px",margin:"0 auto" }}>
-            <h3 style={{ color: "#1976d2", marginTop: 0 }}>Stripe Payouts</h3>
-            <p style={{ fontSize: "14px", marginBottom: "15px" }}>
-              To receive payments, you must connect your Stripe account. 
-              HOA Parking Solutions takes a small fee from each transaction and deposits the rest directly into your account.
-            </p>
-            
-            {stripeStatus.onboardingComplete ? (
-              <div style={{ padding: "15px", backgroundColor: "#e8f5e9", borderRadius: "4px", border: "1px solid #c8e6c9", display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{ color: "#2e7d32", fontSize: "20px" }}>✅</span>
-                <div>
-                  <strong style={{ color: "#2e7d32" }}>Stripe Connected & Ready</strong>
-                  <div style={{ fontSize: "12px", color: "#4caf50" }}>
-                    Payments and transfers are active.
-                  </div>
-                </div>
-              </div>
-            ) : stripeStatus.details_submitted ? (
-              <div style={{ padding: "15px", backgroundColor: "#fff3e0", borderRadius: "4px", border: "1px solid #ffe0b2" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                  <span style={{ color: "#ef6c00", fontSize: "20px" }}>⏳</span>
-                  <strong style={{ color: "#ef6c00" }}>Pending Verification</strong>
-                </div>
-                <p style={{ fontSize: "13px", margin: "0 0 10px 0" }}>
-                  Your details have been submitted, but Stripe is still verifying your account for transfers. 
-                  This usually takes a few minutes but can take up to 24 hours.
-                </p>
-                <button
-                  onClick={handleConnectStripe}
-                  disabled={loading}
-                  className="btn btn-default"
-                  style={{ width: "auto", fontSize: "12px" }}
-                >
-                  {loading ? "Checking..." : "Check Status on Stripe"}
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleConnectStripe}
-                disabled={loading}
-                className="btn btn-primary"
-                style={{ width: "auto" }}
-              >
-                {loading ? "Connecting..." : "Connect Stripe Express"}
-              </button>
-            )}
-          </section>
-           )
-            }
 
           <div className="button-grid" style={{ marginTop: "20px" }}>
            
