@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Payment from "../models/Payment.js";
+import Hoa from "../models/Hoa.js";
 import jwt from "jsonwebtoken";
 import { stripe } from "../config/stripe.js";
 import crypto from "crypto";
@@ -95,14 +96,39 @@ const createStripePaymentIntent = async (req, res) => {
     if (!amount) {
       return res.status(400).json({ message: "Amount is required" });
     }
-    console.log('createStripePaymentIntent metadata is',metadata)
+    console.log('createStripePaymentIntent metadata is', metadata)
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount), // Amount in cents
+    const amountInCents = Math.round(amount);
+    
+    // Create the payment intent object
+    const paymentIntentParams = {
+      amount: amountInCents,
       currency: 'usd',
       payment_method_types: ['card'],
       metadata: metadata || {}
-    });
+    };
+
+    // If an HOA ID is provided, try to find the HOA and their Stripe account
+    if (metadata && metadata.hoaId) {
+      const hoa = await Hoa.findOne({ hoaid: metadata.hoaId });
+      
+      if (hoa && hoa.stripeAccountId && hoa.stripeOnboardingComplete) {
+        // Destination charges: The charge is created on the platform, 
+        // and then the funds (minus the fee) are transferred to the HOA.
+        
+        // Calculate 10% application fee
+        const applicationFee = Math.round(amountInCents * 0.10);
+        
+        paymentIntentParams.application_fee_amount = applicationFee;
+        paymentIntentParams.transfer_data = {
+          destination: hoa.stripeAccountId
+        };
+        
+        console.log(`Setting up destination charge for HOA: ${hoa.name} (${hoa.stripeAccountId}) with fee: ${applicationFee}`);
+      }
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create(paymentIntentParams);
 
     res.json({
       clientSecret: paymentIntent.client_secret
@@ -165,6 +191,9 @@ const processRefund = async (req, res) => {
     }
 
     if (payment.stripePaymentIntentId) {
+      // For destination charges, by default the platform is the one that covers the refund.
+      // If we want the connected account to cover it, we'd add refund_application_fee: true
+      // or use reverse_transfer: true. For now, we'll keep it simple as a platform-level refund.
       const refund = await stripe.refunds.create({
         payment_intent: payment.stripePaymentIntentId,
         amount: refundAmountCents,

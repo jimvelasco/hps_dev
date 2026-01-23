@@ -141,6 +141,13 @@ const HoaSchema = new mongoose.Schema({
   status_flag: {
     type: Number, default: 1
   },
+  stripeAccountId: {
+    type: String
+  },
+  stripeOnboardingComplete: {
+    type: Boolean,
+    default: false
+  },
 
   payment_ranges: [
     {

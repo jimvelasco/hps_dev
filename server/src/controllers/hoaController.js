@@ -1,4 +1,5 @@
 import Hoa from "../models/Hoa.js";
+import { stripe } from "../config/stripe.js";
 
 const getHoaById = async (req, res) => {
   try {
@@ -68,4 +69,73 @@ const updateHoaById = async (req, res) => {
   }
 };
 
-export { getHoaById, getHoas, updateHoaById };
+const createStripeConnectAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const hoa = await Hoa.findOne({ hoaid: id });
+
+    if (!hoa) {
+      return res.status(404).json({ message: "HOA not found" });
+    }
+
+    let accountId = hoa.stripeAccountId;
+
+    if (!accountId) {
+      const account = await stripe.accounts.create({
+        type: 'express',
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
+        },
+        metadata: {
+          hoaid: hoa.hoaid,
+          hoaName: hoa.name
+        }
+      });
+      accountId = account.id;
+      hoa.stripeAccountId = accountId;
+      await hoa.save();
+    }
+
+    const accountLink = await stripe.accountLinks.create({
+      account: accountId,
+      refresh_url: `${process.env.CLIENT_URL}/${hoa.hoaid}/admin/settings?stripe_onboarding=refresh`,
+      return_url: `${process.env.CLIENT_URL}/${hoa.hoaid}/admin/settings?stripe_onboarding=success`,
+      type: 'account_onboarding',
+    });
+
+    res.json({ url: accountLink.url });
+  } catch (error) {
+    console.error("Create Stripe Connect Account error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getStripeAccountStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const hoa = await Hoa.findOne({ hoaid: id });
+
+    if (!hoa || !hoa.stripeAccountId) {
+      return res.json({ onboardingComplete: false });
+    }
+
+    const account = await stripe.accounts.retrieve(hoa.stripeAccountId);
+    
+    if (account.details_submitted && !hoa.stripeOnboardingComplete) {
+      hoa.stripeOnboardingComplete = true;
+      await hoa.save();
+    }
+
+    res.json({ 
+      onboardingComplete: account.details_submitted,
+      charges_enabled: account.charges_enabled,
+      payouts_enabled: account.payouts_enabled
+    });
+  } catch (error) {
+    console.error("Get Stripe Account Status error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { getHoaById, getHoas, updateHoaById, createStripeConnectAccount, getStripeAccountStatus };
