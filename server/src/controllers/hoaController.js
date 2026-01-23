@@ -95,6 +95,14 @@ const createStripeConnectAccount = async (req, res) => {
       accountId = account.id;
       hoa.stripeAccountId = accountId;
       await hoa.save();
+    } else {
+      // If account exists, ensure the capabilities are requested
+      await stripe.accounts.update(accountId, {
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
+        }
+      });
     }
 
     const accountLink = await stripe.accountLinks.create({

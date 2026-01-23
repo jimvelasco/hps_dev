@@ -60,6 +60,21 @@ const recordParkingPayment = async (req, res) => {
       return res.status(400).json({ message: "No payment ID provided (Stripe)" });
     }
 
+    let finalCardLastFour = stripeCardLastFour;
+    // Try to get actual last 4 digits from Stripe if not provided or hardcoded
+    if (stripePaymentIntentId && (!finalCardLastFour || finalCardLastFour === 'xxxx')) {
+      try {
+        const pi = await stripe.paymentIntents.retrieve(stripePaymentIntentId, {
+          expand: ['payment_method']
+        });
+        if (pi.payment_method && pi.payment_method.card) {
+          finalCardLastFour = pi.payment_method.card.last4;
+        }
+      } catch (e) {
+        console.error("Error fetching payment method details:", e);
+      }
+    }
+
     const paymentData = {
       hoaid,
       vehicleId,
@@ -72,7 +87,7 @@ const recordParkingPayment = async (req, res) => {
       status: "completed",
       stripePaymentIntentId,
       stripeAmount,
-      stripeCardLastFour,
+      stripeCardLastFour: finalCardLastFour,
       stripePaymentDate: new Date(stripePaymentDate)
     };
 
@@ -194,17 +209,27 @@ const processRefund = async (req, res) => {
     }
 
     if (payment.stripePaymentIntentId) {
-      // For destination charges, by default the platform is the one that covers the refund.
-      // If we want the connected account to cover it, we'd add refund_application_fee: true
-      // or use reverse_transfer: true. For now, we'll keep it simple as a platform-level refund.
-      const refund = await stripe.refunds.create({
+      // Retrieve the payment intent to check if it was a destination charge
+      const paymentIntent = await stripe.paymentIntents.retrieve(payment.stripePaymentIntentId);
+      
+      const refundParams = {
         payment_intent: payment.stripePaymentIntentId,
         amount: refundAmountCents,
         reason: 'requested_by_customer',
         metadata: {
           reason: refundReason || "Partial refund issued"
         }
-      });
+      };
+
+      // If it was a destination charge, reverse the transfer from the connected account
+      // and refund the application fee proportional to the refund amount
+      if (paymentIntent.transfer_data && paymentIntent.transfer_data.destination) {
+        refundParams.reverse_transfer = true;
+        refundParams.refund_application_fee = true;
+        console.log(`Processing refund with reverse_transfer for destination charge: ${payment.stripePaymentIntentId}`);
+      }
+
+      const refund = await stripe.refunds.create(refundParams);
       payment.stripeRefundId = refund.id;
     }
 

@@ -199,8 +199,7 @@ export default function ParkingPayment() {
 
       const paymentId = paymentIntent.id;
       const amount = paymentIntent.amount;
-      const cardLastFour = paymentIntent.payment_method_types.includes('card') ? 'xxxx' : 'xxxx'; // Stripe doesn't give last4 in paymentIntent easily without expansion
-      // To get last4, we'd need to expand payment_method or use what's available
+      const cardLastFour = 'xxxx'; // Server will fetch actual last 4 from Stripe using paymentIntentId
       const paymentDate = new Date().toISOString();
 
       //console.log('Recording parking payment for vid', vehicleId);
