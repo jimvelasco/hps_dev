@@ -172,7 +172,7 @@ let backgroundImage = '';
           </div>
         )}
 
-        <div className="hoa-settings-container">
+        <div className="hoa-settings-container" >
           <div className="hoa-settings-form">
             <div>
               <label className="input-label">HOA ID</label>
@@ -330,8 +330,7 @@ let backgroundImage = '';
 
           {oktoshowonboarding && (
          
-
-          <section className="standardsection-wide" style={{ marginTop: "20px" }}>
+          <section className="standardsection-wide" style={{ marginTop: "20px",justifyItems: "center", alignItems: "center", display: "flex", flexDirection: "column",maxWidth:"320px",margin:"0 auto" }}>
             <h3 style={{ color: "#1976d2", marginTop: 0 }}>Stripe Payouts</h3>
             <p style={{ fontSize: "14px", marginBottom: "15px" }}>
               To receive payments, you must connect your Stripe account. 
