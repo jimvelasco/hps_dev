@@ -337,11 +337,30 @@ let backgroundImage = '';
               <div style={{ padding: "15px", backgroundColor: "#e8f5e9", borderRadius: "4px", border: "1px solid #c8e6c9", display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ color: "#2e7d32", fontSize: "20px" }}>✅</span>
                 <div>
-                  <strong style={{ color: "#2e7d32" }}>Stripe Connected</strong>
+                  <strong style={{ color: "#2e7d32" }}>Stripe Connected & Ready</strong>
                   <div style={{ fontSize: "12px", color: "#4caf50" }}>
-                    {stripeStatus.charges_enabled ? "Payments enabled" : "Payments restricted"} • {stripeStatus.payouts_enabled ? "Payouts enabled" : "Payouts restricted"}
+                    Payments and transfers are active.
                   </div>
                 </div>
+              </div>
+            ) : stripeStatus.details_submitted ? (
+              <div style={{ padding: "15px", backgroundColor: "#fff3e0", borderRadius: "4px", border: "1px solid #ffe0b2" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                  <span style={{ color: "#ef6c00", fontSize: "20px" }}>⏳</span>
+                  <strong style={{ color: "#ef6c00" }}>Pending Verification</strong>
+                </div>
+                <p style={{ fontSize: "13px", margin: "0 0 10px 0" }}>
+                  Your details have been submitted, but Stripe is still verifying your account for transfers. 
+                  This usually takes a few minutes but can take up to 24 hours.
+                </p>
+                <button
+                  onClick={handleConnectStripe}
+                  disabled={loading}
+                  className="btn btn-default"
+                  style={{ width: "auto", fontSize: "12px" }}
+                >
+                  {loading ? "Checking..." : "Check Status on Stripe"}
+                </button>
               </div>
             ) : (
               <button

@@ -130,15 +130,29 @@ const getStripeAccountStatus = async (req, res) => {
 
     const account = await stripe.accounts.retrieve(hoa.stripeAccountId);
     
-    if (account.details_submitted && !hoa.stripeOnboardingComplete) {
+    // Check if transfers capability is active
+    const transfersActive = account.capabilities && account.capabilities.transfers === 'active';
+    
+    // Onboarding is only truly "complete" for our purposes if they've submitted details
+    // AND the transfers capability is active (so we can do destination charges)
+    const isFullyReady = account.details_submitted && transfersActive;
+
+    if (isFullyReady && !hoa.stripeOnboardingComplete) {
       hoa.stripeOnboardingComplete = true;
+      await hoa.save();
+    } else if (!isFullyReady && hoa.stripeOnboardingComplete) {
+      // If for some reason they become restricted again, update our record
+      hoa.stripeOnboardingComplete = false;
       await hoa.save();
     }
 
     res.json({ 
-      onboardingComplete: account.details_submitted,
+      onboardingComplete: isFullyReady,
+      details_submitted: account.details_submitted,
+      transfers_active: transfersActive,
       charges_enabled: account.charges_enabled,
-      payouts_enabled: account.payouts_enabled
+      payouts_enabled: account.payouts_enabled,
+      requirements: account.requirements?.currently_due || []
     });
   } catch (error) {
     console.error("Get Stripe Account Status error:", error);

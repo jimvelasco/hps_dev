@@ -128,18 +128,34 @@ const createStripePaymentIntent = async (req, res) => {
       const hoa = await Hoa.findOne({ hoaid: metadata.hoaId });
       
       if (hoa && hoa.stripeAccountId && hoa.stripeOnboardingComplete) {
-        // Destination charges: The charge is created on the platform, 
-        // and then the funds (minus the fee) are transferred to the HOA.
-        
-        // Calculate 10% application fee
-        const applicationFee = Math.round(amountInCents * 0.10);
-        
-        paymentIntentParams.application_fee_amount = applicationFee;
-        paymentIntentParams.transfer_data = {
-          destination: hoa.stripeAccountId
-        };
-        
-        console.log(`Setting up destination charge for HOA: ${hoa.name} (${hoa.stripeAccountId}) with fee: ${applicationFee}`);
+        try {
+          // Double check with Stripe that the account is ready for transfers
+          const account = await stripe.accounts.retrieve(hoa.stripeAccountId);
+          const transfersActive = account.capabilities && account.capabilities.transfers === 'active';
+
+          if (transfersActive) {
+            // Destination charges: The charge is created on the platform, 
+            // and then the funds (minus the fee) are transferred to the HOA.
+            
+            // Calculate 10% application fee
+            const applicationFee = Math.round(amountInCents * 0.10);
+            
+            paymentIntentParams.application_fee_amount = applicationFee;
+            paymentIntentParams.transfer_data = {
+              destination: hoa.stripeAccountId
+            };
+            
+            console.log(`Setting up destination charge for HOA: ${hoa.name} (${hoa.stripeAccountId}) with fee: ${applicationFee}`);
+          } else {
+            console.warn(`HOA ${hoa.name} has stripeOnboardingComplete=true but transfers capability is ${account.capabilities?.transfers || 'missing'}. Falling back to platform charge.`);
+            // Optionally update our record
+            hoa.stripeOnboardingComplete = false;
+            await hoa.save();
+          }
+        } catch (accountError) {
+          console.error(`Error verifying Stripe account ${hoa.stripeAccountId} for HOA ${hoa.name}:`, accountError);
+          // Fall back to platform charge if we can't verify the account
+        }
       }
     }
 
