@@ -135,6 +135,9 @@ const createStripePaymentIntent = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating Stripe PaymentIntent:", error);
+    if (error.raw) {
+      console.error("Stripe Raw Error:", JSON.stringify(error.raw, null, 2));
+    }
     res.status(500).json({ message: error.message || "Error creating PaymentIntent" });
   }
 };
