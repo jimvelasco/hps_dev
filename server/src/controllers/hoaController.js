@@ -99,8 +99,8 @@ const createStripeConnectAccount = async (req, res) => {
 
     const accountLink = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: `${process.env.CLIENT_URL}/${hoa.hoaid}/admin/settings?stripe_onboarding=refresh`,
-      return_url: `${process.env.CLIENT_URL}/${hoa.hoaid}/admin/settings?stripe_onboarding=success`,
+      refresh_url: `${process.env.CLIENT_URL}/${hoa.hoaid}/hoa-settings?stripe_onboarding=refresh`,
+      return_url: `${process.env.CLIENT_URL}/${hoa.hoaid}/hoa-settings?stripe_onboarding=success`,
       type: 'account_onboarding',
     });
 
