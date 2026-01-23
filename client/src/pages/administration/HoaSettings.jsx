@@ -374,7 +374,8 @@ let backgroundImage = '';
             )}
           </section>
 
-          <div className="button-grid">
+          <div className="button-grid" style={{ marginTop: "20px" }}>
+           
             <button
               onClick={handleSave}
               disabled={saving}
