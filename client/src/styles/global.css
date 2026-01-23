@@ -1191,6 +1191,9 @@ section.standardsection {
   border-radius: 4px;
   margin-bottom: 20px;
   border: 1px solid #ef5350;
+  width:70%;
+  text-align:center;
+  margin: auto;
 }
 
 .editable-table-validation-error {
@@ -1531,9 +1534,9 @@ input.standardinput:disabled {
   border-color: #2563eb;
 }
 .btn-secondary {
-  background-color: #1c3e5f;
+  background-color: #7690ab;
   color: #ffffff;
-  border-color: #1c3e5f;
+  border-color: #7690ab;
 }
 
 .btn-danger {

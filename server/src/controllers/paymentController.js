@@ -47,7 +47,8 @@ const convertBigInt = (obj) => {
 const recordParkingPayment = async (req, res) => {
   try {
     const { 
-      hoaid, vehicleId, checkin, checkout, unitnumber, lastname, firstname, plate, plate_state, make, model, year,
+      hoaid, vehicleId, checkin, checkout, unitnumber, lastname, firstname, plate, plate_state, 
+      make, model, year,
       numdays, pricePerNight, totalAmount, 
       stripePaymentIntentId, stripeAmount, stripeCardLastFour, stripePaymentDate
     } = req.body.state;

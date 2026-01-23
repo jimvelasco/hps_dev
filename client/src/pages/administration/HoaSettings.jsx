@@ -149,6 +149,8 @@ let backgroundImage = '';
     backgroundImage = getAWSResource(hoa, 'BI');
   }
 
+  const oktoshowonboarding = true;
+
   return (
       <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
       <DashboardNavbar title="HOA Settings" buttons={navButtons} />
@@ -326,6 +328,9 @@ let backgroundImage = '';
             </div>
           </div>
 
+          {oktoshowonboarding && (
+         
+
           <section className="standardsection-wide" style={{ marginTop: "20px" }}>
             <h3 style={{ color: "#1976d2", marginTop: 0 }}>Stripe Payouts</h3>
             <p style={{ fontSize: "14px", marginBottom: "15px" }}>
@@ -373,6 +378,8 @@ let backgroundImage = '';
               </button>
             )}
           </section>
+           )
+            }
 
           <div className="button-grid" style={{ marginTop: "20px" }}>
            
