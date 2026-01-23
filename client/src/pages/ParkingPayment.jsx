@@ -203,7 +203,7 @@ export default function ParkingPayment() {
       // To get last4, we'd need to expand payment_method or use what's available
       const paymentDate = new Date().toISOString();
 
-      console.log('Recording parking payment for vid', vehicleId);
+      //console.log('Recording parking payment for vid', vehicleId);
       await axios.post("/payments/record-parking", {
         state: {
           hoaid: hoa.hoaid,
@@ -299,7 +299,7 @@ export default function ParkingPayment() {
         </div>
         <div style={{
           // backgroundColor: "#f0f0f0",
-          padding: "30px",
+          padding: "10px",
           borderRadius: "8px",
           // opacity: "0.8",
           // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.8)"
@@ -307,7 +307,9 @@ export default function ParkingPayment() {
 
 
 
-          <div style={{ backgroundColor: "#f0f0f0", padding: "20px", borderRadius: "8px", width: "360px", margin: "0 auto", textAlign: "left" }}>
+          <div style={{ backgroundColor: "#f0f0f0", padding: "10px", 
+            borderRadius: "8px", maxWidth: "380px", margin: "0 auto", boxSizing: "border-box", 
+            textAlign: "left" }}>
            
 
 

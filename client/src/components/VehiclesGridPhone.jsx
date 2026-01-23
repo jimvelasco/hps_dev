@@ -113,7 +113,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
             <div className="grid-item-normal">
               {vehicle.requires_payment == 1 ? (
                 <div className="button-grid">
-                  <button className="btns btn-primary"
+                  <button className="btnxs btn-primary"
                     onClick={() => handlePaymentClick(vehicle)}>
                     Pay Now
                   </button>
