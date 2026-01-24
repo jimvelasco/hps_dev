@@ -319,15 +319,16 @@ renter_free_parking 1
     if (role === 'renter') {
       console.log('renter vehid', vehid, vehicles.length);
       oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid);
-      if (vehicles.length < renterFreeParking) {
-        rpflag = 0;
-      } else {
-        if (!vehid) {
-          rpflag = oktoaddobj.rpflag;
-        } else {
-          rpflag = oktoaddobj.rpflag;
-        }
-      }
+       rpflag = oktoaddobj.rpflag;
+      // if (vehicles.length < renterFreeParking) {
+      //   rpflag = oktoaddobj.rpflag;;
+      // } else {
+      //   if (!vehid) {
+      //     rpflag = oktoaddobj.rpflag;
+      //   } else {
+      //     rpflag = oktoaddobj.rpflag;
+      //   }
+      // }
     }
 
     setFormSubmitting(true);
