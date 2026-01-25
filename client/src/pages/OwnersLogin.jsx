@@ -103,7 +103,8 @@ export default function OwnersLogin() {
       padding: "20px"
     }}>
       <div className="standardtitlebar">
-        <h2 >HOA Parking Solutions - {hoa && hoa.name}</h2>
+        <h2 >HOA Parking Solutions </h2>
+        <h3 style={{marginTop: "5px"}}>{hoa && hoa.name}</h3>
       </div>
 
       <div className="loginboxes">
