@@ -127,6 +127,46 @@ const updateUser = async (req, res) => {
   }
 };
 
+const updateAllUsers = async (req, res) => {
+  try {
+    const { owner_free_parking, renter_free_parking, inventory_allowed_owner, parking_allowed_renter, parking_allowed_owner, hoaid } = req.body;
+    
+    if (!hoaid) {
+      return res.status(400).json({ message: "HOA ID is required" });
+    }
+
+    const updateFields = {};
+    if (owner_free_parking !== undefined && owner_free_parking !== "" && owner_free_parking !== null) {
+      updateFields.owner_free_parking = parseInt(owner_free_parking);
+    }
+    if (renter_free_parking !== undefined && renter_free_parking !== "" && renter_free_parking !== null) {
+      updateFields.renter_free_parking = parseInt(renter_free_parking);
+    }
+    if (inventory_allowed_owner !== undefined && inventory_allowed_owner !== "" && inventory_allowed_owner !== null) {
+      updateFields.inventory_allowed_owner = parseInt(inventory_allowed_owner);
+    }
+    if (parking_allowed_renter !== undefined && parking_allowed_renter !== "" && parking_allowed_renter !== null) {
+      updateFields.parking_allowed_renter = parseInt(parking_allowed_renter);
+    }
+    if (parking_allowed_owner !== undefined && parking_allowed_owner !== "" && parking_allowed_owner !== null) {
+      updateFields.parking_allowed_owner = parseInt(parking_allowed_owner);
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({ message: "No fields to update" });
+    }
+
+    const result = await User.updateMany({ hoaid }, { $set: updateFields });
+
+    res.json({
+      message: `Successfully updated ${result.modifiedCount} users`,
+      updatedCount: result.modifiedCount
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -431,6 +471,6 @@ const sendEmailFromHoa = async (req, res) => {
   }
 };
 
-export { getUsers, getUserById, createUser, updateUser, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword, deleteUser, sendEmailFromHoa };
+export { getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword, deleteUser, sendEmailFromHoa };
 
 
