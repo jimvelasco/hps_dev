@@ -36,16 +36,16 @@ export default function UserProfile() {
     password: "",
     passwordConfirm: ""
   });
- // console.log("UserProfile userLoading:", userLoading);
- // console.log("UserProfile loggedInUser:", loggedInUser);
+  // console.log("UserProfile userLoading:", userLoading);
+  // console.log("UserProfile loggedInUser:", loggedInUser);
 
   useEffect(() => {
     if (!userLoading && loggedInUser) {
       const fetchUserData = async () => {
-        
+
         try {
           setLoading(true);
-         //  console.log("UserProfile fetchUserData: getting users/me");
+          //  console.log("UserProfile fetchUserData: getting users/me");
           const response = await axios.get("/users/me");
           setFormData({
             first_name: response.data.first_name || "",
@@ -179,7 +179,7 @@ export default function UserProfile() {
     {
       label: "Back",
       onClick: handleBackToDashboard,
-       which: "goback"
+      which: "goback"
     }
   ];
 
@@ -201,8 +201,7 @@ export default function UserProfile() {
       backgroundPosition: "center",
       backgroundAttachment: "fixed"
     }}>
-      <DashboardNavbar title={`User Profile - ${hoa?.name || ''}`} buttons={navButtons} />
-
+      <DashboardNavbar title="User Profile" title2={hoa && hoa.name} buttons={navButtons} />
       <div style={{ padding: "30px", maxWidth: "600px", margin: "0 auto" }}>
         {error && (
           <div style={{
@@ -292,52 +291,52 @@ export default function UserProfile() {
             </div>
 
 
-{(loggedInUser && loggedInUser.role !== 'admin') && ( 
+            {(loggedInUser && loggedInUser.role !== 'admin') && (
 
 
 
-<>
-            <div style={{ marginBottom: "15px" }}>
-              <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                PIN Code
-              </label>
-              <input
-                className="standardinput"
-                type="text"
-                name="pincode"
-                value={formData.pincode}
-                onChange={handleInputChange}
-              />
-            </div>
+              <>
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    PIN Code
+                  </label>
+                  <input
+                    className="standardinput"
+                    type="text"
+                    name="pincode"
+                    value={formData.pincode}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-            <div style={{ marginBottom: "15px" }}>
-              <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                Owner Free Parking
-              </label>
-              <input
-                className="standardinput"
-                type="number"
-                name="owner_free_parking"
-                value={formData.owner_free_parking}
-                onChange={handleInputChange}
-              />
-            </div>
-             <div style={{ marginBottom: "15px" }}>
-              <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                Renter Free Parking
-              </label>
-              <input
-                className="standardinput"
-                type="number"
-                name="renter_free_parking"
-                value={formData.renter_free_parking}
-                onChange={handleInputChange}
-              />
-            </div>
-            </>
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Owner Free Parking
+                  </label>
+                  <input
+                    className="standardinput"
+                    type="number"
+                    name="owner_free_parking"
+                    value={formData.owner_free_parking}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Renter Free Parking
+                  </label>
+                  <input
+                    className="standardinput"
+                    type="number"
+                    name="renter_free_parking"
+                    value={formData.renter_free_parking}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </>
 
-)
-}
+            )
+            }
 
 
             <div style={{ marginBottom: "15px", borderTop: "1px solid #ddd", paddingTop: "20px" }}>
@@ -395,10 +394,10 @@ export default function UserProfile() {
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </button>
-              <button  className="btn btn-default"
+              <button className="btn btn-default"
                 type="button"
                 onClick={handleBackToDashboard}
-               
+
               >
                 Cancel
               </button>

@@ -181,7 +181,7 @@ export default function OwnersDashboard() {
 
   return (
     <div style={{ marginTop: "0px",minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-      <DashboardNavbar title={`${ttitle} Dashboard`} buttons={navButtons} />
+      <DashboardNavbar title={`${ttitle} Dashboard`} title2={hoa?.name} buttons={navButtons} />
 
 
       <div className="page-content">

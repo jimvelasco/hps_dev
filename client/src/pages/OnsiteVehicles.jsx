@@ -183,7 +183,7 @@ export default function OnsiteVehicles() {
       backgroundPosition: "center", backgroundAttachment: "fixed"
     }}>
 
-      <DashboardNavbar title={`Onsite Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
+      <DashboardNavbar title="Onsite Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
       <div className="page-content">
 
         <div className="standardtitlebar">

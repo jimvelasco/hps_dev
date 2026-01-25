@@ -151,7 +151,7 @@ export default function ContactInformation() {
   if (loading) {
     return (
       <div className="editable-table-container">
-        <DashboardNavbar title="Contact Information" buttons={navButtons} />
+      <DashboardNavbar title="Contact Information" title2={hoa && hoa.name} buttons={navButtons} />
         <div className="page-content" style={{ textAlign: "center", paddingTop: "50px" }}>
           <p>Loading contact information...</p>
         </div>
@@ -169,7 +169,7 @@ let backgroundImage = '';
 
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-      <DashboardNavbar title="Contact Information" buttons={navButtons} />
+      <DashboardNavbar title="Contact Information" title2={hoa && hoa.name} buttons={navButtons} />
           <div className="editable-table-container" style={{width:"80%",margin:"auto"}}>
 
       <div className="page-content">

@@ -105,7 +105,7 @@ let backgroundImage = '';
         backgroundAttachment: "fixed",
       }}
     >
-      <DashboardNavbar title="Upload Image" buttons={navButtons} />
+      <DashboardNavbar title="Upload Image" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">

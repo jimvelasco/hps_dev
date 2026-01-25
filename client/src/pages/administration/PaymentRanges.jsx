@@ -197,7 +197,7 @@ export default function PaymentRanges() {
   if (loading) {
     return (
       <div className="editable-table-container">
-        <DashboardNavbar title="Payment Ranges" buttons={navButtons} />
+      <DashboardNavbar title="Payment Ranges" title2={hoa && hoa.name} buttons={navButtons} />
         <div className="page-content" style={{ textAlign: "center", paddingTop: "50px" }}>
           <p>Loading payment ranges...</p>
         </div>
@@ -211,12 +211,12 @@ export default function PaymentRanges() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-     <DashboardNavbar title="Payment Ranges" buttons={navButtons} />
+      <DashboardNavbar title="Payment Ranges" title2={hoa && hoa.name} buttons={navButtons} />
     <div className="editable-table-container"  style={{width:"80%",margin:"auto"}}>
     
 
       <div className="editable-table-content">
-        <h1 className="editable-table-title">Manage Payment Ranges</h1>
+        <h2 className="editable-table-title" style={{marginBottom:"15px"}}>Manage Payment Ranges</h2>
 
         {error && (
           <div className="editable-table-error">

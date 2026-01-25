@@ -114,7 +114,7 @@ let backgroundImage = '';
 
   return (
       <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
-      <DashboardNavbar title="HOA Settings" buttons={navButtons} />
+      <DashboardNavbar title="HOA Settings" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">

@@ -114,7 +114,7 @@ export default function PDFUpload() {
         backgroundAttachment: "fixed",
       }}
     >
-      <DashboardNavbar title="Upload PDF" buttons={navButtons} />
+      <DashboardNavbar title="Upload PDF" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">

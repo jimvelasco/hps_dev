@@ -198,7 +198,7 @@ export default function PaymentRefund() {
       backgroundPosition: "center",
       backgroundAttachment: "fixed"
     }}>
-      <DashboardNavbar title="Payment Refunds" buttons={navButtons} />
+      <DashboardNavbar title="Payment Refund" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">

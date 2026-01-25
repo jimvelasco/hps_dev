@@ -293,7 +293,7 @@ export default function OwnerVehicles() {
   }
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-      <DashboardNavbar title={`Owner Vehicles - ${hoa?.name || "HOA"}`} buttons={navButtons} />
+      <DashboardNavbar title="Owner Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
       <div className="page-content">
 
         <div className="xtableview">

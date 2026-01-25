@@ -119,7 +119,7 @@ export default function UpdateAllUsers() {
       backgroundPosition: "center",
       backgroundAttachment: "fixed"
     }}>
-      <DashboardNavbar title="Update Users Parking" buttons={navButtons} />
+      <DashboardNavbar title="Update User Parking" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">
