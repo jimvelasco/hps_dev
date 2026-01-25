@@ -101,8 +101,8 @@ const updateUser = async (req, res) => {
     if (company !== undefined) user.company = company;
     if (pincode !== undefined) user.pincode = pincode;
     if (password !== undefined) user.password = password;
-    if (is_verified !== undefined) user.is_verified = is_verified;
-    if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
+  //  if (is_verified !== undefined) user.is_verified = is_verified;
+  //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
     if (inventory_allowed_owner !== undefined) user.inventory_allowed_owner = inventory_allowed_owner;
     if (parking_allowed_renter !== undefined) user.parking_allowed_renter = parking_allowed_renter;
     if (parking_allowed_owner !== undefined) user.parking_allowed_owner = parking_allowed_owner;
@@ -212,8 +212,8 @@ const loginUser = async (req, res) => {
         bedrooms: user.bedrooms,
         role: user.role,
         pincode: user.pincode,
-        is_verified: user.is_verified,
-        has_read_terms: user.has_read_terms,
+        // is_verified: user.is_verified,
+        // has_read_terms: user.has_read_terms,
         inventory_allowed_owner: user.inventory_allowed_owner,
         parking_allowed_renter: user.parking_allowed_renter,
         parking_allowed_owner: user.parking_allowed_owner,
@@ -246,8 +246,8 @@ const getCurrentUser = async (req, res) => {
       bedrooms: user.bedrooms,
       role: user.role,
       pincode: user.pincode,
-      is_verified: user.is_verified,
-      has_read_terms: user.has_read_terms,
+      // is_verified: user.is_verified,
+      // has_read_terms: user.has_read_terms,
       inventory_allowed_owner: user.inventory_allowed_owner,
       parking_allowed_renter: user.parking_allowed_renter,
       parking_allowed_owner: user.parking_allowed_owner,

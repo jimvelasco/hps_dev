@@ -61,10 +61,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
-  crud: {
-    type: String,
-    default: ""
-  },
+  // crud: {
+  //   type: String,
+  //   default: ""
+  // },
   pincode: {
     type: String,
     default: ""
@@ -89,12 +89,12 @@ const userSchema = new mongoose.Schema({
   status_flag: {
     type: Number, default: 1
   },
-  is_verified: {
-    type: Number, default: 0
-  },
-  has_read_terms: {
-    type: Number, default: 0
-  },
+  // is_verified: {
+  //   type: Number, default: 0
+  // },
+  // has_read_terms: {
+  //   type: Number, default: 0
+  // },
   date: {
     type: Date,
     default: Date.now

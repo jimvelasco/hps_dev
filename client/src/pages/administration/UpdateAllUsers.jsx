@@ -37,9 +37,9 @@ export default function UpdateAllUsers() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.owner_free_parking && !formData.renter_free_parking && 
-        !formData.inventory_allowed_owner && !formData.parking_allowed_renter && 
-        !formData.parking_allowed_owner) {
+    if (!formData.owner_free_parking && !formData.renter_free_parking &&
+      !formData.inventory_allowed_owner && !formData.parking_allowed_renter &&
+      !formData.parking_allowed_owner) {
       setModal({
         isOpen: true,
         type: "alert",
@@ -132,31 +132,8 @@ export default function UpdateAllUsers() {
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Enter the new free parking values for all users. Leave a field blank if you don't want to update it.
             </p>
-            
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Owner Free Parking</label>
-                <input
-                  className="standardinput"
-                  type="number"
-                  name="owner_free_parking"
-                  value={formData.owner_free_parking}
-                  onChange={handleInputChange}
-                  placeholder="Leave blank to skip"
-                />
-              </div>
 
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Renter Free Parking</label>
-                <input
-                  className="standardinput"
-                  type="number"
-                  name="renter_free_parking"
-                  value={formData.renter_free_parking}
-                  onChange={handleInputChange}
-                  placeholder="Leave blank to skip"
-                />
-              </div>
+            <form onSubmit={handleSubmit}>
 
               <div style={{ marginBottom: "20px" }}>
                 <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Inventory Allowed Owner</label>
@@ -165,6 +142,30 @@ export default function UpdateAllUsers() {
                   type="number"
                   name="inventory_allowed_owner"
                   value={formData.inventory_allowed_owner}
+                  onChange={handleInputChange}
+                  placeholder="Leave blank to skip"
+                />
+              </div>
+
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Parking Allowed Owner</label>
+                <input
+                  className="standardinput"
+                  type="number"
+                  name="parking_allowed_owner"
+                  value={formData.parking_allowed_owner}
+                  onChange={handleInputChange}
+                  placeholder="Leave blank to skip"
+                />
+              </div>
+
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Owner Free Parking</label>
+                <input
+                  className="standardinput"
+                  type="number"
+                  name="owner_free_parking"
+                  value={formData.owner_free_parking}
                   onChange={handleInputChange}
                   placeholder="Leave blank to skip"
                 />
@@ -183,16 +184,22 @@ export default function UpdateAllUsers() {
               </div>
 
               <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Parking Allowed Owner</label>
+                <label style={{ display: "block", fontWeight: "bold", marginBottom: "5px" }}>Renter Free Parking</label>
                 <input
                   className="standardinput"
                   type="number"
-                  name="parking_allowed_owner"
-                  value={formData.parking_allowed_owner}
+                  name="renter_free_parking"
+                  value={formData.renter_free_parking}
                   onChange={handleInputChange}
                   placeholder="Leave blank to skip"
                 />
               </div>
+
+
+
+
+
+
 
               <div className="button-grid">
                 <button

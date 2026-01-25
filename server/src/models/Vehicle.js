@@ -75,9 +75,11 @@ const vehicleSchema = new mongoose.Schema(
   // number_of_changes: {
   //   type: Number, default: 0
   // },
-  has_read_terms: {
-    type: Number, default: 0
-  },
+
+  // has_read_terms: {
+  //   type: Number, default: 0
+  // },
+
   enddate: {
     type: String
   },
