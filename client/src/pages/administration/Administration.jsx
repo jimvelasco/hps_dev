@@ -192,7 +192,7 @@ let backgroundImage = '';
       backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover",
       backgroundPosition: "center", backgroundAttachment: "fixed"
     }}>
-      <DashboardNavbar title="Administration" buttons={navButtons} />
+      <DashboardNavbar title={`Administration - ${hoa?.name || ''}`} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">

@@ -201,7 +201,7 @@ export default function UserProfile() {
       backgroundPosition: "center",
       backgroundAttachment: "fixed"
     }}>
-      <DashboardNavbar title="User Profile" buttons={navButtons} />
+      <DashboardNavbar title={`User Profile - ${hoa?.name || ''}`} buttons={navButtons} />
 
       <div style={{ padding: "30px", maxWidth: "600px", margin: "0 auto" }}>
         {error && (
