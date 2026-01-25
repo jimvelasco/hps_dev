@@ -5,6 +5,9 @@ export default function About() {
   const navigate = useNavigate();
   const { hoaId } = useParams();
 
+  const handleEmailClick = () => {
+    navigate(`/${hoaId}/email-from-hoa`);
+  };
   return (
     <div style={{
       backgroundImage: "url('http://hoaparking.s3.amazonaws.com/steamboat-ski-resort.jpg')",
@@ -192,13 +195,15 @@ export default function About() {
 
 
         <div className="button-grid">
+           <button className="btns btn-primary" onClick={() =>{handleEmailClick()}}>Email</button>
           <button
-            className="btnxs btn-secondary"
+            className="btns btn-default"
             onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
            
           >
             {hoaId ? "Back" : "Back"}
           </button>
+          
         </div>
       </div>
     </div>
