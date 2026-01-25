@@ -11,8 +11,8 @@ import { getAWSResource } from "../utils/awsHelper";
 export default function EmailFromHoa() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
-    const { hoa, loading, error, fetchHoaById } = useHoa();
-  
+  const { hoa, loading, error, fetchHoaById } = useHoa();
+
   const [sending, setSending] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null });
   const [formData, setFormData] = useState({
@@ -31,7 +31,11 @@ export default function EmailFromHoa() {
   ];
 
   const handleBackClick = () => {
-    navigate(`/${hoaId}`);
+    if (hoaId) {
+      navigate(`/${hoaId}`);
+    } else {
+      navigate("/")
+    }
   };
 
   const handleChange = (e) => {
@@ -95,7 +99,11 @@ export default function EmailFromHoa() {
         message: "Your email has been sent successfully to the HOA",
         onConfirm: () => {
           setModal({ ...modal, isOpen: false });
-          navigate(`/${hoaId}`);
+          if (hoaId) {
+            navigate(`/${hoaId}`);
+          } else {
+            navigate("/")
+          }
         }
       });
       setFormData({ subject: "", returnEmail: "", message: "" });
@@ -119,7 +127,7 @@ export default function EmailFromHoa() {
       which: "goback"
     }
   ];
-let backgroundImage = '';
+  let backgroundImage = '';
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
@@ -127,7 +135,7 @@ let backgroundImage = '';
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title="Email HOA" buttons={navButtons} />
-      
+
       <div className="page-content">
         <div className="standardtitlebar">
           <h1 style={{ fontSize: "24px" }}>Send Email to HOA</h1>

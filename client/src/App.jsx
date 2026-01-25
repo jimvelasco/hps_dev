@@ -212,6 +212,9 @@ function App() {
           <Route path="/:hoaId/email-from-hoa" element={
             <EmailFromHoa />
           } />
+           <Route path="/email-from-hoa" element={
+            <EmailFromHoa />
+          } />
 
           <Route path="/:hoaId/payment" element={
             <ParkingPayment />

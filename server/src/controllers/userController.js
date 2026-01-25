@@ -420,7 +420,7 @@ const sendEmailFromHoa = async (req, res) => {
   try {
     const { hoaId, subject, returnEmail, message } = req.body;
 
-    if (!hoaId || !subject || !returnEmail || !message) {
+    if ( !subject || !returnEmail || !message) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -440,13 +440,22 @@ const sendEmailFromHoa = async (req, res) => {
       return res.status(500).json({ message: "Email service not configured" });
     }
 
+    let subj = subject;
+    let hoid = "N/A";
+    if (hoaId) {
+      subj = `[${hoaId}] ${subject}`;
+      hoid = hoaId;
+    }
+
     sgMail.setApiKey(SENDGRID_API_KEY);
+
+    //title={`${ttitle} Dashboard`}
 
     const emailContent = `
       <h2>New Email from HOA Portal</h2>
-      <p><strong>Subject:</strong> ${subject}</p>
+      <p><strong>Subject:</strong> ${subj}</p>
       <p><strong>From (Return Email):</strong> ${returnEmail}</p>
-      <p><strong>HOA ID:</strong> ${hoaId}</p>
+      <p><strong>HOA ID:</strong> ${hoid}</p>
       <hr>
       <h3>Message:</h3>
       <p>${message.replace(/\n/g, '<br>')}</p>
@@ -456,10 +465,10 @@ const sendEmailFromHoa = async (req, res) => {
       to: HOA_EMAIL,
       from:  "noreply@hoaparkingsolutions.com",
       replyTo: returnEmail,
-      subject: `[${hoaId}] ${subject}`,
+      subject: `${subj}`,
       html: emailContent
     };
-
+//subject: `[${hoaId}] ${subject}`,
     await sgMail.send(msg);
 
     res.json({
