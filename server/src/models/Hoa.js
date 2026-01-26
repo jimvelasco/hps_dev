@@ -132,6 +132,7 @@ const HoaSchema = new mongoose.Schema({
   // webmaster_email: {
   //   type: String
   // },
+
   background_image_url: {
     type: String
   },
@@ -141,6 +142,11 @@ const HoaSchema = new mongoose.Schema({
   status_flag: {
     type: Number, default: 1
   },
+
+   commission_percent: {
+    type: Number, default: 15
+  },
+  
   stripeAccountId: {
     type: String
   },

@@ -112,7 +112,7 @@ const createStripePaymentIntent = async (req, res) => {
     if (!amount) {
       return res.status(400).json({ message: "Amount is required" });
     }
-    console.log('createStripePaymentIntent metadata is', metadata)
+   // console.log('createStripePaymentIntent metadata is', metadata)
 
     const amountInCents = Math.round(amount);
     
@@ -129,6 +129,9 @@ const createStripePaymentIntent = async (req, res) => {
       const hoa = await Hoa.findOne({ hoaid: metadata.hoaId });
       
       if (hoa && hoa.stripeAccountId && hoa.stripeOnboardingComplete) {
+      //  console.log('the hoa is',hoa);
+        const commissionPercent = hoa.commission_percent/100;
+
         try {
           // Double check with Stripe that the account is ready for transfers
           const account = await stripe.accounts.retrieve(hoa.stripeAccountId);
@@ -139,7 +142,9 @@ const createStripePaymentIntent = async (req, res) => {
             // and then the funds (minus the fee) are transferred to the HOA.
             
             // Calculate 10% application fee
-            const applicationFee = Math.round(amountInCents * 0.10);
+           // const applicationFee = Math.round(amountInCents * 0.10);
+             const applicationFee = Math.round(amountInCents * commissionPercent);
+           //  console.log('applicationFee is',applicationFee,'commissionPercent is',commissionPercent,'amountInCents is',amountInCents);
             
             paymentIntentParams.application_fee_amount = applicationFee;
             paymentIntentParams.transfer_data = {

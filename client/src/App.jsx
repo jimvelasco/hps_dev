@@ -59,9 +59,10 @@ function AppContent() {
   }, [hoaId, fetchHoaById, setAppError, navigate])
 
    if (loading) {
-    return <div>
+    return (
+      <div className="standardtitlebar" style={{marginTop:"50px",backgroundColor:"cyan"}}>
         <h1>Loading HOA data...</h1>
-      </div>
+      </div>)
      
   }
 
