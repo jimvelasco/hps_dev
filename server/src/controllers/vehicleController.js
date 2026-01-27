@@ -1,4 +1,29 @@
 import Vehicle from "../models/Vehicle.js";
+import HPSRecord from "../models/HPSRecord.js";
+
+const logHPSRecord = async (vehicle, oldStartDate = null, oldEndDate = null) => {
+  try {
+    await HPSRecord.create({
+      hoaid: vehicle.hoaid,
+      vehicleId: vehicle._id,
+      ownerId: vehicle.ownerid,
+      unitnumber: vehicle.unitnumber,
+      ownertype: vehicle.carownertype,
+      firstname: vehicle.carowner_fname,
+      lastname: vehicle.carowner_lname,
+      phone: vehicle.carownerphone,
+      plate: vehicle.plate,
+      platestate: vehicle.plate_state,
+      requires_payment: vehicle.requires_payment,
+      original_startdate: oldStartDate || vehicle.startdate,
+      original_enddate: oldEndDate || vehicle.enddate,
+      startdate: vehicle.startdate,
+      enddate: vehicle.enddate
+    });
+  } catch (error) {
+    console.error("Failed to log HPSRecord:", error);
+  }
+};
 
 const getVehiclesByHoaId = async (req, res) => {
   try {
@@ -136,6 +161,9 @@ const createVehicle = async (req, res) => {
 
     const vehicle = await Vehicle.create(vehicleData);
 
+    // Log new vehicle creation
+    await logHPSRecord(vehicle);
+
     res.status(201).json(vehicle);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -147,13 +175,21 @@ const updateVehicle = async (req, res) => {
     const { vehicleId } = req.params;
     const vehicleData = req.validatedData;
 
-    const vehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicleData, { new: true });
-
-    if (!vehicle) {
+    // Fetch old record for comparison
+    const oldVehicle = await Vehicle.findById(vehicleId);
+    if (!oldVehicle) {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
-    res.status(200).json(vehicle);
+    const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicleData, { new: true });
+
+    // Log only if startdate or enddate changed
+    if (oldVehicle.startdate !== updatedVehicle.startdate || 
+        oldVehicle.enddate !== updatedVehicle.enddate) {
+      await logHPSRecord(updatedVehicle, oldVehicle.startdate, oldVehicle.enddate);
+    }
+
+    res.status(200).json(updatedVehicle);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
