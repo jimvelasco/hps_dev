@@ -916,6 +916,8 @@ section.standardsectiondashboard {
   margin: 2px;
   border: 0px solid black;
   max-width: 380px;
+  min-width: 260px;
+
   box-sizing: border-box;
   /* height: 170px */
 }

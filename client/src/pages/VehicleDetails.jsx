@@ -531,6 +531,7 @@ renter_free_parking 1
                     {role !== 'renter' && (
                       <>
                         <option value="owner">Owner</option>
+                         <option value="family">Family</option>
                         <option value="friend">Friend</option>
                       </>
                     )}

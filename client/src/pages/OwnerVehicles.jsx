@@ -156,7 +156,7 @@ export default function OwnerVehicles() {
   const handleFilterApply = () => {
     let filtered = [...allVehicles];
     if (filterType === "owner") {
-      filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend");
+      filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend"  || v.carownertype === "family");
     } else if (filterType === "renter") {
       filtered = filtered.filter(v => v.carownertype === "renter");
     }
@@ -383,52 +383,7 @@ export default function OwnerVehicles() {
           </div>
         </div>
 
-        {/* <div className="phoneview">
-          <div className="standardtitlebar">
-            <div className="grid-container-2x">
-              <div>
-                <label className="input-label">
-                  Type
-                </label>
-              </div>
-              <div>
-                <select className="standardselect"
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                >
-                  <option value="owner">Owner</option>
-                  <option value="renter">Renter</option>
-                  <option value="both">Both</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="input-label">
-                  From
-                </label>
-              </div>
-              <div>
-                <input className="input-date"
-                  type="date"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
-                />
-              </div>
-              <div>&nbsp;</div>
-
-              {loggedInUser && loggedInUser.role !== "admin" && (
-                <div>
-                  <button className="standardsubmitbutton" onClick={() => handleCreateClick()} style={{ width: 80 }}       >
-                    New
-                  </button>
-                </div>
-              )
-              }
-            </div>
-          </div>
-        </div> */}
-
-
+       
 
 
         {vehiclesError && (
@@ -443,20 +398,7 @@ export default function OwnerVehicles() {
           </div>
         ) : vehicles && vehicles.length > 0 ? (
           <>
-            {/* <div className="tableview">
-              <VehiclesGrid
-                vehicles={vehicles}
-                role={"owner"}
-                sortColumn={sortColumn}
-                sortDirection={sortDirection}
-                handleSort={handleSort}
-                handleDetailsClick={handleDetailsClick}
-                handlePaymentClick={handlePaymentClick}
-                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                utcDateOnly={utcDateOnly}
-              />
-
-            </div> */}
+           
             <div className="xphoneview">
               {/* <VehiclesGridPhone
                 vehicles={vehicles}
