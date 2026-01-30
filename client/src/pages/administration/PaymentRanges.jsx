@@ -41,6 +41,7 @@ export default function PaymentRanges() {
           startDayMo: "",
           endDayMo: "",
           rate: "",
+          rate_2nd: "",
           description: ""
         }]);
       } else {
@@ -92,10 +93,10 @@ export default function PaymentRanges() {
       }
     }
 
-    if (field === "rate" && tempValue) {
+    if ((field === "rate" || field === "rate_2nd") && tempValue) {
       const rateNum = parseFloat(tempValue);
       if (isNaN(rateNum) || rateNum < 0) {
-        setValidationError("Rate must be a positive number");
+        setValidationError(`${field === "rate" ? "Rate" : "Rate 2nd Car"} must be a positive number`);
         return;
       }
     }
@@ -127,6 +128,7 @@ export default function PaymentRanges() {
       startDayMo: "",
       endDayMo: "",
       rate: "",
+      rate_2nd: "",
       description: ""
     });
     setRanges(newRanges);
@@ -197,7 +199,7 @@ export default function PaymentRanges() {
   if (loading) {
     return (
       <div className="editable-table-container">
-        <DashboardNavbar title="Payment Ranges" buttons={navButtons} />
+      <DashboardNavbar title="Payment Ranges" title2={hoa && hoa.name} buttons={navButtons} />
         <div className="page-content" style={{ textAlign: "center", paddingTop: "50px" }}>
           <p>Loading payment ranges...</p>
         </div>
@@ -211,12 +213,12 @@ export default function PaymentRanges() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-     <DashboardNavbar title="Payment Ranges" buttons={navButtons} />
+      <DashboardNavbar title="Payment Ranges" title2={hoa && hoa.name} buttons={navButtons} />
     <div className="editable-table-container"  style={{width:"80%",margin:"auto"}}>
     
 
       <div className="editable-table-content">
-        <h1 className="editable-table-title">Manage Payment Ranges</h1>
+        <h2 className="editable-table-title" style={{marginBottom:"15px"}}>Manage Payment Ranges</h2>
 
         {error && (
           <div className="editable-table-error">
@@ -237,6 +239,7 @@ export default function PaymentRanges() {
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Rate/Night</th>
+                <th>Rate 2nd Car</th>
                 <th>Description</th>
                 <th>Action</th>
               </tr>
@@ -299,6 +302,25 @@ export default function PaymentRanges() {
                       </span>
                     )}
                   </td>
+                  <td onClick={() => handleCellClick(idx, "rate_2nd")}>
+                    {editCell?.rowIndex === idx && editCell?.field === "rate_2nd" ? (
+                      <input
+                        type="number"
+                        className="editable-table-input"
+                        placeholder="0.00"
+                        step="0.01"
+                        autoFocus
+                        value={tempValue}
+                        onChange={(e) => setTempValue(e.target.value)}
+                        onBlur={() => handleSave(idx, "rate_2nd")}
+                        onKeyDown={(e) => handleKeyDown(e, idx, "rate_2nd")}
+                      />
+                    ) : (
+                      <span className={`editable-table-cell-text ${row.rate_2nd ? 'filled' : 'empty'}`}>
+                        {row.rate_2nd ? `$${parseFloat(row.rate_2nd).toFixed(2)}` : "(optional)"}
+                      </span>
+                    )}
+                  </td>
                   <td onClick={() => handleCellClick(idx, "description")}>
                     {editCell?.rowIndex === idx && editCell?.field === "description" ? (
                       <input
@@ -353,7 +375,7 @@ export default function PaymentRanges() {
           <ul>
             <li>Click any cell to edit the value</li>
             <li>Date format must be MM-DD (e.g., 01-15 for January 15th)</li>
-            <li>Rate must be a positive number (e.g., 20.00)</li>
+            <li>Rate and Rate 2nd Car must be positive numbers (e.g., 20.00)</li>
             <li>Date ranges cannot overlap</li>
             <li>Press Enter to save or Escape to cancel</li>
             <li>Only filled rows will be saved when you click "Save All Changes"</li>

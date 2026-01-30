@@ -101,8 +101,8 @@ const updateUser = async (req, res) => {
     if (company !== undefined) user.company = company;
     if (pincode !== undefined) user.pincode = pincode;
     if (password !== undefined) user.password = password;
-    if (is_verified !== undefined) user.is_verified = is_verified;
-    if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
+  //  if (is_verified !== undefined) user.is_verified = is_verified;
+  //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
     if (inventory_allowed_owner !== undefined) user.inventory_allowed_owner = inventory_allowed_owner;
     if (parking_allowed_renter !== undefined) user.parking_allowed_renter = parking_allowed_renter;
     if (parking_allowed_owner !== undefined) user.parking_allowed_owner = parking_allowed_owner;
@@ -121,6 +121,46 @@ const updateUser = async (req, res) => {
         phone: user.phone,
         role: user.role
       }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateAllUsers = async (req, res) => {
+  try {
+    const { owner_free_parking, renter_free_parking, inventory_allowed_owner, parking_allowed_renter, parking_allowed_owner, hoaid } = req.body;
+    
+    if (!hoaid) {
+      return res.status(400).json({ message: "HOA ID is required" });
+    }
+
+    const updateFields = {};
+    if (owner_free_parking !== undefined && owner_free_parking !== "" && owner_free_parking !== null) {
+      updateFields.owner_free_parking = parseInt(owner_free_parking);
+    }
+    if (renter_free_parking !== undefined && renter_free_parking !== "" && renter_free_parking !== null) {
+      updateFields.renter_free_parking = parseInt(renter_free_parking);
+    }
+    if (inventory_allowed_owner !== undefined && inventory_allowed_owner !== "" && inventory_allowed_owner !== null) {
+      updateFields.inventory_allowed_owner = parseInt(inventory_allowed_owner);
+    }
+    if (parking_allowed_renter !== undefined && parking_allowed_renter !== "" && parking_allowed_renter !== null) {
+      updateFields.parking_allowed_renter = parseInt(parking_allowed_renter);
+    }
+    if (parking_allowed_owner !== undefined && parking_allowed_owner !== "" && parking_allowed_owner !== null) {
+      updateFields.parking_allowed_owner = parseInt(parking_allowed_owner);
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({ message: "No fields to update" });
+    }
+
+    const result = await User.updateMany({ hoaid }, { $set: updateFields });
+
+    res.json({
+      message: `Successfully updated ${result.modifiedCount} users`,
+      updatedCount: result.modifiedCount
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -172,8 +212,8 @@ const loginUser = async (req, res) => {
         bedrooms: user.bedrooms,
         role: user.role,
         pincode: user.pincode,
-        is_verified: user.is_verified,
-        has_read_terms: user.has_read_terms,
+        // is_verified: user.is_verified,
+        // has_read_terms: user.has_read_terms,
         inventory_allowed_owner: user.inventory_allowed_owner,
         parking_allowed_renter: user.parking_allowed_renter,
         parking_allowed_owner: user.parking_allowed_owner,
@@ -206,8 +246,8 @@ const getCurrentUser = async (req, res) => {
       bedrooms: user.bedrooms,
       role: user.role,
       pincode: user.pincode,
-      is_verified: user.is_verified,
-      has_read_terms: user.has_read_terms,
+      // is_verified: user.is_verified,
+      // has_read_terms: user.has_read_terms,
       inventory_allowed_owner: user.inventory_allowed_owner,
       parking_allowed_renter: user.parking_allowed_renter,
       parking_allowed_owner: user.parking_allowed_owner,
@@ -378,9 +418,9 @@ const deleteUser = async (req, res) => {
 
 const sendEmailFromHoa = async (req, res) => {
   try {
-    const { hoaId, subject, returnEmail, message } = req.body;
+    const { hoaId, subject, returnEmail, message ,toEmail} = req.body;
 
-    if (!hoaId || !subject || !returnEmail || !message) {
+    if ( !subject || !returnEmail || !message) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -393,33 +433,52 @@ const sendEmailFromHoa = async (req, res) => {
       return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
     }
 
-    const HOA_EMAIL = process.env.HOA_EMAIL || "web.master@hoaparkingsolutions.com";
+    let HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+    if (toEmail) {
+      HPS_EMAIL = toEmail;
+    }
+
+   // console.log('sendEmailFromHoa toEmail:', toEmail);
+   // console.log('sendEmailFromHoa HOA_EMAIL:', HOA_EMAIL);
+
+    // yampa view email yampahoa@gmail.com
+
     const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 
     if (!SENDGRID_API_KEY) {
       return res.status(500).json({ message: "Email service not configured" });
     }
 
+    let subj = subject;
+    let hoid = "N/A";
+    if (hoaId) {
+      subj = `[${hoaId}] ${subject}`;
+      hoid = hoaId;
+    }
+
     sgMail.setApiKey(SENDGRID_API_KEY);
+
+    //title={`${ttitle} Dashboard`}
 
     const emailContent = `
       <h2>New Email from HOA Portal</h2>
-      <p><strong>Subject:</strong> ${subject}</p>
+      <p><strong>Subject:</strong> ${subj}</p>
+      <p><strong>To Email:</strong> ${HPS_EMAIL}</p>
       <p><strong>From (Return Email):</strong> ${returnEmail}</p>
-      <p><strong>HOA ID:</strong> ${hoaId}</p>
+      <p><strong>HOA ID:</strong> ${hoid}</p>
       <hr>
       <h3>Message:</h3>
       <p>${message.replace(/\n/g, '<br>')}</p>
     `;
 // from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparkingsolutions.com",
     const msg = {
-      to: HOA_EMAIL,
+      to: HPS_EMAIL,
       from:  "noreply@hoaparkingsolutions.com",
       replyTo: returnEmail,
-      subject: `[${hoaId}] ${subject}`,
+      subject: `${subj}`,
       html: emailContent
     };
-
+//subject: `[${hoaId}] ${subject}`,
     await sgMail.send(msg);
 
     res.json({
@@ -431,6 +490,6 @@ const sendEmailFromHoa = async (req, res) => {
   }
 };
 
-export { getUsers, getUserById, createUser, updateUser, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword, deleteUser, sendEmailFromHoa };
+export { getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword, deleteUser, sendEmailFromHoa };
 
 

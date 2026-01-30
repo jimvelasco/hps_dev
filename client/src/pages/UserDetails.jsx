@@ -507,7 +507,7 @@ export default function UserDetails() {
                 </button>
 
                 <button className="btn btn-default"
-                 
+                  type="button"
                   onClick={handleBackToUsers}
                   disabled={isSubmitting}
                 >
@@ -515,6 +515,7 @@ export default function UserDetails() {
                 </button>
                 {isEditMode && (
                   <button className="btn btn-danger"
+                  type="button"
                     
                     onClick={handleDelete}
                     disabled={isSubmitting}

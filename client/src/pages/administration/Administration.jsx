@@ -145,6 +145,10 @@ export default function Administration() {
     navigate(`/${hoaId}/payment-refund`);
   };
 
+  const handleUpdateAllUsers = () => {
+    navigate(`/${hoaId}/update-all-users`);
+  };
+
   const handleCreateFolder = async (folderName) => {
     setCreateFolderLoading(true);
     setCreateFolderMessage(null);
@@ -188,7 +192,7 @@ let backgroundImage = '';
       backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover",
       backgroundPosition: "center", backgroundAttachment: "fixed"
     }}>
-      <DashboardNavbar title="Administration" buttons={navButtons} />
+      <DashboardNavbar title="Administration" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">
@@ -297,6 +301,18 @@ let backgroundImage = '';
               onClick={handlePaymentRefund}
               style={{width:"200px"}}>
               Process Refund
+            </button>
+          </section>
+
+          <section className="standardsection">
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Update Users Parking</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Batch update free parking values for all users
+            </p>
+            <button className="standardsubmitbutton"
+              onClick={handleUpdateAllUsers}
+              style={{width:"200px"}}>
+              Update Users
             </button>
           </section>
 

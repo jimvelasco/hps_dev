@@ -132,6 +132,7 @@ const HoaSchema = new mongoose.Schema({
   // webmaster_email: {
   //   type: String
   // },
+
   background_image_url: {
     type: String
   },
@@ -142,11 +143,24 @@ const HoaSchema = new mongoose.Schema({
     type: Number, default: 1
   },
 
+   commission_percent: {
+    type: Number, default: 15
+  },
+  
+  stripeAccountId: {
+    type: String
+  },
+  stripeOnboardingComplete: {
+    type: Boolean,
+    default: false
+  },
+
   payment_ranges: [
     {
       startDayMo: { type: String },
       endDayMo: { type: String },
       rate: { type: Number },
+      rate_2nd: { type: Number },
       description: { type: String }
     }
   ],

@@ -151,13 +151,23 @@ export default function ContactInformation() {
   if (loading) {
     return (
       <div className="editable-table-container">
-        <DashboardNavbar title="Contact Information" buttons={navButtons} />
+      <DashboardNavbar title="Contact Information" title2={hoa && hoa.name} buttons={navButtons} />
         <div className="page-content" style={{ textAlign: "center", paddingTop: "50px" }}>
           <p>Loading contact information...</p>
         </div>
       </div>
     );
   }
+
+   const contactids = [
+    "hoa_support",
+    "pm_renter",
+    "hoa_primary",
+    "pm_emergency",
+    "pm_afterhours",
+    "hoa_shuttle",
+    "technical_suport"
+  ];
 
 
 let backgroundImage = '';
@@ -169,13 +179,13 @@ let backgroundImage = '';
 
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-      <DashboardNavbar title="Contact Information" buttons={navButtons} />
+      <DashboardNavbar title="Contact Information" title2={hoa && hoa.name} buttons={navButtons} />
           <div className="editable-table-container" style={{width:"80%",margin:"auto"}}>
 
       <div className="page-content">
 
       <div className="editable-table-content" >
-        <h1 className="editable-table-title">Manage Contact Information</h1>
+        <h1 className="editable-table-title" style={{marginBottom:"10px"}}>Manage Contact Information</h1>
 
         {error && (
           <div className="editable-table-error">
@@ -205,16 +215,21 @@ let backgroundImage = '';
                 <tr key={idx}>
                   <td onClick={() => handleCellClick(idx, "contact_id")}>
                     {editCell?.rowIndex === idx && editCell?.field === "contact_id" ? (
-                      <input
-                        type="text"
+                      <select
                         className="editable-table-input"
-                        placeholder="e.g., HOA, Manager, Maintenance"
                         autoFocus
                         value={tempValue}
                         onChange={(e) => setTempValue(e.target.value)}
                         onBlur={() => handleSave(idx, "contact_id")}
                         onKeyDown={(e) => handleKeyDown(e, idx, "contact_id")}
-                      />
+                      >
+                        <option value="">Select ID...</option>
+                        {contactids.map((id) => (
+                          <option key={id} value={id}>
+                            {id}
+                          </option>
+                        ))}
+                      </select>
                     ) : (
                       <span className={`editable-table-cell-text ${row.contact_id ? 'filled' : 'empty'}`}>
                         {row.contact_id || "(click to edit)"}

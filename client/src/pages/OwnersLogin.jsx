@@ -13,8 +13,10 @@ export default function OwnersLogin() {
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
-  const [email, setEmail] = useState("jim.velasco@gmail.com");
-  //  const [email, setEmail] = useState(" craigre737@icloud.com");
+  const [email, setEmail] = useState("jim@gmail.com");
+  //  const [email, setEmail] = useState("daniel@gmail.com");
+    //  const [email, setEmail] = useState("katherine@gmail.com");
+
 
   // const [email, setEmail] = useState("admin@retreatia.com");
   const [password, setPassword] = useState("123456");
@@ -101,7 +103,8 @@ export default function OwnersLogin() {
       padding: "20px"
     }}>
       <div className="standardtitlebar">
-        <h2 >HOA Parking Solutions</h2>
+        <h2 >HOA Parking Solutions </h2>
+        <h3 style={{marginTop: "5px"}}>{hoa && hoa.name}</h3>
       </div>
 
       <div className="loginboxes">

@@ -23,6 +23,7 @@ import OwnersLogin from "./pages/OwnersLogin";
 import Administration from "./pages/administration/Administration";
 import PaymentRanges from "./pages/administration/PaymentRanges";
 import PaymentRefund from "./pages/administration/PaymentRefund";
+import UpdateAllUsers from "./pages/administration/UpdateAllUsers";
 import ContactInformation from "./pages/administration/ContactInformation";
 import HoaSettings from "./pages/administration/HoaSettings";
 import ImageUpload from "./pages/administration/ImageUpload";
@@ -58,9 +59,10 @@ function AppContent() {
   }, [hoaId, fetchHoaById, setAppError, navigate])
 
    if (loading) {
-    return <div>
+    return (
+      <div className="standardtitlebar" style={{marginTop:"50px",backgroundColor:"cyan"}}>
         <h1>Loading HOA data...</h1>
-      </div>
+      </div>)
      
   }
 
@@ -159,6 +161,11 @@ function App() {
               <OwnerVehicles />
             </ProtectedRoute>
           } />
+           <Route path="/:hoaId/ownervehicles/:role" element={
+            <ProtectedRoute>
+              <OwnerVehicles />
+            </ProtectedRoute>
+          } />
           <Route path="/:hoaId/vehicledetails/:which/:vehicleId" element={
             <ProtectedRoute>
               <VehicleDetails />
@@ -198,12 +205,20 @@ function App() {
               <PaymentRefund />
             </ProtectedRoute>
           } />
+          <Route path="/:hoaId/update-all-users" element={
+            <ProtectedRoute>
+              <UpdateAllUsers />
+            </ProtectedRoute>
+          } />
           <Route path="/:hoaId/contact-information" element={
             <ProtectedRoute>
               <ContactInformation />
             </ProtectedRoute>
           } />
           <Route path="/:hoaId/email-from-hoa" element={
+            <EmailFromHoa />
+          } />
+           <Route path="/email-from-hoa" element={
             <EmailFromHoa />
           } />
 

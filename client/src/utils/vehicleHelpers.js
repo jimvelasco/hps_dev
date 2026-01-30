@@ -65,6 +65,8 @@ export const formatPhoneNumber = (phone) => {
   return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 }
 
+
+
 export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerOfUnit,vehicleId) => {
   let oktoadd = true
   let rpflag = 0;
@@ -127,23 +129,66 @@ export const okToActivateRenterVehicle = (formvehicle, vehiclearray, role, owner
   let activeArray = vehiclearray;
   let activeCount = activeArray.length;
   let filteredActive = [];
-  if (vehicleId) {
+
+  console.log('okToActivateRenterVehicle active array length is ', activeCount);
+  console.log('okToActivateRenterVehicle owner of unit ', ownerOfUnit);
+  console.log('okToActivateRenterVehicle renter free parking  ', ownerOfUnit.renter_free_parking);
+  console.log('okToActivateRenterVehicle parking allowed renter ', ownerOfUnit.parking_allowed_renter);
+
+  // console.log('okToActivateRenterVehicle called with ownerOfUnit', ownerOfUnit);
+  let robj = { oktoadd: true, rpflag: 0 };
+
+  if (!vehicleId) {
+
+    if (activeCount < parseInt(ownerOfUnit.renter_free_parking)) {
+      console.log('RETURNING REQUIRES PAYMENT FALSE');
+      robj = { oktoadd: true, rpflag: 0 }
+      return robj; //{ oktoadd: true, rpflag: 0 };
+    }
+
+    if (ownerOfUnit.renter_free_parking < ownerOfUnit.parking_allowed_renter) {
+      console.log('RETURNING REQUIRES PAYMENT TRUE');
+      robj = { oktoadd: true, rpflag: 1 }
+      filteredActive = activeArray.filter(v => parseInt(v.requires_payment) > 0);
+      if (filteredActive.length > 0) {
+        robj = { oktoadd: true, rpflag: 0 }
+      }
+      return robj; //{ oktoadd: true, rpflag: 1 };
+    }
+  } else {
     filteredActive = activeArray.filter(v => v._id === vehicleId);
     const thevehicle = filteredActive[0];
     const rp = thevehicle.requires_payment;
-    return { oktoadd: true, rpflag: rp };
-  } else {
-    if (activeArray.length == 0) {
-      return { oktoadd: true, rpflag: 0 };
-    }
-    if (activeArray.length == 1 && (activeArray[0].requires_payment == 1 || activeArray[0].requires_payment == 2)) {
-      return { oktoadd: true, rpflag: 0 };
-    }
-    if (activeArray.length == 1 && activeArray[0].requires_payment == 0) {
-      return { oktoadd: true, rpflag: 1 };
-    }
+    robj = { oktoadd: true, rpflag: rp }
+    return robj; //{ oktoadd: true, rpflag: rp };
   }
+   return robj;
 }
+
+  
+ 
+ // let filteredActive = [];
+  // if (vehicleId) {
+  //   filteredActive = activeArray.filter(v => v._id === vehicleId);
+  //   const thevehicle = filteredActive[0];
+  //   const rp = thevehicle.requires_payment;
+  //   robj = { oktoadd: true, rpflag: rp }
+  //   return  robj; //{ oktoadd: true, rpflag: rp };
+  // } else {
+  //   if (activeArray.length == 0) {
+  //      robj = { oktoadd: true, rpflag: 0 }
+  //     return robj; //{ oktoadd: true, rpflag: 0 };
+  //   }
+  //   if (activeArray.length == 1 && (activeArray[0].requires_payment == 1 || activeArray[0].requires_payment == 2)) {
+  //      robj = { oktoadd: true, rpflag: 0 }
+  //     return robj; //{ oktoadd: true, rpflag: 0 };
+  //   }
+  //   if (activeArray.length == 1 && activeArray[0].requires_payment == 0) {
+  //     robj = { oktoadd: true, rpflag: 1 }
+  //     return robj; //{ oktoadd: true, rpflag: 1 };
+  //   }
+  // }
+ // return robj;
 
     // if (activeArray.length == 1 && activeArray[0].requires_payment == 1) {
     //   console.log('RETURNING REQUIRES PAYMENT TRUE')

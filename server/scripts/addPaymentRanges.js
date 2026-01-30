@@ -6,12 +6,22 @@ dotenv.config();
 
 const migrate = async () => {
   try {
-    await mongoose.connect(process.env.xMONGODB_URI || "mongodb://localhost:27017/hps-v1");
+    await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/hps_dev");
     console.log("Connected to MongoDB");
 
     const result = await Hoa.updateMany(
-      { payment_ranges: { $exists: false } },
-      { $set: { payment_ranges: [] } }
+      {}, // Update all HOAs
+      { 
+        $set: { 
+          payment_ranges: [{
+            startDayMo: '01-01',
+            endDayMo: '12-31',
+            rate: 20,
+            rate_2nd: 20,
+            description: 'default'
+          }] 
+        } 
+      }
     );
 
     console.log(`✓ Updated ${result.modifiedCount} HOA documents`);
@@ -26,3 +36,5 @@ const migrate = async () => {
 };
 
 migrate();
+
+//heroku run node server/scripts/addPaymentRanges.js -a hps-dev

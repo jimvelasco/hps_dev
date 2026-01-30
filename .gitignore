@@ -4,3 +4,4 @@ client/.env
 server/.env
 .DS_Store
 .zencoder
+mongo_scripts.js

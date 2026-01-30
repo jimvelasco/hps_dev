@@ -259,6 +259,8 @@ export default function Users() {
                 Unit {sortColumn === "unitnumber" && (sortDirection === "asc" ? "▲" : "▼")}
               </div>
               <div className="standard-table-header standard-table-extra">Role</div>
+               <div className="standard-table-header standard-table-extra">O Free</div>
+                <div className="standard-table-header standard-table-extra">R Free</div>
 
 
               {users.map((user, index) => (
@@ -280,7 +282,9 @@ export default function Users() {
                   </div>
                   <div className="standard-table-cell">{user.email || "—"}</div>
                   <div className="standard-table-cell">{user.phone || "—"}</div>
-                  <div className="standard-table-cell standard-table-extra">{user.unitnumber || "—"}</div>
+                  <div className="standard-table-cell standard-table-extra">{user.unitnumber || "—"}
+                    
+                  </div>
                   <div className="standard-table-cell standard-table-extra">
                     <span style={{
                       padding: "4px 8px",
@@ -292,6 +296,8 @@ export default function Users() {
                       {user.role || "—"}
                     </span>
                   </div>
+                  <div className="standard-table-cell">{user.owner_free_parking}</div>
+                   <div className="standard-table-cell">{user.renter_free_parking}</div>
 
                 </React.Fragment>
               ))}

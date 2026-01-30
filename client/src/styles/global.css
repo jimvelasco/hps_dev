@@ -137,7 +137,9 @@ h1, h2, h3, h4, h5, h6 {
 /* users */
 .users-table {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  /* grid-template-columns: repeat(6, 1fr); */
+  grid-template-columns: 1fr 1fr 1fr  1fr  .5fr .5fr .4fr .4fr;
+
   gap: 0px;
 }
 
@@ -914,6 +916,8 @@ section.standardsectiondashboard {
   margin: 2px;
   border: 0px solid black;
   max-width: 380px;
+  min-width: 260px;
+
   box-sizing: border-box;
   /* height: 170px */
 }
@@ -1191,6 +1195,9 @@ section.standardsection {
   border-radius: 4px;
   margin-bottom: 20px;
   border: 1px solid #ef5350;
+  width:70%;
+  text-align:center;
+  margin: auto;
 }
 
 .editable-table-validation-error {
@@ -1349,7 +1356,7 @@ section.standardsection {
 
 .hoa-settings-container {
   background-color: white;
-  padding: 30px;
+  padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   max-width: 600px;
@@ -1531,9 +1538,9 @@ input.standardinput:disabled {
   border-color: #2563eb;
 }
 .btn-secondary {
-  background-color: #1c3e5f;
+  background-color: #7690ab;
   color: #ffffff;
-  border-color: #1c3e5f;
+  border-color: #7690ab;
 }
 
 .btn-danger {

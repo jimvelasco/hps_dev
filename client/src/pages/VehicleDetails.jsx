@@ -32,7 +32,7 @@ export default function VehicleDetails() {
   const [userIdForUnit, setUserIdForUnit] = useState();
   const [unitOwner, setUnitOwner] = useState();
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
-
+  const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
 
   const edate = new Date();
   edate.setDate(edate.getDate() + 3);
@@ -42,35 +42,48 @@ export default function VehicleDetails() {
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [formData, setFormData] = useState({
-    // ownerid: loggedInUser ? loggedInUser._id : null,
-    // carowner_fname: "",
-    // carowner_lname: "",
-    // carownerphone: "",
-    //  make: "",
-    // model: "",
-    // year: "",
-    // vehicle_type: "",
-    // plate: "",
-    // plate_state: "",
-    carowner_fname: "JJV",
-    carowner_lname: "Velasco",
-    carownerphone: "7777777777",
-    make: "Lincoln",
-    model: "Navigator",
-    year: "2020",
-    vehicle_type: "Car",
+    carowner_fname: "",
+    carowner_lname: "",
+    carownerphone: "",
+    make: "",
+    model: "",
+    year: "",
+    vehicle_type: "",
     plate: "",
-    plate_state: "TX",
-    unitnumber: unitNumber,
-    carownertype: role,
-
-
+    plate_state: "",
+    unitnumber: "",
+    carownertype: "",
     startdate: new Date().toLocaleDateString("en-CA"),
-    enddate: edate.toLocaleDateString("en-CA"),
-    //  checkin: new Date().toISOString().substring(0, 10),
-    // checkout: new Date().toISOString().substring(0, 10)
+    enddate: edate.toLocaleDateString("en-CA")
   });
-  const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
+
+  useEffect(() => {
+    if (hoa) {
+      let dmode = hoa.use_demo_mode;
+      console.log('dmode:', dmode);
+      if (dmode === 1) {
+        setFormData({
+          carowner_fname: "JJV",
+          carowner_lname: "Velasco",
+          carownerphone: "7777777777",
+          make: "Lincoln",
+          model: "Navigator",
+          year: "2020",
+          vehicle_type: "Car",
+          plate: "",
+          plate_state: "TX",
+          unitnumber: unitNumber,
+          carownertype: role,
+          startdate: new Date().toLocaleDateString("en-CA"),
+          enddate: edate.toLocaleDateString("en-CA"),
+        }
+        )
+      }
+    }
+  }, [hoaId]);
+
+
+
 
   useEffect(() => {
     const storedTermsAcknowledged = sessionStorage.getItem("termsAcknowledged");
@@ -242,7 +255,7 @@ renter_free_parking 1
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log('handleFormSubmit role is:', role);
+    // console.log('handleFormSubmit role is:', role);
     if (!formData.carowner_fname || !formData.carowner_lname || !formData.carownerphone
       || !formData.make || !formData.plate) {
       setModal({
@@ -319,15 +332,16 @@ renter_free_parking 1
     if (role === 'renter') {
       console.log('renter vehid', vehid, vehicles.length);
       oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid);
-      if (vehicles.length < renterFreeParking) {
-        rpflag = 0;
-      } else {
-        if (!vehid) {
-          rpflag = oktoaddobj.rpflag;
-        } else {
-          rpflag = oktoaddobj.rpflag;
-        }
-      }
+      rpflag = oktoaddobj.rpflag;
+      // if (vehicles.length < renterFreeParking) {
+      //   rpflag = oktoaddobj.rpflag;;
+      // } else {
+      //   if (!vehid) {
+      //     rpflag = oktoaddobj.rpflag;
+      //   } else {
+      //     rpflag = oktoaddobj.rpflag;
+      //   }
+      // }
     }
 
     setFormSubmitting(true);
@@ -514,9 +528,17 @@ renter_free_parking 1
                       boxSizing: "border-box"
                     }}
                   >
-                    <option value="owner">Owner</option>
-                    <option value="friend">Friend</option>
-                    <option value="renter">Renter</option>
+                    {role !== 'renter' && (
+                      <>
+                        <option value="owner">Owner</option>
+                         <option value="family">Family</option>
+                        <option value="friend">Friend</option>
+                      </>
+                    )}
+                    {role === 'renter' && (
+
+                      <option value="renter">Renter</option>
+                    )}
                   </select>
                 </div>
 

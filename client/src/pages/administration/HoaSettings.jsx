@@ -1,5 +1,5 @@
 import React,{ useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "../../services/api";
 import { useHoa } from "../../context/HoaContext";
 import DashboardNavbar from "../../components/DashboardNavbar";
@@ -8,6 +8,7 @@ import { getAWSResource } from "../../utils/awsHelper";
 export default function HoaSettings() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { hoa, loading: hoaLoading, fetchHoaById } = useHoa();
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -113,7 +114,7 @@ let backgroundImage = '';
 
   return (
       <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
-      <DashboardNavbar title="HOA Settings" buttons={navButtons} />
+      <DashboardNavbar title="HOA Settings" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">
@@ -132,7 +133,7 @@ let backgroundImage = '';
           </div>
         )}
 
-        <div className="hoa-settings-container">
+        <div className="hoa-settings-container" >
           <div className="hoa-settings-form">
             <div>
               <label className="input-label">HOA ID</label>
@@ -288,7 +289,8 @@ let backgroundImage = '';
             </div>
           </div>
 
-          <div className="button-grid">
+          <div className="button-grid" style={{ marginTop: "20px" }}>
+           
             <button
               onClick={handleSave}
               disabled={saving}

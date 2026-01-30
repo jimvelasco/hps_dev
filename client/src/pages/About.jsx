@@ -5,6 +5,13 @@ export default function About() {
   const navigate = useNavigate();
   const { hoaId } = useParams();
 
+  const handleEmailClick = () => {
+    if (hoaId) {
+      navigate(`/${hoaId}/email-from-hoa`);
+    } else {
+      navigate("/email-from-hoa");
+    }
+  };
   return (
     <div style={{
       backgroundImage: "url('http://hoaparking.s3.amazonaws.com/steamboat-ski-resort.jpg')",
@@ -14,9 +21,9 @@ export default function About() {
       minHeight: "100vh",
       padding: "20px"
     }}>
-        <div className="standardtitlebar">
-          <h2 onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}>HOA Parking Solutions</h2>
-        </div>
+      <div className="standardtitlebar">
+        <h2 onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}>HOA Parking Solutions</h2>
+      </div>
 
       <div style={{
         maxWidth: "900px",
@@ -82,8 +89,28 @@ export default function About() {
           This platform is built to support your HOA's specific parking needs — whether your goal is to control
           crowding, improve convenience for owners, or create additional income for the association.
         </p>
+        <p style={{ marginTop: "30px", marginBottom: "30px", textAlign: "center", fontWeight: "700" }}>
+          For more information about HOA Parking Solutions please email us.
+          <div className="button-grid" style={{ marginTop: "10px" }}>
+            <button className="btnxs btn-primary" onClick={() => { handleEmailClick() }}>Email HPS</button>
+          </div>
+        </p>
 
+        <div className="button-grid">
+          {/* <button className="btns btn-primary" onClick={() =>{handleEmailClick()}}>Email</button> */}
+          <button
+            className="btns btn-default"
+            onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
 
+          >
+            {hoaId ? "Back" : "Back"}
+          </button>
+
+        </div>
+      </div>
+    </div>
+  );
+}
 
 
 {/* 
@@ -191,16 +218,3 @@ export default function About() {
   </p> */}
 
 
-        <div className="button-grid">
-          <button
-            className="btnxs btn-secondary"
-            onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
-           
-          >
-            {hoaId ? "Back" : "Back"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
