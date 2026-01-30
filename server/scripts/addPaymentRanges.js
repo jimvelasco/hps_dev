@@ -36,3 +36,5 @@ const migrate = async () => {
 };
 
 migrate();
+
+//heroku run node server/scripts/addPaymentRanges.js -a hps-dev
