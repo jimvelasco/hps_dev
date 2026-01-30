@@ -418,7 +418,7 @@ const deleteUser = async (req, res) => {
 
 const sendEmailFromHoa = async (req, res) => {
   try {
-    const { hoaId, subject, returnEmail, message } = req.body;
+    const { hoaId, subject, returnEmail, message ,toEmail} = req.body;
 
     if ( !subject || !returnEmail || !message) {
       return res.status(400).json({ message: "All fields are required" });
@@ -433,7 +433,16 @@ const sendEmailFromHoa = async (req, res) => {
       return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
     }
 
-    const HOA_EMAIL = process.env.HOA_EMAIL || "web.master@hoaparkingsolutions.com";
+    let HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+    if (toEmail) {
+      HPS_EMAIL = toEmail;
+    }
+
+   // console.log('sendEmailFromHoa toEmail:', toEmail);
+   // console.log('sendEmailFromHoa HOA_EMAIL:', HOA_EMAIL);
+
+    // yampa view email yampahoa@gmail.com
+
     const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 
     if (!SENDGRID_API_KEY) {
@@ -454,6 +463,7 @@ const sendEmailFromHoa = async (req, res) => {
     const emailContent = `
       <h2>New Email from HOA Portal</h2>
       <p><strong>Subject:</strong> ${subj}</p>
+      <p><strong>To Email:</strong> ${HPS_EMAIL}</p>
       <p><strong>From (Return Email):</strong> ${returnEmail}</p>
       <p><strong>HOA ID:</strong> ${hoid}</p>
       <hr>
@@ -462,7 +472,7 @@ const sendEmailFromHoa = async (req, res) => {
     `;
 // from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparkingsolutions.com",
     const msg = {
-      to: HOA_EMAIL,
+      to: HPS_EMAIL,
       from:  "noreply@hoaparkingsolutions.com",
       replyTo: returnEmail,
       subject: `${subj}`,

@@ -20,3 +20,4 @@ cleanupExpiredRenters();
 // this must be run from the server directory
 //cd server && node scripts/cleanupVehicles.js
 
+////heroku run node server/scripts/addPaymentRanges.js -a hps-dev

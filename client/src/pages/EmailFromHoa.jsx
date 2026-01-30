@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate,useLocation } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 
 import axios from "../services/api";
@@ -12,6 +12,9 @@ export default function EmailFromHoa() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
+  const location = useLocation();
+  const email = location.state?.email;
+ // console.log('EmailFromHoa email is:', email);
 
   const [sending, setSending] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null });
@@ -89,14 +92,15 @@ export default function EmailFromHoa() {
         hoaId,
         subject: formData.subject,
         returnEmail: formData.returnEmail,
-        message: formData.message
+        message: formData.message,
+        toEmail: email
       });
 
       setModal({
         isOpen: true,
         type: "success",
         title: "Email Sent",
-        message: "Your email has been sent successfully to the HOA",
+        message: "Your email has been sent successfully.",
         onConfirm: () => {
           setModal({ ...modal, isOpen: false });
           if (hoaId) {
@@ -131,6 +135,12 @@ export default function EmailFromHoa() {
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
+  let hoaorhps = 'HOA';
+
+  if (email === undefined ) {
+    hoaorhps = 'HPS'
+
+  }
 
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
@@ -138,13 +148,17 @@ export default function EmailFromHoa() {
 
       <div className="page-content">
         <div className="standardtitlebar">
-          <h1 style={{ fontSize: "24px" }}>Send Email to HOA</h1>
+         
+          <h1 style={{ fontSize: "24px" }}>Send Email to {hoaorhps}</h1>
+          {email && (
+            <p><strong>{email}</strong></p>
+          )}
         </div>
 
         <div className="grid-flex-container">
           <section className="standardsection-wide">
-            <h3 style={{ color: "#1976d2", marginTop: 0 }}>
-              Contact the HOA
+            <h3 style={{ color: "#1976d2", marginTop: 0 ,marginBottom:"10px"}}>
+              Contact {hoaorhps}
             </h3>
 
             <form onSubmit={handleSubmit}>
