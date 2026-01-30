@@ -38,6 +38,7 @@ const updateHoaById = async (req, res) => {
         startDayMo: range.startDayMo,
         endDayMo: range.endDayMo,
         rate: range.rate,
+        rate_2nd: range.rate_2nd,
         description: range.description
       }));
     }

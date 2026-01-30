@@ -160,6 +160,7 @@ const HoaSchema = new mongoose.Schema({
       startDayMo: { type: String },
       endDayMo: { type: String },
       rate: { type: Number },
+      rate_2nd: { type: Number },
       description: { type: String }
     }
   ],
