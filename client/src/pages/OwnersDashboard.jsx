@@ -98,7 +98,8 @@ export default function OwnersDashboard() {
   };
 
   const handleVehiclesClick = () => {
-    navigate(`/${hoaId}/${tlink}`);
+  //  console.log('handleVehiclesClick role is:',role);
+    navigate(`/${hoaId}/${tlink}/${role}`);
   };
 
   // const handleViolationsClick = () => {

@@ -471,7 +471,7 @@ export default function OwnerVehicles() {
               /> */}
               <VehiclesGridPhone
                 vehicles={vehicles}
-                role={"owner"}
+                role={role}
                 // sortColumn={sortColumn}
                 // sortDirection={sortDirection}
                 // handleSort={handleSort}

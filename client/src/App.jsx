@@ -161,6 +161,11 @@ function App() {
               <OwnerVehicles />
             </ProtectedRoute>
           } />
+           <Route path="/:hoaId/ownervehicles/:role" element={
+            <ProtectedRoute>
+              <OwnerVehicles />
+            </ProtectedRoute>
+          } />
           <Route path="/:hoaId/vehicledetails/:which/:vehicleId" element={
             <ProtectedRoute>
               <VehicleDetails />

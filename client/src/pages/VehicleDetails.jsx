@@ -242,7 +242,7 @@ renter_free_parking 1
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log('handleFormSubmit role is:', role);
+   // console.log('handleFormSubmit role is:', role);
     if (!formData.carowner_fname || !formData.carowner_lname || !formData.carownerphone
       || !formData.make || !formData.plate) {
       setModal({
@@ -515,9 +515,16 @@ renter_free_parking 1
                       boxSizing: "border-box"
                     }}
                   >
-                    <option value="owner">Owner</option>
-                    <option value="friend">Friend</option>
+                    {role !== 'renter' && (
+                      <>
+                      <option value="owner">Owner</option>
+                       <option value="friend">Friend</option>
+                       </>
+                    )}
+                   {role === 'renter' && (
+                   
                     <option value="renter">Renter</option>
+                   )}
                   </select>
                 </div>
 
