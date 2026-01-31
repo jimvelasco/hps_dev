@@ -53,8 +53,13 @@ const recordParkingPayment = async (req, res) => {
       stripePaymentIntentId, stripeAmount, stripeCardLastFour, stripePaymentDate
     } = req.body.state;
 
-    if (!hoaid || !vehicleId || !unitnumber || !lastname || !firstname || !plate) {
-      return res.status(400).json({ message: "Missing required payment fields" });
+    const requiredFields = { hoaid, vehicleId, unitnumber, lastname, firstname, plate };
+    const missingFields = Object.keys(requiredFields).filter(key => !requiredFields[key]);
+    
+    if (missingFields.length > 0) {
+      return res.status(400).json({ 
+        message: `Missing required payment fields: ${missingFields.join(', ')}` 
+      });
     }
 
     if (!stripePaymentIntentId) {
