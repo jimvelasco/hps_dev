@@ -38,3 +38,8 @@ const dropObsoleteIndexes = async () => {
 };
 
 dropObsoleteIndexes();
+
+//heroku run node server/scripts/dropObsoleteIndexes.js -a your-app-name
+
+//node server/scripts/dropObsoleteIndexes.js
+
