@@ -136,7 +136,7 @@ export default function ParkingPayment() {
     }
 
     const todayMMDD = getTodayInMMDD();
-    console.log('todayMMDD', todayMMDD);
+   // console.log('todayMMDD', todayMMDD);
 
     const matchingRange = hoa.payment_ranges.find(range => {
       if (!range.startDayMo || !range.endDayMo) return false;
@@ -172,13 +172,13 @@ export default function ParkingPayment() {
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
         setVehicle(response.data);
-        console.log("Fetched vehicle data:", response.data);
+       // console.log("Fetched vehicle data:", response.data);
         const sdate = new Date(response.data.startdate);
         const edate = new Date(response.data.enddate);
         const timeDiff = Math.abs(edate - sdate);
         const diffDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
         setNumdays(diffDays);
-        console.log("numdays:", diffDays);
+      //  console.log("numdays:", diffDays);
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load vehicle details");
@@ -227,7 +227,7 @@ export default function ParkingPayment() {
         }
       });
 
-      console.log("Payment recorded successfully. Updating vehicle status...");
+     // console.log("Payment recorded successfully. Updating vehicle status...");
       await axios.put(`/vehicles/payment/${vehicleId}`, {
         state: {
           requires_payment: 2
