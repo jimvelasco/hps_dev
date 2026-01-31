@@ -125,8 +125,10 @@ export default function RentersLogin() {
 
         }}>
             <div className="standardtitlebar">
-                <h2  onClick={() => navigate(-1)}>HOA Parking Solutions</h2>
+                <h2  onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions</h2>
             </div>
+
+             {/* navigate(`/${hoaId}`); */}
 
             <div className="loginboxes">
                 <div style={{ marginTop: "10px", textAlign: "center" }}>

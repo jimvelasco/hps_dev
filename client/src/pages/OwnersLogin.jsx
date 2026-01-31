@@ -103,7 +103,7 @@ export default function OwnersLogin() {
       padding: "20px"
     }}>
       <div className="standardtitlebar">
-        <h2 onClick={() => navigate(-1)}>HOA Parking Solutions </h2>
+        <h2 onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions </h2>
         <h3 style={{marginTop: "5px"}}>{hoa && hoa.name}</h3>
       </div>
 
