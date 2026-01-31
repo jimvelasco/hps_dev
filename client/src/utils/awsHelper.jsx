@@ -1,6 +1,8 @@
 export const getAWSResource = (hoa, resourceType) => {
   //"http://hoaparking.s3.amazonaws.com/YV/background_image.jpg
-  let awsbucket = 'https://hoaparking.s3.amazonaws.com'; // this would be in the hoa instead of the image
+  //let awsbucket = 'https://hoaparking.s3.amazonaws.com'; // this would be in the hoa instead of the image
+ let awsbucket = hoa.aws_bucket;
+ //console.log('awsbucket',awsbucket);
   let pdf_filename = '';
   switch (resourceType) {
     case 'BI':

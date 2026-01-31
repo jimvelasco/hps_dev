@@ -19,18 +19,17 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
     transition: "background-color 0.3s",
   };
   
-  //  let backImage = '';
-  //   if (hoa) {
-  //     backImage = getAWSResource(hoa, 'BI');
-  //     console.log('lp', hoa);
-  //   } else {
-  //      console.log('lp no bueno');
-  //    return '<div>no buedo</div>';
-  //   }
+   let backImage = '';
+    if (hoa) {
+      backImage = getAWSResource(hoa, 'BI');
+    //  console.log('lp', hoa,backImage);
+    } else {
+     return '<div>no hoa</div>';
+    }
 
   return (
     <div style={{
-      backgroundImage: backgroundImage,
+      backgroundImage:  `url('${ backImage}`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
