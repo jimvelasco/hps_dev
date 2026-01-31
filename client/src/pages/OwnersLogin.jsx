@@ -103,13 +103,13 @@ export default function OwnersLogin() {
       padding: "20px"
     }}>
       <div className="standardtitlebar">
-        <h2 >HOA Parking Solutions </h2>
+        <h2 onClick={() => navigate(-1)}>HOA Parking Solutions </h2>
         <h3 style={{marginTop: "5px"}}>{hoa && hoa.name}</h3>
       </div>
 
       <div className="loginboxes">
         <div style={{ marginTop: "10px", textAlign: "center" }}>
-          <h2>Owner Login</h2>
+          <h2 >Owner Login</h2>
 
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
