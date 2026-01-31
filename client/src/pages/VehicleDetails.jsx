@@ -245,13 +245,6 @@ export default function VehicleDetails() {
 
 
 
-  /*
-owner_free_parking 1
-parking_allowed 5
-parking_allowed_owner 2
-parking_allowed_renter 2
-renter_free_parking 1
-  */
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();

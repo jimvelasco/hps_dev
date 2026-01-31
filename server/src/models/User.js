@@ -32,11 +32,11 @@ const userSchema = new mongoose.Schema({
   bedrooms: {
     type: Number
   },
-  /* not used */
-  parking_allowed: {
-    type: Number,
-    default: 3
-  },
+  // /* not used */
+  // parking_allowed: {
+  //   type: Number,
+  //   default: 3
+  // },
    inventory_allowed_owner: {
     type: Number,
     default: 5

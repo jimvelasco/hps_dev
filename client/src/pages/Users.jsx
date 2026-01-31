@@ -176,14 +176,7 @@ export default function Users() {
       <div className="page-content">
 
         <div className="flexLayout" style={{justifyContent: "flex-end"}}>
-          {/* {hoa && (
-            <React.Fragment>
-
-              <div>HOA Parking Allowed: {hoa.parking_allowed_hoa}</div>
-              <div>Owner Free Spots: {hoa.owner_free_parking_spots}</div>
-              <div>Renter Free Spots: {hoa.renter_free_parking_spots}</div>
-            </React.Fragment >
-          )} */}
+         
 
           <button className="standardsubmitbutton"
             onClick={handleCreateUserClick}

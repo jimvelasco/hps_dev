@@ -36,6 +36,26 @@ export default function UserProfile() {
     password: "",
     passwordConfirm: ""
   });
+
+  /*
+   _id: user._id,
+      name: user.name,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone: user.phone,
+      email: user.email,
+      unitnumber: user.unitnumber,
+      bedrooms: user.bedrooms,
+      role: user.role,
+      pincode: user.pincode,
+      // is_verified: user.is_verified,
+      // has_read_terms: user.has_read_terms,
+      inventory_allowed_owner: user.inventory_allowed_owner,
+      parking_allowed_renter: user.parking_allowed_renter,
+      parking_allowed_owner: user.parking_allowed_owner,
+      owner_free_parking: user.owner_free_parking,
+      renter_free_parking: user.renter_free_parking
+  */
   // console.log("UserProfile userLoading:", userLoading);
   // console.log("UserProfile loggedInUser:", loggedInUser);
 
@@ -53,8 +73,12 @@ export default function UserProfile() {
             phone: response.data.phone || "",
             email: response.data.email || "",
             pincode: response.data.pincode || "",
+            unitnumber: response.data.unitnumber || "",
             renter_free_parking: response.data.renter_free_parking || "",
             owner_free_parking: response.data.owner_free_parking || "",
+            inventory_allowed_owner: response.data.inventory_allowed_owner || "",
+            parking_allowed_owner: response.data.parking_allowed_owner || "",
+            parking_allowed_renter: response.data.parking_allowed_renter || "",
             password: "",
             passwordConfirm: ""
           });
@@ -277,7 +301,7 @@ export default function UserProfile() {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                disabled
+                // disabled
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -308,6 +332,62 @@ export default function UserProfile() {
                     onChange={handleInputChange}
                   />
                 </div>
+                 <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                   Unit Number
+                  </label>
+                  <input
+                    className="standardinput"
+                    type="text"
+                    name="unitnumber"
+                    value={formData.unitnumber}
+                    onChange={handleInputChange}
+                    disabled
+                  />
+                </div>
+                  <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                   Inventory Allowed
+                  </label>
+                  <input
+                    className="standardinput"
+                    type="text"
+                    name="inventory_allowed_owner"
+                    value={formData.inventory_allowed_owner}
+                    onChange={handleInputChange}
+                    disabled
+                  />
+                </div>
+
+
+                  <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  Parking Allowed Owner
+                  </label>
+                  <input
+                    className="standardinput"
+                    type="text"
+                    name="parking_allowed_owner"
+                    value={formData.parking_allowed_owner}
+                    onChange={handleInputChange}
+                    disabled
+                  />
+                </div>
+
+
+                  <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                   Parking Allowed Renter
+                  </label>
+                  <input
+                    className="standardinput"
+                    type="text"
+                    name="parking_allowed_renter"
+                    value={formData.parking_allowed_renter}
+                    onChange={handleInputChange}
+                    disabled
+                  />
+                </div>
 
                 <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
@@ -316,6 +396,7 @@ export default function UserProfile() {
                   <input
                     className="standardinput"
                     type="number"
+                     disabled
                     name="owner_free_parking"
                     value={formData.owner_free_parking}
                     onChange={handleInputChange}
@@ -331,6 +412,7 @@ export default function UserProfile() {
                     name="renter_free_parking"
                     value={formData.renter_free_parking}
                     onChange={handleInputChange}
+                     disabled
                   />
                 </div>
               </>

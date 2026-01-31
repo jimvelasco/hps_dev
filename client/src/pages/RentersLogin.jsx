@@ -13,13 +13,18 @@ export default function RentersLogin() {
     const { hoa, loading, error, fetchHoaById } = useHoa();
     const { setAppError } = useError();
     const [units, setUnits] = useState([]);
-    const [selectedUnit, setSelectedUnit] = useState("111");
-    const [pin, setPin] = useState("111");
+    const [selectedUnit, setSelectedUnit] = useState("");
+    const [pin, setPin] = useState("");
     const [loadingUnits, setLoadingUnits] = useState(false);
 
     useEffect(() => {
         localStorage.removeItem("token");
         // console.log("RentersLogin component mounted");
+        if (hoa && hoa.use_demo_mode) {
+            setSelectedUnit('111');
+            setPin('111');
+
+        }
 
     }, []);
 
@@ -104,10 +109,10 @@ export default function RentersLogin() {
         navigate(`/${hoaId}`);
         //  navigate(-1);
     };
-  let backgroundImage = '';
-  if (hoa) {
-    backgroundImage = getAWSResource(hoa, 'BI');
-  }
+    let backgroundImage = '';
+    if (hoa) {
+        backgroundImage = getAWSResource(hoa, 'BI');
+    }
 
     return (
         <div style={{

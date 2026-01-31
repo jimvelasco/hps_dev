@@ -417,13 +417,22 @@ export default function UserDetails() {
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                   Role
                 </label>
-                <input className="standardinput"
+                {/* <input className="standardinput"
                   type="text"
                   name="role"
                   value={formData.role}
                   onChange={handleInputChange}
                   placeholder="e.g., admin, owner, renter"
-                />
+                  disabled={isEditMode}
+                /> */}
+                 <select className="standardselect"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                    name="role"
+                  >
+                    <option value="owner">Owner</option>
+                    <option value="admin">Admin</option>
+                  </select>
               </div>
 
               <div style={{ marginBottom: "15px" }}>
