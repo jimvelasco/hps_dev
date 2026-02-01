@@ -191,7 +191,7 @@ export default function UserDetails() {
       //   navigate(`/${hoaId}/users`);
     } catch (err) {
       //  alert(`Error: ${err.response?.data?.message || err.message}`);
-      console.log("***** opening modal Error:", err);
+    // console.log("***** opening modal Error:", err);
       let serverResponse = err.response.data;
       setModal({
         isOpen: true,
