@@ -179,6 +179,8 @@ export default function ParkingPayment() {
         const qry = `/vehicles/id/${vehicleId}`;
         const response = await axios.get(qry);
         setVehicle(response.data);
+
+       // console.log('useEffect vehicleId',vehicleId,'role is',role)
         
         // Fetch other active vehicles for the same unit to handle tiered pricing
         // not going to do this now.  Just set active vehicles count to 0
