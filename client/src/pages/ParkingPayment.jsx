@@ -152,7 +152,9 @@ export default function ParkingPayment() {
 
     if (matchingRange) {
       // Use rate_2nd if there's already an active vehicle, otherwise use base rate
-      return activeVehiclesCount > 0 ? (matchingRange.rate_2nd || matchingRange.rate) : matchingRange.rate;
+      // not doing this now because not sure how this works when owners try and pay for their car.
+      // return activeVehiclesCount > 0 ? (matchingRange.rate_2nd || matchingRange.rate) : matchingRange.rate;
+      return matchingRange.rate;
     }
     return 0;
   };
@@ -179,12 +181,16 @@ export default function ParkingPayment() {
         setVehicle(response.data);
         
         // Fetch other active vehicles for the same unit to handle tiered pricing
-        const unitQry = `/vehicles/${hoaId}/rentervehicles/${unitNumber}`;
-        const unitResponse = await axios.get(unitQry);
-        const otherActive = unitResponse.data.filter(v => 
-          v._id !== vehicleId && v.requires_payment === 2
-        ).length;
-        setActiveVehiclesCount(otherActive);
+        // not going to do this now.  Just set active vehicles count to 0
+
+        // const unitQry = `/vehicles/${hoaId}/rentervehicles/${unitNumber}`;
+        // const unitResponse = await axios.get(unitQry);
+        // const otherActive = unitResponse.data.filter(v => 
+        //   v._id !== vehicleId && v.requires_payment === 2
+        // ).length;
+        // setActiveVehiclesCount(otherActive);
+
+        setActiveVehiclesCount(0);
 
         const sdate = new Date(response.data.startdate);
         const edate = new Date(response.data.enddate);
@@ -351,7 +357,7 @@ export default function ParkingPayment() {
                 />
               </Elements>
             ) : (
-              <div style={{ textAlign: "center", padding: "20px" }}>
+              <div style={{ textAlign: "center", marginTop: "10px" }}>
                 <button 
                   className="btn btn-primary" 
                   onClick={handleInitiatePayment}
@@ -360,6 +366,13 @@ export default function ParkingPayment() {
                 >
                   {loadingIntent ? "Preparing Payment..." : "Proceed to Payment"}
                 </button>
+                <button className="btn btn-default" 
+                  onClick={() => navigate(-1)}
+                  style={{ width: "100%", marginTop: "10px" }}
+                >
+                  Cancel
+                </button>
+      
                 {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
               </div>
             )}
