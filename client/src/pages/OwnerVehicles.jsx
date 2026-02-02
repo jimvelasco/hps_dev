@@ -7,6 +7,7 @@ import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGrid from "../components/VehiclesGrid";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
+import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
 import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
@@ -30,6 +31,7 @@ export default function OwnerVehicles() {
   const [allVehicles, setAllVehicles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
+  const [showTable, setShowTable] = useState(false);
 
 
   useEffect(() => {
@@ -74,9 +76,9 @@ export default function OwnerVehicles() {
 
           updatedVehicles.sort((a, b) => {
             let valueA, valueB;
-             valueA = a.calculatedActiveFlag || "";
-              valueB = b.calculatedActiveFlag || "";
-              return String(valueB).localeCompare(String(valueA));
+            valueA = a.calculatedActiveFlag || "";
+            valueB = b.calculatedActiveFlag || "";
+            return String(valueB).localeCompare(String(valueA));
           });
 
           setVehicles(updatedVehicles);
@@ -161,7 +163,7 @@ export default function OwnerVehicles() {
   const handleFilterApply = () => {
     let filtered = [...allVehicles];
     if (filterType === "owner") {
-      filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend"  || v.carownertype === "family");
+      filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family");
     } else if (filterType === "renter") {
       filtered = filtered.filter(v => v.carownertype === "renter");
     }
@@ -281,9 +283,17 @@ export default function OwnerVehicles() {
     //   });
     //   }
   }
- const handleShowHidenClick = () => {
-  setIsVisible(!isVisible)
- }
+  const handleShowHidenClick = () => {
+    setIsVisible(!isVisible)
+  }
+
+  const handleShowTable = () => {
+    if (showTable) {
+      setShowTable(false)
+    } else {
+      setShowTable(true)
+    }
+  };
 
   const navButtons = [
     {
@@ -302,35 +312,32 @@ export default function OwnerVehicles() {
       <div className="page-content">
 
         <div className="xtableview">
-          <div className="standardtitlebar" style={{width:"50%"}}>
+          <div className="standardtitlebar" style={{ width: "50%" }}>
             <div className="button-grid">
+              <button className="btns btn-primary" onClick={handleShowTable}>
+                {showTable ? "Hide Table" : "Show Table"}
+              </button>
               <button className="btns btn-primary"
                 onClick={() => handleShowHidenClick()}>
-                  {!isVisible ? "Show Filters" : "Hide Filters"}
+                {!isVisible ? "Show Filters" : "Hide Filters"}
               </button>
-               {loggedInUser && loggedInUser.role !== "admin" && (
-              <button className="btns btn-primary"
-                onClick={() => handleCreateClick()}>
-               New Vehicle
-              </button>)}
+              {loggedInUser && loggedInUser.role !== "admin" && (
+                <button className="btns btn-primary"
+                  onClick={() => handleCreateClick()}>
+                  New Vehicle
+                </button>)}
             </div>
-            </div>
+          </div>
           <div style={{ display: isVisible ? "block" : "none" }}>
 
 
-
-
-
-
-
-
-            <div className="standardtitlebar" style={{width:"50%"}}>
-              <div style={{marginBottom:"10px"}}><b>Filter</b></div>
+            <div className="standardtitlebar" style={{ width: "50%" }}>
+              {/* <div style={{ marginBottom: "10px" }}><b>Filter</b></div> */}
 
               <div className="button-grid">
-              
+
                 <div>
-                 <div style={{marginBottom:"10px"}}><b>Type</b></div>
+                  <div style={{ marginBottom: "10px" }}><b>Type</b></div>
                   <select className="standardselect"
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value)}
@@ -341,54 +348,46 @@ export default function OwnerVehicles() {
                   </select>
                 </div>
                 <div>
-                  <div style={{marginBottom:"10px"}}><b>From</b></div>
+                  <div style={{ marginBottom: "10px" }}><b>From</b></div>
                   <input className="input-date"
                     type="date"
                     value={filterDate}
                     onChange={(e) => setFilterDate(e.target.value)}
                   />
                 </div>
-               
+
               </div>
             </div>
 
 
-
-            <div className="standardtitlebar">
-              <div style={{marginBottom:"10px"}}><b>Sort Order</b></div>
-              <div className="button-grid">
-                <button className="btns btn-primary"
-                  onClick={() => handleSort("owner")}>
-                  Owner
-                </button>
-                <button className="btns btn-primary"
-                  onClick={() => handleSort("plate")}>
-                  Plate
-                </button>
-                <button className="btns btn-primary  "
-                  onClick={() => handleSort("enddate")}>
-                  Checkout
-                </button>
-                <button className="btns btn-primary"
-                  onClick={() => handleSort("active")}>
-                  Active
-                </button>
+            {!showTable && (
+              <div className="standardtitlebar">
+                <div style={{ marginBottom: "10px" }}><b>Sort Order</b></div>
+                <div className="button-grid">
+                  <button className="btns btn-primary"
+                    onClick={() => handleSort("owner")}>
+                    Owner
+                  </button>
+                  <button className="btns btn-primary"
+                    onClick={() => handleSort("plate")}>
+                    Plate
+                  </button>
+                  <button className="btns btn-primary  "
+                    onClick={() => handleSort("enddate")}>
+                    Checkout
+                  </button>
+                  <button className="btns btn-primary"
+                    onClick={() => handleSort("active")}>
+                    Active
+                  </button>
+                </div>
               </div>
-            </div>
-
-
-
-
-
-
-
-
-
+            )}
 
           </div>
         </div>
 
-       
+
 
 
         {vehiclesError && (
@@ -403,9 +402,9 @@ export default function OwnerVehicles() {
           </div>
         ) : vehicles && vehicles.length > 0 ? (
           <>
-           
-            <div className="xphoneview">
-              {/* <VehiclesGridPhone
+
+            {/*<div className="xphoneview">
+              <VehiclesGrid
                 vehicles={vehicles}
                 role={"owner"}
                 sortColumn={sortColumn}
@@ -415,19 +414,41 @@ export default function OwnerVehicles() {
                 handlePaymentClick={handlePaymentClick}
                 getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                 utcDateOnly={utcDateOnly}
-              /> */}
-              <VehiclesGridPhone
-                vehicles={vehicles}
-                role={role}
-                // sortColumn={sortColumn}
-                // sortDirection={sortDirection}
-                // handleSort={handleSort}
-                handleDetailsClick={handleDetailsClick}
-                handlePaymentClick={handlePaymentClick}
-                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                utcDateOnly={utcDateOnly}
-              />
-            </div>
+              /> 
+              </div> */}
+
+            {showTable ? (
+              <div>
+                <VehiclesTableUpdate
+                  vehicles={vehicles}
+                  role={role}
+                  sortColumn={sortColumn}
+                  sortDirection={sortDirection}
+                  handleSort={handleSort}
+                  handleDetailsClick={handleDetailsClick}
+                  handlePaymentClick={handlePaymentClick}
+                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                  utcDateOnly={utcDateOnly}
+                />
+              </div>
+
+            ) : (
+
+
+              <div className="xphoneview">
+                <VehiclesGridPhone
+                  vehicles={vehicles}
+                  role={role}
+                  // sortColumn={sortColumn}
+                  // sortDirection={sortDirection}
+                  // handleSort={handleSort}
+                  handleDetailsClick={handleDetailsClick}
+                  handlePaymentClick={handlePaymentClick}
+                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                  utcDateOnly={utcDateOnly}
+                />
+              </div>
+            )}
           </>
         ) : (
           <div className="noresultsfound">
