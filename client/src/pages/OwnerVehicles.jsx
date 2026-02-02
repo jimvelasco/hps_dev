@@ -72,7 +72,12 @@ export default function OwnerVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-
+          updatedVehicles.sort((a, b) => {
+            let valueA, valueB;
+             valueA = a.calculatedActiveFlag || "";
+              valueB = b.calculatedActiveFlag || "";
+              return String(valueB).localeCompare(String(valueA));
+          });
 
           setVehicles(updatedVehicles);
           setAllVehicles(updatedVehicles);
