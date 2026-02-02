@@ -23,19 +23,20 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
               </button>
             </div>
           </div>
+          {}
           {/* <div className="full-row"><b>Name</b></div> */}
           <div className="full-row" style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
            
           </div>
+          
           <div className="full-row" style={{fontSize:'.9rem',marginBottom:'5px'}}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
           <div className="grid-item-bold">Unit</div>
-          <div className="grid-item-bold">Owner</div>
-
+          <div className="grid-item-bold"><span style={{ textDecoration:"xunderline",color:"xwhite",backgroundColor:"##ccc",padding:"10px"}}>{vehicle.carownertype.toUpperCase()}</span></div>
           <div className="grid-item-bold">Type</div>
-          <div className="grid-item-normal">{vehicle.unitnumber || "N/A"}</div>
-          <div className="grid-item-normal">{vehicle.carownertype || "N/A"}</div>
 
+          <div className="grid-item-normal">{vehicle.unitnumber || "N/A"}</div>
+          <div className="grid-item-normal">&nbsp;</div>
           <div className="grid-item-normal">{vehicle.vehicle_type || "N/A"}</div>
 
           <div className="grid-item-bold">Make</div>
@@ -56,7 +57,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           <div className="grid-item-bold">Payment</div>
           <div className="grid-item-normal">
             {vehicle.requires_payment == 1 ? (
-              <div className="button-grid">
+              <div className="xbutton-grid">
                 <button className="btnxs btn-primary"
                   onClick={() => handlePaymentClick(vehicle)}>
                   Pay Now

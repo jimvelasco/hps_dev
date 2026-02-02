@@ -18,7 +18,7 @@ export default function OnsiteVehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
   const [vehiclesError, setVehiclesError] = useState(null);
-  const [isPlateVisible, setIsPlateVisible] = useState(false);
+  const [isPlateVisible, setIsPlateVisible] = useState(true);
   const [isGridVisible, setIsGridVisible] = useState(false);
 
   useEffect(() => {
