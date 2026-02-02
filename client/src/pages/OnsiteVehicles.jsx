@@ -9,8 +9,6 @@ import TableButton from "../components/TableButton";
 import ViolationsAccordion from "../components/ViolationsAccordion";
 import { getAWSResource } from "../utils/awsHelper";
 import VehiclesTableOnsite from "../components/VehiclesTableOnsite";
-import VehiclesGridOS from "../components/VehiclesGridOS";
-import VehiclesGridPhone from "../components/VehiclesGridPhone";
 
 
 export default function OnsiteVehicles() {
