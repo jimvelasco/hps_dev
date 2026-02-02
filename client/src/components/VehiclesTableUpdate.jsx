@@ -51,7 +51,7 @@ let flag = 'update';
             <div className="standard-table-cell "> {vehicle.carownertype}</div>
             <div className="standard-table-cell ">{vehicle.vehicle_type}</div>
             <div className="standard-table-cell ">{vehicle.make}</div>
-            <div className="standard-table-cell ">{vehicle.model} {vehicle.requires_payment}</div>
+            <div className="standard-table-cell ">{vehicle.model}</div>
 
              <div  style={{ marginTop: '5px' }}>
               <button className="btnxs btn-primary"
