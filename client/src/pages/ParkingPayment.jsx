@@ -94,31 +94,33 @@ export default function ParkingPayment() {
   const [error, setError] = useState(null);
   const [pricePerNight, setPricePerNight] = useState(0);
   const [clientSecret, setClientSecret] = useState("");
+  const [loadingIntent, setLoadingIntent] = useState(false);
+  const [activeVehiclesCount, setActiveVehiclesCount] = useState(0);
 
-  useEffect(() => {
-    const fetchPaymentIntent = async () => {
-      if (vehicle && pricePerNight && numdays && hoa) {
-        try {
-          const totalAmount = pricePerNight * numdays;
-          const amountInCents = Math.round(totalAmount * 100);
-          
-          const response = await axios.post("/payments/create-payment-intent", {
-            amount: amountInCents,
-            metadata: {
-              vehicleId,
-              hoaId: hoa.hoaid,
-              unitNumber
-            }
-          });
-          setClientSecret(response.data.clientSecret);
-        } catch (error) {
-          console.error("Error fetching payment intent:", error);
-        }
+  const handleInitiatePayment = async () => {
+    if (vehicle && pricePerNight && numdays && hoa) {
+      setLoadingIntent(true);
+      try {
+        const totalAmount = pricePerNight * numdays;
+        const amountInCents = Math.round(totalAmount * 100);
+        
+        const response = await axios.post("/payments/create-payment-intent", {
+          amount: amountInCents,
+          metadata: {
+            vehicleId,
+            hoaId: hoa.hoaid,
+            unitNumber
+          }
+        });
+        setClientSecret(response.data.clientSecret);
+      } catch (error) {
+        console.error("Error fetching payment intent:", error);
+        setError("Failed to initiate payment form. Please try again.");
+      } finally {
+        setLoadingIntent(false);
       }
-    };
-
-    fetchPaymentIntent();
-  }, [vehicle, pricePerNight, numdays, vehicleId, hoa, unitNumber]);
+    }
+  };
 
 
 
@@ -148,7 +150,13 @@ export default function ParkingPayment() {
       }
     });
 
-    return matchingRange ? matchingRange.rate : 0;
+    if (matchingRange) {
+      // Use rate_2nd if there's already an active vehicle, otherwise use base rate
+      // not doing this now because not sure how this works when owners try and pay for their car.
+      // return activeVehiclesCount > 0 ? (matchingRange.rate_2nd || matchingRange.rate) : matchingRange.rate;
+      return matchingRange.rate;
+    }
+    return 0;
   };
 
   useEffect(() => {
@@ -161,7 +169,7 @@ export default function ParkingPayment() {
     if (hoa) {
       setPricePerNight(getPricePerNight());
     }
-  }, [hoa]);
+  }, [hoa, activeVehiclesCount]);
 
   useEffect(() => {
     //  if (userLoading) {return}
@@ -169,10 +177,23 @@ export default function ParkingPayment() {
       try {
         setLoading(true);
         const qry = `/vehicles/id/${vehicleId}`;
-        // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
         setVehicle(response.data);
-       // console.log("Fetched vehicle data:", response.data);
+
+       // console.log('useEffect vehicleId',vehicleId,'role is',role)
+        
+        // Fetch other active vehicles for the same unit to handle tiered pricing
+        // not going to do this now.  Just set active vehicles count to 0
+
+        // const unitQry = `/vehicles/${hoaId}/rentervehicles/${unitNumber}`;
+        // const unitResponse = await axios.get(unitQry);
+        // const otherActive = unitResponse.data.filter(v => 
+        //   v._id !== vehicleId && v.requires_payment === 2
+        // ).length;
+        // setActiveVehiclesCount(otherActive);
+
+        setActiveVehiclesCount(0);
+
         const sdate = new Date(response.data.startdate);
         const edate = new Date(response.data.enddate);
         const timeDiff = Math.abs(edate - sdate);
@@ -209,7 +230,7 @@ export default function ParkingPayment() {
           vehicleId: vehicleId,
           checkin: vehicle.checkin,
           checkout: vehicle.checkout,
-          unitnumber: vehicle.unitnumber,
+          unitnumber: vehicle.unitnumber || unitNumber,
           lastname: vehicle.carowner_lname,
           firstname: vehicle.carowner_fname,
           plate: vehicle.plate,
@@ -251,11 +272,12 @@ export default function ParkingPayment() {
       });
     } catch (error) {
       console.error("Error recording payment:", error);
+      const serverMessage = error.response?.data?.message || error.message;
       setModal({
         isOpen: true,
         type: "alert",
         title: "Error Recording Payment",
-        message: "Your payment was successful but we failed to record it. Please contact support.",
+        message: `Your payment was successful but we failed to record it: ${serverMessage}. Please contact support with your Payment ID: ${paymentIntent?.id || 'Unknown'}`,
         confirmText: "OK",
         onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
       });
@@ -333,12 +355,27 @@ export default function ParkingPayment() {
                   vehicle={vehicle} 
                   hoa={hoa} 
                   onSuccess={handleStripeSuccess} 
-                  onCancel={() => navigate(-1)} 
+                  onCancel={() => setClientSecret("")} 
                 />
               </Elements>
             ) : (
-              <div style={{ textAlign: "center", padding: "20px" }}>
-                <p>Loading payment form...</p>
+              <div style={{ textAlign: "center", marginTop: "10px" }}>
+                <button 
+                  className="btn btn-primary" 
+                  onClick={handleInitiatePayment}
+                  disabled={loadingIntent || pricePerNight === 0}
+                  style={{ width: "100%", marginTop: "10px" }}
+                >
+                  {loadingIntent ? "Preparing Payment..." : "Proceed to Payment"}
+                </button>
+                <button className="btn btn-default" 
+                  onClick={() => navigate(-1)}
+                  style={{ width: "100%", marginTop: "10px" }}
+                >
+                  Cancel
+                </button>
+      
+                {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
               </div>
             )}
           </div>

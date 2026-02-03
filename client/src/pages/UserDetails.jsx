@@ -191,11 +191,13 @@ export default function UserDetails() {
       //   navigate(`/${hoaId}/users`);
     } catch (err) {
       //  alert(`Error: ${err.response?.data?.message || err.message}`);
+    // console.log("***** opening modal Error:", err);
+      let serverResponse = err.response.data;
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: `Error: ${err.response?.data?.message || err.message}`,
+        message: `Error: ${serverResponse.errors?.[0]?.message || serverResponse.message || err.message}`,
         confirmText: "OK",
         onConfirm: () => {
           setModal(prev => ({ ...prev, isOpen: false }))
@@ -206,6 +208,8 @@ export default function UserDetails() {
       setIsSubmitting(false);
     }
   };
+
+  // message: `Error: ${err.response?.data?.message || err.message}`,
 
   const handleBackToUsers = () => {
     navigate(`/${hoaId}/users`);
@@ -353,7 +357,7 @@ export default function UserDetails() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  disabled={isEditMode}
+                  // disabled={isEditMode}
                   style={{
                     width: "100%",
                     padding: "10px",

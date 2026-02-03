@@ -163,7 +163,7 @@ export default function UserProfile() {
         submitData.password = formData.password;
       }
 
-      const response = await axios.put(`/users/${loggedInUser._id}`, submitData);
+      const response = await axios.put(`/users/profile/${loggedInUser._id}`, submitData);
 
       if (response.status === 200) {
         setModal({
@@ -179,11 +179,12 @@ export default function UserProfile() {
         });
       }
     } catch (err) {
+       let serverResponse = err.response.data;
       setModal({
         isOpen: true,
         type: "alert",
         title: "Error",
-        message: `Error: ${err.response?.data?.message || err.message}`,
+        message: `Error: ${serverResponse.errors?.[0]?.message || serverResponse.message || err.message}`,
         confirmText: "OK",
         onConfirm: () => {
           setModal(prev => ({ ...prev, isOpen: false }));
@@ -322,7 +323,7 @@ export default function UserProfile() {
               <>
                 <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    PIN Code
+                    PIN Code *
                   </label>
                   <input
                     className="standardinput"
@@ -330,6 +331,7 @@ export default function UserProfile() {
                     name="pincode"
                     value={formData.pincode}
                     onChange={handleInputChange}
+                    required
                   />
                 </div>
                  <div style={{ marginBottom: "15px" }}>

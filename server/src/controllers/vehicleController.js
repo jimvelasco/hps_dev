@@ -204,7 +204,7 @@ const updateVehiclePayment = async (req, res) => {
       return res.status(404).json({ message: "Vehicle not found" });
     }
     vehicle.requires_payment = state.requires_payment;
-    vehicle.save();
+    await vehicle.save();
     res.status(200).json(vehicle);
   } catch (error) {
     res.status(500).json({ message: error.message });

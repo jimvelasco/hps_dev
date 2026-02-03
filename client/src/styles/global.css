@@ -95,7 +95,13 @@ h1, h2, h3, h4, h5, h6 {
 .vehicles-table-owner {
   display: grid;
   /* grid-template-columns: repeat(8, 1fr); */
-  grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr 1.5fr 1fr 0.8fr .5fr;
+  grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr .8fr;
+  gap: 0;
+}
+.vehicles-table-owner8 {
+  display: grid;
+  /* grid-template-columns: repeat(8, 1fr); */
+  grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr ;
   gap: 0;
 }
 
@@ -494,6 +500,11 @@ button.navbutton2 {
   width:140px;
   margin: 4px;
 
+}
+
+.navbutton2:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
 }
 
 button.navbutton2:hover {
@@ -917,8 +928,10 @@ section.standardsectiondashboard {
   border: 0px solid black;
   max-width: 380px;
   min-width: 260px;
+  min-height:270px;
 
   box-sizing: border-box;
+ 
   /* height: 170px */
 }
 
@@ -959,11 +972,12 @@ section.standardsectiondashboard {
   /* border-bottom: 1px solid #65598a; */
   border-bottom: 0px solid #dddddd;
   /*  rgba(0, 0, 0, 0.8); */
-  margin-bottom: 3px;
-  font-size: 11pt;
+  /* padding:5px; */
+  margin-bottom: 10px;
+  font-size: 12pt;
   text-align: left;
-  margin: 1px;
-  overflow-x: hidden;
+ 
+  overflow: hidden;
 }
 
 .grid-item-normal-highlight {
@@ -981,12 +995,13 @@ section.standardsectiondashboard {
 .grid-item-bold {
   background-color: rgba(255, 255, 255, 0.8);
   border-bottom: 0px solid rgba(0, 0, 0, 0.8);
-  margin-bottom: 3px;
-  font-size: 10pt;
+  /* margin-bottom: 3px; */
+  font-size: .8rem;
   text-align: left;
-  margin-top: 5px;
-  overflow-x: hidden;
-  font-weight: 700;
+  /* margin-top: 5px; */
+  /* margin-bottom: 5px; */
+  overflow: hidden;
+  font-weight: 600;
 }
 
 /* ********************************************** */
@@ -1496,7 +1511,7 @@ input.standardinput:disabled {
 
 .btnxs {
   width: 100%;
-  min-height: 24px;
+  /* min-height: 24px; */
   padding: 0.25rem 0.125rem;
   max-width: 100px;
 
