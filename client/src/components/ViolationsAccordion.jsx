@@ -6,7 +6,7 @@ import ViolationForm from "./ViolationForm";
 import ModalAlert from "./ModalAlert";
 
 export default function ViolationsAccordion({ hoaId }) {
-  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [expandedIndices, setExpandedIndices] = useState([]);
   const [violations, setViolations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showViolationForm, setShowViolationForm] = useState(false);
@@ -83,7 +83,11 @@ export default function ViolationsAccordion({ hoaId }) {
   };
 
   const toggleItem = (index) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
+    setExpandedIndices(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index) 
+        : [...prev, index]
+    );
   };
 
   const accordionStyles = `
@@ -199,7 +203,7 @@ export default function ViolationsAccordion({ hoaId }) {
             <div className="accordion-header" onClick={() => toggleItem(index)} >
               <div>{item.title}</div>
             </div>
-            <div className={`accordion-content ${expandedIndex === index ? "open" : ""}`}>
+            <div className={`accordion-content ${expandedIndices.includes(index) ? "open" : ""}`}>
               {item.details.map((detail, detailIndex) => (
                 <div key={detailIndex} className="accordion-detail">
                   <div className="accordion-label">{detail.label}</div>
