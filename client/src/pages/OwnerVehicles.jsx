@@ -362,7 +362,7 @@ export default function OwnerVehicles() {
 
             {!showTable && (
               <div className="standardtitlebar">
-                <div style={{ marginBottom: "10px" }}><b>Sort Order</b></div>
+                <div style={{ marginBottom: "10px" }}><b>Sort</b></div>
                 <div className="button-grid">
                   <button className="btns btn-primary"
                     onClick={() => handleSort("owner")}>

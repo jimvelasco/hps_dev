@@ -3,12 +3,14 @@ import axios from "../services/api";
 import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import ViolationForm from "./ViolationForm";
+import ModalAlert from "./ModalAlert";
 
 export default function ViolationsAccordion({ hoaId }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [violations, setViolations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showViolationForm, setShowViolationForm] = useState(false);
+  const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { setAppError } = useError();
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
 
@@ -45,9 +47,21 @@ export default function ViolationsAccordion({ hoaId }) {
     }
   };
 
-  const deleteViolation = async (item) => {
+  const deleteViolation = (item) => {
+    setModal({
+      isOpen: true,
+      type: "delete",
+      title: "Confirm Delete",
+      message: `Are you sure you want to delete the violation for ${item.title}?`,
+      confirmText: "Delete",
+      onConfirm: () => confirmDelete(item.id),
+      onCancel: () => setModal({ ...modal, isOpen: false })
+    });
+  };
+
+  const confirmDelete = async (violationId) => {
     try {
-      const violationId = item.id;
+      setModal({ ...modal, isOpen: false });
       await axios.delete(`/violations/${violationId}`);
       fetchViolations();
     } catch (err) {
@@ -194,7 +208,7 @@ export default function ViolationsAccordion({ hoaId }) {
               ))}
               {loggedInUser && loggedInUser.role === 'admin' &&
                 <div style={{ textAlign: 'center', margin: '5px' }}>
-                  <button className="navbutton" onClick={() => deleteViolation(item)}>Delete</button>
+                  <button className="btnxs btn-danger" style={{marginTop:"5px"}} onClick={() => deleteViolation(item)}>Delete</button>
                 </div>
               }
             </div>
@@ -206,6 +220,15 @@ export default function ViolationsAccordion({ hoaId }) {
         hoaId={hoaId}
         onClose={handleCloseViolationForm}
         onSuccess={handleViolationSuccess}
+      />
+      <ModalAlert
+        isOpen={modal.isOpen}
+        type={modal.type}
+        title={modal.title}
+        message={modal.message}
+        confirmText={modal.confirmText}
+        onConfirm={modal.onConfirm}
+        onCancel={modal.onCancel}
       />
     </>
   );
