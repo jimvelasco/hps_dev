@@ -189,7 +189,7 @@ export default function OnsiteVehicles() {
   }
 
 
- const handleShowTable = () => {
+  const handleShowTable = () => {
     if (showTable) {
       setShowTable(false)
     } else {
@@ -241,7 +241,7 @@ export default function OnsiteVehicles() {
             </button>
 
             <button className="navbutton2" onClick={handleShowPlate}
-            disabled = {showTable}>
+              disabled={showTable}>
               {isPlateVisible ? "Show Cards" : "Show Plates"}
             </button>
 
@@ -253,30 +253,30 @@ export default function OnsiteVehicles() {
         </div>
 
         {!showTable && (
-           <div className="standardtitlebar">
-          <div style={{ marginBottom: "10px" }}><b>Sort</b></div>
-          <div className="button-grid">
-            <button className="btns btn-primary"
-              onClick={() => handleSort("owner")}>
-              Owner
-            </button>
-            <button className="btns btn-primary"
-              onClick={() => handleSort("plate")}>
-              Plate
-            </button>
-            <button className="btns btn-primary  "
-              onClick={() => handleSort("enddate")}>
-              Checkout
-            </button>
-            <button className="btns btn-primary"
-              onClick={() => handleSort("active")}>
-              Active
-            </button>
+          <div className="standardtitlebar">
+            <div style={{ marginBottom: "10px" }}><b>Sort</b></div>
+            <div className="button-grid">
+              <button className="btns btn-primary"
+                onClick={() => handleSort("owner")}>
+                Owner
+              </button>
+              <button className="btns btn-primary"
+                onClick={() => handleSort("plate")}>
+                Plate
+              </button>
+              <button className="btns btn-primary  "
+                onClick={() => handleSort("enddate")}>
+                Checkout
+              </button>
+              <button className="btns btn-primary"
+                onClick={() => handleSort("active")}>
+                Active
+              </button>
+            </div>
           </div>
-        </div>
         )}
 
-       
+
 
         {vehiclesError && (
           <div className="displayerror">
@@ -311,23 +311,34 @@ export default function OnsiteVehicles() {
                 />
 
               ) : (
-                
-                  vehicles.map((vehicle, index) => (
-                    isPlateVisible ? renderVehiclePlate(vehicle) :
-                      renderVehicleCard(vehicle)
-                  ))
+
+                vehicles.map((vehicle, index) => (
+                  isPlateVisible ? renderVehiclePlate(vehicle) :
+                    renderVehicleCard(vehicle)
+                ))
               )}
             </div>
-            <div className="flex-container">
+            <div className="flex-container" style={{
+              maxHeight: '80vh',
+              overflowY: 'auto',
+              position: 'sticky',
+              top: '20px'
+            }}>
               <div className="header-title">Violations</div>
               <ViolationsAccordion hoaId={hoaId} />
             </div>
+
+             {/* <div className="flex-container" >
+              <div className="header-title">Violations</div>
+              <ViolationsAccordion hoaId={hoaId} />
+            </div> */}
+
           </div>
 
         ) : (
           <>
             <div className='grid-flex-container'>
-             {showTable ? (
+              {showTable ? (
                 <VehiclesTableOnsite
                   vehicles={vehicles}
                   role={role}
@@ -339,11 +350,11 @@ export default function OnsiteVehicles() {
                 />
 
               ) : (
-                
-                  vehicles.map((vehicle, index) => (
-                    isPlateVisible ? renderVehiclePlate(vehicle) :
-                      renderVehicleCard(vehicle)
-                  ))
+
+                vehicles.map((vehicle, index) => (
+                  isPlateVisible ? renderVehiclePlate(vehicle) :
+                    renderVehicleCard(vehicle)
+                ))
               )}
 
             </div>

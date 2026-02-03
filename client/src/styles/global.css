@@ -805,6 +805,7 @@ section.standardsectiondashboard {
   grid-template-columns: 4fr 1fr;
   /* background-color: #ffffff; */
   padding: 3px;
+  align-items: start;
 
   margin: 2px;
   border: 0px solid black;
