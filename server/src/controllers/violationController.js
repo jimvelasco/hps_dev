@@ -5,7 +5,7 @@ const getViolationsByHoaId = async (req, res) => {
     const { hoaId } = req.params;
 
    // const violations = (await Violation.find({ hoaid: hoaId })).sort({ 'violation_plate': 1 });
-     const violations = (await Violation.find({ hoaid: hoaId }).sort({ violation_plate: 1 }));
+     const violations = (await Violation.find({ hoaid: hoaId }).sort({ violation_plate: 1 ,violation_date:-1}));
     res.json(violations);
   } catch (error) {
     res.status(500).json({ message: error.message });

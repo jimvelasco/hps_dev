@@ -596,14 +596,28 @@ export default function VehicleDetails() {
                   <label className="input-label">
                     Vehicle Type
                   </label>
-                  <input className="standardinput"
-                    type="text"
+                  <select className="xxxstandardinput"
                     name="vehicle_type"
                     value={formData.vehicle_type}
                     onChange={handleFormChange}
-                    placeholder="e.g., Car, SUV, Truck"
-                  />
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                      boxSizing: "border-box"
+                    }}
+
+                  >
+                    <option value="">Select Type</option>
+                    <option value="Car">Car</option>
+                    <option value="Truck">Truck</option>
+                    <option value="RV">RV</option>
+                    <option value="Motorcyle">Motorcyle</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
+
               </div>
 
               {/* License Plate & Status */}

@@ -926,7 +926,8 @@ section.standardsectiondashboard {
 
 .grid-container-3_oldhoa {
   display: grid;
-  grid-column-gap: 0px;
+  grid-column-gap: 1px;
+   /* grid-row-gap: 10px; */
   grid-template-columns: 1.5fr 1.5fr .8fr;
    /* grid-template-columns: 1fr 1fr 1fr; */
   background-color: white;
@@ -951,7 +952,7 @@ section.standardsectiondashboard {
   border-bottom: 3px solid black;
 }
 .row-with-gap {
-  border-bottom: 0px solid black;
+  border-bottom: 1px solid black !important;
   padding-bottom: 3px; /* Space between text and the line */
   margin-bottom:3px;  /* Space between the line and the next row */
 }
