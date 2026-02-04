@@ -143,12 +143,22 @@ export default function OwnersDashboard() {
       which: "standard"
     });
     }
+
      navButtons.push({
+      label: "Reports",
+      onClick: handleProfileClick,
+      which: "standard"
+    }
+  )
+
+ navButtons.push({
       label: "Logout",
       onClick: handleLogout,
       which: "goback"
     }
   )
+
+    
  
   if (loggedInUser.role == "admin") {
     navButtons.unshift({

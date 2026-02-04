@@ -365,7 +365,7 @@ export default function UserDetails() {
                     borderRadius: "4px",
                     fontSize: "14px",
                     boxSizing: "border-box",
-                    backgroundColor: isEditMode ? "#f5f5f5" : "white"
+                    // backgroundColor: isEditMode ? "#f5f5f5" : "white"
                   }}
                 />
               </div>

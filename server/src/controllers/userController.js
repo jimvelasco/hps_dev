@@ -7,7 +7,7 @@ const getUsers = async (req, res) => {
   const { hoaId } = req.query;
   const filter = hoaId ? { hoaid:hoaId } : {};
  //  console.log("getUsers and hoaId:", hoaId,filter);
-  const users = await User.find(filter);
+  const users = await User.find(filter).sort({ unitnumber: 1 });
   res.json(users);
 };
 

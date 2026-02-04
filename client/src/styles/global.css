@@ -104,6 +104,8 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: 1.2fr .6fr .6fr .6fr 1.0fr 1.0fr 1.0fr .6fr .6fr;
    /* grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr .8fr; */
   gap: 0;
+  min-width: 800px;
+ 
   /* max-width: 380px; */
 }
 .vehicles-table-owner8 {
@@ -586,6 +588,15 @@ input.input-date {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
+
+
+}
+input.input-date:disabled {
+  
+  /* border: 3px solid  red; */
+
+   background-color: #ccc;
+  cursor: not-allowed;
 
 
 }

@@ -11,9 +11,10 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
       borderRadius: "8px",
       boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
       overflow: "hidden",
-      // border:"2px solid blue",
+      border:"0px solid blue",
       paddingLeft: "0px",
       paddingRight: "0px",
+    width:"1100px",
       // maxWidth:"600px"
     }}>
 
@@ -36,7 +37,29 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
               />
             )}
           </div>
-          <div className="standard-table-header ">Type</div>
+
+
+           <div className="standard-table-header" style={{
+            textDecoration: "underline",
+            cursor: "pointer"
+          }} onClick={() => handleSort("ownertype")}>
+            Type
+            {sortColumn === "ownertype" && (
+              <FontAwesomeIcon
+                icon={faArrowUp}
+                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
+              />
+            )}
+          </div>
+
+
+          {/* <div className="standard-table-header ">Type</div> */}
+
+
+
+
+
+
           <div className="standard-table-header ">Vehicle</div>
           <div className="standard-table-header ">Make</div>
           <div className="standard-table-header ">Model</div>
@@ -129,8 +152,8 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
               </div> */}
 
             {vehicle.requires_payment == 1 ? (
-              <div className="xbutton-grid" style={{ marginTop: "5px" }}>
-                <button className="btnxs btn-primary"
+              <div className="xbutton-grid" style={{ marginTop: "5px",marginRight:"5px" }}>
+                <button className="btnxsx btn-primaryx"
                   onClick={() => handlePaymentClick(vehicle)}>
                   Pay Now
                 </button>

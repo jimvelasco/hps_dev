@@ -63,16 +63,21 @@ export default function OwnerVehicles() {
           setVehiclesLoading(true);
           // qry = `/vehicles/${hoaId}/${role}/${ownerId}`
           qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
-          //console.log("OwnerVehicles.jsx qry:", qry);
+          console.log("OwnerVehicles.jsx qry:", qry);
           if (role === "admin" || role === "manager") {
 
             qry = `/vehicles/${hoaId}`
           }
+
+         // console.log("OwnerVehicles.jsx qry:", qry);
           const response = await axios.get(qry);
+          // console.log(  console.log("fetchVehicles client received:", response.data.length))
           const updatedVehicles = response.data.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
+
+          //  console.log("updatedVehicles client received:", updatedVehicles.length)
 
           updatedVehicles.sort((a, b) => {
             let valueA, valueB;
@@ -81,10 +86,11 @@ export default function OwnerVehicles() {
             return String(valueB).localeCompare(String(valueA));
           });
 
+          //console.log("updatedVehicles length about to set", updatedVehicles.length)
+
           setVehicles(updatedVehicles);
           setAllVehicles(updatedVehicles);
           setVehiclesError(null);
-          // handleFilterApply();
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");
           console.error("Error fetching vehicles:", err);
@@ -94,14 +100,13 @@ export default function OwnerVehicles() {
       };
 
       fetchVehicles();
-      //  handleFilterApply();
     }
   }, [hoaId, ownerId]);
 
   useEffect(() => {
     if (allVehicles.length > 0) {
       const today = new Date();
-      const oneYearAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate());
+      const oneYearAgo = new Date(today.getFullYear() -1 , today.getMonth(), today.getDate());
       //const formattedDate = oneYearAgo.toISOString().split('T')[0];
       const formattedDate = utcDateOnly(oneYearAgo);
       setFilterDate(formattedDate);
@@ -144,6 +149,9 @@ export default function OwnerVehicles() {
       } else if (column === "owner") {
         valueA = (a.carowner_lname || "").toLowerCase();
         valueB = (b.carowner_lname || "").toLowerCase();
+      } else if (column === "ownertype") {
+        valueA = (a.carownertype || "").toLowerCase();
+        valueB = (b.carownertype || "").toLowerCase();
       } else if (column === "enddate") {
         valueA = (a.enddate || "").toLowerCase();
         valueB = (b.enddate || "").toLowerCase();
@@ -162,18 +170,29 @@ export default function OwnerVehicles() {
 
   const handleFilterApply = () => {
     let filtered = [...allVehicles];
+   //  console.log("ENTRY **** FILTER APPLIED LEN",filterType,filtered.length)
     if (filterType === "owner") {
       filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family");
     } else if (filterType === "renter") {
       filtered = filtered.filter(v => v.carownertype === "renter");
     }
-    if (filterDate) {
-      const filterDateObj = filterDate;
-      filtered = filtered.filter(v => {
-        const checkoutDate = v.enddate;
-        return checkoutDate >= filterDateObj;
-      });
-    }
+    // if (filterDate) {
+    //   const filterDateObj = filterDate;
+    //   filtered = filtered.filter(v => {
+    //     const checkoutDate = v.enddate;
+    //     return checkoutDate >= filterDateObj;
+    //   });
+    // }
+
+    // why was this put in ?
+    // if (filterDate && filterType === "renter") {
+    //   const filterDateObj = filterDate;
+    //   filtered = filtered.filter(v => {
+    //     const checkoutDate = v.enddate;
+    //     return checkoutDate >= filterDateObj;
+    //   });
+    // }
+  //  console.log("FILTER APPLIED LEN",filterType,filtered.length)
     setVehicles(filtered);
   };
 
@@ -303,93 +322,136 @@ export default function OwnerVehicles() {
     }
   ];
   let backgroundImage = '';
+  let ttitle2 = "";
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
+    ttitle2 = hoa.name + " -  " + role;
+    // console.log("VEHICLES LENGTH IS ",vehicles.length );
   }
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-      <DashboardNavbar title="Owner Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
+      <DashboardNavbar title="Owner Vehicles" title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
-          <div className="standardtitlebar" style={{ width: "50%" }}>
-            <div className="button-grid">
-              <button className="navbutton2" 
+        <div className="standardtitlebar" style={{ width: "60%" }}>
+          <div className="button-grid">
+            <div>
+              <div style={{fontSize:"12px"}}>&nbsp;</div>
+            <button className="navbutton2"
               onClick={handleShowTable}>
-                {showTable ? "Hide Table" : "Show Table"}
-              </button>
-              <button className="navbutton2" 
-               onClick={() => handleShowHidenClick()}
-                 disabled={showTable}
+              {showTable ? "Hide Table" : "Show Table"}
+            </button>
+            </div>
+
+
+
+
+
+            {/* <div>
+              <div style={{fontSize:"12px"}}>Type</div>
+              <select className="standardselect"
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
               >
-               
-                
-                 
-                {!isVisible ? "Show Filters" : "Hide Filters"}
+                <option value="owner">Owner</option>
+                <option value="renter">Renter</option>
+              </select>
+            </div> */}
+
+
+            {/* <div>
+               <div style={{fontSize:"12px"}}>Since</div>
+              <input className="input-date"
+                type="date"
+                value={filterDate}
+                onChange={(e) => setFilterDate(e.target.value)}
+                disabled={filterType === "renter" ? false : true }
+              />
+            </div> */}
+
+
+
+
+
+
+
+            {loggedInUser && loggedInUser.role !== "admin" && (
+              <div>
+                 <div style={{fontSize:"12px"}}>&nbsp;</div>
+              <button className="navbutton2"
+                onClick={() => handleCreateClick()}>
+                New Vehicle
               </button>
-              {loggedInUser && loggedInUser.role !== "admin" && (
-                <button className="navbutton2" 
-                  onClick={() => handleCreateClick()}>
-                  New Vehicle
-                </button>)}
-            </div>
-          </div>
-          <div style={{ display: isVisible ? "block" : "none" }}>
-
-
-            <div className="standardtitlebar" style={{ width: "50%" }}>
-              {/* <div style={{ marginBottom: "10px" }}><b>Filter</b></div> */}
-
-              <div className="button-grid">
-
-                <div>
-                  <div style={{ marginBottom: "10px" }}><b>Type</b></div>
-                  <select className="standardselect"
-                    value={filterType}
-                    onChange={(e) => setFilterType(e.target.value)}
-                  >
-                    <option value="owner">Owner</option>
-                    <option value="renter">Renter</option>
-                    {/* <option value="both">Both</option> */}
-                  </select>
-                </div>
-                <div>
-                  <div style={{ marginBottom: "10px" }}><b>From</b></div>
-                  <input className="input-date"
-                    type="date"
-                    value={filterDate}
-                    onChange={(e) => setFilterDate(e.target.value)}
-                  />
-                </div>
-
               </div>
-            </div>
-
-
-            {!showTable && (
-              <div className="standardtitlebar">
-                <div style={{ marginBottom: "10px" }}><b>Sort</b></div>
-                <div className="button-grid">
-                  <button className="btns btn-primary"
-                    onClick={() => handleSort("owner")}>
-                    Owner
-                  </button>
-                  <button className="btns btn-primary"
-                    onClick={() => handleSort("plate")}>
-                    Plate
-                  </button>
-                  <button className="btns btn-primary  "
-                    onClick={() => handleSort("enddate")}>
-                    Checkout
-                  </button>
-                  <button className="btns btn-primary"
-                    onClick={() => handleSort("active")}>
-                    Active
-                  </button>
-                </div>
-              </div>
+            
+            
+            
             )}
 
+
           </div>
+        </div>
+        <div style={{ display: isVisible ? "block" : "block" }}>
+
+
+          {/* <div className="standardtitlebar" style={{ width: "50%" }}>
+
+
+            <div className="button-grid">
+              <div>
+                <div style={{ marginBottom: "10px" }}><b>Type</b></div>
+                <select className="standardselect"
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                >
+                  <option value="owner">Owner</option>
+                  <option value="renter">Renter</option>
+                </select>
+              </div>
+              <div>
+                <div style={{ marginBottom: "10px" }}><b>From</b></div>
+                <input className="input-date"
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  disabled={showTable}
+                />
+              </div>
+            </div>
+
+
+          </div> */}
+
+
+          {!showTable && (
+            <div className="standardtitlebar">
+              {/* <div style={{ marginBottom: "10px" }}><b>Sort</b></div> */}
+              <div className="button-grid">
+                <button className="btns btn-primary"
+                  onClick={() => handleSort("owner")}>
+                  Owner
+                </button>
+                <button className="btns btn-primary"
+                  onClick={() => handleSort("ownertype")}>
+                  Type
+                </button>
+                <button className="btns btn-primary"
+                  onClick={() => handleSort("plate")}>
+                  Plate
+                </button>
+                <button className="btns btn-primary  "
+                  onClick={() => handleSort("enddate")}>
+                  Checkout
+                </button>
+                <button className="btns btn-primary"
+                  onClick={() => handleSort("active")}>
+                  Active
+                </button>
+              </div>
+            </div>
+          )}
+
+        </div>
 
 
 
@@ -422,7 +484,7 @@ export default function OwnerVehicles() {
               </div> */}
 
             {showTable ? (
-               <div className='grid-flex-container'>
+              <div className='grid-flex-container'>
                 <VehiclesTableUpdate
                   vehicles={vehicles}
                   role={role}
@@ -434,22 +496,22 @@ export default function OwnerVehicles() {
                   getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                   utcDateOnly={utcDateOnly}
                 />
-                </div>
+              </div>
 
             ) : (
 
 
-                <VehiclesGridPhone
-                  vehicles={vehicles}
-                  role={role}
-                  // sortColumn={sortColumn}
-                  // sortDirection={sortDirection}
-                  // handleSort={handleSort}
-                  handleDetailsClick={handleDetailsClick}
-                  handlePaymentClick={handlePaymentClick}
-                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                  utcDateOnly={utcDateOnly}
-                />
+              <VehiclesGridPhone
+                vehicles={vehicles}
+                role={role}
+                // sortColumn={sortColumn}
+                // sortDirection={sortDirection}
+                // handleSort={handleSort}
+                handleDetailsClick={handleDetailsClick}
+                handlePaymentClick={handlePaymentClick}
+                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                utcDateOnly={utcDateOnly}
+              />
             )}
           </>
         ) : (

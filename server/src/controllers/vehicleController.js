@@ -33,7 +33,7 @@ const getVehiclesByHoaId = async (req, res) => {
     //   console.log("getVehiclesByHoaId Filter received params:", req.params);
 
     const qry = { hoaid: hoaId };
-     // console.log("getVehiclesByHoaId Filter received:", filter,qry);
+   //   console.log("getVehiclesByHoaId Filter received:", filter,qry);
 
     // if (filter === "owner") {
     //   qry.carownertype = "owner";
@@ -44,6 +44,7 @@ const getVehiclesByHoaId = async (req, res) => {
     //  qry.carownertype = "owner";
 
     const vehicles = await Vehicle.find(qry);
+      //console.log("getVehiclesByHoaId reponse size is:", vehicles.length);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -95,6 +96,8 @@ const getVehiclesByHoaIdOwnerId = async (req, res) => {
   }
 };
 
+// this called from rount allvehicles
+
 const getVehiclesByHoaIdUserId = async (req, res) => {
   try {
     let { hoaId, ownerid } = req.params;
@@ -106,9 +109,10 @@ const getVehiclesByHoaIdUserId = async (req, res) => {
     //console.log("Filter received:", filter);
     //  console.log("getVehiclesByHoaIdOwnerId role modified received:", role);
     // console.log("getVehiclesByHoaIdOwnerId oid received:", ownerid);
-    // console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
+   //  console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);
+    // console.log("vehicle controller shold be 19  qry built:", vehicles.length);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });

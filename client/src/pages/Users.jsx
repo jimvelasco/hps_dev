@@ -6,6 +6,9 @@ import { useError } from "../context/ErrorContext";
 import DashboardNavbar from "../components/DashboardNavbar";
 import { getAWSResource } from "../utils/awsHelper";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+
 /*
  @media (width >= 800px) {
     .standard-table {
@@ -79,7 +82,7 @@ export default function Users() {
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(true);
   const [usersError, setUsersError] = useState(null);
-  const [sortColumn, setSortColumn] = useState("last_name");
+  const [sortColumn, setSortColumn] = useState("unitnumber");
   const [sortDirection, setSortDirection] = useState("asc");
 
   useEffect(() => {
@@ -245,12 +248,31 @@ export default function Users() {
               </div>
               <div className="standard-table-header">Email</div>
               <div className="standard-table-header">Phone</div>
-              <div
+
+
+              {/* <div
                 className="standard-table-header standard-table-extra sortable"
                 onClick={() => handleSort("unitnumber")}
               >
                 Unit {sortColumn === "unitnumber" && (sortDirection === "asc" ? "▲" : "▼")}
-              </div>
+              </div> */}
+
+
+                <div className="standard-table-header" style={{
+                          textDecoration: "underline",
+                          cursor: "pointer"
+                        }} onClick={() => handleSort("unitnumber")}>
+                          Unit
+                          {sortColumn === "unitnumber" && (
+                            <FontAwesomeIcon
+                              icon={faArrowUp}
+                              style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
+                            />
+                          )}
+                        </div>
+                        
+
+
               <div className="standard-table-header standard-table-extra">Role</div>
                <div className="standard-table-header standard-table-extra">O Free</div>
                 <div className="standard-table-header standard-table-extra">R Free</div>
