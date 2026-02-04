@@ -11,7 +11,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
       borderRadius: "8px",
       boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
       overflow: "hidden",
-      border:"2px solid blue",
+      // border:"2px solid blue",
       paddingLeft: "0px",
       paddingRight: "0px",
       // maxWidth:"600px"
