@@ -25,34 +25,36 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
 
           
           
-          <div className="full-row" style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
+          <div className="full-row" style={{ marginBottom: '0px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
            
           </div>
           
-          <div className="full-row" style={{fontSize:'.9rem',marginBottom:'5px'}}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
+          <div className="full-row" 
+          style={{fontSize:'.7rem',marginBottom:'0px'}}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
           <div className="grid-item-bold">Unit</div>
-           <div className="grid-item-bold">&nbsp;</div>
+           <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
           <div className="grid-item-bold">Type</div>
 
-          <div className="grid-item-normal">{vehicle.unitnumber || "N/A"}</div>
-          <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
-          <div className="grid-item-normal">{vehicle.vehicle_type || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
+          <div className="grid-item-bold row-with-gap">&nbsp;</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 
           <div className="grid-item-bold">Make</div>
           <div className="grid-item-bold">Model</div>
           <div className="grid-item-bold">Year</div>
 
-          <div className="grid-item-normal">{vehicle.make || "N/A"}</div>
-          <div className="grid-item-normal">{vehicle.model || "N/A"}</div>
-          <div className="grid-item-normal">{vehicle.year || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
 
           <div className="grid-item-bold">Check In</div>
           <div className="grid-item-bold">Check Out</div>
           <div className="grid-item-bold">Active</div>
-          <div className="grid-item-normal">{utcDateOnly(vehicle.checkin)}</div>
-          <div className="grid-item-normal">{utcDateOnly(vehicle.checkout)}</div>
-          <div className="grid-item-normal"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
+          
+          <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkin)}</div>
+          <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkout)}</div>
+          <div className="grid-item-normal row-with-gap"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
 
 
 

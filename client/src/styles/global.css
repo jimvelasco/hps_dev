@@ -20,12 +20,19 @@ h1, h2, h3, h4, h5, h6 {
   /* font-family: Arial, sans-serif; */
 }
 
-.page-content {
+._original_page-content {
   padding: 5px;
   max-width: 1200px;
   margin: 0 auto;
+  border:0px solid yellow;
 }
-
+.page-content {
+  padding-left: 25px;
+  padding-right:25px;
+  max-width: 1200px;
+  margin: 0 auto;
+  border:0px solid yellow;
+}
 /*style={{ padding: "30px", maxWidth: "1200px", margin: "0 auto" }} */
 .flexLayout {
   background-color: white;
@@ -94,14 +101,16 @@ h1, h2, h3, h4, h5, h6 {
 /* vehicles grid */
 .vehicles-table-owner {
   display: grid;
-  /* grid-template-columns: repeat(8, 1fr); */
-  grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr .8fr;
+  grid-template-columns: 1.2fr .6fr .6fr .6fr 1.0fr 1.0fr 1.0fr .6fr .6fr;
+   /* grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr .8fr; */
   gap: 0;
+  /* max-width: 380px; */
 }
 .vehicles-table-owner8 {
   display: grid;
   /* grid-template-columns: repeat(8, 1fr); */
-  grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr ;
+  /* grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr ; */
+  grid-template-columns: 1.2fr .6fr .6fr .6fr 1.0fr 1.0fr  1.0fr .6fr;
   gap: 0;
 }
 
@@ -922,6 +931,7 @@ section.standardsectiondashboard {
    /* grid-template-columns: 1fr 1fr 1fr; */
   background-color: white;
   padding: 5px;
+  /* row-gap: 20px; */
   
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
@@ -934,6 +944,16 @@ section.standardsectiondashboard {
   box-sizing: border-box;
  
   /* height: 170px */
+}
+
+.xxrow-with-gap {
+  margin-bottom: 10px;
+  border-bottom: 3px solid black;
+}
+.row-with-gap {
+  border-bottom: 0px solid black;
+  padding-bottom: 3px; /* Space between text and the line */
+  margin-bottom:3px;  /* Space between the line and the next row */
 }
 
 .grid-container-3-full {
@@ -966,6 +986,10 @@ section.standardsectiondashboard {
   grid-column: 1 /-1;
   /* span all columns */
   text-align: center;
+  margin:0px;
+  padding:0px;
+
+  /* border:1px solid black */
 }
 
 .grid-item-normal {
@@ -974,8 +998,9 @@ section.standardsectiondashboard {
   border-bottom: 0px solid #dddddd;
   /*  rgba(0, 0, 0, 0.8); */
   /* padding:5px; */
-  margin-bottom: 10px;
-  font-size: 12pt;
+  /* margin-bottom: 10px; */
+   font-size: .8rem;
+  /* font-size: 12pt; */
   text-align: left;
  
   overflow: hidden;
@@ -999,7 +1024,7 @@ section.standardsectiondashboard {
   /* margin-bottom: 3px; */
   font-size: .8rem;
   text-align: left;
-  /* margin-top: 5px; */
+  /* margin-top: 10px; */
   /* margin-bottom: 5px; */
   overflow: hidden;
   font-weight: 600;

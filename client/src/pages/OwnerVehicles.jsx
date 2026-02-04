@@ -311,18 +311,23 @@ export default function OwnerVehicles() {
       <DashboardNavbar title="Owner Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="xtableview">
           <div className="standardtitlebar" style={{ width: "50%" }}>
             <div className="button-grid">
-              <button className="btns btn-primary" onClick={handleShowTable}>
+              <button className="navbutton2" 
+              onClick={handleShowTable}>
                 {showTable ? "Hide Table" : "Show Table"}
               </button>
-              <button className="btns btn-primary"
-                onClick={() => handleShowHidenClick()}>
+              <button className="navbutton2" 
+               onClick={() => handleShowHidenClick()}
+                 disabled={showTable}
+              >
+               
+                
+                 
                 {!isVisible ? "Show Filters" : "Hide Filters"}
               </button>
               {loggedInUser && loggedInUser.role !== "admin" && (
-                <button className="btns btn-primary"
+                <button className="navbutton2" 
                   onClick={() => handleCreateClick()}>
                   New Vehicle
                 </button>)}
@@ -385,7 +390,6 @@ export default function OwnerVehicles() {
             )}
 
           </div>
-        </div>
 
 
 
@@ -418,7 +422,7 @@ export default function OwnerVehicles() {
               </div> */}
 
             {showTable ? (
-              <div>
+               <div className='grid-flex-container'>
                 <VehiclesTableUpdate
                   vehicles={vehicles}
                   role={role}
@@ -430,12 +434,11 @@ export default function OwnerVehicles() {
                   getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                   utcDateOnly={utcDateOnly}
                 />
-              </div>
+                </div>
 
             ) : (
 
 
-              <div className="xphoneview">
                 <VehiclesGridPhone
                   vehicles={vehicles}
                   role={role}
@@ -447,7 +450,6 @@ export default function OwnerVehicles() {
                   getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                   utcDateOnly={utcDateOnly}
                 />
-              </div>
             )}
           </>
         ) : (

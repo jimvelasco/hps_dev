@@ -10,7 +10,11 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
       backgroundColor: "white",
       borderRadius: "8px",
       boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-      overflow: "hidden"
+      overflow: "hidden",
+      border:"2px solid blue",
+      paddingLeft: "0px",
+      paddingRight: "0px",
+      // maxWidth:"600px"
     }}>
 
       <div className="vehicles-table-owner">
@@ -132,9 +136,11 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
                 </button>
               </div>
             ) : vehicle.requires_payment == 2 ? (
-              <div className="grid-item-bold">Paid</div>
+              <div className="standard-table-cell ">
+              <div className="grid-item-bold">Paid</div></div>
             ) : (
-              <div className="grid-item-bold">Free</div>
+               <div className="standard-table-cell ">
+              <div className="grid-item-bold">Free</div></div>
             )}
 
           </div>
