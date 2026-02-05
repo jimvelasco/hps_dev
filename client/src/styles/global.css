@@ -508,7 +508,7 @@ button.navbutton2 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: normal;
-  width:100px;
+  min-width:120px;
   margin: 4px;
 
 }
