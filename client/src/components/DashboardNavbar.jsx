@@ -17,8 +17,7 @@ export default function DashboardNavbar({ title, title2,buttons }) {
              <h3 style={{ color: "white", marginBottom: "10px" }}>{title2}</h3 >
             <ParkingSpacesOverviewNB />
           </div>
-          <div className="button-grid" style={{ marginBottom: "5px" }}>
-
+          <div className="button-grid" style={{ marginBottom: "5px"}}>
             {buttons && buttons.map((button, index) => (
               <NavButton key={index}
                 label={button.label}

@@ -333,15 +333,12 @@ export default function OwnerVehicles() {
       <DashboardNavbar title="Owner Vehicles" title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="standardtitlebar" style={{ width: "60%" }}>
+        <div className="standardtitlebar">
           <div className="button-grid">
-            <div>
-              <div style={{fontSize:"12px"}}>&nbsp;</div>
             <button className="navbutton2"
               onClick={handleShowTable}>
               {showTable ? "Hide Table" : "Show Table"}
             </button>
-            </div>
 
 
 
@@ -376,13 +373,10 @@ export default function OwnerVehicles() {
 
 
             {loggedInUser && loggedInUser.role !== "admin" && (
-              <div>
-                 <div style={{fontSize:"12px"}}>&nbsp;</div>
               <button className="navbutton2"
                 onClick={() => handleCreateClick()}>
                 New Vehicle
               </button>
-              </div>
             
             
             
