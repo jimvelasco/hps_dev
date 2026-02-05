@@ -1468,10 +1468,11 @@ input.standardinput:disabled {
 
 .button-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(85px, .8fr));
   gap: 0.75rem;
   /* place-items: center; */
   justify-items:center;
+  /* background-color: red; */
   /* border:1px solid white; */
 }
 
