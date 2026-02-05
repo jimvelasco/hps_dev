@@ -255,21 +255,21 @@ export default function OnsiteVehicles() {
 
         {!showTable && (
           <div className="standardtitlebar">
-            <div style={{ marginBottom: "10px" }}><b>Sort</b></div>
+          
             <div className="button-grid">
-              <button className="btns btn-primary"
+              <button className="btnxsp"
                 onClick={() => handleSort("owner")}>
                 Owner
               </button>
-              <button className="btns btn-primary"
+              <button className="btnxsp"
                 onClick={() => handleSort("plate")}>
                 Plate
               </button>
-              <button className="btns btn-primary  "
+              <button className="btnxsp  "
                 onClick={() => handleSort("enddate")}>
                 Checkout
               </button>
-              <button className="btns btn-primary"
+              <button className="btnxsp"
                 onClick={() => handleSort("active")}>
                 Active
               </button>
