@@ -28,6 +28,8 @@ import ContactInformation from "./pages/administration/ContactInformation";
 import HoaSettings from "./pages/administration/HoaSettings";
 import ImageUpload from "./pages/administration/ImageUpload";
 import PDFUpload from "./pages/administration/PDFUpload";
+import UserReports from "./pages/reports/UserReports";
+import HPSRecordReport from "./pages/reports/HPSRecordReport";
 import TestPage from "./pages/TestPage";
 import UserProfile from "./pages/UserProfile";
 import ParkingPayment from "./pages/ParkingPayment";
@@ -208,6 +210,16 @@ function App() {
           <Route path="/:hoaId/update-all-users" element={
             <ProtectedRoute>
               <UpdateAllUsers />
+            </ProtectedRoute>
+          } />
+          <Route path="/:hoaId/reports" element={
+            <ProtectedRoute>
+              <UserReports />
+            </ProtectedRoute>
+          } />
+          <Route path="/:hoaId/hps-record-report" element={
+            <ProtectedRoute>
+              <HPSRecordReport />
             </ProtectedRoute>
           } />
           <Route path="/:hoaId/contact-information" element={

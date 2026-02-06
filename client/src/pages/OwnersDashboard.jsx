@@ -88,6 +88,10 @@ export default function OwnersDashboard() {
     return null;
   }
 
+  const handleReportClick = () => {
+    navigate(`/${hoaId}/reports`);
+  };
+
   const handleLogout = () => {
     clearLoggedInUser();
     navigate(`/${hoaId}`);
@@ -146,7 +150,7 @@ export default function OwnersDashboard() {
 
      navButtons.push({
       label: "Reports",
-      onClick: handleProfileClick,
+      onClick: handleReportClick,
       which: "standard"
     }
   )
