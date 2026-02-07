@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
 import DashboardNavbar from "../../components/DashboardNavbar";
 import CreateFolderModal from "../../components/CreateFolderModal";
+import DeleteRenterVehiclesModal from "../../components/DeleteRenterVehiclesModal";
 import { useHoa } from "../../context/HoaContext";
 import { getAWSResource } from "../../utils/awsHelper";
 
@@ -14,7 +15,9 @@ export default function Administration() {
   const [updateDateLoading, setUpdateDateLoading] = useState(false);
   const [jjvrunqueryLoading, setJjvrunqueryLoading] = useState(false);
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+  const [showDeleteRenterVehiclesModal, setShowDeleteRenterVehiclesModal] = useState(false);
   const [createFolderLoading, setCreateFolderLoading] = useState(false);
+  const [deleteRenterLoading, setDeleteRenterLoading] = useState(false);
   const [createFolderMessage, setCreateFolderMessage] = useState(null);
 
   const handleBackClick = () => {
@@ -173,6 +176,22 @@ export default function Administration() {
     }
   };
 
+  const handleDeleteRenterVehicles = async (date) => {
+    setDeleteRenterLoading(true);
+    try {
+      const response = await axios.delete(`/vehicles/renter-vehicles/${hoaId}`, {
+        params: { date }
+      });
+      alert(response.data.message);
+      setShowDeleteRenterVehiclesModal(false);
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || error.message || "Error deleting vehicles";
+      alert(errorMsg);
+    } finally {
+      setDeleteRenterLoading(false);
+    }
+  };
+
   const navButtons = [
     {
       label: "Back",
@@ -316,6 +335,18 @@ let backgroundImage = '';
             </button>
           </section>
 
+          <section className="standardsection">
+            <h3 style={{ color: "#d32f2f", marginTop: 0 }}>Purge Renter Vehicles</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Delete renter vehicles ending before a selected date
+            </p>
+            <button className="standardsubmitbutton"
+              onClick={() => setShowDeleteRenterVehiclesModal(true)}
+              style={{width:"200px", backgroundColor: "#d32f2f"}}>
+              Purge Renters
+            </button>
+          </section>
+
         </div>
 
         {createFolderMessage && (
@@ -343,6 +374,13 @@ let backgroundImage = '';
           onClose={() => setShowCreateFolderModal(false)}
           onCreateFolder={handleCreateFolder}
           isLoading={createFolderLoading}
+        />
+
+        <DeleteRenterVehiclesModal
+          isOpen={showDeleteRenterVehiclesModal}
+          onClose={() => setShowDeleteRenterVehiclesModal(false)}
+          onDelete={handleDeleteRenterVehicles}
+          isLoading={deleteRenterLoading}
         />
       </div>
     </div>

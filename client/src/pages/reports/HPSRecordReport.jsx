@@ -13,6 +13,7 @@ export default function HPSRecordReport() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [ownerTypeFilter, setOwnerTypeFilter] = useState("");
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -50,11 +51,15 @@ export default function HPSRecordReport() {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
 
-  const filteredRecords = records.filter(record => 
-    (record.plate || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (record.unitnumber || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (record.lastname || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredRecords = records.filter(record => {
+    const matchesSearch = (record.plate || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (record.unitnumber || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (record.lastname || "").toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesOwnerType = !ownerTypeFilter || record.ownertype === ownerTypeFilter;
+    
+    return matchesSearch && matchesOwnerType;
+  });
 
   if (hoaLoading) {
     return <div style={{ padding: "20px" }}>Loading...</div>;
@@ -83,7 +88,7 @@ export default function HPSRecordReport() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
-          <div style={{ marginBottom: "20px" }}>
+          <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
             <input
               type="text"
               placeholder="Search by Plate, Unit, or Last Name..."
@@ -92,6 +97,16 @@ export default function HPSRecordReport() {
               className="standardinput"
               style={{ maxWidth: "400px" }}
             />
+            <select
+              value={ownerTypeFilter}
+              onChange={(e) => setOwnerTypeFilter(e.target.value)}
+              className="standardinput"
+              style={{ maxWidth: "200px" }}
+            >
+              <option value="">All Owner Types</option>
+              <option value="owner">Owner</option>
+              <option value="renter">Renter</option>
+            </select>
           </div>
 
           {loading ? (
@@ -103,30 +118,54 @@ export default function HPSRecordReport() {
           ) : (
             <div style={{ 
               display: "grid", 
-              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 1fr 1fr 1fr",
+              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr",
               gap: "0px",
               marginTop: "20px" 
             }}>
                <div className="standard-table-header">Date</div>
                <div className="standard-table-header">Unit</div>
                <div className="standard-table-header">Name</div>
+                <div className="standard-table-header">Created</div>
+                <div className="standard-table-header">Type</div>
                <div className="standard-table-header">Plate</div>
                <div className="standard-table-header">Start</div>
                <div className="standard-table-header">End</div>
 
-               {filteredRecords.map((record, index) => (
-                 <React.Fragment key={record._id || index}>
-                   <div className="standard-table-cell">
-                     {new Date(record.createdAt).toLocaleDateString()}
-                   </div>
-                   <div className="standard-table-cell">{record.unitnumber}</div>
-                   <div className="standard-table-cell">{`${record.firstname} ${record.lastname}`}</div>
-                   <div className="standard-table-cell">{record.plate}</div>
-                   <div className="standard-table-cell">{record.startdate}</div>
-                   <div className="standard-table-cell">{record.enddate}</div>
-                 </React.Fragment>
-               ))}
+               {filteredRecords.map((record, index) => {
+                 let hasOverlap = false;
+                 if (index > 0) {
+                   const prevRecord = filteredRecords[index - 1];
+                   // Simple date string comparison works for YYYY-MM-DD
+                   const s1 = record.startdate || "";
+                   const e1 = record.enddate || "";
+                   const s2 = prevRecord.startdate || "";
+                   const e2 = prevRecord.enddate || "";
+                   
+                   if (s1 && e1 && s2 && e2) {
+                     // Check overlap: (StartA <= EndB) && (EndA >= StartB)
+                     if (s1 <= e2 && e1 >= s2) {
+                       hasOverlap = true;
+                     }
+                   }
+                 }
+
+                 return (
+                   <React.Fragment key={record._id || index}>
+                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>
+                       {new Date(record.createdAt).toLocaleDateString()}
+                     </div>
+                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.unitnumber}</div>
+                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{`${record.firstname} ${record.lastname}`}</div>
+                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.createdAt}</div>
+                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.ownertype}</div>
+                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.plate}</div>
+                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.startdate}</div>
+                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.enddate}</div>
+                   </React.Fragment>
+                 );
+               })}
             </div>
+             
           )}
         </div>
       </div>

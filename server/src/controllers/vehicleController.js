@@ -190,7 +190,9 @@ const updateVehicle = async (req, res) => {
     // Log only if startdate or enddate changed
     if (oldVehicle.startdate !== updatedVehicle.startdate || 
         oldVehicle.enddate !== updatedVehicle.enddate) {
-      await logHPSRecord(updatedVehicle, oldVehicle.startdate, oldVehicle.enddate);
+      // await logHPSRecord(updatedVehicle, oldVehicle.startdate, oldVehicle.enddate);
+      // log the date changes and ignore the old vehicle dates
+       await logHPSRecord(updatedVehicle);
     }
 
     res.status(200).json(updatedVehicle);
@@ -384,9 +386,43 @@ const getHPSRecordsByHoaId = async (req, res) => {
   }
 };
 
+const deleteRenterVehicles = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const { date } = req.query;
+
+    console.log('date to delete is ',date,hoaId);
+
+     const countBefore = await Vehicle.countDocuments({ 
+      hoaid: hoaId, 
+      carownertype: "renter", 
+      enddate: { $lt: date } 
+    });
+    console.log('Matching records found:', countBefore);
+    
+
+    if (!date) {
+      return res.status(400).json({ message: "Date is required" });
+    }
+
+    const result = await Vehicle.deleteMany({
+      hoaid: hoaId,
+      carownertype: "renter",
+      enddate: { $lt: date }
+    });
+
+    res.status(200).json({
+      message: `${result.deletedCount} renter vehicle(s) deleted successfully`,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export {
   getVehiclesByHoaId, getVehiclesByHoaIdOwner, getVehiclesByHoaIdOwnerId,
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
-  updateVehiclePayment, getHPSRecordsByHoaId
+  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles
 };
