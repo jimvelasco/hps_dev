@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../services/api";
 import { useHoa } from "../../context/HoaContext";
+import { useLoggedInUser } from "../../hooks/useLoggedInUser";
 import DashboardNavbar from "../../components/DashboardNavbar";
 import { getAWSResource } from "../../utils/awsHelper";
 
@@ -9,11 +10,18 @@ export default function HPSRecordReport() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa, loading: hoaLoading } = useHoa();
+  const { user: loggedInUser, loading: userLoading } = useLoggedInUser();
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
   const [ownerTypeFilter, setOwnerTypeFilter] = useState("");
+  const [unitFilter, setUnitFilter] = useState("");
+
+  useEffect(() => {
+    if (loggedInUser && loggedInUser.role === 'owner') {
+      setUnitFilter(loggedInUser.unitnumber || "");
+    }
+  }, [loggedInUser]);
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -52,16 +60,16 @@ export default function HPSRecordReport() {
   }
 
   const filteredRecords = records.filter(record => {
-    const matchesSearch = (record.plate || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (record.unitnumber || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (record.lastname || "").toLowerCase().includes(searchTerm.toLowerCase());
-    
     const matchesOwnerType = !ownerTypeFilter || record.ownertype === ownerTypeFilter;
-    
-    return matchesSearch && matchesOwnerType;
+    const matchesUnit = !unitFilter || record.unitnumber === unitFilter;
+    return matchesOwnerType && matchesUnit;
   });
 
-  if (hoaLoading) {
+  const uniqueUnits = [...new Set(records.map(r => r.unitnumber))].sort((a, b) => 
+    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+  );
+
+  if (hoaLoading || userLoading) {
     return <div style={{ padding: "20px" }}>Loading...</div>;
   }
 
@@ -89,24 +97,54 @@ export default function HPSRecordReport() {
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
           <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
-            <input
-              type="text"
-              placeholder="Search by Plate, Unit, or Last Name..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="standardinput"
-              style={{ maxWidth: "400px" }}
-            />
             <select
               value={ownerTypeFilter}
               onChange={(e) => setOwnerTypeFilter(e.target.value)}
               className="standardinput"
-              style={{ maxWidth: "200px" }}
+              style={{
+                maxWidth: "200px",
+                padding: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                boxSizing: "border-box"
+              }}
             >
               <option value="">All Owner Types</option>
               <option value="owner">Owner</option>
               <option value="renter">Renter</option>
             </select>
+
+            {loggedInUser && loggedInUser.role === 'admin' ? (
+              <select
+                value={unitFilter}
+                onChange={(e) => setUnitFilter(e.target.value)}
+                className="standardinput"
+                style={{
+                  maxWidth: "200px",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  boxSizing: "border-box"
+                }}
+              >
+                <option value="">All Units</option>
+                {uniqueUnits.map(unit => (
+                  <option key={unit} value={unit}>{unit}</option>
+                ))}
+              </select>
+            ) : (
+              <div style={{
+                padding: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                backgroundColor: "#eee",
+                minWidth: "100px",
+                display: "flex",
+                alignItems: "center"
+              }}>
+                Unit: {unitFilter || "N/A"}
+              </div>
+            )}
           </div>
 
           {loading ? (
