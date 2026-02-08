@@ -154,11 +154,14 @@ export default function HPSRecordReport() {
           ) : filteredRecords.length === 0 ? (
             <p>No records found.</p>
           ) : (
+            <div style={{ overflowX: "auto", maxWidth: "100%" }}>
             <div style={{ 
               display: "grid", 
               gridTemplateColumns: "1.2fr 0.8fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr",
               gap: "0px",
-              marginTop: "20px" 
+              marginTop: "20px" ,
+              minWidth: "800px",
+              overflowX: "auto"
             }}>
                <div className="standard-table-header">Date</div>
                <div className="standard-table-header">Unit</div>
@@ -202,6 +205,8 @@ export default function HPSRecordReport() {
                    </React.Fragment>
                  );
                })}
+            </div>
+
             </div>
              
           )}

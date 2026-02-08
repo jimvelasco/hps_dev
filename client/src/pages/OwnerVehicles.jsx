@@ -478,6 +478,11 @@ export default function OwnerVehicles() {
               </div> */}
 
             {showTable ? (
+              <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+            <div style={{ 
+              minWidth: "800px",
+              overflowX: "auto"
+            }}>
               <div className='grid-flex-container'>
                 <VehiclesTableUpdate
                   vehicles={vehicles}
@@ -490,6 +495,8 @@ export default function OwnerVehicles() {
                   getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                   utcDateOnly={utcDateOnly}
                 />
+              </div>
+              </div>
               </div>
 
             ) : (
