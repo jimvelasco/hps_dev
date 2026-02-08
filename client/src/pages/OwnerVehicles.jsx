@@ -348,10 +348,10 @@ export default function OwnerVehicles() {
               {showTable ? "Hide Table" : "Show Table"}
             </button>
 
-             <button className="navbutton3"
+             {/* <button className="navbutton3"
               onClick={handleShowFilterClick}>
               {!showFilters ? "Sort" : "Hide"}
-            </button>
+            </button> */}
 
 
 
@@ -398,6 +398,13 @@ export default function OwnerVehicles() {
 
           </div>
         </div>
+        <div style={{textAlign:'center',marginTop:'-15px',marginBottom:'5px'}}>
+         <button className="navbutton3"
+              onClick={handleShowFilterClick}>
+              {!showFilters ? "Sort" : "Hide"}
+            </button>
+            </div>
+
         <div style={{ display: isVisible ? "block" : "block" }}>
 
 
