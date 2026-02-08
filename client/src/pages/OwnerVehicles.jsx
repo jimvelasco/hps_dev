@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
@@ -32,6 +32,8 @@ export default function OwnerVehicles() {
   const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const [showTable, setShowTable] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+
 
 
   useEffect(() => {
@@ -305,6 +307,12 @@ export default function OwnerVehicles() {
   const handleShowHidenClick = () => {
     setIsVisible(!isVisible)
   }
+   const handleShowFilterClick = () => {
+    setShowFilters(!showFilters)
+  }
+  const handleShowTableClick = () => {
+    setShowVisible(!isVisible)
+  }
 
   const handleShowTable = () => {
     if (showTable) {
@@ -338,6 +346,11 @@ export default function OwnerVehicles() {
             <button className="navbutton2"
               onClick={handleShowTable}>
               {showTable ? "Hide Table" : "Show Table"}
+            </button>
+
+             <button className="navbutton3"
+              onClick={handleShowFilterClick}>
+              {!showFilters ? "Sort" : "Hide"}
             </button>
 
 
@@ -417,7 +430,7 @@ export default function OwnerVehicles() {
           </div> */}
 
 
-          {!showTable && (
+          {showFilters && (
             <div className="standardtitlebar">
               {/* <div style={{ marginBottom: "10px" }}><b>Sort</b></div> */}
               <div className="button-grid">

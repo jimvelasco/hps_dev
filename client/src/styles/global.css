@@ -523,6 +523,33 @@ button.navbutton2:hover {
   filter: brightness(.8);
 }
 
+
+button.navbutton3 {
+  padding:3px;
+  font-size: 10px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: normal;
+  min-width:50px;
+  height: 20px;
+  margin: 2px;
+
+}
+
+.navbutton3:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+button.navbutton3:hover {
+  /* opacity: .8; */
+  filter: brightness(.8);
+}
+
+
 button.navbutton-goback {
   padding: 8px 8px;
   font-size: 14px;
