@@ -301,6 +301,11 @@ export default function OnsiteVehicles() {
           <div className="onsite-grid-container-2">
             <div className='grid-flex-container'>
               {showTable ? (
+                <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+                <div style={{
+                  minWidth: "800px",
+                  overflowX: "auto"
+                }}>
                 <VehiclesTableOnsite
                   vehicles={vehicles}
                   role={role}
@@ -310,6 +315,7 @@ export default function OnsiteVehicles() {
                   getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                   utcDateOnly={utcDateOnly}
                 />
+                </div></div>
 
               ) : (
 
@@ -340,6 +346,11 @@ export default function OnsiteVehicles() {
           <>
             <div className='grid-flex-container'>
               {showTable ? (
+                <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+                <div style={{
+                  minWidth: "800px",
+                  overflowX: "auto"
+                }}>
                 <VehiclesTableOnsite
                   vehicles={vehicles}
                   role={role}
@@ -349,6 +360,8 @@ export default function OnsiteVehicles() {
                   getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                   utcDateOnly={utcDateOnly}
                 />
+                </div>
+                </div>
 
               ) : (
 

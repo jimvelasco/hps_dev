@@ -69,7 +69,7 @@ export default function OwnerVehicles() {
             qry = `/vehicles/${hoaId}`
           }
 
-         // console.log("OwnerVehicles.jsx qry:", qry);
+          // console.log("OwnerVehicles.jsx qry:", qry);
           const response = await axios.get(qry);
           // console.log(  console.log("fetchVehicles client received:", response.data.length))
           const updatedVehicles = response.data.map(v => ({
@@ -106,7 +106,7 @@ export default function OwnerVehicles() {
   useEffect(() => {
     if (allVehicles.length > 0) {
       const today = new Date();
-      const oneYearAgo = new Date(today.getFullYear() -1 , today.getMonth(), today.getDate());
+      const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
       //const formattedDate = oneYearAgo.toISOString().split('T')[0];
       const formattedDate = utcDateOnly(oneYearAgo);
       setFilterDate(formattedDate);
@@ -170,7 +170,7 @@ export default function OwnerVehicles() {
 
   const handleFilterApply = () => {
     let filtered = [...allVehicles];
-   //  console.log("ENTRY **** FILTER APPLIED LEN",filterType,filtered.length)
+    //  console.log("ENTRY **** FILTER APPLIED LEN",filterType,filtered.length)
     if (filterType === "owner") {
       filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family");
     } else if (filterType === "renter") {
@@ -192,7 +192,7 @@ export default function OwnerVehicles() {
     //     return checkoutDate >= filterDateObj;
     //   });
     // }
-  //  console.log("FILTER APPLIED LEN",filterType,filtered.length)
+    //  console.log("FILTER APPLIED LEN",filterType,filtered.length)
     setVehicles(filtered);
   };
 
@@ -377,9 +377,9 @@ export default function OwnerVehicles() {
                 onClick={() => handleCreateClick()}>
                 New Vehicle
               </button>
-            
-            
-            
+
+
+
             )}
 
 
@@ -479,24 +479,24 @@ export default function OwnerVehicles() {
 
             {showTable ? (
               <div style={{ overflowX: "auto", maxWidth: "100%" }}>
-            <div style={{ 
-              minWidth: "800px",
-              overflowX: "auto"
-            }}>
-              <div className='grid-flex-container'>
-                <VehiclesTableUpdate
-                  vehicles={vehicles}
-                  role={role}
-                  sortColumn={sortColumn}
-                  sortDirection={sortDirection}
-                  handleSort={handleSort}
-                  handleDetailsClick={handleDetailsClick}
-                  handlePaymentClick={handlePaymentClick}
-                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                  utcDateOnly={utcDateOnly}
-                />
-              </div>
-              </div>
+                <div style={{
+                  minWidth: "800px",
+                  overflowX: "auto"
+                }}>
+                  <div className='grid-flex-container'>
+                    <VehiclesTableUpdate
+                      vehicles={vehicles}
+                      role={role}
+                      sortColumn={sortColumn}
+                      sortDirection={sortDirection}
+                      handleSort={handleSort}
+                      handleDetailsClick={handleDetailsClick}
+                      handlePaymentClick={handlePaymentClick}
+                      getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                      utcDateOnly={utcDateOnly}
+                    />
+                  </div>
+                </div>
               </div>
 
             ) : (
