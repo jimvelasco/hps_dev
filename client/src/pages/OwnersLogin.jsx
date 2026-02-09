@@ -13,29 +13,40 @@ export default function OwnersLogin() {
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
-  const [email, setEmail] = useState("jim@gmail.com");
+  const [email, setEmail] = useState("");
   //  const [email, setEmail] = useState("daniel@gmail.com");
-    //  const [email, setEmail] = useState("katherine@gmail.com");
+  //  const [email, setEmail] = useState("katherine@gmail.com");
 
 
   // const [email, setEmail] = useState("admin@retreatia.com");
-  const [password, setPassword] = useState("123456");
+  const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [showForgotPasswordDialog, setShowForgotPasswordDialog] = useState(false);
 
   useEffect(() => {
     localStorage.removeItem("token");
-  }, []);
-
-  useEffect(() => {
-    if (hoaId) {
+    if (hoa && hoa.use_demo_mode) {
+      setPassword("123456");
+      setEmail("jim@gmail.com");
       if (hoaId === 'LODGE') {
         setEmail('jim.lodge@gmail.com');
       }
-      if (hoaId === 'TIMBER') {
+       if (hoaId === 'TIMBER') {
         setEmail('jim.timber@gmail.com');
       }
-      
+    //  console.log("OwnersLogin component mounted", hoa);
+    }
+    }, []);
+
+  useEffect(() => {
+    if (hoaId) {
+      // if (hoaId === 'LODGE') {
+      //   setEmail('jim.lodge@gmail.com');
+      // }
+      // if (hoaId === 'TIMBER') {
+      //   setEmail('jim.timber@gmail.com');
+      // }
+
 
       fetchHoaById(hoaId).catch((err) => {
         setAppError(err.message || "Failed to load HOA data");
@@ -104,7 +115,7 @@ export default function OwnersLogin() {
     }}>
       <div className="standardtitlebar">
         <h2 onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions </h2>
-        <h3 style={{marginTop: "5px"}}>{hoa && hoa.name}</h3>
+        <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>
       </div>
 
       <div className="loginboxes">
