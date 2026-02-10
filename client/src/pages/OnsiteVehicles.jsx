@@ -112,10 +112,11 @@ export default function OnsiteVehicles() {
       <div className="full-row" style={{
         fontWeight: "bold", fontSize: "24px", color: "#1976d2",
         borderBottom: "2px solid #1976d2", padding: "5px",
-        marginBottom: "10px"
+        marginBottom: "10px",overflowX: "hidden"
       }}>
 
-        {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`}
+        {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
+         {vehicle.plate} {vehicle.plate_state.substring(0,2)}
       </div>
       {/* <div className="grid-item-bold">Name</div>
       <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
