@@ -134,7 +134,7 @@ export default function UserDetails() {
         email: formData.email,
         unitnumber: formData.unitnumber,
         password: formData.password,
-        bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : undefined,
+        bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : 0,
         role: formData.role,
         pincode: formData.pincode,
         inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,

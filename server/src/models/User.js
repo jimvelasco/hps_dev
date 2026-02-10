@@ -30,7 +30,8 @@ const userSchema = new mongoose.Schema({
     type: String
   },
   bedrooms: {
-    type: Number
+    type: Number,
+    default : 0
   },
   // /* not used */
   // parking_allowed: {

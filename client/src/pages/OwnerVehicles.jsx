@@ -26,7 +26,7 @@ export default function OwnerVehicles() {
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const [role, setRole] = useState(null);
   const [ownerId, setOwnerId] = useState(null);
-  const [filterType, setFilterType] = useState("owner");
+  const [filterType, setFilterType] = useState("");
   const [filterDate, setFilterDate] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -71,9 +71,9 @@ export default function OwnerVehicles() {
             qry = `/vehicles/${hoaId}`
           }
 
-          // console.log("OwnerVehicles.jsx qry:", qry);
+         //  console.log("OwnerVehicles.jsx qry:", qry);
           const response = await axios.get(qry);
-          // console.log(  console.log("fetchVehicles client received:", response.data.length))
+         console.log("fetchVehicles client received:", response.data.length)
           const updatedVehicles = response.data.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
