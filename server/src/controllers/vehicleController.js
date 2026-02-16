@@ -33,7 +33,7 @@ const getVehiclesByHoaId = async (req, res) => {
     //   console.log("getVehiclesByHoaId Filter received params:", req.params);
 
     const qry = { hoaid: hoaId };
-      console.log("getVehiclesByHoaId Filter received:", filter,qry);
+     // console.log("getVehiclesByHoaId Filter received:", filter,qry);
 
     // if (filter === "owner") {
     //   qry.carownertype = "owner";
