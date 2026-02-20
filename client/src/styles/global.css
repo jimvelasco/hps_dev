@@ -525,8 +525,8 @@ button.navbutton2:hover {
 
 
 button.navbutton3 {
-  padding:4px;
-  font-size: 13px;
+  padding:6px;
+  font-size: 14px;
   background-color: #1976d2;
   color: white;
   border: none;
@@ -534,8 +534,9 @@ button.navbutton3 {
   cursor: pointer;
   font-weight: normal;
   min-width:50px;
-  height: 22px;
-  margin: 2px;
+  /* height: 24px;
+  margin: 2px; */
+  margin:5px;
 
 }
 

@@ -537,7 +537,7 @@ export default function OwnerVehicles() {
           </>
         ) : (
           <div className="noresultsfound">
-            <p style={{ color: "#666", fontWeight: "bold", textAlign: "center" }}>No vehicles found for this HOA.</p>
+            <p style={{ color: "#666", fontWeight: "bold", textAlign: "center" }}>No vehicles found.</p>
           </div>
 
         )}
