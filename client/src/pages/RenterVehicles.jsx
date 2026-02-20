@@ -292,7 +292,7 @@ export default function RenterVehicles() {
           </>
         ) : (
           <div className="noresultsfound">
-            <p className="error-text">No vehicles found for this unit.</p>
+            <p className="error-text">No vehicles found.</p>
           </div>
         )}
         <br />
