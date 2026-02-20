@@ -26,7 +26,7 @@ export default function OwnerVehicles() {
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const [role, setRole] = useState(null);
   const [ownerId, setOwnerId] = useState(null);
-  const [filterType, setFilterType] = useState("");
+  const [filterType, setFilterType] = useState("owner");
   const [filterDate, setFilterDate] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
