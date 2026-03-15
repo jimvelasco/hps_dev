@@ -17,6 +17,10 @@ export default function UserReports() {
     navigate(`/${hoaId}/hps-record-report`);
   };
 
+  const handleOwnerListClick = () => {
+    navigate(`/${hoaId}/owner-list`);
+  };
+
   const navButtons = [
     {
       label: "Back",
@@ -62,6 +66,20 @@ export default function UserReports() {
               style={{ width: "200px" }}
             >
               View Report
+            </button>
+          </section>
+
+          <section className="standardsection">
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Owner List</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              View a complete list of all owners with their contact details.
+            </p>
+            <button 
+              className="standardsubmitbutton" 
+              onClick={handleOwnerListClick}
+              style={{ width: "200px" }}
+            >
+              Owner List
             </button>
           </section>
         </div>
