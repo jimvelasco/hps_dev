@@ -469,6 +469,7 @@ const lookupPlate = async (req, res) => {
     if (data && data.results && data.results.length > 0) {
       const result = data.results[0];
       const mmc = result.vehicle || {};
+       console.log('vehicle controller RESULT PLATE:', result.plate);
       console.log('vehicle controller mmc:', mmc);
       
       res.json({
