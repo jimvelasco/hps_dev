@@ -105,11 +105,19 @@ const getVehiclesByHoaIdUserId = async (req, res) => {
 //616d84252dc9bd0016da9673
     // const oid2 = "616d84252dc9bd0016da9673";
 
-    const qry = { hoaid: hoaId, ownerid: ownerid };
+  //  const qry = { hoaid: hoaId, ownerid: ownerid };
     //console.log("Filter received:", filter);
     //  console.log("getVehiclesByHoaIdOwnerId role modified received:", role);
     // console.log("getVehiclesByHoaIdOwnerId oid received:", ownerid);
-   //  console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
+   
+
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+   // const qry = { hoaid: hoaId, ownerid:ownerid, carownertype: {$ne: "renter"}, checkout: { $gte: today } };
+      const qry = { hoaid: hoaId, ownerid:ownerid, carownertype: {$ne: "renter"}};
+     //  const qry = { hoaid: hoaId, ownerid:ownerid};
+    console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);
     // console.log("vehicle controller shold be 19  qry built:", vehicles.length);
@@ -458,6 +466,7 @@ const lookupPlate = async (req, res) => {
     if (data && data.results && data.results.length > 0) {
       const result = data.results[0];
       const mmc = result.vehicle || {};
+      console.log('vehicle controller mmc:', mmc);
       
       res.json({
         plate: result.plate.toUpperCase(),
