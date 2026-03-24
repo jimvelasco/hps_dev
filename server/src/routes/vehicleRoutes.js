@@ -2,12 +2,14 @@ import express from "express";
 import { getVehiclesByHoaId ,getVehiclesByHoaIdOwner,getVehiclesByHoaIdOwnerId, getVehiclesByHoaIdUserId,
     getVehicleById, createVehicle, updateVehicle, deleteVehicle, 
     deleteVehiclesByStatusFlag, batchUpdateDateFields, 
-    updateVehiclePayment, jjvrunquery,getVehiclesForUnitNumber, getHPSRecordsByHoaId, deleteRenterVehicles} from "../controllers/vehicleController.js";
+    updateVehiclePayment, jjvrunquery,getVehiclesForUnitNumber, getHPSRecordsByHoaId, deleteRenterVehicles,
+    lookupPlate} from "../controllers/vehicleController.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { createVehicleSchema, updateVehicleSchema } from "../schemas/vehicleSchemas.js";
 
 const router = express.Router();
 
+router.post("/lookup-plate", lookupPlate);
 router.post("/", validateRequest(createVehicleSchema), createVehicle);
 router.post("/jjvrunquery/:hoaId", jjvrunquery);
 router.put("/batch/update-dates", batchUpdateDateFields);

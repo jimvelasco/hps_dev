@@ -420,9 +420,66 @@ const deleteRenterVehicles = async (req, res) => {
   }
 };
 
+const lookupPlate = async (req, res) => {
+  const { image } = req.body;
+  if (!image) {
+    return res.status(400).json({ message: "Image is required" });
+  }
+
+  const PLATE_RECOGNIZER_TOKEN = process.env.PLATE_RECOGNIZER_TOKEN;
+  if (!PLATE_RECOGNIZER_TOKEN) {
+    return res.status(500).json({ message: "Plate Recognizer API token is missing on server" });
+  }
+
+  try {
+    const formData = new FormData();
+    
+    if (typeof image === 'string' && image.startsWith('data:')) {
+      const base64Data = image.split(',')[1];
+      const buffer = Buffer.from(base64Data, 'base64');
+      const blob = new Blob([buffer], { type: 'image/jpeg' });
+      formData.append('upload', blob, 'plate.jpg');
+    } else {
+      formData.append('upload', image);
+    }
+
+    formData.append('mmc', 'true');
+
+    const response = await fetch('https://api.platerecognizer.com/v1/plate-reader/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${PLATE_RECOGNIZER_TOKEN}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (data && data.results && data.results.length > 0) {
+      const result = data.results[0];
+      const mmc = result.vehicle || {};
+      
+      res.json({
+        plate: result.plate.toUpperCase(),
+        make: mmc.make ? mmc.make[0].make : '',
+        model: mmc.model ? mmc.model[0].model : '',
+        color: mmc.color ? mmc.color[0].color : '',
+        type: mmc.type ? mmc.type[0].type : '',
+        score: result.score,
+        dscore: result.dscore,
+      });
+    } else {
+      res.status(404).json({ message: "No plate detected" });
+    }
+  } catch (error) {
+    console.error("Error calling Plate Recognizer API:", error);
+    res.status(500).json({ message: "Error calling Plate Recognizer API", error: error.message });
+  }
+};
+
 export {
   getVehiclesByHoaId, getVehiclesByHoaIdOwner, getVehiclesByHoaIdOwnerId,
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
-  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles
+  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, lookupPlate
 };

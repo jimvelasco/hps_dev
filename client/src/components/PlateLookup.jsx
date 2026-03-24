@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { lookupPlate } from '../controllers/vehicleController';
+import axios from '../services/api';
 import ModalAlert from './ModalAlert';
 
 export default function PlateLookup({ isOpen, onClose, onPlateDetected }) {
@@ -65,8 +65,8 @@ export default function PlateLookup({ isOpen, onClose, onPlateDetected }) {
     stopCamera();
 
     try {
-      const result = await lookupPlate(imageData);
-      onPlateDetected(result);
+      const response = await axios.post('/vehicles/lookup-plate', { image: imageData });
+      onPlateDetected(response.data);
       onClose();
     } catch (err) {
       setModal({
