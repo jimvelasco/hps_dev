@@ -8,6 +8,7 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
+import PlateLookup from "../components/PlateLookup";
 
 import mongoose from "mongoose";
 
@@ -33,6 +34,30 @@ export default function VehicleDetails() {
   const [unitOwner, setUnitOwner] = useState();
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
+
+  const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
+
+  const handlePlateDetected = (data) => {
+    // Mapping from Plate Recognizer vehicle types to our options
+    const typeMapping = {
+      'sedan': 'Car',
+      'suv': 'Car',
+      'van': 'Car',
+      'pickup': 'Truck',
+      'truck': 'Truck',
+      'bus': 'Other',
+      'motorcycle': 'Motorcyle',
+      'rv': 'RV'
+    };
+
+    setFormData(prev => ({
+      ...prev,
+      plate: data.plate || prev.plate,
+      make: data.make ? (data.make.charAt(0).toUpperCase() + data.make.slice(1)) : prev.make,
+      model: data.model ? (data.model.charAt(0).toUpperCase() + data.model.slice(1)) : prev.model,
+      vehicle_type: typeMapping[data.type?.toLowerCase()] || (data.type ? 'Other' : prev.vehicle_type)
+    }));
+  };
 
   const edate = new Date();
   edate.setDate(edate.getDate() + 3);
@@ -625,9 +650,26 @@ export default function VehicleDetails() {
                 <h3 style={{ color: "#1976d2" }}>Registration & Status</h3>
 
                 <div style={{ marginBottom: "15px" }}>
-                  <label className="input-label">
-                    License Plate *
-                  </label>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
+                    <label className="input-label" style={{ marginBottom: 0 }}>
+                      License Plate *
+                    </label>
+                    <button 
+                      type="button" 
+                      onClick={() => setIsPlateLookupOpen(true)}
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "12px",
+                        backgroundColor: "#1976d2",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Lookup Plate
+                    </button>
+                  </div>
                   <input className="standardinput"
                     type="text"
                     name="plate"
@@ -813,6 +855,12 @@ export default function VehicleDetails() {
         cancelText={modal.cancelText}
         onConfirm={modal.onConfirm}
         onCancel={modal.onCancel}
+      />
+
+      <PlateLookup 
+        isOpen={isPlateLookupOpen} 
+        onClose={() => setIsPlateLookupOpen(false)} 
+        onPlateDetected={handlePlateDetected} 
       />
     </div>
   );
