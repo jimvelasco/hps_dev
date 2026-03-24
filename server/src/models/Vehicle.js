@@ -41,6 +41,10 @@ const vehicleSchema = new mongoose.Schema(
   model: {
     type: String
   },
+   color: {
+    type: String,
+    default: ""
+  },
   year: {
     type: String
 

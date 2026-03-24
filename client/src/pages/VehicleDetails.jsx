@@ -73,6 +73,7 @@ export default function VehicleDetails() {
     carownerphone: "",
     make: "",
     model: "",
+    color: "",
     year: "",
     vehicle_type: "",
     plate: "",
@@ -94,6 +95,7 @@ export default function VehicleDetails() {
           carownerphone: "7777777777",
           make: "Lincoln",
           model: "Navigator",
+           color: "Green",
           year: "2020",
           vehicle_type: "Car",
           plate: "",
@@ -177,6 +179,7 @@ export default function VehicleDetails() {
           // carownertype: role,
           make: response.data.make || "",
           model: response.data.model || "",
+           color: response.data.color || "",
           year: response.data.year || "",
           vehicle_type: response.data.vehicle_type || "",
           plate: response.data.plate || "",
@@ -374,7 +377,7 @@ export default function VehicleDetails() {
         ownerid: oid,
         requires_payment: rpflag
       };
-      // console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
+       console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
 
       if (isModifyMode) {
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
@@ -692,6 +695,17 @@ export default function VehicleDetails() {
                     type="text"
                     name="model"
                     value={formData.model}
+                    onChange={handleFormChange}
+                  />
+                </div>
+                 <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Color
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="color"
+                    value={formData.color}
                     onChange={handleFormChange}
                   />
                 </div>
