@@ -377,7 +377,7 @@ export default function VehicleDetails() {
         ownerid: oid,
         requires_payment: rpflag
       };
-       console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
+     //  console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
 
       if (isModifyMode) {
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
