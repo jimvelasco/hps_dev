@@ -111,13 +111,13 @@ const getVehiclesByHoaIdUserId = async (req, res) => {
     // console.log("getVehiclesByHoaIdOwnerId oid received:", ownerid);
    
 
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
+  //  const today = new Date();
+ //   today.setUTCHours(0, 0, 0, 0);
 
    // const qry = { hoaid: hoaId, ownerid:ownerid, carownertype: {$ne: "renter"}, checkout: { $gte: today } };
       const qry = { hoaid: hoaId, ownerid:ownerid, carownertype: {$ne: "renter"}};
      //  const qry = { hoaid: hoaId, ownerid:ownerid};
-    console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
+   // console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);
     // console.log("vehicle controller shold be 19  qry built:", vehicles.length);
@@ -438,6 +438,7 @@ const lookupPlate = async (req, res) => {
   if (!PLATE_RECOGNIZER_TOKEN) {
     return res.status(500).json({ message: "Plate Recognizer API token is missing on server" });
   }
+  console.log('lookupPlate got to here', PLATE_RECOGNIZER_TOKEN);
 
   try {
     const formData = new FormData();
@@ -451,7 +452,9 @@ const lookupPlate = async (req, res) => {
       formData.append('upload', image);
     }
 
+
     formData.append('mmc', 'true');
+ console.log('lookupPlate got to here 2 formdata',formData);
 
     const response = await fetch('https://api.platerecognizer.com/v1/plate-reader/', {
       method: 'POST',
