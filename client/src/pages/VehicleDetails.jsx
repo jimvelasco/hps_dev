@@ -39,7 +39,7 @@ export default function VehicleDetails() {
 
   const handlePlateDetected = (data) => {
     // Mapping from Plate Recognizer vehicle types to our options
-    console.log('handlePlateDetected jjv data:', data);
+   // console.log('handlePlateDetected jjv data:', data);
     const typeMapping = {
       'sedan': 'Car',
       'suv': 'Car',
@@ -577,7 +577,173 @@ export default function VehicleDetails() {
 
               </div>
 
-              {/* Vehicle Information */}
+              {/* Vehicle Information
+              <div>
+                <h3 style={{ color: "#1976d2" }}>Vehicle Information</h3>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Make *
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="make"
+                    value={formData.make}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Model
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="model"
+                    value={formData.model}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Year
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Vehicle Type
+                  </label>
+                  <select className="xxxstandardinput"
+                    name="vehicle_type"
+                    value={formData.vehicle_type}
+                    onChange={handleFormChange}
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                      boxSizing: "border-box"
+                    }}
+
+                  >
+                    <option value="">Select Type</option>
+                    <option value="Car">Car</option>
+                    <option value="Truck">Truck</option>
+                    <option value="RV">RV</option>
+                    <option value="Motorcyle">Motorcyle</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+              </div> */}
+
+              {/* License Plate & Status */}
+              <div>
+                <h3 style={{ color: "#1976d2" }}>Registration & Status</h3>
+
+
+              
+
+
+                <div style={{ marginBottom: "15px" }}>
+                    <label className="input-label">
+                      License Plate *
+                    </label>
+                  
+                  <input className="standardinput"
+                    type="text"
+                    name="plate"
+                    value={formData.plate}
+                    onChange={handleFormChange}
+                    required
+                  />
+                  <button 
+                      type="button" 
+                      onClick={() => setIsPlateLookupOpen(true)}
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "12px",
+                        backgroundColor: "#1976d2",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        marginTop:"5px",
+                       
+                      }}
+                    >
+                      Lookup Plate
+                    </button>
+                </div>
+
+                <div style={{marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Plate State
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    maxLength={2}
+                    name="plate_state"
+                    value={formData.plate_state}
+                    onChange={handleFormChange}
+                    placeholder="e.g., CO, CA, TX"
+                  />
+                   
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Check In
+                  </label>
+                  <input className="standardinput"
+                    type="date"
+                    name="startdate"
+                    // value={new Date(formData.startdate).toISOString().substring(0, 10)}
+                    value={formData.startdate}
+
+
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Check Out
+                  </label>
+                  <input className="standardinput"
+                    type="date"
+                    name="enddate"
+                    value={formData.enddate}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                {/* <div style={{ marginBottom: "15px" }}>
+                    <label style={{ display: "flex", alignItems: "center", fontWeight: "bold" }}>
+                      <input
+                        type="checkbox"
+                        name="active_flag"
+                        checked={formData.active_flag === 1}
+                        onChange={handleFormChange}
+                        style={{ marginRight: "10px", width: "18px", height: "18px" }}
+                      />
+                      Active
+                    </label>
+                  </div> */}
+              </div>
+
+
+ {/* Vehicle Information */}
               <div>
                 <h3 style={{ color: "#1976d2" }}>Vehicle Information</h3>
 
@@ -646,94 +812,8 @@ export default function VehicleDetails() {
 
               </div>
 
-              {/* License Plate & Status */}
-              <div>
-                <h3 style={{ color: "#1976d2" }}>Registration & Status</h3>
-
-                <div style={{ marginBottom: "15px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
-                    <label className="input-label" style={{ marginBottom: 0 }}>
-                      License Plate *
-                    </label>
-                    <button 
-                      type="button" 
-                      onClick={() => setIsPlateLookupOpen(true)}
-                      style={{
-                        padding: "5px 10px",
-                        fontSize: "12px",
-                        backgroundColor: "#1976d2",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer"
-                      }}
-                    >
-                      Lookup Plate
-                    </button>
-                  </div>
-                  <input className="standardinput"
-                    type="text"
-                    name="plate"
-                    value={formData.plate}
-                    onChange={handleFormChange}
-                    required
-                  />
-                </div>
-
-                <div style={{ marginBottom: "15px" }}>
-                  <label className="input-label">
-                    Plate State
-                  </label>
-                  <input className="standardinput"
-                    type="text"
-                    maxLength={2}
-                    name="plate_state"
-                    value={formData.plate_state}
-                    onChange={handleFormChange}
-                    placeholder="e.g., CO, CA, TX"
-                  />
-                </div>
-
-                <div style={{ marginBottom: "15px" }}>
-                  <label className="input-label">
-                    Check In
-                  </label>
-                  <input className="standardinput"
-                    type="date"
-                    name="startdate"
-                    // value={new Date(formData.startdate).toISOString().substring(0, 10)}
-                    value={formData.startdate}
 
 
-                    onChange={handleFormChange}
-                  />
-                </div>
-
-                <div style={{ marginBottom: "15px" }}>
-                  <label className="input-label">
-                    Check Out
-                  </label>
-                  <input className="standardinput"
-                    type="date"
-                    name="enddate"
-                    value={formData.enddate}
-                    onChange={handleFormChange}
-                  />
-                </div>
-
-                {/* <div style={{ marginBottom: "15px" }}>
-                    <label style={{ display: "flex", alignItems: "center", fontWeight: "bold" }}>
-                      <input
-                        type="checkbox"
-                        name="active_flag"
-                        checked={formData.active_flag === 1}
-                        onChange={handleFormChange}
-                        style={{ marginRight: "10px", width: "18px", height: "18px" }}
-                      />
-                      Active
-                    </label>
-                  </div> */}
-              </div>
             </div>
 
             <div style={{ marginTop: "20px" }}>
