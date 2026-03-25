@@ -131,7 +131,11 @@ export default function HPSRecordReport() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
+          {/* <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}> */}
           <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+
+            <div>
+              <p>Owner Type</p>
             <select
               value={ownerTypeFilter}
               onChange={(e) => setOwnerTypeFilter(e.target.value)}
@@ -148,8 +152,15 @@ export default function HPSRecordReport() {
               <option value="owner">Owner</option>
               <option value="renter">Renter</option>
             </select>
+            </div>
+
 
             {loggedInUser && loggedInUser.role === 'admin' ? (
+              <div>
+                 <label className="input-label">
+                    Unit Number
+                  </label>
+                
               <select
                 value={unitFilter}
                 onChange={(e) => setUnitFilter(e.target.value)}
@@ -167,33 +178,48 @@ export default function HPSRecordReport() {
                   <option key={unit} value={unit}>{unit}</option>
                 ))}
               </select>
+              </div>
             ) : (
+              <div>
+               <p>Unit Number</p>
+              
               <div style={{
                 padding: "10px",
                 borderRadius: "4px",
                 border: "1px solid #ccc",
                 backgroundColor: "#eee",
                 minWidth: "100px",
-                display: "flex",
+                // display: "flex",
                 alignItems: "center"
               }}>
+              {/* <div> */}
+                
                 Unit: {unitFilter || "N/A"}
+              </div>
               </div>
             )}
 
             {/* {loggedInUser && loggedInUser.role === 'admin' && ( */}
-              <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "auto" }}>
-                <input
+              {/* <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "auto" }}> */}
+               
+               <div>
+                  <p>Delete Before</p>
+                 <input
                   type="date"
                   value={deleteDate}
                   onChange={(e) => setDeleteDate(e.target.value)}
                   className="standardinput"
                   style={{
-                    padding: "4px",
+                    padding: "8px",
                     borderRadius: "4px",
                     border: "1px solid #ccc"
                   }}
                 />
+                </div>
+                
+                <div>
+                   <p>&nbsp;</p>
+
                 <button
                   onClick={handleDeleteBeforeDate}
                   className="standardbutton"
