@@ -39,7 +39,7 @@ export default function HoaInformation({ hoa }) {
     <div style={{
       display: 'flex',
       flexWrap: 'wrap',
-      gap: '10px',
+      gap: '12px',
       justifyContent: 'center',
 
     }}>
