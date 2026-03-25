@@ -71,9 +71,9 @@ export default function OwnerVehicles() {
             qry = `/vehicles/${hoaId}`
           }
 
-         //  console.log("OwnerVehicles.jsx qry:", qry);
+          //  console.log("OwnerVehicles.jsx qry:", qry);
           const response = await axios.get(qry);
-         console.log("fetchVehicles client received:", response.data.length)
+          console.log("fetchVehicles client received:", response.data.length)
           const updatedVehicles = response.data.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
@@ -307,7 +307,7 @@ export default function OwnerVehicles() {
   const handleShowHidenClick = () => {
     setIsVisible(!isVisible)
   }
-   const handleShowFilterClick = () => {
+  const handleShowFilterClick = () => {
     setShowFilters(!showFilters)
   }
   const handleShowTableClick = () => {
@@ -348,7 +348,7 @@ export default function OwnerVehicles() {
               {showTable ? "Hide Table" : "Show Table"}
             </button>
 
-             {/* <button className="navbutton3"
+            {/* <button className="navbutton3"
               onClick={handleShowFilterClick}>
               {!showFilters ? "Sort" : "Hide"}
             </button> */}
@@ -398,12 +398,12 @@ export default function OwnerVehicles() {
 
           </div>
         </div>
-        <div style={{textAlign:'center',marginTop:'-15px',marginBottom:'5px'}}>
-         <button className="navbutton3"
-              onClick={handleShowFilterClick}>
-              {!showFilters ? "Sort" : "Hide"}
-            </button>
-            </div>
+        <div style={{ textAlign: 'center', marginTop: '-15px', marginBottom: '5px' }}>
+          <button className="navbutton3"
+            onClick={handleShowFilterClick}>
+            {!showFilters ? "Sort" : "Hide"}
+          </button>
+        </div>
 
         <div style={{ display: isVisible ? "block" : "block" }}>
 
@@ -467,8 +467,8 @@ export default function OwnerVehicles() {
 
         </div>
         <div className="standardtitlebar2">
-        <span><b>Vehicle List</b></span>
-</div>
+          <span><b>Vehicle List</b></span>
+        </div>
 
 
 
