@@ -739,7 +739,8 @@ section.standardsectiondashboard {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
   /* text-align:center; */
-  width:260px
+  width:260px;
+  margin-bottom:10px;
 
 }
 
