@@ -37,25 +37,34 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           <div className="grid-item-bold">Type</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
-          <div className="grid-item-bold row-with-gap">&nbsp;</div>
+          <div className="grid-item-normal row-with-gap" >&nbsp;
+         
+            {/* {getVehicleActiveStatusBoolean(vehicle) ? (
+               <div style={{backgroundColor:"green",color:"white",padding:"3px",display:"inline-block"}}>Active</div> ) : 
+              ("Not Active")
+              }  */}
+            </div>
           <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 
           <div className="grid-item-bold">Make</div>
           <div className="grid-item-bold">Model</div>
-          <div className="grid-item-bold">Year</div>
+          <div className="grid-item-bold">Color</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
           <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
-          <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
-
+          <div className="grid-item-normal row-with-gap">{vehicle.color || "N/A"}</div>
+   
           <div className="grid-item-bold">Check In</div>
           <div className="grid-item-bold">Check Out</div>
-          <div className="grid-item-bold">Active</div>
+          <div className="grid-item-bold">Year</div>
+
+        
+
           
           <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkin)}</div>
           <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkout)}</div>
-          <div className="grid-item-normal row-with-gap"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
-
+           <div className="grid-item-normal row-with-gap">{vehicle.year}</div>
+        
 
 
 
@@ -75,6 +84,13 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
               <div className="grid-item-bold">Free</div>
             )}
           </div>
+            <div className="grid-item-normal " >
+         
+            {getVehicleActiveStatusBoolean(vehicle) ? (
+               <div style={{backgroundColor:"green",color:"white",padding:"3px",display:"inline-block"}}>Active</div> ) : 
+              ("Not Active")
+              } 
+            </div>
           {/* <div><b>{vehicle.carownertype}</b></div> */}
         </div>
       ))}
