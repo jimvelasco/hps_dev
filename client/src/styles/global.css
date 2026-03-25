@@ -534,7 +534,7 @@ button.navbutton3 {
   cursor: pointer;
   font-weight: normal;
   min-width:50px;
-  height: 22px;
+  height: 28px;
   margin: 2px;
 
 }
@@ -654,6 +654,18 @@ input.input-date:disabled {
   text-align: center;
   opacity: .8;
   margin-bottom: 20px;
+}
+.standardtitlebar2 {
+  background-color: white;
+  color: black;
+  padding: 5px;
+  border-radius: 6px;
+  width: 70%;
+  margin: auto;
+  text-align: center;
+  opacity: .8;
+  margin-top: 10px; 
+  margin-bottom: 10px;
 }
 
 .standardtitlebar h1 {

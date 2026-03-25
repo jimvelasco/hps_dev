@@ -256,6 +256,10 @@ export default function RenterVehicles() {
           </div>
         )}
 
+        <div className="standardtitlebar2">
+          <span><b>Vehicle List</b></span>
+        </div>
+
         {vehiclesLoading ? (
           <div className="ajaxloading">
             <p className="error-text">Loading vehicles...</p>
