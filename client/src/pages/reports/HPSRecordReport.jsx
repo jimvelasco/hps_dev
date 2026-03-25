@@ -189,7 +189,7 @@ export default function HPSRecordReport() {
                   onChange={(e) => setDeleteDate(e.target.value)}
                   className="standardinput"
                   style={{
-                    padding: "8px",
+                    padding: "4px",
                     borderRadius: "4px",
                     border: "1px solid #ccc"
                   }}
@@ -201,12 +201,13 @@ export default function HPSRecordReport() {
                     backgroundColor: "#f44336",
                     color: "white",
                     border: "none",
-                    padding: "10px 15px",
+                    padding: "5px 10px",
                     borderRadius: "4px",
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    width:"100px"
                   }}
                 >
-                  Delete Before Date
+                  Delete
                 </button>
               </div>
             {/*  )} */}
