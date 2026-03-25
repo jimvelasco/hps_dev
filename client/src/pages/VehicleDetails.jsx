@@ -564,7 +564,7 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
-                <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
                     Unit Number
                   </label>
@@ -642,7 +642,7 @@ export default function VehicleDetails() {
                 </div>
 
                   
-                <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
                     Plate State
                   </label>
@@ -710,7 +710,7 @@ export default function VehicleDetails() {
                   />
                 </div>
 
-                <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
                     Year
                   </label>
@@ -749,7 +749,7 @@ export default function VehicleDetails() {
 
 
 
-                <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
                     Check Out
                   </label>
