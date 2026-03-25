@@ -132,8 +132,8 @@ export default function HPSRecordReport() {
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
           {/* <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}> */}
-          <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-
+{/* <div style={{ border:"1px solid black",marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap",margin:"auto",alignItems: "center" }}> */}
+          <div className="generic-grid ">
             <div>
               <p>Owner Type</p>
             <select
@@ -230,7 +230,7 @@ export default function HPSRecordReport() {
                     padding: "5px 10px",
                     borderRadius: "4px",
                     cursor: "pointer",
-                    width:"60px"
+                    width:"80px"
                   }}
                 >
                   Delete

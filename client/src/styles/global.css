@@ -1517,6 +1517,18 @@ input.standardinput:disabled {
   /* border:1px solid white; */
 }
 
+
+.generic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  /* place-items: center; */
+   justify-items: center;   /* Centers button inside the cell */
+  justify-content: center; /* Centers the whole row of cells */
+  /* background-color: red; */
+  /* border:1px solid white; */
+}
+
 .button-grid > :only-child {
   justify-self: center;
 }
