@@ -73,7 +73,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           <div className="grid-item-normal">
             {vehicle.requires_payment == 1 ? (
               <div className="xbutton-grid">
-                <button className="btnxs btn-primary"
+                <button className="btnxs btn-primary" style={{width:"80%"}}
                   onClick={() => handlePaymentClick(vehicle)}>
                   Pay Now
                 </button>
