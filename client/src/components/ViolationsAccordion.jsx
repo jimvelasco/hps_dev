@@ -187,13 +187,25 @@ export default function ViolationsAccordion({ hoaId }) {
     return <p>Loading violations...</p>;
   }
 
-  if (violations.length === 0) {
-    return <p>No violations found.</p>;
-  }
+//  if (violations.length === 0) {
+//     return (
+//       <>
+//        <style>{accordionStyles}</style>
+//     <p>No violations found.</p>
+//      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+//         <button className="navbutton" onClick={handleShowNewViolation}>New Violation</button>
+//       </div>
+//     </>
+//     );
+//   } 
 
   return (
     <>
       <style>{accordionStyles}</style>
+      {violations.length === 0 && (
+        <p>No violations found.</p>
+      )}
+
       <div style={{ textAlign: 'center', marginBottom: '10px' }}>
         <button className="navbutton" onClick={handleShowNewViolation}>New Violation</button>
       </div>

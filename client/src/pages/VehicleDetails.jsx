@@ -39,7 +39,7 @@ export default function VehicleDetails() {
 
   const handlePlateDetected = (data) => {
     // Mapping from Plate Recognizer vehicle types to our options
-    // console.log('handlePlateDetected jjv data:', data);
+     console.log('handlePlateDetected jjv data:', data);
     const typeMapping = {
       'sedan': 'Car',
       'suv': 'Car',

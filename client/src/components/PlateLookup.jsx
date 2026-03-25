@@ -32,7 +32,7 @@ export default function PlateLookup({ isOpen, onClose, onPlateDetected }) {
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err) {
-      console.error('Error accessing camera:', err);
+     // console.error('Error accessing camera:', err);
       setError('Could not access camera. Please ensure you have given permission.');
     }
   };
@@ -69,6 +69,7 @@ export default function PlateLookup({ isOpen, onClose, onPlateDetected }) {
       onPlateDetected(response.data);
       onClose();
     } catch (err) {
+    //  console.log('WE HAVE A REPSONSE ERROR.  SHOULD SHOW MODAL', err);
       setModal({
         isOpen: true,
         type: 'alert',
@@ -97,7 +98,8 @@ export default function PlateLookup({ isOpen, onClose, onPlateDetected }) {
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 2000;
+      z-index: 999;
+      /* z-index: 2000 modal alert is 1000 */
       padding: 20px;
     }
     .plate-lookup-content {

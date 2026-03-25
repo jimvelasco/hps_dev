@@ -465,6 +465,7 @@ const lookupPlate = async (req, res) => {
     });
 
     const data = await response.json();
+    console.log("WE HAVE A RESPONSE FROM PLATE RECOGNIZER",data);
 
     if (data && data.results && data.results.length > 0) {
       const result = data.results[0];
@@ -482,6 +483,7 @@ const lookupPlate = async (req, res) => {
         dscore: result.dscore,
       });
     } else {
+       console.log("WE HAVE A NO IMAGE FOUND RESPONSE",data);
       res.status(404).json({ message: "No plate detected" });
     }
   } catch (error) {
