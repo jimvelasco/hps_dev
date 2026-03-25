@@ -203,7 +203,7 @@ export default function HPSRecordReport() {
               {/* <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "auto" }}> */}
                
                <div>
-                  <p>Delete Before</p>
+                  <p>Before Date</p>
                  <input
                   type="date"
                   value={deleteDate}
@@ -230,7 +230,7 @@ export default function HPSRecordReport() {
                     padding: "5px 10px",
                     borderRadius: "4px",
                     cursor: "pointer",
-                    width:"100px"
+                    width:"60px"
                   }}
                 >
                   Delete
