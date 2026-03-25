@@ -3,7 +3,7 @@ import { getVehiclesByHoaId ,getVehiclesByHoaIdOwner,getVehiclesByHoaIdOwnerId, 
     getVehicleById, createVehicle, updateVehicle, deleteVehicle, 
     deleteVehiclesByStatusFlag, batchUpdateDateFields, 
     updateVehiclePayment, jjvrunquery,getVehiclesForUnitNumber, getHPSRecordsByHoaId, deleteRenterVehicles,
-    lookupPlate} from "../controllers/vehicleController.js";
+    deleteHPSRecords, lookupPlate} from "../controllers/vehicleController.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { createVehicleSchema, updateVehicleSchema } from "../schemas/vehicleSchemas.js";
 
@@ -17,6 +17,7 @@ router.put("/:vehicleId", validateRequest(updateVehicleSchema), updateVehicle);
 router.put("/payment/:vehicleId", updateVehiclePayment);
 router.delete("/status/:statusFlag", deleteVehiclesByStatusFlag);
 router.delete("/renter-vehicles/:hoaId", deleteRenterVehicles);
+router.delete("/hpsrecords/:hoaId", deleteHPSRecords);
 router.delete("/:vehicleId", deleteVehicle);
 router.get("/id/:vehicleId", getVehicleById);
 router.get("/hpsrecords/:hoaId", getHPSRecordsByHoaId);

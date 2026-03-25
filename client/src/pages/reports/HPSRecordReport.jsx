@@ -16,6 +16,7 @@ export default function HPSRecordReport() {
   const [error, setError] = useState(null);
   const [ownerTypeFilter, setOwnerTypeFilter] = useState("");
   const [unitFilter, setUnitFilter] = useState("");
+  const [deleteDate, setDeleteDate] = useState("");
 
   useEffect(() => {
     if (loggedInUser && loggedInUser.role === 'owner') {
@@ -41,6 +42,40 @@ export default function HPSRecordReport() {
       fetchRecords();
     }
   }, [hoaId]);
+
+  const handleDeleteBeforeDate = async () => {
+    if (!deleteDate) {
+      alert("Please select a date first.");
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to delete all HPS records created before ${deleteDate}?`)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.delete(`/vehicles/hpsrecords/${hoaId}?date=${deleteDate}`);
+      alert(response.data.message);
+      // Refresh records after deletion
+      const refreshResponse = await axios.get(`/vehicles/hpsrecords/${hoaId}`);
+      setRecords(refreshResponse.data);
+    } catch (err) {
+      setError(err.message || "Failed to delete records");
+      console.error("Error deleting HPS records:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const calculateDays = (start, end) => {
+    if (!start || !end) return "N/A";
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffTime = endDate - startDate;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? diffDays : "N/A";
+  };
 
   const handleBackClick = () => {
     navigate(`/${hoaId}/reports`);
@@ -96,7 +131,7 @@ export default function HPSRecordReport() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
-          <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+          <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
             <select
               value={ownerTypeFilter}
               onChange={(e) => setOwnerTypeFilter(e.target.value)}
@@ -145,6 +180,36 @@ export default function HPSRecordReport() {
                 Unit: {unitFilter || "N/A"}
               </div>
             )}
+
+            {/* {loggedInUser && loggedInUser.role === 'admin' && ( */}
+              <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "auto" }}>
+                <input
+                  type="date"
+                  value={deleteDate}
+                  onChange={(e) => setDeleteDate(e.target.value)}
+                  className="standardinput"
+                  style={{
+                    padding: "8px",
+                    borderRadius: "4px",
+                    border: "1px solid #ccc"
+                  }}
+                />
+                <button
+                  onClick={handleDeleteBeforeDate}
+                  className="standardbutton"
+                  style={{
+                    backgroundColor: "#f44336",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 15px",
+                    borderRadius: "4px",
+                    cursor: "pointer"
+                  }}
+                >
+                  Delete Before Date
+                </button>
+              </div>
+            {/*  )} */}
           </div>
 
           {loading ? (
@@ -157,7 +222,7 @@ export default function HPSRecordReport() {
             <div style={{ overflowX: "auto", maxWidth: "100%" }}>
             <div style={{ 
               display: "grid", 
-              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr",
+              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 0.8fr 1fr 1fr 1fr 1fr",
               gap: "0px",
               marginTop: "20px" ,
               minWidth: "800px",
@@ -166,7 +231,7 @@ export default function HPSRecordReport() {
                <div className="standard-table-header">Date</div>
                <div className="standard-table-header">Unit</div>
                <div className="standard-table-header">Name</div>
-                <div className="standard-table-header">Created</div>
+                <div className="standard-table-header">Days</div>
                 <div className="standard-table-header">Type</div>
                <div className="standard-table-header">Plate</div>
                <div className="standard-table-header">Start</div>
@@ -197,7 +262,7 @@ export default function HPSRecordReport() {
                      </div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.unitnumber}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{`${record.firstname} ${record.lastname}`}</div>
-                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.createdAt}</div>
+                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{calculateDays(record.startdate, record.enddate)}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.ownertype}</div>
                       <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.plate}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.startdate}</div>

@@ -428,6 +428,29 @@ const deleteRenterVehicles = async (req, res) => {
   }
 };
 
+const deleteHPSRecords = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ message: "Date is required" });
+    }
+
+    const result = await HPSRecord.deleteMany({
+      hoaid: hoaId,
+      createdAt: { $lt: new Date(date) }
+    });
+
+    res.status(200).json({
+      message: `${result.deletedCount} HPS record(s) deleted successfully`,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const lookupPlate = async (req, res) => {
   const { image } = req.body;
   if (!image) {
@@ -496,5 +519,5 @@ export {
   getVehiclesByHoaId, getVehiclesByHoaIdOwner, getVehiclesByHoaIdOwnerId,
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
-  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, lookupPlate
+  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, deleteHPSRecords, lookupPlate
 };
