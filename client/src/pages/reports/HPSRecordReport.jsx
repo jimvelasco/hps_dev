@@ -285,7 +285,7 @@ export default function HPSRecordReport() {
                    // assumes records are ordered by start date. If the second record start date 
                    // is in between the previous records start and end date it gets flagged
                     if (s1 && e1 && s2 && e2) {
-                     if (s1 >= s2  && s1 <= e2) {
+                     if (s1 >= s2  && s1 < e2) {
                        hasOverlap = true;
                      }
                    }
