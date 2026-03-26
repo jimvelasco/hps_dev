@@ -249,7 +249,7 @@ export default function HPSRecordReport() {
             <div style={{ overflowX: "auto", maxWidth: "100%" }}>
             <div style={{ 
               display: "grid", 
-              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 0.8fr 1fr 1fr 1fr 1fr",
+              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 0.8fr 1fr 1fr 1fr 1fr .5fr",
               gap: "0px",
               marginTop: "20px" ,
               minWidth: "800px",
@@ -258,11 +258,13 @@ export default function HPSRecordReport() {
                <div className="standard-table-header">Date</div>
                <div className="standard-table-header">Unit</div>
                <div className="standard-table-header">Name</div>
-                <div className="standard-table-header">Days</div>
+              
                 <div className="standard-table-header">Type</div>
                <div className="standard-table-header">Plate</div>
                <div className="standard-table-header">Start</div>
                <div className="standard-table-header">End</div>
+                 <div className="standard-table-header">Days</div>
+                  <div className="standard-table-header">RP</div>
 
                {filteredRecords.map((record, index) => {
                  let hasOverlap = false;
@@ -289,11 +291,13 @@ export default function HPSRecordReport() {
                      </div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.unitnumber}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{`${record.firstname} ${record.lastname}`}</div>
-                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{calculateDays(record.startdate, record.enddate)}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.ownertype}</div>
                       <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.plate}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.startdate}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.enddate}</div>
+                    <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{calculateDays(record.startdate, record.enddate)}</div>
+                    <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.requires_payment}</div>
+
                    </React.Fragment>
                  );
                })}
