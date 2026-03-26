@@ -27,17 +27,49 @@ export default function OnsiteVehicles() {
   const [showCards, setShowCards] = useState(true);
   const [showTable, setShowTable] = useState(false);
 
+  // useEffect(() => {
+  //   if (hoaId) {
+  //     const fetchOnsiteVehicles = async () => {
+  //       try {
+  //         setVehiclesLoading(true);
+  //         const response = await axios.get(`/vehicles/${hoaId}`);
+  //         let newary = [];
+  //         response.data.forEach(element => {
+  //           if (getVehicleActiveStatusBoolean(element)) {
+  //             newary.push(element);
+  //           }
+  //         });
+  //         const sorted = [...newary].sort((a, b) => {
+  //           let valueA, valueB;
+  //           valueA = (a.plate || "").toLowerCase();
+  //           valueB = (b.plate || "").toLowerCase();
+  //           return valueA.localeCompare(valueB);
+  //         });
+  //         setVehicles(sorted);
+  //         setVehiclesError(null);
+  //       } catch (err) {
+  //         setVehiclesError(err.message || "Failed to load vehicles");
+  //         console.error("Error fetching vehicles:", err);
+  //       } finally {
+  //         setVehiclesLoading(false);
+  //       }
+  //     };
+  //     fetchOnsiteVehicles();
+  //   }
+  // }, [hoaId]);
+
+
   useEffect(() => {
     if (hoaId) {
       const fetchOnsiteVehicles = async () => {
         try {
           setVehiclesLoading(true);
-          const response = await axios.get(`/vehicles/${hoaId}`);
+          const response = await axios.get(`/vehicles/onsiteonly/${hoaId}`);
           let newary = [];
           response.data.forEach(element => {
-            if (getVehicleActiveStatusBoolean(element)) {
+          //  if (getVehicleActiveStatusBoolean(element)) {
               newary.push(element);
-            }
+          //  }
           });
           const sorted = [...newary].sort((a, b) => {
             let valueA, valueB;
@@ -57,7 +89,6 @@ export default function OnsiteVehicles() {
       fetchOnsiteVehicles();
     }
   }, [hoaId]);
-
 
   const handleSort = (column) => {
     let newDirection = "asc";

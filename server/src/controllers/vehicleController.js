@@ -51,6 +51,38 @@ const getVehiclesByHoaId = async (req, res) => {
   }
 };
 
+
+const getOnsiteVehiclesByHoaId = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const { filter } = req.query;
+
+      
+
+        const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    const qry = { hoaid: hoaId,  checkout: { $gte: today } };
+   console.log("getOnsiteVehiclesByHoaId Filter received params:", qry);
+
+   // const qry = { hoaid: hoaId };
+     // console.log("getVehiclesByHoaId Filter received:", filter,qry);
+
+    // if (filter === "owner") {
+    //   qry.carownertype = "owner";
+    // } else if (filter === "renter") {
+    //   qry.carownertype = "renter";
+    // }
+
+    //  qry.carownertype = "owner";
+
+    const vehicles = await Vehicle.find(qry);
+      console.log("getVehiclesByHoaId reponse size is:", vehicles.length);
+    res.json(vehicles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getVehiclesByHoaIdOwner = async (req, res) => {
   try {
     const { hoaId, role } = req.params;
@@ -519,5 +551,6 @@ export {
   getVehiclesByHoaId, getVehiclesByHoaIdOwner, getVehiclesByHoaIdOwnerId,
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
-  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, deleteHPSRecords, lookupPlate
+  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, deleteHPSRecords, lookupPlate,
+  getOnsiteVehiclesByHoaId
 };
