@@ -419,7 +419,8 @@ const jjvrunquery = async (req, res) => {
 const getHPSRecordsByHoaId = async (req, res) => {
   try {
     const { hoaId } = req.params;
-    const records = await HPSRecord.find({ hoaid: hoaId }).sort({ createdAt: -1 });
+   // const records = await HPSRecord.find({ hoaid: hoaId }).sort({ createdAt: -1 });
+      const records = await HPSRecord.find({ hoaid: hoaId }).sort({ startdate: 1 });
     res.json(records);
   } catch (error) {
     res.status(500).json({ message: error.message });

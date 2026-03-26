@@ -14,7 +14,7 @@ export default function HPSRecordReport() {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [ownerTypeFilter, setOwnerTypeFilter] = useState("");
+  const [ownerTypeFilter, setOwnerTypeFilter] = useState("renter");
   const [unitFilter, setUnitFilter] = useState("");
   const [deleteDate, setDeleteDate] = useState("");
 
@@ -148,7 +148,7 @@ export default function HPSRecordReport() {
                 boxSizing: "border-box"
               }}
             >
-              <option value="">All Owner Types</option>
+              {/* <option value="">All Owner Types</option> */}
               <option value="owner">Owner</option>
               <option value="renter">Renter</option>
             </select>
@@ -279,6 +279,13 @@ export default function HPSRecordReport() {
                    if (s1 && e1 && s2 && e2) {
                      // Check overlap: (StartA <= EndB) && (EndA >= StartB)
                      if (s1 <= e2 && e1 >= s2) {
+                     //  hasOverlap = true;
+                     }
+                   }
+                   // assumes records are ordered by start date. If the second record start date 
+                   // is in between the previous records start and end date it gets flagged
+                    if (s1 && e1 && s2 && e2) {
+                     if (s1 >= s2  && s1 <= e2) {
                        hasOverlap = true;
                      }
                    }
