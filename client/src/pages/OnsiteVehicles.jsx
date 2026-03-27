@@ -330,7 +330,7 @@ export default function OnsiteVehicles() {
         )}
 
         {isGridVisible ? (
-          <div className="onsite-grid-container-2">
+          <div className="onsite-grid-container-2" style={{border:"0px solid yellow "}}>
             <div className='grid-flex-container'>
               {showTable ? (
                 <div style={{ overflowX: "auto", maxWidth: "100%" }}>
@@ -361,7 +361,8 @@ export default function OnsiteVehicles() {
               maxHeight: '80vh',
               overflowY: 'auto',
               position: 'sticky',
-              top: '20px'
+              top: '20px',
+              border:"0px solid yellow"
             }}>
               <div className="header-title">Violations</div>
               <ViolationsAccordion hoaId={hoaId} />

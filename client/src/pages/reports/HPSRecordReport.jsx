@@ -276,12 +276,12 @@ export default function HPSRecordReport() {
                    const s2 = prevRecord.startdate || "";
                    const e2 = prevRecord.enddate || "";
                    
-                   if (s1 && e1 && s2 && e2) {
-                     // Check overlap: (StartA <= EndB) && (EndA >= StartB)
-                     if (s1 <= e2 && e1 >= s2) {
-                     //  hasOverlap = true;
-                     }
-                   }
+                  //  if (s1 && e1 && s2 && e2) {
+                  //    // Check overlap: (StartA <= EndB) && (EndA >= StartB)
+                  //    if (s1 <= e2 && e1 >= s2) {
+                  //    //  hasOverlap = true;
+                  //    }
+                  //  }
                    // assumes records are ordered by start date. If the second record start date 
                    // is in between the previous records start and end date it gets flagged
                     if (s1 && e1 && s2 && e2) {
