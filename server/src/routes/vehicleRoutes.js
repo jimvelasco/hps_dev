@@ -3,7 +3,7 @@ import { getVehiclesByHoaId ,getVehiclesByHoaIdOwner,getVehiclesByHoaIdOwnerId, 
     getVehicleById, createVehicle, updateVehicle, deleteVehicle, 
     deleteVehiclesByStatusFlag, batchUpdateDateFields, 
     updateVehiclePayment, jjvrunquery,getVehiclesForUnitNumber, getHPSRecordsByHoaId, deleteRenterVehicles,
-    deleteHPSRecords, lookupPlate,getOnsiteVehiclesByHoaId} from "../controllers/vehicleController.js";
+    deleteHPSRecords, lookupPlate,getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId} from "../controllers/vehicleController.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { createVehicleSchema, updateVehicleSchema } from "../schemas/vehicleSchemas.js";
 
@@ -27,7 +27,14 @@ router.get("/:hoaId/rentervehicles/:unitNumber", getVehiclesForUnitNumber);
 //router.get("/:hoaId/:role(owner|renter|admin)/:ownerid", getVehiclesByHoaIdOwnerId);
 
 //router.get("/:hoaId/:role",getVehiclesByHoaIdOwner);
-router.get("/:hoaId", getVehiclesByHoaId);
+router.get("/allhoaid/:hoaId", getVehiclesByHoaId); // this gets even the expired rental vehicles
+//router.get("/allhoaid/:hoaId", getOnsiteVehiclesByHoaId);
+
 router.get("/onsiteonly/:hoaId", getOnsiteVehiclesByHoaId);
+
+
+router.get("/adminvehicles/:hoaId", getAdminVehiclesByHoaId);
+
+
 
 export default router;

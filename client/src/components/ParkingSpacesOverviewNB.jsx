@@ -39,18 +39,39 @@ export default function ParkingSpacesOverviewNB() {
   //   fetchVehicles();
   // }, [hoaId]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const fetchVehicles = async () => {
+  //     if (!hoaId) return;
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(`/vehicles/allhoaid/${hoaId}`);
+  //       const vehicles = response.data;
+  //       const occupied = vehicles.filter(vehicle => {
+  //         if (!vehicle.checkout) return false;
+  //         return getVehicleActiveStatusBoolean(vehicle);
+  //       }).length;
+  //       setOccupiedSpaces(occupied);
+  //     } catch (error) {
+  //       console.error("Error fetching vehicles:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchVehicles();
+  // }, [hoaId]);
+
+   useEffect(() => {
     const fetchVehicles = async () => {
       if (!hoaId) return;
       try {
         setLoading(true);
-        const response = await axios.get(`/vehicles/${hoaId}`);
+        const response = await axios.get(`/vehicles/onsiteonly/${hoaId}`);
         const vehicles = response.data;
-        const occupied = vehicles.filter(vehicle => {
-          if (!vehicle.checkout) return false;
-          return getVehicleActiveStatusBoolean(vehicle);
-        }).length;
-        setOccupiedSpaces(occupied);
+        // const occupied = vehicles.filter(vehicle => {
+        //   if (!vehicle.checkout) return false;
+        //   return getVehicleActiveStatusBoolean(vehicle);
+        // }).length;
+        setOccupiedSpaces(vehicles.length);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       } finally {

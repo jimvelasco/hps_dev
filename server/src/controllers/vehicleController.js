@@ -62,7 +62,7 @@ const getOnsiteVehiclesByHoaId = async (req, res) => {
         const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
     const qry = { hoaid: hoaId,  checkout: { $gte: today } };
-   console.log("getOnsiteVehiclesByHoaId Filter received params:", qry);
+  // console.log("getOnsiteVehiclesByHoaId Filter qry:", qry);
 
    // const qry = { hoaid: hoaId };
      // console.log("getVehiclesByHoaId Filter received:", filter,qry);
@@ -76,12 +76,64 @@ const getOnsiteVehiclesByHoaId = async (req, res) => {
     //  qry.carownertype = "owner";
 
     const vehicles = await Vehicle.find(qry);
-      console.log("getVehiclesByHoaId reponse size is:", vehicles.length);
+    //  console.log("getOnsiteVehiclesByHoaId reponse size is:", vehicles.length);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+const getAdminVehiclesByHoaId = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    const qry = { hoaid: hoaId, checkout: { $gte: today } };
+   
+
+    const qry2 = {
+  $and: [
+    { hoaid: hoaId },
+    {
+      $or: [
+        { carownertype: { $ne: "renter" } },
+        {
+          $and: [
+            { carownertype: "renter" },
+            { enddate: { $gt: today } }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+ console.log("getAdminVehiclesByHoaId Filter qry:", qry2);
+
+    const vehicles = await Vehicle.find(qry2);
+    console.log("getAdminVehiclesByHoaId reponse size is:", vehicles.length);
+    res.json(vehicles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/*
+db.collection.find({
+  $or: [
+    { carownertype: { $ne: "renter" } },
+    {
+      carownertype: "renter",
+      enddate: { $gt: new Date().toISOString().slice(0,10) }
+    }
+  ]
+})
+*/
+
+
+
+
 
 const getVehiclesByHoaIdOwner = async (req, res) => {
   try {
@@ -553,5 +605,5 @@ export {
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
   updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, deleteHPSRecords, lookupPlate,
-  getOnsiteVehiclesByHoaId
+  getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId
 };

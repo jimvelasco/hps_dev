@@ -63,17 +63,16 @@ export default function OwnerVehicles() {
       const fetchVehicles = async () => {
         try {
           setVehiclesLoading(true);
-          // qry = `/vehicles/${hoaId}/${role}/${ownerId}`
-          qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
-          console.log("OwnerVehicles.jsx qry:", qry);
+           qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
+       //   console.log("OwnerVehicles.jsx qry:", qry);
           if (role === "admin" || role === "manager") {
 
-            qry = `/vehicles/${hoaId}`
+            qry = `/vehicles/adminvehicles/${hoaId}`
           }
 
-          //  console.log("OwnerVehicles.jsx qry:", qry);
+        //    console.log("OwnerVehicles.jsx qry:", qry);
           const response = await axios.get(qry);
-          console.log("fetchVehicles client received:", response.data.length)
+       //   console.log("fetchVehicles client received:", response.data.length)
           const updatedVehicles = response.data.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)

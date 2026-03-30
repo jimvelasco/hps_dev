@@ -92,6 +92,17 @@ const vehicleSchema = new mongoose.Schema(
     type: String
   },
 
+  starttime: {
+    type: String,
+    default:"00:00:00"
+  },
+    endtime: {
+    type: String,
+    default:"00:00:00"
+  },
+
+ 
+
   checkout: {
     type: Date,
     default: Date.now
