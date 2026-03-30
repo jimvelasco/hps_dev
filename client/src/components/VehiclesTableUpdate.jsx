@@ -38,6 +38,19 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             )}
           </div>
 
+            <div className="standard-table-header" style={{
+            textDecoration: "underline",
+            cursor: "pointer"
+          }} onClick={() => handleSort("unit")}>
+            Unit
+            {sortColumn === "owner" && (
+              <FontAwesomeIcon
+                icon={faArrowUp}
+                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
+              />
+            )}
+          </div>
+
 
            <div className="standard-table-header" style={{
             textDecoration: "underline",
@@ -126,6 +139,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             <div className="standard-table-cell">
               {vehicle.carowner_lname}, {vehicle.carowner_fname}
             </div>
+             <div className="standard-table-cell "> {vehicle.unitnumber}</div>
             <div className="standard-table-cell "> {vehicle.carownertype}</div>
             <div className="standard-table-cell ">{vehicle.vehicle_type}</div>
             <div className="standard-table-cell ">{vehicle.make}</div>

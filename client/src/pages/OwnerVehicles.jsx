@@ -153,7 +153,12 @@ export default function OwnerVehicles() {
       } else if (column === "ownertype") {
         valueA = (a.carownertype || "").toLowerCase();
         valueB = (b.carownertype || "").toLowerCase();
-      } else if (column === "enddate") {
+      } 
+       else if (column === "unit") {
+        valueA = (a.unitnumber || "").toLowerCase();
+        valueB = (b.unitnumber || "").toLowerCase();
+      }
+      else if (column === "enddate") {
         valueA = (a.enddate || "").toLowerCase();
         valueB = (b.enddate || "").toLowerCase();
       } else if (column === "active") {
@@ -417,6 +422,10 @@ export default function OwnerVehicles() {
                 <button className="btnxsp "
                   onClick={() => handleSort("owner")}>
                   Owner
+                </button>
+                <button className="btnxsp "
+                  onClick={() => handleSort("unit")}>
+                  Unit
                 </button>
                 <button className="btnxsp "
                   onClick={() => handleSort("ownertype")}>
