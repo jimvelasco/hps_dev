@@ -101,7 +101,7 @@ const getAdminVehiclesByHoaId = async (req, res) => {
         {
           $and: [
             { carownertype: "renter" },
-            { enddate: { $gt: today } }
+            { checkout: { $gte: today } }
           ]
         }
       ]

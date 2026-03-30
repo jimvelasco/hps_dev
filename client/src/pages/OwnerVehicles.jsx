@@ -26,7 +26,7 @@ export default function OwnerVehicles() {
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const [role, setRole] = useState(null);
   const [ownerId, setOwnerId] = useState(null);
-  const [filterType, setFilterType] = useState("");
+  const [filterType, setFilterType] = useState("owner");
   const [filterDate, setFilterDate] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -342,22 +342,11 @@ export default function OwnerVehicles() {
 
         <div className="standardtitlebar">
           <div className="button-grid">
-            <button className="navbutton2"
-              onClick={handleShowTable}>
-              {showTable ? "Hide Table" : "Show Table"}
-            </button>
-
-            {/* <button className="navbutton3"
-              onClick={handleShowFilterClick}>
-              {!showFilters ? "Sort" : "Hide"}
-            </button> */}
-
-
-
-
-
-            {/* <div>
-              <div style={{fontSize:"12px"}}>Type</div>
+          
+ {loggedInUser && loggedInUser.role === "admin" && (
+             
+   
+            <div>
               <select className="standardselect"
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
@@ -365,7 +354,22 @@ export default function OwnerVehicles() {
                 <option value="owner">Owner</option>
                 <option value="renter">Renter</option>
               </select>
-            </div> */}
+              </div>
+   )}
+  <button className="navbutton3"
+            onClick={handleShowFilterClick}>
+            {!showFilters ? "Sort" : "Hide"}
+          </button>
+
+            <div>
+
+              <button className="navbutton3"
+              onClick={handleShowTable}>
+              {showTable ? "Hide Table" : "Show Table"}
+            </button>
+            </div>
+
+            
 
 
             {/* <div>
@@ -378,6 +382,12 @@ export default function OwnerVehicles() {
               />
             </div> */}
 
+ {/* {loggedInUser && loggedInUser.role === "admin" && (
+              <button className="navbutton2"
+                onClick={() => handleCreateClick()}>
+                filter
+              </button>
+            )} */}
 
 
 
@@ -389,51 +399,15 @@ export default function OwnerVehicles() {
                 onClick={() => handleCreateClick()}>
                 New Vehicle
               </button>
-
-
-
             )}
 
 
           </div>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '-15px', marginBottom: '5px' }}>
-          <button className="navbutton3"
-            onClick={handleShowFilterClick}>
-            {!showFilters ? "Sort" : "Hide"}
-          </button>
-        </div>
+      
 
         <div style={{ display: isVisible ? "block" : "block" }}>
 
-
-          {/* <div className="standardtitlebar" style={{ width: "50%" }}>
-
-
-            <div className="button-grid">
-              <div>
-                <div style={{ marginBottom: "10px" }}><b>Type</b></div>
-                <select className="standardselect"
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                >
-                  <option value="owner">Owner</option>
-                  <option value="renter">Renter</option>
-                </select>
-              </div>
-              <div>
-                <div style={{ marginBottom: "10px" }}><b>From</b></div>
-                <input className="input-date"
-                  type="date"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
-                  disabled={showTable}
-                />
-              </div>
-            </div>
-
-
-          </div> */}
 
 
           {showFilters && (
@@ -467,6 +441,7 @@ export default function OwnerVehicles() {
         </div>
         <div className="standardtitlebar2">
           <span><b>Vehicle List</b></span>
+          
         </div>
 
 
@@ -474,6 +449,8 @@ export default function OwnerVehicles() {
         {vehiclesError && (
           <div className="displayerror">
             <p><strong>Error:</strong> {vehiclesError}</p>
+
+
           </div>
         )}
 
@@ -504,6 +481,12 @@ export default function OwnerVehicles() {
                   minWidth: "800px",
                   overflowX: "auto"
                 }}>
+                
+            
+
+
+
+
                   <div className='grid-flex-container'>
                     <VehiclesTableUpdate
                       vehicles={vehicles}
