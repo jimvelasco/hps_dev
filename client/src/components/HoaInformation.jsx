@@ -36,6 +36,11 @@ export default function HoaInformation({ hoa }) {
   //   navigate(`/${hoaId}/email-from-hoa`);
   // };
   return (
+    <>
+    <div className="standardtitlebar2" style={{width:"360px",opacity: "1.0"}}>
+          <span><b>Home Owners Assocation</b></span>
+          
+        </div>
     <div style={{
       display: 'flex',
       flexWrap: 'wrap',
@@ -66,7 +71,7 @@ export default function HoaInformation({ hoa }) {
 
       </section>
       <section className="standardsectiondashboard">
-        <h3 style={{ color: "#1976d2", marginTop: 0 }}>HOA Information</h3>
+        <h3 style={{ color: "#1976d2", marginTop: 0 }}>HOA Address</h3>
         {hoa && (
           <div className="hoainformation">
             <div><strong>Name:</strong> {hoa.name}</div>
@@ -86,9 +91,8 @@ export default function HoaInformation({ hoa }) {
           </div>
         )}
       </section>
-
-
-
     </div>
+        </>
+
   );
 }

@@ -48,22 +48,22 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
 
           <div className="grid-item-bold">Make</div>
           <div className="grid-item-bold">Model</div>
-          <div className="grid-item-bold">Color</div>
+          <div className="grid-item-bold">Year</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
           <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
-          <div className="grid-item-normal row-with-gap">{vehicle.color || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
    
           <div className="grid-item-bold">Check In</div>
           <div className="grid-item-bold">Check Out</div>
-          <div className="grid-item-bold">Year</div>
+          <div className="grid-item-bold">Color</div>
 
         
 
           
           <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkin)}</div>
           <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkout)}</div>
-           <div className="grid-item-normal row-with-gap">{vehicle.year}</div>
+           <div className="grid-item-normal row-with-gap">{vehicle.color}</div>
         
 
 

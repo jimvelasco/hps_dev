@@ -12,6 +12,7 @@ const logHPSRecord = async (vehicle, oldStartDate = null, oldEndDate = null) => 
       firstname: vehicle.carowner_fname,
       lastname: vehicle.carowner_lname,
       phone: vehicle.carownerphone,
+      cartype: vehicle.vehicle_type,
       plate: vehicle.plate,
       platestate: vehicle.plate_state,
       requires_payment: vehicle.requires_payment,
@@ -22,6 +23,22 @@ const logHPSRecord = async (vehicle, oldStartDate = null, oldEndDate = null) => 
     });
   } catch (error) {
     console.error("Failed to log HPSRecord:", error);
+  }
+};
+
+const logHPSRecordUpdate = async (vehicleId, newStartDate, newEndDate) => {
+  try {
+    // await HPSRecord.findOneAndUpdate(
+    //   { vehicleId: vehicleId },
+    //   { startdate: newStartDate, enddate: newEndDate },
+    //   { sort: { createdAt: -1 } }
+    // );
+     await HPSRecord.findOneAndUpdate(
+      { vehicleId: vehicleId },
+      { startdate: newStartDate, enddate: newEndDate }
+    );
+  } catch (error) {
+    console.error("Failed to update HPSRecord:", error);
   }
 };
 
@@ -253,12 +270,12 @@ const getVehiclesForUnitNumber = async (req, res) => {
 const createVehicle = async (req, res) => {
   try {
     const vehicleData = req.validatedData;
-   // console.log("server Creating vehicle with data:", vehicleData);
+    console.log("server Creating vehicle with data:", vehicleData);
 
     const vehicle = await Vehicle.create(vehicleData);
 
     // Log new vehicle creation
-    await logHPSRecord(vehicle);
+    await logHPSRecord(vehicle,vehicleData.startdate,vehicleData.enddate);
 
     res.status(201).json(vehicle);
   } catch (error) {
@@ -284,8 +301,11 @@ const updateVehicle = async (req, res) => {
         oldVehicle.enddate !== updatedVehicle.enddate) {
       // await logHPSRecord(updatedVehicle, oldVehicle.startdate, oldVehicle.enddate);
       // log the date changes and ignore the old vehicle dates
-       await logHPSRecord(updatedVehicle);
+       await logHPSRecordUpdate(vehicleId, updatedVehicle.startdate, updatedVehicle.enddate);
     }
+
+    //const logHPSRecordUpdate = async (vehicleId, newStartDate, newEndDate) => {
+
 
     res.status(200).json(updatedVehicle);
   } catch (error) {
