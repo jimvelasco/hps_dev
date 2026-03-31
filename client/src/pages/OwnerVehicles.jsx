@@ -361,14 +361,14 @@ export default function OwnerVehicles() {
               </select>
               </div>
    )}
-  <button className="navbutton3"
+  <button className="navbutton2"
             onClick={handleShowFilterClick}>
             {!showFilters ? "Sort" : "Hide"}
           </button>
 
             <div>
 
-              <button className="navbutton3"
+              <button className="navbutton2"
               onClick={handleShowTable}>
               {showTable ? "Hide Table" : "Show Table"}
             </button>
