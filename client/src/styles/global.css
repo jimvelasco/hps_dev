@@ -660,7 +660,7 @@ input.input-date:disabled {
   color: black;
   padding: 5px;
   border-radius: 6px;
-  width: 70%;
+  width: 300px;
   margin: auto;
   text-align: center;
   opacity: .8;
