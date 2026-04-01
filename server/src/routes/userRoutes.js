@@ -1,6 +1,6 @@
 import express from "express";
 import { getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser, getCurrentUser,verifyRenterPin, 
-    forgotPassword, resetPassword, deleteUser, sendEmailFromHoa } from "../controllers/userController.js";
+    forgotPasswordSES, resetPassword, deleteUser, sendEmailFromHoaSES } from "../controllers/userController.js";
 import authenticateToken from "../middleware/authenticateToken.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { updateUserDetailsSchema ,updateUserProfileSchema} from "../schemas/userSchemas.js";
@@ -17,8 +17,13 @@ router.put("/profile/:id", validateRequest(updateUserProfileSchema), updateUser)
 router.delete("/:id", deleteUser);
 router.post("/login", loginUser);
 router.post("/renters/verify-pin", verifyRenterPin);
-router.post("/forgot-password", forgotPassword);
+//router.post("/forgot-password", forgotPassword);
+router.post("/forgot-password", forgotPasswordSES);
+
+
 router.post("/reset-password", resetPassword);
-router.post("/send-email-from-hoa", sendEmailFromHoa);
+// router.post("/send-email-from-hoa", sendEmailFromHoa);
+router.post("/send-email-from-hoa", sendEmailFromHoaSES);
+
 
 export default router;
