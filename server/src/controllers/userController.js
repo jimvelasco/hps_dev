@@ -302,62 +302,6 @@ const verifyRenterPin = async (req, res) => {
   }
 };
 
-const forgotPassword = async (req, res) => {
-  try {
-    const { email, hoaId } = req.body;
-
-    if (!email || !hoaId) {
-      return res.status(400).json({ message: "Email and HOA ID are required" });
-    }
-
-    const user = await User.findOne({ email, hoaid: hoaId });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found for this email and HOA" });
-    }
-
-    const resetToken = jwt.sign(
-      {
-        userId: user._id,
-        email: user.email,
-        hoaId: user.hoaid
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-    const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
-    const resetLink = `${serverUrl}/reset-password/${resetToken}`;
-
-    const msg = {
-      to: user.email,
-      from: process.env.SENDGRID_FROM_EMAIL || "verify@hoaparkingsolutions.com",
-      subject: "Password Reset Request",
-      html: `
-        <h2>Password Reset Request</h2>
-        <p>Hi ${user.first_name},</p>
-        <p>We received a request to reset your password. Click the link below to create a new password:</p>
-        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
-          Reset Password
-        </a>
-        <p>This link will expire in 1 hour.</p>
-        <p>If you didn't request a password reset, please ignore this email.</p>
-        <p>Best regards,<br/>HOA Parking Solutions</p>
-      `
-    };
-
-    await sgMail.send(msg);
-
-    res.status(200).json({
-      message: "Password reset email sent successfully"
-    });
-  } catch (error) {
-    console.error("Forgot password error:", error);
-    res.status(500).json({ message: error.message });
-  }
-};
 
 const resetPassword = async (req, res) => {
   try {
@@ -418,6 +362,65 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email, hoaId } = req.body;
+
+    if (!email || !hoaId) {
+      return res.status(400).json({ message: "Email and HOA ID are required" });
+    }
+
+    const user = await User.findOne({ email, hoaid: hoaId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found for this email and HOA" });
+    }
+
+    const resetToken = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        hoaId: user.hoaid
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
+    const resetLink = `${serverUrl}/reset-password/${resetToken}`;
+
+    const msg = {
+      to: user.email,
+      from: process.env.SENDGRID_FROM_EMAIL || "verify@hoaparkingsolutions.com",
+      subject: "Password Reset Request",
+      html: `
+        <h2>Password Reset Request</h2>
+        <p>Hi ${user.first_name},</p>
+        <p>We received a request to reset your password. Click the link below to create a new password:</p>
+        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+          Reset Password
+        </a>
+        <p>This link will expire in 1 hour.</p>
+        <p>If you didn't request a password reset, please ignore this email.</p>
+        <p>Best regards,<br/>HOA Parking Solutions</p>
+      `
+    };
+
+    await sgMail.send(msg);
+
+    res.status(200).json({
+      message: "Password reset email sent successfully"
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const sendEmailFromHoa = async (req, res) => {
   try {
     const { hoaId, subject, returnEmail, message ,toEmail} = req.body;
@@ -446,6 +449,8 @@ const sendEmailFromHoa = async (req, res) => {
     // yampa view email yampahoa@gmail.com
 
     const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+
+   //  console.log('sendEmailFromHoa HOA_EMAIL:', HOA_EMAIL,SENDGRID_API_KEY);
 
     if (!SENDGRID_API_KEY) {
       return res.status(500).json({ message: "Email service not configured" });

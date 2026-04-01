@@ -1,5 +1,6 @@
 import express from "express";
-import { getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser, getCurrentUser,verifyRenterPin, forgotPassword, resetPassword, deleteUser, sendEmailFromHoa } from "../controllers/userController.js";
+import { getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser, getCurrentUser,verifyRenterPin, 
+    forgotPassword, resetPassword, deleteUser, sendEmailFromHoa } from "../controllers/userController.js";
 import authenticateToken from "../middleware/authenticateToken.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { updateUserDetailsSchema ,updateUserProfileSchema} from "../schemas/userSchemas.js";
