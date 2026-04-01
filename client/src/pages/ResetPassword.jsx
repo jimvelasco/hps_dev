@@ -138,7 +138,7 @@ export default function ResetPassword() {
       </div>
 
       <div className="loginboxes">
-        <h2 style={{MarginTop:"20px"}}>Reset Your Password</h2>
+        <h3 style={{marginTop:"20px"}}>Reset Your Password</h3>
 
         <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
           <div style={{ marginBottom: "15px" }}>
