@@ -499,6 +499,8 @@ const sendEmailFromHoa = async (req, res) => {
 
 
 
+// ############ SEND MAIL STUFF ######################
+
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 
@@ -506,23 +508,17 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 const forgotPasswordSES = async (req, res) => {
   try {
     const { email, hoaId } = req.body;
-
-     const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
-
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
     if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
       return res.status(500).json({ message: "AWS configuration is missing" });
     }
-
     if (!email || !hoaId) {
       return res.status(400).json({ message: "Email and HOA ID are required" });
     }
-
     const user = await User.findOne({ email, hoaid: hoaId });
-
     if (!user) {
       return res.status(404).json({ message: "User not found for this email and HOA" });
     }
-
     const resetToken = jwt.sign(
       {
         userId: user._id,
@@ -535,35 +531,28 @@ const forgotPasswordSES = async (req, res) => {
 
 
     let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
-   // if (toEmail) {
+    // if (toEmail) {
     //    HPS_EMAIL = toEmail;
-   // }
+    // }
 
 
-
-    //sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
     const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
     const resetLink = `${serverUrl}/reset-password/${resetToken}`;
 
-    const msg = {
-      to: user.email,
-      from: HPS_EMAIL, //process.env.SENDGRID_FROM_EMAIL || "verify@hoaparkingsolutions.com",
-      subject: "Password Reset Request",
-      html: `
-        <h2>Password Reset Request</h2>
-        <p>Hi ${user.first_name},</p>
-        <p>We received a request to reset your password. Click the link below to create a new password:</p>
-        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
-          Reset Password
-        </a>
-        <p>This link will expire in 1 hour.</p>
-        <p>If you didn't request a password reset, please ignore this email.</p>
-        <p>Best regards,<br/>HOA Parking Solutions</p>
-      `
-    };
 
-     const emailContent = `
+    const SES_CONFIG = {
+      region: "us-east-1", // Replace with your AWS region (e.g., 'us-west-2')
+      credentials: {
+        accessKeyId: AWS_ACCESS_KEY_ID, // Replace with your access key ID
+        secretAccessKey: AWS_SECRET_ACCESS_KEY // Replace with your secret access key
+      }
+    };
+    const sesClient = new SESClient(SES_CONFIG);
+
+
+
+    const emailContent = `
       <h2>Password Reset Request</h2>
         <p>Hi ${user.first_name},</p>
         <p>We received a request to reset your password. Click the link below to create a new password:</p>
@@ -577,16 +566,9 @@ const forgotPasswordSES = async (req, res) => {
 
 
 
-    // await sgMail.send(msg);
-
-    // res.status(200).json({
-    //   message: "Password reset email sent successfully"
-    // });
-
-
-     const params = {
+    const params = {
       Source: HPS_EMAIL,
-      //"jim.velasco@hoaparkingsolutions.com", // Verified sender email address
+      //"no.reply@hoaparkingsolutions.com", // Verified sender email address
       // sender@example.com", // Verified sender email address
       Destination: {
         // ToAddresses: ["recipient@example.com"], // Verified recipient email address(es)
@@ -601,7 +583,7 @@ const forgotPasswordSES = async (req, res) => {
         Body: {
           Text: {
             Charset: "UTF-8",
-            Data:emailContent,
+            Data: emailContent,
           },
           Html: {
             Charset: "UTF-8",
@@ -611,18 +593,11 @@ const forgotPasswordSES = async (req, res) => {
       },
     };
 
-     const SES_CONFIG = {
-      region: "us-east-1", // Replace with your AWS region (e.g., 'us-west-2')
-      credentials: {
-        accessKeyId: AWS_ACCESS_KEY_ID, // Replace with your access key ID
-        secretAccessKey: AWS_SECRET_ACCESS_KEY // Replace with your secret access key
-      }
-    };
-    const sesClient = new SESClient(SES_CONFIG);
 
 
 
- const sendEmail = async () => {
+
+    const sendEmail = async () => {
       try {
         const command = new SendEmailCommand(params);
         const data = await sesClient.send(command);
@@ -639,13 +614,6 @@ const forgotPasswordSES = async (req, res) => {
       message: "Email sent successfully"
     });
 
-
-
-
-
-
-
-
   } catch (error) {
     console.error("Forgot password error:", error);
     res.status(500).json({ message: error.message });
@@ -658,32 +626,27 @@ const sendEmailFromHoaSES = async (req, res) => {
   try {
     const { hoaId, subject, returnEmail, message, toEmail } = req.body;
 
-
     const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
-
     if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
       return res.status(500).json({ message: "AWS configuration is missing" });
     }
-
-
-
-
     if (!subject || !returnEmail || !message) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(returnEmail)) {
       return res.status(400).json({ message: "Invalid email address" });
     }
-
     if (message.length > 5000) {
       return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
     }
 
-    let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
+   // console.log('toemail', toEmail)
+
+    let HPS_EMAILx = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
+    let HPS_EMAIL = 'web.master@hoaparkingsolutions.com';
     if (toEmail) {
-      //  HPS_EMAIL = toEmail;
+        HPS_EMAIL = toEmail;
     }
 
     // Set the AWS Region (e.g., "us-east-1")
@@ -715,7 +678,7 @@ const sendEmailFromHoaSES = async (req, res) => {
     const emailContent = `
       <h2>New Email from HOA Portal</h2>
       <p><strong>Subject:</strong> ${subj}</p>
-      <p><strong>To Email:</strong> ${HPS_EMAIL}</p>
+      <p><strong>To Email:</strong> ${toEmail}</p>
       <p><strong>From (Return Email):</strong> ${returnEmail}</p>
       <p><strong>HOA ID:</strong> ${hoid}</p>
       <hr>
@@ -726,7 +689,7 @@ const sendEmailFromHoaSES = async (req, res) => {
     const emailContentText = `
       <b>New Email from HOA Portal</b>
       <p><strong>Subject:</strong> ${subj}</p>
-      <p><strong>To Email:</strong> ${HPS_EMAIL}</p>
+      <p><strong>To Email:</strong> ${toEmail}</p>
       <p><strong>From (Return Email):</strong> ${returnEmail}</p>
       <p><strong>HOA ID:</strong> ${hoid}</p>
       <hr>
@@ -741,7 +704,7 @@ const sendEmailFromHoaSES = async (req, res) => {
       Destination: {
         // ToAddresses: ["recipient@example.com"], // Verified recipient email address(es)
         // this will be contact@hoaparkingsolutions.com or something like that depending on where the email is triggered
-        ToAddresses: ["web.master@hoaparkingsolutions.com"], // Verified recipient email address(es)
+        ToAddresses: [toEmail], // Verified recipient email address(es)
 
       },
       Message: {
@@ -752,7 +715,7 @@ const sendEmailFromHoaSES = async (req, res) => {
         Body: {
           Text: {
             Charset: "UTF-8",
-            Data:emailContentText,
+            Data: emailContentText,
           },
           Html: {
             Charset: "UTF-8",
@@ -780,7 +743,7 @@ const sendEmailFromHoaSES = async (req, res) => {
       message: "Email sent successfully"
     });
 
- } catch (error) {
+  } catch (error) {
     console.error("Error sending email:", error);
     res.status(500).json({ message: error.message || "Error sending email" });
   }
@@ -796,45 +759,45 @@ export {
 
 
 
-    // const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+// const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 
 
-    // if (!SENDGRID_API_KEY) {
-    //   return res.status(500).json({ message: "Email service not configured" });
-    // }
+// if (!SENDGRID_API_KEY) {
+//   return res.status(500).json({ message: "Email service not configured" });
+// }
 
-    // let subj = subject;
-    // let hoid = "N/A";
-    // if (hoaId) {
-    //   subj = `[${hoaId}] ${subject}`;
-    //   hoid = hoaId;
-    // }
+// let subj = subject;
+// let hoid = "N/A";
+// if (hoaId) {
+//   subj = `[${hoaId}] ${subject}`;
+//   hoid = hoaId;
+// }
 
-    // sgMail.setApiKey(SENDGRID_API_KEY);
+// sgMail.setApiKey(SENDGRID_API_KEY);
 
 
-    // const emailContent = `
-    //   <h2>New Email from HOA Portal</h2>
-    //   <p><strong>Subject:</strong> ${subj}</p>
-    //   <p><strong>To Email:</strong> ${HPS_EMAIL}</p>
-    //   <p><strong>From (Return Email):</strong> ${returnEmail}</p>
-    //   <p><strong>HOA ID:</strong> ${hoid}</p>
-    //   <hr>
-    //   <h3>Message:</h3>
-    //   <p>${message.replace(/\n/g, '<br>')}</p>
-    // `;
-    // const msg = {
-    //   to: HPS_EMAIL,
-    //   from:  "noreply@hoaparkingsolutions.com",
-    //   replyTo: returnEmail,
-    //   subject: `${subj}`,
-    //   html: emailContent
-    // };
-    // await sgMail.send(msg);
+// const emailContent = `
+//   <h2>New Email from HOA Portal</h2>
+//   <p><strong>Subject:</strong> ${subj}</p>
+//   <p><strong>To Email:</strong> ${HPS_EMAIL}</p>
+//   <p><strong>From (Return Email):</strong> ${returnEmail}</p>
+//   <p><strong>HOA ID:</strong> ${hoid}</p>
+//   <hr>
+//   <h3>Message:</h3>
+//   <p>${message.replace(/\n/g, '<br>')}</p>
+// `;
+// const msg = {
+//   to: HPS_EMAIL,
+//   from:  "noreply@hoaparkingsolutions.com",
+//   replyTo: returnEmail,
+//   subject: `${subj}`,
+//   html: emailContent
+// };
+// await sgMail.send(msg);
 
-    // res.json({
-    //   message: "Email sent successfully"
-    // });
- 
+// res.json({
+//   message: "Email sent successfully"
+// });
+
 
 

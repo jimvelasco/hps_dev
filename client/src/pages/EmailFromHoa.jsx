@@ -14,7 +14,7 @@ export default function EmailFromHoa() {
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const location = useLocation();
   const email = location.state?.email;
- // console.log('EmailFromHoa email is:', email);
+  //console.log('EmailFromHoa email is:', email);
 
   const [sending, setSending] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null });

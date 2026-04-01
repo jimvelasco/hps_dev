@@ -5,12 +5,22 @@ export default function About() {
   const navigate = useNavigate();
   const { hoaId } = useParams();
 
+  //  const qry = `/${hoaId}/email-from-hoa`;
+  //   // console.log('handleEmailClick called with hoa:', hoa.contact_information[2].email)
+
+  //   navigate(qry, {
+  //     state: { email:email }
+  //   });
+
+
   const handleEmailClick = () => {
+     let qry = `/email-from-hoa`;
     if (hoaId) {
-      navigate(`/${hoaId}/email-from-hoa`);
-    } else {
-      navigate("/email-from-hoa");
+      qry = `/${hoaId}/email-from-hoa`
     }
+     navigate(qry, {
+      state: { email:"contact@hoaparkingsolutions.com" }
+    });
   };
   return (
     <div style={{
