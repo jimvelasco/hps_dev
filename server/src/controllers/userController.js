@@ -534,7 +534,7 @@ const forgotPasswordSES = async (req, res) => {
     );
 
 
-    let HPS_EMAIL = process.env.HPS_EMAIL || "jim.velasco@hoaparkingsolutions.com";
+    let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
    // if (toEmail) {
     //    HPS_EMAIL = toEmail;
    // }
@@ -618,7 +618,6 @@ const forgotPasswordSES = async (req, res) => {
         secretAccessKey: AWS_SECRET_ACCESS_KEY // Replace with your secret access key
       }
     };
-
     const sesClient = new SESClient(SES_CONFIG);
 
 
@@ -682,19 +681,10 @@ const sendEmailFromHoaSES = async (req, res) => {
       return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
     }
 
-    let HPS_EMAIL = process.env.HPS_EMAIL || "jim.velasco@hoaparkingsolutions.com";
+    let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
     if (toEmail) {
-        HPS_EMAIL = toEmail;
+      //  HPS_EMAIL = toEmail;
     }
-
-    // console.log('sendEmailFromHoa toEmail:', toEmail);
-    // console.log('sendEmailFromHoa HOA_EMAIL:', HOA_EMAIL);
-
-    // yampa view email yampahoa@gmail.com
-
-
-
-    // Import the SES client and the SendEmailCommand
 
     // Set the AWS Region (e.g., "us-east-1")
     const REGION = "us-east-1";
@@ -703,7 +693,7 @@ const sendEmailFromHoaSES = async (req, res) => {
     //const sesClient = new SESClient({ region: REGION });
 
     const SES_CONFIG = {
-      region: "us-east-1", // Replace with your AWS region (e.g., 'us-west-2')
+      region: REGION, // Replace with your AWS region (e.g., 'us-west-2')
       credentials: {
         accessKeyId: AWS_ACCESS_KEY_ID, // Replace with your access key ID
         secretAccessKey: AWS_SECRET_ACCESS_KEY // Replace with your secret access key
@@ -746,10 +736,11 @@ const sendEmailFromHoaSES = async (req, res) => {
 
     const params = {
       Source: HPS_EMAIL,
-      //"jim.velasco@hoaparkingsolutions.com", // Verified sender email address
+      //"no.reply@hoaparkingsolutions.com", // Verified sender email address
       // sender@example.com", // Verified sender email address
       Destination: {
         // ToAddresses: ["recipient@example.com"], // Verified recipient email address(es)
+        // this will be contact@hoaparkingsolutions.com or something like that depending on where the email is triggered
         ToAddresses: ["web.master@hoaparkingsolutions.com"], // Verified recipient email address(es)
 
       },
