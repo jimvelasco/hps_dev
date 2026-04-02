@@ -53,16 +53,24 @@ export default function HoaInformation({ hoa }) {
         {hoa?.contact_information && hoa.contact_information.length > 0 && (
           <div className="hoainformation">
             {hoa.contact_information.map((contact, index) => (
-              <div key={index}>
+              <div style={{marginTop:"15px"}}>
                 <strong>{contact.phone_description || "Contact"}:</strong><br />
                 {contact.phone_number && <span>Phone: {contact.phone_number}<br /></span>}
-                {contact.email && <span>Email: {contact.email}</span>}
-                {contact.contact_id == 'hoa_primary' && (
+                {/* {contact.email && <span>Email: {contact.email}</span>} */}
+                 {contact.email && (
+                  <div>
+                   <div style={{marginTop:"2px",textAlign:"center"}}>Email:</div>
+                  <div className="button-grid" style={{margin:"5px 0"}}>
+                   
+                  <button className="btns btn-primary2" onClick={() => { handleEmailClick(contact.email) }}>{contact.email}</button>
+                  </div>
+                  </div>)}
+                {/* {contact.contact_id == 'hoa_primary' && (
                   <div className="button-grid" style={{margin:"5px 0"}}>
                     <button className="btns btn-primary2" onClick={() => { handleEmailClick(contact.email) }}>Email HOA</button>
                   </div>
 
-                )}
+                )} */}
 
               </div>
             ))}

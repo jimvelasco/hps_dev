@@ -184,7 +184,7 @@ export default function ContactInformation() {
       }));
 
       if (contactInfo.length === 0) {
-        const emptyRows = Array.from({ length: 10 }, (_, i) => ({
+        const emptyRows = Array.from({ length: 4 }, (_, i) => ({
           _id: `temp-${i}`,
           contact_id: "",
           phone_number: "",
