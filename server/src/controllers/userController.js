@@ -530,7 +530,8 @@ const forgotPasswordSES = async (req, res) => {
     );
 
 
-    let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
+   // let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
+     let HPS_EMAIL = 'admin@hoaparkingsolutions.com';
     // if (toEmail) {
     //    HPS_EMAIL = toEmail;
     // }

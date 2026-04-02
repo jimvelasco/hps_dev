@@ -29,7 +29,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             textDecoration: "underline",
             cursor: "pointer"
           }} onClick={() => handleSort("owner")}>
-            Owner Name
+            Name
             {sortColumn === "owner" && (
               <FontAwesomeIcon
                 icon={faArrowUp}

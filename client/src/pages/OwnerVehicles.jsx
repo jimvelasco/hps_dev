@@ -421,7 +421,7 @@ export default function OwnerVehicles() {
               <div className="button-grid">
                 <button className="btnxsp "
                   onClick={() => handleSort("owner")}>
-                  Owner
+                  Name
                 </button>
                 <button className="btnxsp "
                   onClick={() => handleSort("unit")}>
