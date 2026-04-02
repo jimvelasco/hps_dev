@@ -60,9 +60,9 @@ export default function HoaInformation({ hoa }) {
                  {contact.email && (
                   <div>
                    {/* <div style={{marginTop:"2px",textAlign:"center"}}>Email:</div> */}
-                  <div className="button-grid" style={{margin:"3px"}}>
+                  <div className="button-gridx" style={{margin:"3px"}}>
                    
-                  <button className="btns btn-primary2" onClick={() => { handleEmailClick(contact.email) }}>{contact.email}</button>
+                  <button className="btns_nm btn-primary2" onClick={() => { handleEmailClick(contact.email) }}>{contact.email}</button>
                   </div>
                   </div>)}
                 {/* {contact.contact_id == 'hoa_primary' && (

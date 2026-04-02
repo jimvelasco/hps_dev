@@ -739,12 +739,12 @@ section.standardsection-wide {
 
 section.standardsectiondashboard {
   background-color: white;
-  padding: 20px;
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
   /* text-align:center; */
-  width:260px;
+  width:280px;
   margin-bottom:20px;
 
 }
@@ -1564,6 +1564,30 @@ input.standardinput:disabled {
   background-color: #ffffff;
   color: #222;
   font-size: 1rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.05s ease;
+}
+
+
+.btns_nm {
+  width: 100%;
+  min-height: 32px;
+  padding: 0.25rem 0.25rem;
+ 
+  border-radius: 4px;
+  border: 1px solid #ccc;
+
+  background-color: #ffffff;
+  color: #222;
+  font-size: .8rem;
   font-weight: 500;
 
   cursor: pointer;
