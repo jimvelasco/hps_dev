@@ -5,7 +5,146 @@ import { useHoa } from "../../context/HoaContext";
 import DashboardNavbar from "../../components/DashboardNavbar";
 import ModalAlert from "../../components/ModalAlert";
 import { getAWSResource } from "../../utils/awsHelper";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
+const SortableRow = ({
+  row,
+  idx,
+  editCell,
+  tempValue,
+  contactids,
+  handleCellClick,
+  handleSave,
+  handleKeyDown,
+  handleDeleteRow,
+  setTempValue
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: row._id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    backgroundColor: isDragging ? "#f0f0f0" : "inherit",
+    zIndex: isDragging ? 1 : "auto",
+    position: "relative"
+  };
+
+  return (
+    <tr ref={setNodeRef} style={style} {...attributes}>
+      <td className="drag-handle" {...listeners} style={{ cursor: 'grab', textAlign: 'center' }}>
+        ☰
+      </td>
+      <td onClick={() => handleCellClick(idx, "contact_id")}>
+        {editCell?.rowIndex === idx && editCell?.field === "contact_id" ? (
+          <select
+            className="editable-table-input"
+            autoFocus
+            value={tempValue}
+            onChange={(e) => setTempValue(e.target.value)}
+            onBlur={() => handleSave(idx, "contact_id")}
+            onKeyDown={(e) => handleKeyDown(e, idx, "contact_id")}
+          >
+            <option value="">Select ID...</option>
+            {contactids.map((id) => (
+              <option key={id} value={id}>
+                {id}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <span className={`editable-table-cell-text ${row.contact_id ? 'filled' : 'empty'}`}>
+            {row.contact_id || "(click to edit)"}
+          </span>
+        )}
+      </td>
+      <td onClick={() => handleCellClick(idx, "phone_number")}>
+        {editCell?.rowIndex === idx && editCell?.field === "phone_number" ? (
+          <input
+            type="text"
+            className="editable-table-input"
+            placeholder="e.g., (555) 123-4567"
+            autoFocus
+            value={tempValue}
+            onChange={(e) => setTempValue(e.target.value)}
+            onBlur={() => handleSave(idx, "phone_number")}
+            onKeyDown={(e) => handleKeyDown(e, idx, "phone_number")}
+          />
+        ) : (
+          <span className={`editable-table-cell-text ${row.phone_number ? 'filled' : 'empty'}`}>
+            {row.phone_number || "(click to edit)"}
+          </span>
+        )}
+      </td>
+      <td onClick={() => handleCellClick(idx, "phone_description")}>
+        {editCell?.rowIndex === idx && editCell?.field === "phone_description" ? (
+          <input
+            type="text"
+            className="editable-table-input"
+            placeholder="e.g., Office, Emergency"
+            autoFocus
+            value={tempValue}
+            onChange={(e) => setTempValue(e.target.value)}
+            onBlur={() => handleSave(idx, "phone_description")}
+            onKeyDown={(e) => handleKeyDown(e, idx, "phone_description")}
+          />
+        ) : (
+          <span className={`editable-table-cell-text ${row.phone_description ? 'filled' : 'empty'}`}>
+            {row.phone_description || "(optional)"}
+          </span>
+        )}
+      </td>
+      <td onClick={() => handleCellClick(idx, "email")}>
+        {editCell?.rowIndex === idx && editCell?.field === "email" ? (
+          <input
+            type="email"
+            className="editable-table-input"
+            placeholder="e.g., info@hoa.com"
+            autoFocus
+            value={tempValue}
+            onChange={(e) => setTempValue(e.target.value)}
+            onBlur={() => handleSave(idx, "email")}
+            onKeyDown={(e) => handleKeyDown(e, idx, "email")}
+          />
+        ) : (
+          <span className={`editable-table-cell-text ${row.email ? 'filled' : 'empty'}`}>
+            {row.email || "(click to edit)"}
+          </span>
+        )}
+      </td>
+      <td>
+        <button
+          className="editable-table-delete-button"
+          onClick={() => handleDeleteRow(idx)}
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
+};
 
 export default function ContactInformation() {
   const { hoaId } = useParams();
@@ -20,6 +159,12 @@ export default function ContactInformation() {
   const [validationError, setValidationError] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     fetchContactInformation();
@@ -30,7 +175,13 @@ export default function ContactInformation() {
       setLoading(true);
       const response = await axios.get(`/hoas/${hoaId}`);
       const hoaData = response.data;
-      const contactInfo = hoaData.contact_information || [];
+      let contactInfo = hoaData.contact_information || [];
+
+      // Ensure every contact has an _id for dnd-kit
+      contactInfo = contactInfo.map((c, i) => ({
+        ...c,
+        _id: c._id || `contact-${Date.now()}-${i}`
+      }));
 
       if (contactInfo.length === 0) {
         const emptyRows = Array.from({ length: 10 }, (_, i) => ({
@@ -50,6 +201,18 @@ export default function ContactInformation() {
       console.error("Error fetching contact information:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setContacts((items) => {
+        const oldIndex = items.findIndex((item) => item._id === active.id);
+        const newIndex = items.findIndex((item) => item._id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
     }
   };
 
@@ -108,6 +271,7 @@ export default function ContactInformation() {
     );
 
     setSaving(true);
+    console.log('filledContacts:', filledContacts);
     try {
       await axios.put(`/hoas/${hoaId}`, {
         contact_information: filledContacts
@@ -200,108 +364,46 @@ let backgroundImage = '';
         )}
 
         <div className="editable-table-wrapper">
-          <table className="editable-table">
-            <thead>
-              <tr>
-                <th>Contact ID</th>
-                <th>Phone Number</th>
-                <th>Phone Description</th>
-                <th>Email</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {contacts.map((row, idx) => (
-                <tr key={idx}>
-                  <td onClick={() => handleCellClick(idx, "contact_id")}>
-                    {editCell?.rowIndex === idx && editCell?.field === "contact_id" ? (
-                      <select
-                        className="editable-table-input"
-                        autoFocus
-                        value={tempValue}
-                        onChange={(e) => setTempValue(e.target.value)}
-                        onBlur={() => handleSave(idx, "contact_id")}
-                        onKeyDown={(e) => handleKeyDown(e, idx, "contact_id")}
-                      >
-                        <option value="">Select ID...</option>
-                        {contactids.map((id) => (
-                          <option key={id} value={id}>
-                            {id}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <span className={`editable-table-cell-text ${row.contact_id ? 'filled' : 'empty'}`}>
-                        {row.contact_id || "(click to edit)"}
-                      </span>
-                    )}
-                  </td>
-                  <td onClick={() => handleCellClick(idx, "phone_number")}>
-                    {editCell?.rowIndex === idx && editCell?.field === "phone_number" ? (
-                      <input
-                        type="text"
-                        className="editable-table-input"
-                        placeholder="e.g., (555) 123-4567"
-                        autoFocus
-                        value={tempValue}
-                        onChange={(e) => setTempValue(e.target.value)}
-                        onBlur={() => handleSave(idx, "phone_number")}
-                        onKeyDown={(e) => handleKeyDown(e, idx, "phone_number")}
-                      />
-                    ) : (
-                      <span className={`editable-table-cell-text ${row.phone_number ? 'filled' : 'empty'}`}>
-                        {row.phone_number || "(click to edit)"}
-                      </span>
-                    )}
-                  </td>
-                  <td onClick={() => handleCellClick(idx, "phone_description")}>
-                    {editCell?.rowIndex === idx && editCell?.field === "phone_description" ? (
-                      <input
-                        type="text"
-                        className="editable-table-input"
-                        placeholder="e.g., Office, Emergency"
-                        autoFocus
-                        value={tempValue}
-                        onChange={(e) => setTempValue(e.target.value)}
-                        onBlur={() => handleSave(idx, "phone_description")}
-                        onKeyDown={(e) => handleKeyDown(e, idx, "phone_description")}
-                      />
-                    ) : (
-                      <span className={`editable-table-cell-text ${row.phone_description ? 'filled' : 'empty'}`}>
-                        {row.phone_description || "(optional)"}
-                      </span>
-                    )}
-                  </td>
-                  <td onClick={() => handleCellClick(idx, "email")}>
-                    {editCell?.rowIndex === idx && editCell?.field === "email" ? (
-                      <input
-                        type="email"
-                        className="editable-table-input"
-                        placeholder="e.g., info@hoa.com"
-                        autoFocus
-                        value={tempValue}
-                        onChange={(e) => setTempValue(e.target.value)}
-                        onBlur={() => handleSave(idx, "email")}
-                        onKeyDown={(e) => handleKeyDown(e, idx, "email")}
-                      />
-                    ) : (
-                      <span className={`editable-table-cell-text ${row.email ? 'filled' : 'empty'}`}>
-                        {row.email || "(click to edit)"}
-                      </span>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className="editable-table-delete-button"
-                      onClick={() => handleDeleteRow(idx)}
-                    >
-                      Delete
-                    </button>
-                  </td>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <table className="editable-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '40px' }}>Order</th>
+                  <th>Contact ID</th>
+                  <th>Phone Number</th>
+                  <th>Phone Description</th>
+                  <th>Email</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <SortableContext
+                  items={contacts.map(c => c._id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {contacts.map((row, idx) => (
+                    <SortableRow
+                      key={row._id}
+                      row={row}
+                      idx={idx}
+                      editCell={editCell}
+                      tempValue={tempValue}
+                      contactids={contactids}
+                      handleCellClick={handleCellClick}
+                      handleSave={handleSave}
+                      handleKeyDown={handleKeyDown}
+                      handleDeleteRow={handleDeleteRow}
+                      setTempValue={setTempValue}
+                    />
+                  ))}
+                </SortableContext>
+              </tbody>
+            </table>
+          </DndContext>
         </div>
 
         <div className="button-grid">
@@ -324,6 +426,7 @@ let backgroundImage = '';
         <div className="editable-table-instructions">
           <h3>Instructions:</h3>
           <ul>
+            <li>Drag and drop rows using the ☰ icon to reorder contacts</li>
             <li>Click any cell to edit the value</li>
             <li>Email must be in valid format (e.g., info@example.com)</li>
             <li>Press Enter to save or Escape to cancel</li>
