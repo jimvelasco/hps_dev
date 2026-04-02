@@ -37,10 +37,10 @@ export default function HoaInformation({ hoa }) {
   // };
   return (
     <>
-    <div className="standardtitlebar2" style={{width:"300px",opacity: "1.0"}}>
+    {/* <div className="standardtitlebar2" style={{width:"300px",opacity: "1.0"}}>
           <span style={{color:"#1976d2"}}><b>Home Owners Assocation</b></span>
           
-        </div>
+        </div> */}
     <div style={{
       display: 'flex',
       flexWrap: 'wrap',

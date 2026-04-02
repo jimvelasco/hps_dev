@@ -218,12 +218,17 @@ export default function RenterVehicles() {
       <DashboardNavbar title="Renter Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
       <div className="page-content">
 
-          <div className="standardtitlebar">
+          {/* <div className="standardtitlebar">
               <h2>HOA Parking Solutions</h2>
-            </div>
+               <label className="input-label">
+              Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
+            </label>
+            </div> */}
 
         <div className="standardtitlebar">
+          
           <div className="tableview">
+             <h2 style={{marginBottom:"10px"}}>HOA Parking Solutions</h2>
             <label className="input-label">
               Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
             </label><br />
@@ -232,6 +237,8 @@ export default function RenterVehicles() {
             </button>
           </div>
           <div className="phoneview">
+             <h2>HOA Parking</h2>
+              <h2 style={{marginBottom:"10px"}}>Solutions</h2>
             <label className="input-label">
               Unit: {unitNumber}
             </label>
@@ -256,9 +263,9 @@ export default function RenterVehicles() {
           </div>
         )}
 
-        <div className="standardtitlebar2">
+        {/* <div className="standardtitlebar2">
           <span><b>Vehicle List</b></span>
-        </div>
+        </div> */}
 
         {vehiclesLoading ? (
           <div className="ajaxloading">
