@@ -207,7 +207,7 @@ export default function OwnerVehicles() {
     const vid = vehicle._id;
     const uid = vehicle.unitnumber;
     //  console.log('ov handle details click vehicle:', vehicle.carownertype);
-    if (vehicle.carownertype === "renter") {
+    if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
       setModal({
         isOpen: true,
         type: "alert",

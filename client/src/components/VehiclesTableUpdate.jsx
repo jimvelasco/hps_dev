@@ -43,7 +43,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             cursor: "pointer"
           }} onClick={() => handleSort("unit")}>
             Unit
-            {sortColumn === "owner" && (
+            {sortColumn === "unit" && (
               <FontAwesomeIcon
                 icon={faArrowUp}
                 style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
