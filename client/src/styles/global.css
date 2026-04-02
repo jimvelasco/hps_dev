@@ -272,7 +272,7 @@ button.standardbutton:hover {
 .standardsubmitbutton {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #1976d2;
+  background-color: #2563EB;
   color: white;
   border: none;
   border-radius: 4px;
@@ -303,7 +303,7 @@ button.standardbutton:hover {
 button.standardcancelbutton {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: gray;
+  background-color: #DC2626;
   color: white;
   border: none;
   border-radius: 4px;
@@ -349,7 +349,7 @@ button.standarddeletebutton:hover:disabled {
 .standardsubmitbutton180 {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #1976d2;
+  background-color: #2563EB;
   color: white;
   border: none;
   border-radius: 4px;
@@ -380,7 +380,7 @@ button.standarddeletebutton:hover:disabled {
 button.standardcancelbutton180 {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: gray;
+  background-color: #6B7280;
   color: white;
   border: none;
   border-radius: 4px;
