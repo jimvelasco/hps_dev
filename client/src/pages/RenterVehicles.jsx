@@ -229,7 +229,7 @@ export default function RenterVehicles() {
           
           <div className="tableview">
              <h2 style={{marginBottom:"10px"}}>HOA Parking Solutions</h2>
-            <label className="input-label">
+            <label className="input-label2">
               Unit: {unitNumber} {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}
             </label><br />
             <button className="standardsubmitbutton" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
@@ -239,15 +239,15 @@ export default function RenterVehicles() {
           <div className="phoneview">
              <h2>HOA Parking</h2>
               <h2 style={{marginBottom:"10px"}}>Solutions</h2>
-            <label className="input-label">
+            <label className="input-label2">
               Unit: {unitNumber}
             </label>
             <br />
-            <label className="input-label">
+            <label className="input-label2">
               {ownerOfUnit.first_name} {ownerOfUnit.last_name}
             </label>
             <br />
-            <label className="input-label">
+            <label className="input-label2">
               {ownerOfUnit.phone}
             </label>
             <br />
