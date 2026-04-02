@@ -59,7 +59,7 @@ export default function HoaInformation({ hoa }) {
                 {contact.email && <span>Email: {contact.email}</span>}
                 {contact.contact_id == 'hoa_primary' && (
                   <div className="button-grid" style={{margin:"5px 0"}}>
-                    <button className="btns btn-primary" onClick={() => { handleEmailClick(contact.email) }}>Email HOA</button>
+                    <button className="btns btn-primary2" onClick={() => { handleEmailClick(contact.email) }}>Email HOA</button>
                   </div>
 
                 )}

@@ -1671,6 +1671,13 @@ input.standardinput:disabled {
   border-color: gray;
 }
 
+.btn-primary2 {
+  background-color: #576676;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+
 .btn-primary {
   background-color: #1976d2;
   color: #ffffff;
