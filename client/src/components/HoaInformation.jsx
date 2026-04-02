@@ -59,8 +59,8 @@ export default function HoaInformation({ hoa }) {
                 {/* {contact.email && <span>Email: {contact.email}</span>} */}
                  {contact.email && (
                   <div>
-                   <div style={{marginTop:"2px",textAlign:"center"}}>Email:</div>
-                  <div className="button-grid" style={{margin:"5px 0"}}>
+                   {/* <div style={{marginTop:"2px",textAlign:"center"}}>Email:</div> */}
+                  <div className="button-grid" style={{margin:"3px"}}>
                    
                   <button className="btns btn-primary2" onClick={() => { handleEmailClick(contact.email) }}>{contact.email}</button>
                   </div>

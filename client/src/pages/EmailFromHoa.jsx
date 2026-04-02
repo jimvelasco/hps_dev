@@ -42,13 +42,6 @@ export default function EmailFromHoa() {
   };
 
 
-  const xhandleBackClick = () => {
-    if (hoaId) {
-      navigate(`/${hoaId}`);
-    } else {
-      navigate("/")
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
