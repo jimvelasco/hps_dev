@@ -14,7 +14,7 @@ export default function DashboardNavbar({ title, title2,buttons }) {
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div className="button-grid">
             <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
-             <h3 style={{ color: "white", marginBottom: "10px" }}>{title2}</h3 >
+             <h4 style={{ color: "white", marginBottom: "10px" }}>{title2}</h4 >
             <ParkingSpacesOverviewNB />
           </div>
           <div className="button-grid" style={{ marginBottom: "5px"}}>
@@ -35,7 +35,7 @@ export default function DashboardNavbar({ title, title2,buttons }) {
             <h2 style={{ color: "white", marginBottom: "0px" }}>{title}</h2>
           </div>
            <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
-            <h2 style={{ color: "white", marginBottom: "0px" }}>{title2}</h2>
+            <h4 style={{ color: "white", marginBottom: "0px" }}>{title2}</h4>
           </div>
           <div style={{marginBottom: "10px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
           <ParkingSpacesOverviewNB />

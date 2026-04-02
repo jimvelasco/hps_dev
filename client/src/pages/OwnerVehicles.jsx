@@ -337,7 +337,8 @@ export default function OwnerVehicles() {
   let ttitle2 = "";
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
-    ttitle2 = hoa.name + " -  " + role;
+   // ttitle2 = hoa.name + " -  " + role;
+     ttitle2 = hoa.name;
     // console.log("VEHICLES LENGTH IS ",vehicles.length );
   }
   return (
