@@ -37,10 +37,16 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
       padding: "20px"
     }}>
       <div className="xtableview">
-        <div className="standardtitlebar">
+
+          <div className="standardtitlebar">
+          <h2  onClick={() => navigate("/")}>Welcome to {hoa && hoa.name}</h2>
+        </div>
+        {/* <div className="standardtitlebar">
           <h2 onClick={() => navigate("/")}>HOA Parking Solutions</h2>
           <h3 style={{marginTop: "5px"}}>{hoa && hoa.name}</h3>
-        </div>
+        </div> */}
+
+
       </div>
       {/* <div className="phoneview">
         <div className="standardtitlebar">
