@@ -1663,7 +1663,55 @@ input.standardinput:disabled {
   }
 }
 
+/*
+Primary: #2563EB
+Background: #2563EB
+Text: #FFFFFF
+Hover: #1D4ED8
+
+Secondary: #6B7280 (outline)
+Background: #6B7280
+Text: #FFFFFF
+Hover: #4B5563
+
+Border: #6B7280
+Text: #374151
+Background: transparent
+
+Cancel: text link or #DC2626 if destructive
+Background: #DC2626
+Text: #FFFFFF
+Hover: #B91C1C
+*/
+
+
+.btn-primary{
+  /* background-color: #2563EB; */
+  background-color: #2563EB;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.btn-primary2tt {
+  /* background-color: #2563EB; */
+  background-color: transparent;
+  color: #374151;
+  border-color: #6B7280;
+}
+
+.btn-primary2 {
+  background-color: #6B7280;
+  color: #ffffff;
+  border-color: #6B7280;
+}
+
 .btn-default {
+    background-color: #DC2626;
+  color: white;
+  border-color: #DC2626;
+}
+
+.btn-defaultzz {
   /* background-color: #ccc; */
    /* background-color: #1976d2; */
     background-color: gray;
@@ -1671,14 +1719,14 @@ input.standardinput:disabled {
   border-color: gray;
 }
 
-.btn-primary2 {
+.btn-primary2x {
   background-color: #576676;
   color: #ffffff;
   border-color: #2563eb;
 }
 
 
-.btn-primary {
+.btn-primarycc {
   background-color: #1976d2;
   color: #ffffff;
   border-color: #2563eb;
