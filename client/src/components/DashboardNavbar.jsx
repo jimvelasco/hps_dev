@@ -13,8 +13,9 @@ export default function DashboardNavbar({ title, title2,buttons }) {
       <div className="tableview">
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div className="button-grid">
-            <h2 style={{ color: "white", marginBottom: "10px" }}>{title}</h2>
-             <h4 style={{ color: "white", marginBottom: "10px" }}>{title2}</h4 >
+            <div style={{ color: "#bbb", marginBottom: "10px" }}><b>HOA Parking Solutions</b></div>
+            <div style={{ color: "white", marginBottom: "10px" }}>{title}</div>
+             <div style={{ color: "white", marginBottom: "10px" }}>{title2}</div >
             <ParkingSpacesOverviewNB />
           </div>
           <div className="button-grid" style={{ marginBottom: "5px"}}>
