@@ -147,7 +147,7 @@ export default function OnsiteVehicles() {
       }}>
 
         {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
-         {vehicle.plate} {vehicle.plate_state.substring(0,2)}
+         {vehicle.plate} ({vehicle.plate_state.substring(0,2)})
       </div>
       {/* <div className="grid-item-bold">Name</div>
       <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
@@ -282,7 +282,7 @@ export default function OnsiteVehicles() {
 
         </div>
 
-        {!showTable && (
+        {/* {!showTable && (
           <div className="standardtitlebar">
           
             <div className="button-grid">
@@ -304,7 +304,7 @@ export default function OnsiteVehicles() {
               </button>
             </div>
           </div>
-        )}
+        )} */}
 
 
 
