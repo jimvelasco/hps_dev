@@ -23,7 +23,7 @@ export default function UserReports() {
 
   const navButtons = [
     {
-      label: "Back",
+      label: "Dashboard",
       onClick: handleBackClick,
       which: "goback"
     }

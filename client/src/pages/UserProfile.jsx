@@ -202,7 +202,7 @@ export default function UserProfile() {
 
   const navButtons = [
     {
-      label: "Back",
+      label: "Dashboard",
       onClick: handleBackToDashboard,
       which: "goback"
     }

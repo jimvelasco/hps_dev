@@ -328,7 +328,7 @@ export default function OwnerVehicles() {
 
   const navButtons = [
     {
-      label: "Back",
+      label: "Dashboard",
       onClick: handleBackToDashboard,
       which: "goback"
     }

@@ -26,6 +26,7 @@ export default function OwnersDashboard() {
     tlink = "ownervehicles";
   }
 
+
   useEffect(() => {
     if (role === "admin" && hoa) {
       checkStripeStatus();
@@ -102,7 +103,7 @@ export default function OwnersDashboard() {
   };
 
   const handleVehiclesClick = () => {
-  //  console.log('handleVehiclesClick role is:',role);
+   // console.log('handleVehiclesClick role is:',role);
     navigate(`/${hoaId}/${tlink}/${role}`);
   };
 

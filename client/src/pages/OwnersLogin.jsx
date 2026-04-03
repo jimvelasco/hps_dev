@@ -71,10 +71,23 @@ export default function OwnersLogin() {
       });
 
       if (response.status === 200 && response.data.token) {
-        console.log("Login successful");
+        console.log("Login successful", response.data);
         localStorage.setItem("token", response.data.token);
-        navigate(`/${hoaId}/dashboard`);
-      }
+         const user = response.data.user; 
+        const flag = user.role; 
+        let nav = `/${hoaId}/ownervehicles/${flag}`;
+        if (flag === 'admin') {
+          // nav = `/${hoaId}/admin`;
+          //  nav = `/${hoaId}/onsite`;
+             nav = `/${hoaId}/dashboard`;
+        }
+        navigate(nav);
+        }
+
+        //navigate(`/${hoaId}/admin`),
+
+       // navigate(`/${hoaId}/dashboard`);
+       //  navigate(`/${hoaId}/ownervehicles/${flag}`);
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || "Login failed";
       console.error(errorMessage);

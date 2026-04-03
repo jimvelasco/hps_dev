@@ -127,7 +127,7 @@ export default function OnsiteVehicles() {
 
   const navButtons = [
     {
-      label: "Back",
+      label: "Dashboard",
       onClick: handleBackToDashboard,
       which: "goback"
     }
