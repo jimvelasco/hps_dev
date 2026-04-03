@@ -50,9 +50,7 @@ export default function UserReports() {
       <DashboardNavbar title="User Reports" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
-        <div className="standardtitlebar">
-          <h1 style={{ fontSize: "24px" }}>User Reports</h1>
-        </div>
+      
 
         <div className="grid-flex-container">
           <section className="standardsection" style={{minHeight:"176px"}}>
