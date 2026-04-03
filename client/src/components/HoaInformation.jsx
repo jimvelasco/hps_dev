@@ -49,9 +49,9 @@ export default function HoaInformation({ hoa }) {
 
     }}>
       <section className="standardsectiondashboard">
-        <h3 style={{ color: "#1976d2", marginTop: 0 }}>Contact Information</h3>
+        <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"center"}}>Contact Information</h3>
         {hoa?.contact_information && hoa.contact_information.length > 0 && (
-          <div className="hoainformation">
+          <div className="hoainformation"  style={{ textAlign:"center",marginTop:"15px"}}>
             {hoa.contact_information.map((contact, index) => (
               <div style={{marginTop:"15px"}}>
                 <strong>{contact.phone_description || "Contact"}:</strong><br />
@@ -79,9 +79,9 @@ export default function HoaInformation({ hoa }) {
 
       </section>
       <section className="standardsectiondashboard">
-        <h3 style={{ color: "#1976d2", marginTop: 0 }}>HOA Address</h3>
+        <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"center" }}>HOA Address</h3>
         {hoa && (
-          <div className="hoainformation">
+          <div className="hoainformation"  style={{ textAlign:"center",marginTop:"15px"}}>
             <div><strong>Name:</strong> {hoa.name}</div>
             <div><strong>Address:</strong> {hoa.address}</div>
             <div><strong>City:</strong> {hoa.city}</div>
