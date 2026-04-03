@@ -143,7 +143,8 @@ export default function OnsiteVehicles() {
       <div className="full-row" style={{
         fontWeight: "bold", fontSize: "24px", color: "#1976d2",
         borderBottom: "2px solid #1976d2", padding: "5px",
-        marginBottom: "10px",overflowX: "hidden"
+        marginBottom: "10px",overflowX: "hidden",
+        border:"2px solid white"
       }}>
 
         {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
@@ -327,8 +328,8 @@ export default function OnsiteVehicles() {
         )}
 
         {isGridVisible ? (
-          <div className="onsite-grid-container-2" style={{border:"0px solid yellow "}}>
-            <div className='grid-flex-container'>
+          <div className="onsite-grid-container-2">
+            <div className='grid-flex-container' style={{border:"2px solid yellow"}}>
               {showTable ? (
                 <div style={{ overflowX: "auto", maxWidth: "100%" }}>
                 <div style={{
@@ -359,7 +360,7 @@ export default function OnsiteVehicles() {
               overflowY: 'auto',
               position: 'sticky',
               top: '20px',
-              border:"0px solid yellow"
+              border:"2px solid yellow"
             }}>
               <div className="header-title">Violations</div>
               <ViolationsAccordion hoaId={hoaId} />
