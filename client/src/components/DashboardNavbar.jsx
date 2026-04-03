@@ -31,15 +31,15 @@ export default function DashboardNavbar({ title, title2,buttons }) {
           </div>
         </nav>
       </div>
-      <div className="phoneview">
+      <div className="xphoneview">
         <nav style={{ backgroundColor: "#333", padding: "10px"  }}>
-           <div style={{ color: "#bbb", marginBottom: "0px",  alignItems:"center", 
+           <div style={{ color: "#bbb", marginBottom: "5px",  alignItems:"center", 
             justifyContent:"center", display:"flex", fontSize: "18px"}}><b>HOA Parking Solutions</b></div>
 
-          <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"space-evenly", display:"flex"}}>
+          <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
             <div style={{ color: "white", marginBottom: "0px" }}>{title}</div>
         
-            <div style={{ color: "white", marginBottom: "0px" }}>{title2}</div>
+            {/* <div style={{ color: "white", marginBottom: "0px" }}>{title2}</div> */}
           </div>
 
           <div style={{marginBottom: "10px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
