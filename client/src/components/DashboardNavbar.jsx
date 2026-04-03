@@ -36,9 +36,9 @@ export default function DashboardNavbar({ title, title2,buttons }) {
             justifyContent:"center", display:"flex", fontSize: "18px"}}><b>HOA Parking Solutions</b></div>
 
           <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"space-between", display:"flex"}}>
-            <h2 style={{ color: "white", marginBottom: "0px" }}>{title}</h2>
+            <div style={{ color: "white", marginBottom: "0px" }}>{title}</div>
         
-            <h4 style={{ color: "white", marginBottom: "0px" }}>{title2}</h4>
+            <div style={{ color: "white", marginBottom: "0px" }}>{title2}</div>
           </div>
 
           <div style={{marginBottom: "10px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
@@ -57,7 +57,7 @@ export default function DashboardNavbar({ title, title2,buttons }) {
           </div>
         </nav>
       </div>
-      
+
     </div>
 
   );
