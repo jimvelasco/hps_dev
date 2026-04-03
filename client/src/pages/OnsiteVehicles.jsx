@@ -266,8 +266,6 @@ export default function OnsiteVehicles() {
       <div className="page-content">
 
         <div className="standardtitlebar">
-          <h2>Onsite Vehicles</h2>
-          <div style={{ marginTop: '5px' }}>
 
             <button className="navbutton2" onClick={handleShowTable}>
               {showTable ? "Hide Table" : "Show Table"}
@@ -282,7 +280,6 @@ export default function OnsiteVehicles() {
               {isGridVisible ? "Hide Violations" : "Show Violations"}
             </button>
 
-          </div>
         </div>
 
         {!showTable && (
