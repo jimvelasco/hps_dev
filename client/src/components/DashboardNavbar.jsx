@@ -32,12 +32,15 @@ export default function DashboardNavbar({ title, title2,buttons }) {
       </div>
       <div className="phoneview">
         <nav style={{ backgroundColor: "#333", padding: "10px"  }}>
-           <div style={{ color: "#bbb", marginBottom: "0px", fontSize: "18px"}}><b>HOA Parking Solutions</b></div>
-          <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
+           <div style={{ color: "#bbb", marginBottom: "0px",  alignItems:"center", 
+            justifyContent:"center", display:"flex", fontSize: "18px"}}><b>HOA Parking Solutions</b></div>
+
+          <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"space-between", display:"flex"}}>
             <h2 style={{ color: "white", marginBottom: "0px" }}>{title}</h2>
         
             <h4 style={{ color: "white", marginBottom: "0px" }}>{title2}</h4>
           </div>
+
           <div style={{marginBottom: "10px",  alignItems:"center", justifyContent:"center", display:"flex"}}>
           <ParkingSpacesOverviewNB />
           </div>
@@ -54,6 +57,7 @@ export default function DashboardNavbar({ title, title2,buttons }) {
           </div>
         </nav>
       </div>
+      
     </div>
 
   );
