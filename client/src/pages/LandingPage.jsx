@@ -45,7 +45,7 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
       {/* <DashboardNavbar title="HOA Parking Solutions" title2={null} buttons={null} /> */}
       <div className="tableview">
         <div className="standardtitlebar">
-          <h2 onClick={() => navigate("/")}>HOA Parking Solutions </h2>
+          <h3 onClick={() => navigate("/")}>HOA Parking Solutions </h3>
           <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>        </div>
       </div>
       <div className="phoneview">
