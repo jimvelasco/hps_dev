@@ -328,7 +328,7 @@ export default function OnsiteVehicles() {
         )}
 
         {isGridVisible ? (
-          <div className="onsite-grid-container-2_1to1">
+          <div className="onsite-grid-container-2">
             <div className='grid-flex-container' style={{border:"0px solid yellow"}}>
               {showTable ? (
                 <div style={{ overflowX: "auto", maxWidth: "100%" }}>
