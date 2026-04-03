@@ -14,11 +14,12 @@ export default function DashboardNavbar({ title, title2,buttons }) {
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div className="button-grid">
             <div style={{ color: "#bbb", marginBottom: "0px", fontSize: "18px"}}><b>HOA Parking Solutions</b></div>
-            <div style={{ color: "white", marginBottom: "0px" }}>{title}</div>
-             <div style={{ color: "white", marginBottom: "0px" }}>{title2}</div >
-            <ParkingSpacesOverviewNB />
+            <div style={{ color: "white", marginTop:"5px",marginBottom: "0px" }}>{title}</div>
+             <div style={{ color: "white",  marginTop:"5px",marginBottom: "0px" }}>{title2}</div >
+              <div style={{ color: "white",  marginTop:"2px",marginBottom: "0px" }}> <ParkingSpacesOverviewNB /></div >
+           
           </div>
-          <div className="button-grid" style={{ marginBottom: "5px"}}>
+          <div className="button-grid" style={{ marginTop:"10px",marginBottom: "5px"}}>
             {buttons && buttons.map((button, index) => (
               <NavButton key={index}
                 label={button.label}
@@ -35,7 +36,7 @@ export default function DashboardNavbar({ title, title2,buttons }) {
            <div style={{ color: "#bbb", marginBottom: "0px",  alignItems:"center", 
             justifyContent:"center", display:"flex", fontSize: "18px"}}><b>HOA Parking Solutions</b></div>
 
-          <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"space-between", display:"flex"}}>
+          <div style={{marginBottom: "0px",  alignItems:"center", justifyContent:"space-evenly", display:"flex"}}>
             <div style={{ color: "white", marginBottom: "0px" }}>{title}</div>
         
             <div style={{ color: "white", marginBottom: "0px" }}>{title2}</div>
