@@ -31,7 +31,7 @@ export default function DashboardNavbar({ title, title2, buttons }) {
           </div>
         </nav>
       </div>
-      <div className="xphoneview">
+      <div className="phoneview">
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div style={{
             color: "#bbb", marginBottom: "5px", alignItems: "center",
