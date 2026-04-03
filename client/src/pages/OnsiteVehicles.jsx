@@ -328,7 +328,7 @@ export default function OnsiteVehicles() {
         )}
 
         {isGridVisible ? (
-          <div className="onsite-grid-container-2">
+          <div className="onsite-grid-container-2_1to1">
             <div className='grid-flex-container' style={{border:"0px solid yellow"}}>
               {showTable ? (
                 <div style={{ overflowX: "auto", maxWidth: "100%" }}>
@@ -346,9 +346,7 @@ export default function OnsiteVehicles() {
                   utcDateOnly={utcDateOnly}
                 />
                 </div></div>
-
               ) : (
-
                 vehicles.map((vehicle, index) => (
                   isPlateVisible ? renderVehiclePlate(vehicle) :
                     renderVehicleCard(vehicle)
@@ -365,12 +363,6 @@ export default function OnsiteVehicles() {
               <div className="header-title">Violations</div>
               <ViolationsAccordion hoaId={hoaId} />
             </div>
-
-             {/* <div className="flex-container" >
-              <div className="header-title">Violations</div>
-              <ViolationsAccordion hoaId={hoaId} />
-            </div> */}
-
           </div>
 
         ) : (
