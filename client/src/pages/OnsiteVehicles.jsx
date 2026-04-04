@@ -25,12 +25,21 @@ const DraggableViolations = ({ hoaId, position }) => {
     zIndex: 1000,
     maxHeight: '80vh',
     overflowY: 'auto',
-    border: "0px solid yellow"
+    border: "0px solid yellow",
+    cursor: 'grab',
   };
 
-  return (
-    <div ref={setNodeRef} style={style} className="flex-container">
-      <div className="header-title" {...listeners} {...attributes} style={{ cursor: 'grab' }}>
+  // return (
+  //   <div ref={setNodeRef} style={style} className="flex-container">
+  //     <div className="header-title" {...listeners} {...attributes} style={{ cursor: 'grab' }}>
+  //       Violations
+  //     </div>
+  //     <ViolationsAccordion hoaId={hoaId} />
+  //   </div>
+  // );
+   return (
+    <div ref={setNodeRef} style={style} className="flex-container"  {...listeners} {...attributes} >
+      <div className="header-title">
         Violations
       </div>
       <ViolationsAccordion hoaId={hoaId} />
