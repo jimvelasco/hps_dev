@@ -350,7 +350,7 @@ export default function OnsiteVehicles() {
               <div className="header-title">Violations</div>
               <div  style={{
               
-               maxHeight: '280px',
+               maxHeight: '320px',
                width:'100%',
                overflowY: 'auto'
               // backgroundColor: "#e0e0e0"
