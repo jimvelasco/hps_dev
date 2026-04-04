@@ -9,7 +9,34 @@ import TableButton from "../components/TableButton";
 import ViolationsAccordion from "../components/ViolationsAccordion";
 import { getAWSResource } from "../utils/awsHelper";
 import VehiclesTableOnsite from "../components/VehiclesTableOnsite";
+import { DndContext, useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
+const DraggableViolations = ({ hoaId, position }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: 'violations-draggable',
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    position: 'absolute',
+    left: position.x,
+    top: 320 + position.y,
+    zIndex: 1000,
+    maxHeight: '80vh',
+    overflowY: 'auto',
+    border: "0px solid yellow"
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className="flex-container">
+      <div className="header-title" {...listeners} {...attributes} style={{ cursor: 'grab' }}>
+        Violations
+      </div>
+      <ViolationsAccordion hoaId={hoaId} />
+    </div>
+  );
+};
 
 export default function OnsiteVehicles() {
   const { hoaId } = useParams();
@@ -26,6 +53,17 @@ export default function OnsiteVehicles() {
 
   const [showCards, setShowCards] = useState(true);
   const [showTable, setShowTable] = useState(false);
+  const [violationsPos, setViolationsPos] = useState({ x: 0, y: 0 });
+
+  function handleDragEnd(event) {
+    const { delta } = event;
+    if (delta) {
+      setViolationsPos((pos) => ({
+        x: pos.x + delta.x,
+        y: pos.y + delta.y,
+      }));
+    }
+  }
 
   // useEffect(() => {
   //   if (hoaId) {
@@ -224,11 +262,7 @@ export default function OnsiteVehicles() {
     )
   }
 
-  const arenderVehicleCard = (vehicle) => {
-    return (
-      <div className="grid-container-3_oldhoa" key={vehicle._id}></div>
-    )
-  }
+ 
 
   const handleShowTable = () => {
     if (showTable) {
@@ -339,21 +373,12 @@ export default function OnsiteVehicles() {
         </div>
 
         {isGridVisible && (
-           <div className='grid-flex-container' style={{border:"0px solid yellow"}}>
-            <div className="flex-container" style={{
-              maxHeight: '80vh',
-              overflowY: 'auto',
-              position: 'absolute',
-              top: '320px',
-              border: "0px solid yellow"
-            }}>
-              <div className="header-title">Violations</div>
-              <ViolationsAccordion hoaId={hoaId} />
+          <DndContext onDragEnd={handleDragEnd}>
+            <div className='grid-flex-container' style={{ border: "0px solid yellow" }}>
+              <DraggableViolations hoaId={hoaId} position={violationsPos} />
             </div>
-          </div>
-
-        )
-        }
+          </DndContext>
+        )}
       </div>
     </div>
   );
