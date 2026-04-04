@@ -112,7 +112,8 @@ export default function ViolationsAccordion({ hoaId }) {
       justify-content: center;
       align-items: center;
       padding: 0px;
-      background-color: #1976d2;
+      // background-color: #1976d2;
+       background-color: #6B7280;
       color: white;
       cursor: pointer;
       user-select: none;
@@ -129,7 +130,9 @@ export default function ViolationsAccordion({ hoaId }) {
       padding: 4px 0;
 }
     .accordion-header:hover {
-      background-color: #1565c0;
+      //  background-color: #1565c0;
+       filter: opacity(0.8);
+      
     }
 
     .accordion-toggle {
