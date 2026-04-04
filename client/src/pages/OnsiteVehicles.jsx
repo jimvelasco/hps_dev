@@ -138,7 +138,7 @@ export default function OnsiteVehicles() {
   }
 
   const renderVehiclePlate = (vehicle) => {
-    return (<div className="grid-container-2-plate"
+    return (<div className="grid-container-3-plate"
       key={vehicle._id}>
       <div className="full-row" style={{
         fontWeight: "bold", fontSize: "24px", color: "#1976d2",
@@ -154,6 +154,7 @@ export default function OnsiteVehicles() {
       <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
+       <div className="grid-item-bold">Unit</div>
 
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
       {/* <div className="grid-item-bold">Make</div>
@@ -165,6 +166,7 @@ export default function OnsiteVehicles() {
       ) : (
         <div className="grid-item-normal"> {utcDateOnly(vehicle.checkout)}</div>
       )}
+      <div className="grid-item-normal"> {vehicle.unitnumber || "N/A"} </div>
     </div>)
   }
   const renderVehicleCard = (vehicle) => {

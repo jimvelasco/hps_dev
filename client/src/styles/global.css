@@ -964,6 +964,7 @@ section.standardsectiondashboard {
  
   
 }
+
 .grid-container-2-plate {
  display: grid;
   grid-column-gap: 0px;
@@ -975,11 +976,30 @@ section.standardsectiondashboard {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-   width: 160px;
+   width: 220px;
   /* width: 180px; */
   /* height: 100px */
   
 }
+
+
+.grid-container-3-plate {
+ display: grid;
+  grid-column-gap: 0px;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  background-color: white;
+  padding: 5px;
+  
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  margin: 2px;
+  border: 0px solid black;
+   width: 220px;
+  /* width: 180px; */
+  /* height: 100px */
+  
+}
+
 
 
 .grid-container-3 {
