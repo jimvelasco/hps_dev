@@ -336,13 +336,13 @@ export default function OnsiteVehicles() {
 
         {isGridVisible && (
            <div className='grid-flex-container'>
-            <div className="flex-container" style={{
+            <div className="flex-container bg_lightgray" style={{
               maxHeight: '80vh',
               overflowY: 'auto',
               position: 'absolute',
               top: '320px',
               border: "0px solid yellow",
-              backgroundColor: "#ccc"
+              // backgroundColor: "#e0e0e0"
             }}>
               <div className="header-title">Violations</div>
               <ViolationsAccordion hoaId={hoaId} />
