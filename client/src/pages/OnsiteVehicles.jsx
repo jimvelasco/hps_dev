@@ -338,12 +338,11 @@ export default function OnsiteVehicles() {
 
         {isGridVisible && (
            <div className='grid-flex-container' style={{border:"0px solid yellow"}}>
-
             <div className="flex-container" style={{
               maxHeight: '80vh',
               overflowY: 'auto',
-              position: 'sticky',
-              top: '20px',
+              position: 'absolute',
+              top: '220px',
               border: "0px solid yellow"
             }}>
               <div className="header-title">Violations</div>
