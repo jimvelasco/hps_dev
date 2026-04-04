@@ -14,9 +14,9 @@ export default function DashboardNavbar({ title, title2, buttons }) {
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div className="button-grid">
             <div style={{ color: "#bbb", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div>
-            <div style={{ color: "white", marginTop: "5px", marginBottom: "0px" }}>{title}</div>
-            <div style={{ color: "white", marginTop: "5px", marginBottom: "0px" }}>{title2}</div >
-            <div style={{ color: "white", marginTop: "2px", marginBottom: "0px" }}> <ParkingSpacesOverviewNB /></div >
+            <div style={{ color: "white", marginTop: "3px", marginBottom: "0px" }}>{title}</div>
+            {/* <div style={{ color: "white", marginTop: "5px", marginBottom: "0px" }}>{title2}</div > */}
+            <div style={{ color: "white", marginTop: "3px", marginBottom: "0px" }}> <ParkingSpacesOverviewNB /></div >
 
           </div>
           <div className="button-grid" style={{ marginTop: "10px", marginBottom: "5px" }}>
@@ -41,9 +41,9 @@ export default function DashboardNavbar({ title, title2, buttons }) {
           <div style={{ marginBottom: "5px", color: "white", alignItems: "center", justifyContent: "center", display: "flex" }}>
             {title}
           </div>
-           <div style={{ fontSize:"12px",marginBottom: "0px", color: "white", alignItems: "center", justifyContent: "center", display: "flex" }}>
+           {/* <div style={{ fontSize:"12px",marginBottom: "0px", color: "white", alignItems: "center", justifyContent: "center", display: "flex" }}>
             {title2}
-          </div>
+          </div> */}
           {/* <div style={{ color: "white", marginBottom: "0px" }}>{title2}</div> */}
 
 

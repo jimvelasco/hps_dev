@@ -83,6 +83,8 @@ export default function ParkingSpacesOverviewNB() {
 
   const totalSpaces = hoa?.parking_allowed_hoa || 0;
   const remainingSpaces = totalSpaces - occupiedSpaces;
+  const hoaname = hoa?.name;
+
 
   return (
     <div className="parking-spaces-overview2">
@@ -94,6 +96,7 @@ export default function ParkingSpacesOverviewNB() {
         </div>
       ) : (
         <span style={{color: "#bbb", backgroundColor: "#333"}}>
+           <span><b style={{color: "#fff",marginRight:"10px"}}>{hoaname}</b></span>
             <span>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>&nbsp;,&nbsp;
 
             <span>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>&nbsp;,&nbsp;
