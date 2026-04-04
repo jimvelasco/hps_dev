@@ -342,13 +342,13 @@ export default function OnsiteVehicles() {
               // maxHeight: '80vh',
               overflowY: 'auto',
               position: 'absolute',
-              top: '280px',
+              top: '180px',
               border: "0px solid yellow",
               //  maxHeight: '200px',
               // backgroundColor: "#e0e0e0"
             }}>
               <div className="header-title">Violations</div>
-              <div className="aflex-container abg_lightgray" style={{
+              <div  style={{
               
                maxHeight: '280px',
                width:'100%',
