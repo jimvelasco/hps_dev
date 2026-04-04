@@ -67,9 +67,9 @@ export default function OnsiteVehicles() {
           const response = await axios.get(`/vehicles/onsiteonly/${hoaId}`);
           let newary = [];
           response.data.forEach(element => {
-            //  if (getVehicleActiveStatusBoolean(element)) {
-            newary.push(element);
-            //  }
+          //  if (getVehicleActiveStatusBoolean(element)) {
+              newary.push(element);
+          //  }
           });
           const sorted = [...newary].sort((a, b) => {
             let valueA, valueB;
@@ -143,12 +143,12 @@ export default function OnsiteVehicles() {
       <div className="full-row" style={{
         fontWeight: "bold", fontSize: "24px", color: "#1976d2",
         borderBottom: "2px solid #1976d2", padding: "5px",
-        marginBottom: "10px", overflowX: "hidden",
-        border: "0px solid white"
+        marginBottom: "10px",overflowX: "hidden",
+        border:"0px solid white"
       }}>
 
         {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
-        {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
+         {vehicle.plate} ({vehicle.plate_state.substring(0,2)})
       </div>
       {/* <div className="grid-item-bold">Name</div>
       <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
@@ -185,25 +185,25 @@ export default function OnsiteVehicles() {
 
         <div className="full-row" style={{ fontSize: '.7rem', marginBottom: '5px' }}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
-        <div className="grid-item-bold">Unit</div>
-        <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
-        <div className="grid-item-bold">Type</div>
+         <div className="grid-item-bold">Unit</div>
+           <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
+          <div className="grid-item-bold">Type</div>
 
-        <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
-        <div className="grid-item-bold row-with-gap">&nbsp;</div>
-        <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
+          <div className="grid-item-bold row-with-gap">&nbsp;</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 
-        <div className="grid-item-bold">Make</div>
-        <div className="grid-item-bold">Model</div>
-        <div className="grid-item-bold">Year</div>
+          <div className="grid-item-bold">Make</div>
+          <div className="grid-item-bold">Model</div>
+          <div className="grid-item-bold">Year</div>
 
-        <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
-        <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
-        <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
+       <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
 
-        <div className="grid-item-bold">Check In</div>
-        <div className="grid-item-bold">Check Out</div>
-        <div className="grid-item-bold">Active</div>
+          <div className="grid-item-bold">Check In</div>
+          <div className="grid-item-bold">Check Out</div>
+          <div className="grid-item-bold">Active</div>
 
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkin)}</div>
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkout)}</div>
@@ -222,11 +222,6 @@ export default function OnsiteVehicles() {
     )
   }
 
-  const arenderVehicleCard = (vehicle) => {
-    return (
-      <div className="grid-container-3_oldhoa" key={vehicle._id}></div>
-    )
-  }
 
   const handleShowTable = () => {
     if (showTable) {
@@ -273,20 +268,45 @@ export default function OnsiteVehicles() {
 
         <div className="standardtitlebar">
 
-          <button className="navbutton2" onClick={handleShowTable}>
-            {showTable ? "Hide Table" : "Show Table"}
-          </button>
+            <button className="navbutton2" onClick={handleShowTable}>
+              {showTable ? "Hide Table" : "Show Table"}
+            </button>
 
-          <button className="navbutton2" onClick={handleShowPlate}
-            disabled={showTable}>
-            {isPlateVisible ? "Show Cards" : "Show Plates"}
-          </button>
+            <button className="navbutton2" onClick={handleShowPlate}
+              disabled={showTable}>
+              {isPlateVisible ? "Show Cards" : "Show Plates"}
+            </button>
 
-          <button className="navbutton2" onClick={handleShowGrid}>
-            {isGridVisible ? "Hide Violations" : "Show Violations"}
-          </button>
+            <button className="navbutton2" onClick={handleShowGrid}>
+              {isGridVisible ? "Hide Violations" : "Show Violations"}
+            </button>
 
         </div>
+
+        {/* {!showTable && (
+          <div className="standardtitlebar">
+          
+            <div className="button-grid">
+              <button className="btnxsp"
+                onClick={() => handleSort("owner")}>
+                Owner
+              </button>
+              <button className="btnxsp"
+                onClick={() => handleSort("plate")}>
+                Plate
+              </button>
+              <button className="btnxsp  "
+                onClick={() => handleSort("enddate")}>
+                Checkout
+              </button>
+              <button className="btnxsp"
+                onClick={() => handleSort("active")}>
+                Active
+              </button>
+            </div>
+          </div>
+        )} */}
+
 
 
         {vehiclesError && (
@@ -307,52 +327,76 @@ export default function OnsiteVehicles() {
           </div>
         )}
 
-        {showTable && (
-          <div style={{ overflowX: "auto", maxWidth: "100%" }}>
-            <div style={{
-              minWidth: "800px",
-              overflowX: "auto"
-            }}>
-              <VehiclesTableOnsite
-                vehicles={vehicles}
-                role={role}
-                sortColumn={sortColumn}
-                sortDirection={sortDirection}
-                handleSort={handleSort}
-                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                utcDateOnly={utcDateOnly}
-              />
-            </div></div>
-        )
-        }
+        {isGridVisible ? (
+          <div className="onsite-grid-container-2">
             <div className='grid-flex-container' style={{border:"0px solid yellow"}}>
-
-        {!showTable && (
-          vehicles.map((vehicle, index) => (
-            isPlateVisible ? renderVehiclePlate(vehicle) :
-              renderVehicleCard(vehicle)
-          ))
-        )
-        }
-        </div>
-
-        {isGridVisible && (
-           <div className='grid-flex-container' style={{border:"0px solid yellow"}}>
-
+              {showTable ? (
+                <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+                <div style={{
+                  minWidth: "800px",
+                  overflowX: "auto"
+                }}>
+                <VehiclesTableOnsite
+                  vehicles={vehicles}
+                  role={role}
+                  sortColumn={sortColumn}
+                  sortDirection={sortDirection}
+                  handleSort={handleSort}
+                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                  utcDateOnly={utcDateOnly}
+                />
+                </div></div>
+              ) : (
+                vehicles.map((vehicle, index) => (
+                  isPlateVisible ? renderVehiclePlate(vehicle) :
+                    renderVehicleCard(vehicle)
+                ))
+              )}
+            </div>
             <div className="flex-container" style={{
               maxHeight: '80vh',
               overflowY: 'auto',
               position: 'sticky',
               top: '20px',
-              border: "0px solid yellow"
+              border:"0px solid yellow"
             }}>
               <div className="header-title">Violations</div>
               <ViolationsAccordion hoaId={hoaId} />
             </div>
           </div>
 
-        )
-        }
+        ) : (
+          <>
+            <div className='grid-flex-container'>
+              {showTable ? (
+                <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+                <div style={{
+                  minWidth: "800px",
+                  overflowX: "auto"
+                }}>
+                <VehiclesTableOnsite
+                  vehicles={vehicles}
+                  role={role}
+                  sortColumn={sortColumn}
+                  sortDirection={sortDirection}
+                  handleSort={handleSort}
+                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                  utcDateOnly={utcDateOnly}
+                />
+                </div>
+                </div>
+
+              ) : (
+
+                vehicles.map((vehicle, index) => (
+                  isPlateVisible ? renderVehiclePlate(vehicle) :
+                    renderVehicleCard(vehicle)
+                ))
+              )}
+
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
