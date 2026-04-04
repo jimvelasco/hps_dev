@@ -271,18 +271,20 @@ export default function OnsiteVehicles() {
 
         <div className="standardtitlebar">
 
-          <button className="navbutton2" onClick={handleShowTable}>
-            {showTable ? "Hide Table" : "Show Table"}
+          
+           <button className="navbutton2" onClick={handleShowGrid}>
+            {isGridVisible ? "Hide Violations" : "Show Violations"}
           </button>
 
           <button className="navbutton2" onClick={handleShowPlate}
             disabled={showTable}>
             {isPlateVisible ? "Show Cards" : "Show Plates"}
           </button>
-
-          <button className="navbutton2" onClick={handleShowGrid}>
-            {isGridVisible ? "Hide Violations" : "Show Violations"}
+          <button className="navbutton2" onClick={handleShowTable}>
+            {showTable ? "Hide Table" : "Show Table"}
           </button>
+
+         
 
         </div>
 
@@ -337,15 +339,25 @@ export default function OnsiteVehicles() {
         {isGridVisible && (
            <div className='grid-flex-container'>
             <div className="flex-container bg_lightgray" style={{
-              maxHeight: '80vh',
+              // maxHeight: '80vh',
               overflowY: 'auto',
               position: 'absolute',
-              top: '320px',
+              top: '280px',
               border: "0px solid yellow",
+              //  maxHeight: '200px',
               // backgroundColor: "#e0e0e0"
             }}>
               <div className="header-title">Violations</div>
+              <div className="aflex-container abg_lightgray" style={{
+              
+               maxHeight: '280px',
+               width:'100%',
+               overflowY: 'auto'
+              // backgroundColor: "#e0e0e0"
+            }}>
+
               <ViolationsAccordion hoaId={hoaId} />
+              </div>
             </div>
           </div>
 
