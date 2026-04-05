@@ -853,9 +853,8 @@ section.standardsectiondashboard {
  
   justify-content: center;
   align-items: flex-start;
-  /* min-height: 140px; */
-  max-height: 600px;
-  overflow-Y: auto;
+  /* max-height: 600px; */
+  /* overflow-Y: auto; */
   border: 0px solid yellow;
 }
 
