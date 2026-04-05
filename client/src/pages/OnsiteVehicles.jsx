@@ -9,7 +9,9 @@ import TableButton from "../components/TableButton";
 import ViolationsAccordion from "../components/ViolationsAccordion";
 import { getAWSResource } from "../utils/awsHelper";
 import VehiclesTableOnsite from "../components/VehiclesTableOnsite";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export default function OnsiteVehicles() {
   const { hoaId } = useParams();
@@ -288,7 +290,7 @@ export default function OnsiteVehicles() {
           <button className="navbutton2" onClick={handleShowTable}
             disabled={isGridVisible}>
 
-          
+
 
             {showTable ?
               (<span className="strike">
@@ -361,7 +363,15 @@ export default function OnsiteVehicles() {
               //  maxHeight: '200px',
               // backgroundColor: "#e0e0e0"
             }}>
-              <div className="header-title">Violations</div>
+              <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
+                <div style={{width:"20px"}}> &nbsp;</div>
+                <div className="header-title">Violations</div>
+                <div onClick={handleShowGrid}>
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                  />
+                </div>
+              </div>
               <div style={{
 
                 maxHeight: '320px',
@@ -381,3 +391,8 @@ export default function OnsiteVehicles() {
     </div>
   );
 }
+
+/*
+Solid Style: <i class="fas fa-window-close"></i> 
+— View on Font AwesomeRegular Style: <i class="far fa-window-close"></i> — View on Font Awesome
+*/
