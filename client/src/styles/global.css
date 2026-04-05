@@ -1831,6 +1831,11 @@ Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destruct
   color: #ffffff;
   border-color: #94A3B8;
 }
+.btn-cancel {
+  background-color: #94A3B8;
+  color: #ffffff;
+  border-color: #94A3B8;
+}
 
 /* Delete: Red-600 (Danger) */
 .btn-delete {
