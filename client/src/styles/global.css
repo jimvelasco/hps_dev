@@ -588,8 +588,8 @@ input.input-date:disabled {
   color: black;
   padding: 10px;
   border-radius: 8px;
-  width:380px;
-  /* width: 70%; */
+  /* width:380px; */
+  width: 95%;
 
   margin: auto;
   text-align: center;
