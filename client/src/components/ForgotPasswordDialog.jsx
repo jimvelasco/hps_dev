@@ -116,7 +116,7 @@ export default function ForgotPasswordDialog({ isOpen, hoaId, onClose }) {
               </button>
               <button
                 type="button"
-                className="btn btn-default"
+                className="btn btn-cancel"
                 onClick={onClose}
                 disabled={isSubmitting}
               >

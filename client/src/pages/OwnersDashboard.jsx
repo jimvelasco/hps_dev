@@ -134,8 +134,8 @@ export default function OwnersDashboard() {
     {
       label: "Onsite",
       onClick: handleOnsiteClick,
-      color: "#2196f3",
-      hoverColor: "#1976d2",
+    //  color: "#2196f3",
+    //  hoverColor: "#1976d2",
       which: "standard"
     },
      ];

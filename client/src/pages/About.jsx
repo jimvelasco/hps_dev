@@ -109,7 +109,7 @@ export default function About() {
         <div className="button-grid">
           {/* <button className="btns btn-primary" onClick={() =>{handleEmailClick()}}>Email</button> */}
           <button
-            className="btns btn-default"
+            className="btns btn-cancel"
             onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
 
           >

@@ -183,7 +183,7 @@ export default function RentersLogin() {
                             >
                                 Submit
                             </button>
-                            <button className="btn btn-default"
+                            <button className="btn btn-cancel"
                                 type="button"
                                 onClick={handleCancelClick}
                             >

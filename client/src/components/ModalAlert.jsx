@@ -55,7 +55,7 @@ export default function ModalAlert({ isOpen, title, message, type = "alert", onC
           </button>
           {(type === "confirm" || type === "delete") && (
             <button
-              className="btn btn-default"
+              className="btn btn-cancel"
               onClick={onCancel}
             >
               {cancelText}

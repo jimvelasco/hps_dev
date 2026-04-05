@@ -76,7 +76,7 @@ const StripePaymentForm = ({ amount, vehicle, hoa, onSuccess, onCancel }) => {
         >
           {isProcessing ? "Processing..." : `Pay $${(amount / 100).toFixed(2)}`}
         </button>
-        <button type="button" className="btn btn-default" onClick={onCancel}>Cancel</button>
+        <button type="button" className="btn btn-cancel" onClick={onCancel}>Cancel</button>
       </div>
     </form>
   );
@@ -368,7 +368,7 @@ export default function ParkingPayment() {
                 >
                   {loadingIntent ? "Preparing Payment..." : "Proceed to Payment"}
                 </button>
-                <button className="btn btn-default" 
+                <button className="btn btn-cancel" 
                   onClick={() => navigate(-1)}
                   style={{ width: "100%", marginTop: "10px" }}
                 >

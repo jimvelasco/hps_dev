@@ -271,7 +271,7 @@ export default function EmailFromHoa() {
                   type="button"
                   onClick={handleBackClick}
                   disabled={sending}
-                  className="btn btn-default"
+                  className="btn btn-cancel"
                   style={{
                     backgroundColor: "#999",
                     opacity: sending ? 0.6 : 1,

@@ -519,7 +519,7 @@ export default function UserDetails() {
                   {isSubmitting ? "Saving..." : isEditMode ? "Update User" : "Create User"}
                 </button>
 
-                <button className="btn btn-default"
+                <button className="btn btn-cancel"
                   type="button"
                   onClick={handleBackToUsers}
                   disabled={isSubmitting}

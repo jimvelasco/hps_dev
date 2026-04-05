@@ -847,7 +847,7 @@ export default function VehicleDetails() {
                   {formSubmitting ? (isModifyMode ? "Updating..." : "Creating...") : (isModifyMode ? "Update" : "Create")}
                 </button>
 
-                <button className="btn btn-default"
+                <button className="btn btn-cancel"
                   type="button"
                   onClick={handleBackClick}
                 >

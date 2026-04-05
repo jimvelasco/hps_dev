@@ -182,7 +182,7 @@ export default function ResetPassword() {
               {isSubmitting ? "Resetting..." : "Reset"}
             </button>
             <button
-              className="btns btn-default"
+              className="btns btn-cancel"
               type="button"
               onClick={() => navigate("/")}
               disabled={isSubmitting}

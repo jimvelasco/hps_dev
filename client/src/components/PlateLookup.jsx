@@ -209,7 +209,7 @@ export default function PlateLookup({ isOpen, onClose, onPlateDetected }) {
               Take Photo
             </button>
             <button 
-              className="btn btn-default"
+              className="btn btn-cancel"
               onClick={onClose}
               disabled={isLoading}
               style={{ padding: '12px 24px', minWidth: '120px' }}

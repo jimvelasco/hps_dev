@@ -183,7 +183,7 @@ export default function OwnersLogin() {
             >
               {isLoggingIn ? "Logging in..." : "Submit"}
             </button>
-            <button className="btn btn-default"
+            <button className="btn btn-cancel"
               type="button"
               disabled={isLoggingIn}
               onClick={() => navigate(-1)}
