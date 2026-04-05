@@ -273,15 +273,15 @@ export default function OnsiteVehicles() {
 
           
            <button className="navbutton2" onClick={handleShowGrid}>
-            {isGridVisible ? "Hide Violations" : "Show Violations"}
+            {isGridVisible ? "Hide" : "Violations"}
           </button>
 
           <button className="navbutton2" onClick={handleShowPlate}
             disabled={showTable}>
-            {isPlateVisible ? "Show Cards" : "Show Plates"}
+            {isPlateVisible ? "Details" : "Show Plates"}
           </button>
           <button className="navbutton2" onClick={handleShowTable}>
-            {showTable ? "Hide Table" : "Show Table"}
+            {showTable ? "Hide Table" : "Table"}
           </button>
 
          
