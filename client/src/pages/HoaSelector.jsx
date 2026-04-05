@@ -56,7 +56,7 @@ export default function HoaSelector() {
       <div style={{
         marginTop: "50px",
         width: "300px",
-        margin: "50px auto",
+        margin: "40px auto",
         backgroundColor: "#fff",
         borderRadius: "8px",
         padding: "30px",

@@ -588,6 +588,7 @@ input.input-date:disabled {
   color: black;
   padding: 10px;
   border-radius: 8px;
+  width:380px;
   /* width: 70%; */
 
   margin: auto;
@@ -1712,6 +1713,10 @@ Hover: #B91C1C
   background-color: #7690ab;
   color: #ffffff;
   border-color: #7690ab;
+}
+
+.strike {
+  text-decoration: line-through;
 }
 
 /* BUTTONS BUTTONS BUTTONS BUTTONS */

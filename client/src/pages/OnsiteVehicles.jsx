@@ -154,7 +154,7 @@ export default function OnsiteVehicles() {
       <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
-       <div className="grid-item-bold">Unit</div>
+      <div className="grid-item-bold">Unit</div>
 
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
       {/* <div className="grid-item-bold">Make</div>
@@ -224,7 +224,7 @@ export default function OnsiteVehicles() {
     )
   }
 
- 
+
 
   const handleShowTable = () => {
     if (showTable) {
@@ -271,23 +271,34 @@ export default function OnsiteVehicles() {
 
         <div className="standardtitlebar">
 
-          
-           <button className="navbutton2" onClick={handleShowGrid}
-             disabled={showTable}>
-            {isGridVisible ? "Hide" : "Violations"}
+
+          <button className="navbutton2" onClick={handleShowGrid}
+            disabled={showTable}>
+            {isGridVisible ?
+              (<span className="strike">
+                Violations</span>)
+              : (<span>Violations</span>)
+            }
           </button>
 
           <button className="navbutton2" onClick={handleShowPlate}
             disabled={showTable}>
-            {isPlateVisible ? "Details" : "Show Plates"}
+            {isPlateVisible ? "Details" : "Plates"}
           </button>
           <button className="navbutton2" onClick={handleShowTable}
-          disabled={isGridVisible}>
+            disabled={isGridVisible}>
+
           
-            {showTable ? "Hide Table" : "Table"}
+
+            {showTable ?
+              (<span className="strike">
+                Table</span>)
+              : (<span>Table</span>)
+            }
+
           </button>
 
-         
+
 
         </div>
 
@@ -328,19 +339,19 @@ export default function OnsiteVehicles() {
             </div></div>
         )
         }
-            <div className='grid-flex-container' style={{border:"0px solid yellow"}}>
+        <div className='grid-flex-container' style={{ border: "0px solid yellow" }}>
 
-        {!showTable && (
-          vehicles.map((vehicle, index) => (
-            isPlateVisible ? renderVehiclePlate(vehicle) :
-              renderVehicleCard(vehicle)
-          ))
-        )
-        }
+          {!showTable && (
+            vehicles.map((vehicle, index) => (
+              isPlateVisible ? renderVehiclePlate(vehicle) :
+                renderVehicleCard(vehicle)
+            ))
+          )
+          }
         </div>
 
         {isGridVisible && (
-           <div className='grid-flex-container'>
+          <div className='grid-flex-container'>
             <div className="flex-container bg_lightgray" style={{
               // maxHeight: '80vh',
               overflowY: 'auto',
@@ -351,15 +362,15 @@ export default function OnsiteVehicles() {
               // backgroundColor: "#e0e0e0"
             }}>
               <div className="header-title">Violations</div>
-              <div  style={{
-              
-               maxHeight: '320px',
-               width:'100%',
-               overflowY: 'auto'
-              // backgroundColor: "#e0e0e0"
-            }}>
+              <div style={{
 
-              <ViolationsAccordion hoaId={hoaId} />
+                maxHeight: '320px',
+                width: '100%',
+                overflowY: 'auto'
+                // backgroundColor: "#e0e0e0"
+              }}>
+
+                <ViolationsAccordion hoaId={hoaId} />
               </div>
             </div>
           </div>
