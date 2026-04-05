@@ -281,7 +281,9 @@ export default function OnsiteVehicles() {
             disabled={showTable}>
             {isPlateVisible ? "Details" : "Show Plates"}
           </button>
-          <button className="navbutton2" onClick={handleShowTable}>
+          <button className="navbutton2" onClick={handleShowTable}
+          disabled={isGridVisible}>
+          
             {showTable ? "Hide Table" : "Table"}
           </button>
 
