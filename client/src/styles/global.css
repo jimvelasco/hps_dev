@@ -9,7 +9,15 @@ body {
   /* font-family: "Arial", Helvetica, sans-serif; */
   /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
   background-color: white;
+  overscroll-behavior-y: none;
 }
+html {
+  overscroll-behavior-y: none;
+}
+.app {
+  min-height: 100dvh;
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
