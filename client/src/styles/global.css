@@ -10,6 +10,7 @@ body {
   /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
   background-color: white;
   overscroll-behavior-y: none;
+  /* padding-bottom: "50px"; */
 }
 html {
   overscroll-behavior-y: none;
