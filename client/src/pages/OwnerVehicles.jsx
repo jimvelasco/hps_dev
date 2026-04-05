@@ -382,7 +382,7 @@ export default function OwnerVehicles() {
             {loggedInUser && loggedInUser.role !== "admin" && (
               <button className="navbutton2"
                 onClick={() => handleCreateClick()}>
-                New Vehicle
+                New
               </button>
             )}
           </div>
