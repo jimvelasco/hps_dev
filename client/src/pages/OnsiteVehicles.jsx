@@ -272,7 +272,8 @@ export default function OnsiteVehicles() {
         <div className="standardtitlebar">
 
           
-           <button className="navbutton2" onClick={handleShowGrid}>
+           <button className="navbutton2" onClick={handleShowGrid}
+             disabled={showTable}>
             {isGridVisible ? "Hide" : "Violations"}
           </button>
 
