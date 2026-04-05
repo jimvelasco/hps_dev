@@ -12,11 +12,7 @@ import VehiclesTableOnsite from "../components/VehiclesTableOnsite";
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-//import { fas, fad, fass, fasds } from '@awesome.me/kit-KIT_CODE/icons'
-
-//import { byPrefixAndName } from '@awesome.me/kit-KIT_CODE/icons'
-//import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { faXmark,faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faHouse } from '@fortawesome/free-solid-svg-icons';
 
 export default function OnsiteVehicles() {
   const { hoaId } = useParams();
@@ -363,20 +359,18 @@ export default function OnsiteVehicles() {
               // maxHeight: '80vh',
               overflowY: 'auto',
               position: 'absolute',
-              top: '200px',
+              top: '160px',
               border: "0px solid yellow",
               //  maxHeight: '200px',
               // backgroundColor: "#e0e0e0"
             }}>
               <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
-                <div style={{width:"20px"}}> &nbsp;</div>
+                <div style={{ width: "20px" }}> &nbsp;</div>
                 <div className="header-title">Violations</div>
                 <div onClick={handleShowGrid}>
                   <FontAwesomeIcon
                     icon={faXmark}
                   />
-                  {/* <FontAwesomeIcon icon={byPrefixAndName.fas['house']} /> */}
-                   <FontAwesomeIcon icon={faHouse} />
                 </div>
               </div>
               <div style={{
