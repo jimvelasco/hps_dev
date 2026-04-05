@@ -358,12 +358,24 @@ export default function OwnerVehicles() {
             )}
             <button className="navbutton2"
               onClick={handleShowFilterClick}>
-              {!showFilters ? "Sort" : "Hide"}
+              {/* {!showFilters ? "Sort" : "Hide"} */}
+               {showFilters ?
+              (<span className="strike">
+                Sort</span>)
+              : (<span>Sort</span>)
+            }
             </button>
             <div>
               <button className="navbutton2"
                 onClick={handleShowTable}>
-                {showTable ? "Hide Table" : "Show Table"}
+                {/* {showTable ? "Hide Table" : "Show Table"} */}
+
+                 {showTable ?
+              (<span className="strike">
+                Table</span>)
+              : (<span>Table</span>)
+            }
+
               </button>
             </div>
 
