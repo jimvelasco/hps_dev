@@ -20,8 +20,8 @@ export default function ModalAlert({ isOpen, title, message, type = "alert", onC
         backgroundColor: "white",
         borderRadius: "8px",
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.8)",
-        padding: "30px",
-        maxWidth: "360px",
+        padding: "10px",
+        maxWidth: "320px",
         minWidth: "300px",
         textAlign: "center",
         position: "relative"
