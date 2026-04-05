@@ -231,7 +231,7 @@ export default function RenterVehicles() {
               <label className="input-label2">
                 {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber}
               </label><br />
-              <button className="standardsubmitbutton" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
+              <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
                 New Vehicle
               </button>
             </div>
@@ -255,7 +255,7 @@ export default function RenterVehicles() {
               <br />
 
 
-              <button className="standardsubmitbutton" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
+              <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
                 New Vehicle
               </button>
             </div>
