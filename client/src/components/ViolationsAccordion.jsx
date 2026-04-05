@@ -94,7 +94,7 @@ export default function ViolationsAccordion({ hoaId }) {
     .accordion-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 5px;
    
       width: 100%;
       font-size: 14px;

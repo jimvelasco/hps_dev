@@ -63,16 +63,16 @@ export default function OwnerVehicles() {
       const fetchVehicles = async () => {
         try {
           setVehiclesLoading(true);
-           qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
-       //   console.log("OwnerVehicles.jsx qry:", qry);
+          qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
+          //   console.log("OwnerVehicles.jsx qry:", qry);
           if (role === "admin" || role === "manager") {
 
             qry = `/vehicles/adminvehicles/${hoaId}`
           }
 
-        //    console.log("OwnerVehicles.jsx qry:", qry);
+          //    console.log("OwnerVehicles.jsx qry:", qry);
           const response = await axios.get(qry);
-       //   console.log("fetchVehicles client received:", response.data.length)
+          //   console.log("fetchVehicles client received:", response.data.length)
           const updatedVehicles = response.data.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
@@ -153,8 +153,8 @@ export default function OwnerVehicles() {
       } else if (column === "ownertype") {
         valueA = (a.carownertype || "").toLowerCase();
         valueB = (b.carownertype || "").toLowerCase();
-      } 
-       else if (column === "unit") {
+      }
+      else if (column === "unit") {
         valueA = (a.unitnumber || "").toLowerCase();
         valueB = (b.unitnumber || "").toLowerCase();
       }
@@ -337,8 +337,8 @@ export default function OwnerVehicles() {
   let ttitle2 = "";
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
-   // ttitle2 = hoa.name + " -  " + role;
-     ttitle2 = hoa.name;
+    // ttitle2 = hoa.name + " -  " + role;
+    ttitle2 = hoa.name;
     // console.log("VEHICLES LENGTH IS ",vehicles.length );
   }
   return (
@@ -348,34 +348,34 @@ export default function OwnerVehicles() {
 
         <div className="standardtitlebar">
           <div className="button-grid">
-          
- {loggedInUser && loggedInUser.role === "admin" && (
-             
-   
-            <div>
-              <select className="standardselect"
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-              >
-                <option value="owner">Owner</option>
-                <option value="renter">Renter</option>
-              </select>
+
+            {loggedInUser && loggedInUser.role === "admin" && (
+
+
+              <div>
+                <select className="standardselect"
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                >
+                  <option value="owner">Owner</option>
+                  <option value="renter">Renter</option>
+                </select>
               </div>
-   )}
-  <button className="navbutton2"
-            onClick={handleShowFilterClick}>
-            {!showFilters ? "Sort" : "Hide"}
-          </button>
+            )}
+            <button className="navbutton2"
+              onClick={handleShowFilterClick}>
+              {!showFilters ? "Sort" : "Hide"}
+            </button>
 
             <div>
 
               <button className="navbutton2"
-              onClick={handleShowTable}>
-              {showTable ? "Hide Table" : "Show Table"}
-            </button>
+                onClick={handleShowTable}>
+                {showTable ? "Hide Table" : "Show Table"}
+              </button>
             </div>
 
-            
+
 
 
             {/* <div>
@@ -388,7 +388,7 @@ export default function OwnerVehicles() {
               />
             </div> */}
 
- {/* {loggedInUser && loggedInUser.role === "admin" && (
+            {/* {loggedInUser && loggedInUser.role === "admin" && (
               <button className="navbutton2"
                 onClick={() => handleCreateClick()}>
                 filter
@@ -410,7 +410,7 @@ export default function OwnerVehicles() {
 
           </div>
         </div>
-      
+
 
         <div style={{ display: isVisible ? "block" : "block" }}>
 
@@ -491,8 +491,8 @@ export default function OwnerVehicles() {
                   minWidth: "800px",
                   overflowX: "auto"
                 }}>
-                
-            
+
+
 
 
 
@@ -515,18 +515,19 @@ export default function OwnerVehicles() {
 
             ) : (
 
-
-              <VehiclesGridPhone
-                vehicles={vehicles}
-                role={role}
-                // sortColumn={sortColumn}
-                // sortDirection={sortDirection}
-                // handleSort={handleSort}
-                handleDetailsClick={handleDetailsClick}
-                handlePaymentClick={handlePaymentClick}
-                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                utcDateOnly={utcDateOnly}
-              />
+              <div className='grid-flex-container'>
+                <VehiclesGridPhone
+                  vehicles={vehicles}
+                  role={role}
+                  // sortColumn={sortColumn}
+                  // sortDirection={sortDirection}
+                  // handleSort={handleSort}
+                  handleDetailsClick={handleDetailsClick}
+                  handlePaymentClick={handlePaymentClick}
+                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                  utcDateOnly={utcDateOnly}
+                />
+              </div>
             )}
           </>
         ) : (

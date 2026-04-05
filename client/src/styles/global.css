@@ -849,12 +849,14 @@ section.standardsectiondashboard {
 .grid-flex-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 4px;
  
   justify-content: center;
   align-items: flex-start;
   /* min-height: 140px; */
+  max-height: 600px;
   overflow-Y: auto;
+  border: 0px solid yellow;
 }
 
 
