@@ -455,7 +455,7 @@ button.navbutton2 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: normal;
-  min-width:120px;
+  min-width:100px;
   margin: 4px;
 
 }
@@ -602,7 +602,7 @@ input.input-date:disabled {
   padding: 10px;
   border-radius: 8px;
   /* width: 70%; */
-  
+
   margin: auto;
   text-align: center;
   opacity: .8;
