@@ -227,7 +227,7 @@ export default function RenterVehicles() {
 
 
           <div className="tableview">
-            <div className="standardtitlebar380">
+            <div className="standardtitlebar" style={{width: "420px"}}>
               <label className="input-label2">
                 {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber}
               </label><br />
