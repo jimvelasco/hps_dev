@@ -1745,6 +1745,11 @@ Hover: #B91C1C
 
 .strike {
   text-decoration: line-through;
+   text-decoration-thickness: 3px;
+      text-decoration-color: #2563EB;
+
+   
+
 }
 
 /* BUTTONS BUTTONS BUTTONS BUTTONS */

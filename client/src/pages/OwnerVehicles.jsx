@@ -345,48 +345,48 @@ export default function OwnerVehicles() {
   const renderTitleBar = () => {
     return (<div>
       <div className="button-grid">
-            {loggedInUser && loggedInUser.role === "admin" && (
-              <div>
-                <select className="standardselect"
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                >
-                  <option value="owner">Owner</option>
-                  <option value="renter">Renter</option>
-                </select>
-              </div>
-            )}
-            <button className="navbutton2"
-              onClick={handleShowFilterClick}>
-              {/* {!showFilters ? "Sort" : "Hide"} */}
-               {showFilters ?
-              (<span className="strike">
-                Sort</span>)
-              : (<span>Sort</span>)
-            }
-            </button>
-            <div>
-              <button className="navbutton2"
-                onClick={handleShowTable}>
-                {/* {showTable ? "Hide Table" : "Show Table"} */}
+        {loggedInUser && loggedInUser.role === "admin" && (
+          <div>
+            <select className="standardselect"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <option value="owner">Owner</option>
+              <option value="renter">Renter</option>
+            </select>
+          </div>
+        )}
+        <button className="navbutton2"
+          onClick={handleShowFilterClick}>
+          {/* {!showFilters ? "Sort" : "Hide"} */}
+          {showFilters ?
+            (<span className="strike">
+              Sort</span>)
+            : (<span>Sort</span>)
+          }
+        </button>
+        <div>
+          <button className="navbutton2"
+            onClick={handleShowTable}>
+            {/* {showTable ? "Hide Table" : "Show Table"} */}
 
-                 {showTable ?
-              (<span className="strike">
-                Table</span>)
+            {showTable ?
+              (<span className="astrike">
+                --Table--</span>)
               : (<span>Table</span>)
             }
 
-              </button>
-            </div>
+          </button>
+        </div>
 
-            {loggedInUser && loggedInUser.role !== "admin" && (
-              <button className="navbutton2"
-                onClick={() => handleCreateClick()}>
-                New
-              </button>
-            )}
-          </div>
-      </div>)
+        {loggedInUser && loggedInUser.role !== "admin" && (
+          <button className="navbutton2"
+            onClick={() => handleCreateClick()}>
+            New
+          </button>
+        )}
+      </div>
+    </div>)
   }
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
@@ -398,7 +398,7 @@ export default function OwnerVehicles() {
             {renderTitleBar()}
           </div>
         </div>
-         <div className="tableview">
+        <div className="tableview">
           <div className="standardtitlebar380" style={{ border: "0px solid yellow " }}>
             {renderTitleBar()}
           </div>
