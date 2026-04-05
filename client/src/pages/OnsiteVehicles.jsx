@@ -9,9 +9,14 @@ import TableButton from "../components/TableButton";
 import ViolationsAccordion from "../components/ViolationsAccordion";
 import { getAWSResource } from "../utils/awsHelper";
 import VehiclesTableOnsite from "../components/VehiclesTableOnsite";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+//import { fas, fad, fass, fasds } from '@awesome.me/kit-KIT_CODE/icons'
+
+//import { byPrefixAndName } from '@awesome.me/kit-KIT_CODE/icons'
+//import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faXmark,faHouse } from '@fortawesome/free-solid-svg-icons';
 
 export default function OnsiteVehicles() {
   const { hoaId } = useParams();
@@ -370,6 +375,8 @@ export default function OnsiteVehicles() {
                   <FontAwesomeIcon
                     icon={faXmark}
                   />
+                  {/* <FontAwesomeIcon icon={byPrefixAndName.fas['house']} /> */}
+                   <FontAwesomeIcon icon={faHouse} />
                 </div>
               </div>
               <div style={{
