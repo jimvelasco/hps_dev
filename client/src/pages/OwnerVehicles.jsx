@@ -413,27 +413,27 @@ export default function OwnerVehicles() {
             <div className="standardtitlebar">
               {/* <div style={{ marginBottom: "10px" }}><b>Sort</b></div> */}
               <div className="button-grid">
-                <button className="btnxsp "
+                <button className="btnxsp btn-sort"
                   onClick={() => handleSort("owner")}>
                   Name
                 </button>
-                <button className="btnxsp "
+                <button className="btnxsp btn-sort"
                   onClick={() => handleSort("unit")}>
                   Unit
                 </button>
-                <button className="btnxsp "
+                <button className="btnxsp btn-sort "
                   onClick={() => handleSort("ownertype")}>
                   Type
                 </button>
-                <button className="btnxsp"
+                <button className="btnxsp btn-sort"
                   onClick={() => handleSort("plate")}>
                   Plate
                 </button>
-                <button className="btnxsp "
+                <button className="btnxsp btn-sort "
                   onClick={() => handleSort("enddate")}>
                   Checkout
                 </button>
-                <button className="btnxsp "
+                <button className="btnxsp btn-sort "
                   onClick={() => handleSort("active")}>
                   Active
                 </button>
