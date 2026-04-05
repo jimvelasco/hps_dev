@@ -590,12 +590,24 @@ input.input-date:disabled {
   border-radius: 8px;
   /* width:380px; */
   width: 95%;
-
   margin: auto;
   text-align: center;
   opacity: .8;
   margin-bottom: 20px;
 }
+
+.standardtitlebar380 {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 8px;
+  width:380px;
+  margin: auto;
+  text-align: center;
+  opacity: .8;
+  margin-bottom: 20px;
+}
+
 .standardtitlebar2 {
   background-color: white;
   color: black;

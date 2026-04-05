@@ -341,17 +341,11 @@ export default function OwnerVehicles() {
     ttitle2 = hoa.name;
     // console.log("VEHICLES LENGTH IS ",vehicles.length );
   }
-  return (
-    <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-      <DashboardNavbar title="Owner Vehicles" title2={ttitle2} buttons={navButtons} />
-      <div className="page-content">
 
-        <div className="standardtitlebar" style={{border:"0px solid yellow "}}>
-          <div className="button-grid">
-
+  const renderTitleBar = () => {
+    return (<div>
+      <div className="button-grid">
             {loggedInUser && loggedInUser.role === "admin" && (
-
-
               <div>
                 <select className="standardselect"
                   value={filterType}
@@ -366,39 +360,12 @@ export default function OwnerVehicles() {
               onClick={handleShowFilterClick}>
               {!showFilters ? "Sort" : "Hide"}
             </button>
-
             <div>
-
               <button className="navbutton2"
                 onClick={handleShowTable}>
                 {showTable ? "Hide Table" : "Show Table"}
               </button>
             </div>
-
-
-
-
-            {/* <div>
-               <div style={{fontSize:"12px"}}>Since</div>
-              <input className="input-date"
-                type="date"
-                value={filterDate}
-                onChange={(e) => setFilterDate(e.target.value)}
-                disabled={filterType === "renter" ? false : true }
-              />
-            </div> */}
-
-            {/* {loggedInUser && loggedInUser.role === "admin" && (
-              <button className="navbutton2"
-                onClick={() => handleCreateClick()}>
-                filter
-              </button>
-            )} */}
-
-
-
-
-
 
             {loggedInUser && loggedInUser.role !== "admin" && (
               <button className="navbutton2"
@@ -406,8 +373,22 @@ export default function OwnerVehicles() {
                 New Vehicle
               </button>
             )}
+          </div>
+      </div>)
+  }
+  return (
+    <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+      <DashboardNavbar title="Owner Vehicles" title2={ttitle2} buttons={navButtons} />
+      <div className="page-content">
 
-
+        <div className="phoneview">
+          <div className="standardtitlebar" style={{ border: "0px solid yellow " }}>
+            {renderTitleBar()}
+          </div>
+        </div>
+         <div className="tableview">
+          <div className="standardtitlebar380" style={{ border: "0px solid yellow " }}>
+            {renderTitleBar()}
           </div>
         </div>
 
