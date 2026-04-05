@@ -346,7 +346,7 @@ export default function OwnerVehicles() {
       <DashboardNavbar title="Owner Vehicles" title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="xstandardtitlebar" style={{border:"2px solid yellow "}}>
+        <div className="standardtitlebar" style={{border:"0px solid yellow "}}>
           <div className="button-grid">
 
             {loggedInUser && loggedInUser.role === "admin" && (
