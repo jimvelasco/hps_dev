@@ -272,19 +272,6 @@ button.standardbutton:hover {
 }
 
 
-.standardsubmitbutton {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #2563EB;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  /* width:100%; */ 
-  width: 120px;
-  transition: background-color 0.3s ease
-}
 
 .standardsubmitbutton:disabled {
   background-color: #ccc;
@@ -303,35 +290,10 @@ button.standardbutton:hover {
 
 
 
-button.standardcancelbutton {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #DC2626;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 120px;
-  transition: background-color 0.3s ease
-}
 
 button.standardcancelbutton:hover {
   filter: brightness(.8);
   /* opacity: .8; */
-}
-
-button.standarddeletebutton {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #d32f2f;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 120px;
-  transition: background-color 0.3s ease
 }
 
 button.standarddeletebutton:disabled {
@@ -348,20 +310,6 @@ button.standarddeletebutton:hover:disabled {
 }
 
 /*.  */
-
-.standardsubmitbutton180 {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #2563EB;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  /* width:100%; */ 
-  width: 180px;
-  transition: background-color 0.3s ease
-}
 
 .standardsubmitbutton180:disabled {
   background-color: #ccc;
@@ -380,18 +328,6 @@ button.standarddeletebutton:hover:disabled {
 
 
 
-button.standardcancelbutton180 {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #6B7280;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 180px;
-  transition: background-color 0.3s ease
-}
 
 button.standardcancelbutton180:hover {
   filter: brightness(.8);
@@ -1753,62 +1689,164 @@ Hover: #B91C1C
 */
 
 
-.btn-primary{
+.zzbtn-primary{
   /* background-color: #2563EB; */
   background-color: #2563EB;
   color: #ffffff;
   border-color: #2563eb;
 }
 
-.btn-primary2tt {
-  /* background-color: #2563EB; */
-  background-color: transparent;
-  color: #374151;
-  border-color: #6B7280;
-}
 
-.btn-primary2 {
+.zzbtn-secondary {
   background-color: #6B7280;
   color: #ffffff;
   border-color: #6B7280;
 }
 
-.btn-default {
+.zzbtn-default {
     background-color: #DC2626;
   color: white;
   border-color: #DC2626;
 }
 
-.btn-defaultzz {
-  /* background-color: #ccc; */
-   /* background-color: #1976d2; */
-    background-color: gray;
-  color: white;
-  border-color: gray;
-}
-
-.btn-primary2x {
-  background-color: #576676;
-  color: #ffffff;
-  border-color: #2563eb;
-}
 
 
-.btn-primarycc {
-  background-color: #1976d2;
-  color: #ffffff;
-  border-color: #2563eb;
-}
-.btn-secondary {
+
+.zzbtn-secondary {
   background-color: #7690ab;
   color: #ffffff;
   border-color: #7690ab;
 }
 
-.btn-danger {
+/* BUTTONS BUTTONS BUTTONS BUTTONS */
+/* BUTTONS BUTTONS BUTTONS BUTTONS */
+/* BUTTONS BUTTONS BUTTONS BUTTONS */
+
+
+.standardsubmitbutton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2563EB;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  /* width:100%; */ 
+  width: 120px;
+  transition: background-color 0.3s ease
+}
+
+
+.standardsubmitbutton180 {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2563EB;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  /* width:100%; */ 
+  width: 180px;
+  transition: background-color 0.3s ease
+}
+
+
+
+button.standardcancelbutton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #DC2626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 120px;
+  transition: background-color 0.3s ease
+}
+
+
+button.standardcancelbutton180 {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #DC2626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 180px;
+  transition: background-color 0.3s ease
+}
+
+
+button.standarddeletebutton {
+  padding: 10px 20px;
+  font-size: 16px;
   background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 120px;
+  transition: background-color 0.3s ease
+}
+
+
+
+
+/* these are from zencoder */
+
+/*
+Primary: #2563EB (Blue) - Use for main actions.
+Secondary: #64748B (Slate) or #7690AB (as currently in global.css) - Use for secondary/less important actions.
+Cancel: #94A3B8 (Slate-400) or #E2E8F0 (with dark text) - Use to dismiss or go back without changes.
+Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destructive actions.
+*/
+/* Primary: Blue-600 */
+.btn-primary {
+  background-color: #2563EB;
   color: #ffffff;
-  border-color: #d32f2f;
+  border-color: #2563EB;
+}
+
+/* Secondary: Slate-500 */
+.btn-primary2 {
+  background-color: #64748B;
+  color: #ffffff;
+  border-color: #64748B;
+}
+.btn-secondary {
+  background-color: #64748B;
+  color: #ffffff;
+  border-color: #64748B;
+}
+
+/* Cancel: Slate-400 or Gray was btn-cancel */
+.btn-default {
+  background-color: #94A3B8;
+  color: #ffffff;
+  border-color: #94A3B8;
+}
+
+/* Delete: Red-600 (Danger) */
+.btn-delete {
+  background-color: #DC2626;
+  color: #ffffff;
+  border-color: #DC2626;
+}
+
+
+/* end zen */
+
+
+.btn-danger {
+  background-color: #DC2626;
+  color: #ffffff;
+  border-color: #DC2626;
 }
 
 @media (hover: hover) {

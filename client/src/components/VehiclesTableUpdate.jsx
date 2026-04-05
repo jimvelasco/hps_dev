@@ -146,7 +146,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             <div className="standard-table-cell ">{vehicle.model}</div>
 
             <div style={{ marginTop: '5px' }}>
-              <button className="btnxs btn-primary2"
+              <button className="btnxs btn-secondary"
                 onClick={() => handleDetailsClick(vehicle)}>
                 {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
               </button>

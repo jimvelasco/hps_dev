@@ -16,7 +16,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
         <div className="grid-container-3_oldhoa" key={vehicle._id}>
           <div className="full-row">
             <div className="button-grid" style={{ marginBottom: '10px' }}>
-              <button className="btns btn-primary2"
+              <button className="btns btn-secondary"
                 onClick={() => handleDetailsClick(vehicle)}>
                 {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
               </button>
@@ -87,7 +87,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
             <div className="grid-item-normal " >
          
             {getVehicleActiveStatusBoolean(vehicle) ? (
-               <div style={{backgroundColor:"green",color:"white",padding:"3px",display:"inline-block"}}>Active</div> ) : 
+               <div style={{backgroundColor:"#16A34A",color:"white",padding:"3px",display:"inline-block"}}>Active</div> ) : 
               ("Not Active")
               } 
             </div>

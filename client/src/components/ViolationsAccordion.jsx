@@ -215,7 +215,7 @@ export default function ViolationsAccordion({ hoaId }) {
       <div className="accordion-container">
         {violations.map((item, index) => (
           <div key={index} className="accordion-item">
-            <div className="accordion-header btn-primary2" onClick={() => toggleItem(index)} >
+            <div className="accordion-header btn-secondary" onClick={() => toggleItem(index)} >
               <div>{item.title}</div>
             </div>
             <div className={`accordion-content ${expandedIndices.includes(index) ? "open" : ""}`}>
