@@ -51,18 +51,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             )}
           </div>
 
-           <div className="standard-table-header" style={{
-            textDecoration: "underline",
-            cursor: "pointer"
-          }} onClick={() => handleSort("plate")}>
-            Plate
-            {sortColumn === "plate" && (
-              <FontAwesomeIcon
-                icon={faArrowUp}
-                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
-              />
-            )}
-          </div>
+          
 
 
            <div className="standard-table-header" style={{
@@ -77,6 +66,21 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
               />
             )}
           </div>
+
+           <div className="standard-table-header" style={{
+            textDecoration: "underline",
+            cursor: "pointer"
+          }} onClick={() => handleSort("plate")}>
+            Plate
+            {sortColumn === "plate" && (
+              <FontAwesomeIcon
+                icon={faArrowUp}
+                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
+              />
+            )}
+          </div>
+
+
 
 
           {/* <div className="standard-table-header ">Type</div> */}
