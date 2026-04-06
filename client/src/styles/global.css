@@ -804,7 +804,7 @@ section.standardsectiondashboard {
 .grid-flex-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
  
   justify-content: center;
   align-items: flex-start;
