@@ -361,10 +361,11 @@ export default function OnsiteVehicles() {
               position: 'absolute',
               top: '140px',
               border: "0px solid yellow",
+              width:'300px'
               //  maxHeight: '200px',
               // backgroundColor: "#e0e0e0"
             }}>
-              <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
+              {/* <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
                 <div style={{ width: "20px" }}> &nbsp;</div>
                 <div className="header-title">Violations</div>
                 <div onClick={handleShowGrid}>
@@ -372,7 +373,22 @@ export default function OnsiteVehicles() {
                     icon={faXmark}
                   />
                 </div>
+              </div> */}
+
+               <div style={{ display: 'flex', width: "100%", justifyContent: "center" }}>
+               
+                <div className="header-title">Violations</div>
+                <div onClick={handleShowGrid} className="close-button">
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                  />
+                </div>
               </div>
+
+
+
+              
+              
               <div style={{
 
                 maxHeight: '350px',
