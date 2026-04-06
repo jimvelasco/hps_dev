@@ -120,14 +120,14 @@ export default function ParkingSpacesOverviewNB() {
           Loading...
         </div>
       ) : (
-        <div style={{color: "#bbb", backgroundColor: "#333", border:"0px solid white"}}>
+        <div  style={{color: "#bbb",  backgroundColor: "#333", border:"0px solid white"}}>
           
-           <span><b style={{color: "#fff",textWrap: "nowrap"}}>{hoaname}</b></span>&nbsp;&nbsp;&nbsp;
-            <span style={{textWrap: "nowrap"}}>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>&nbsp;&nbsp;&nbsp;
+            <span><b style={{color: "#fff",textWrap: "nowrap"}}>{hoaname}</b></span>
+            <span style={{marginLeft:"5px",textWrap: "nowrap"}}>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>
 
-            <span>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>&nbsp;&nbsp;&nbsp;
+            <span style={{marginLeft:"5px"}}>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>
 
-            <span>Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
+            <span style={{marginLeft:"5px"}}>Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
         </div>
       )}
     </div>

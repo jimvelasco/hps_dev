@@ -1499,6 +1499,14 @@ input.standardinput:disabled {
 /* ********************grid buttons test************************** */
 
 
+
+.button-grid-sm {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  gap: 0.75rem;
+
+}
+
 .button-grid-nc {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
