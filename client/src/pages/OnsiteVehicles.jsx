@@ -372,7 +372,7 @@ export default function OnsiteVehicles() {
               // backgroundColor: "#e0e0e0"
             }}>
              
-               <div style={{ display: 'flex', width: "100%", justifyContent: "center" }}>
+               <div style={{ display: 'flex', width: "100%", justifyContent: "center",padding:"0 10px" }}>
                
                 <div className="header-title">Violations</div>
                 <div onClick={handleShowGrid} className="close-button">
