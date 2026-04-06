@@ -262,6 +262,34 @@ export default function OnsiteVehicles() {
   let role = "owner";
 
   let bgcolor = 'white';
+
+
+   const renderTitleBar = () => {
+    return (<div>
+      <button className="navbutton2" onClick={handleShowGrid}
+            disabled={showTable}>
+            {isGridVisible ?
+              (<span className="strike">
+                Violations</span>)
+              : (<span>Violations</span>)
+            }
+          </button>
+          <button className="navbutton2" onClick={handleShowPlate}
+            disabled={showTable}>
+            {isPlateVisible ? "Details" : "Plates"}
+          </button>
+          <button className="navbutton2" onClick={handleShowTable}
+            disabled={isGridVisible}>
+            {showTable ?
+              (<span className="strike">
+                Table</span>)
+              : (<span>Table</span>)
+            }
+          </button>
+      </div>
+      )
+  }
+
   return (
     <div style={{
       minHeight: "100vh", backgroundColor: "#f5f5f5",
@@ -272,37 +300,15 @@ export default function OnsiteVehicles() {
       <DashboardNavbar title="Onsite Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="standardtitlebar">
-
-
-          <button className="navbutton2" onClick={handleShowGrid}
-            disabled={showTable}>
-            {isGridVisible ?
-              (<span className="strike">
-                Violations</span>)
-              : (<span>Violations</span>)
-            }
-          </button>
-
-          <button className="navbutton2" onClick={handleShowPlate}
-            disabled={showTable}>
-            {isPlateVisible ? "Details" : "Plates"}
-          </button>
-          <button className="navbutton2" onClick={handleShowTable}
-            disabled={isGridVisible}>
-
-
-
-            {showTable ?
-              (<span className="strike">
-                Table</span>)
-              : (<span>Table</span>)
-            }
-
-          </button>
-
-
-
+        <div className="phoneview">
+          <div className="standardtitlebar" style={{ border: "0px solid yellow " }}>
+            {renderTitleBar()}
+          </div>
+        </div>
+        <div className="tableview">
+          <div className="standardtitlebar380" style={{ border: "0px solid yellow " }}>
+            {renderTitleBar()}
+          </div>
         </div>
 
 
