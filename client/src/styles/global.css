@@ -378,7 +378,7 @@ button.standarddeletebutton180:hover:disabled {
   cursor: pointer;
   padding: 5px;
   font-size: 1.2rem;
-  color: #666;
+  /* color: #666; */
 }
 
 
