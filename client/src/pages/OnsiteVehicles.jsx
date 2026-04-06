@@ -372,7 +372,7 @@ export default function OnsiteVehicles() {
               // backgroundColor: "#e0e0e0"
             }}>
              
-               <div style={{ display: 'flex', width: "100%", justifyContent: "center",padding:"0 10px" }}>
+               <div style={{ display: 'flex', width: "100%", justifyContent: "center" }}>
                
                 <div className="header-title">Violations</div>
                 <div onClick={handleShowGrid} className="close-button">
@@ -389,8 +389,10 @@ export default function OnsiteVehicles() {
               <div style={{
 
                 maxHeight: '350px',
-                width: '100%',
-                overflowY: 'auto'
+                width: '90%',
+                overflowY: 'auto',
+                 overflowX: 'hidden',
+               
                 // backgroundColor: "#e0e0e0"
               }}>
 

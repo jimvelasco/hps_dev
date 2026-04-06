@@ -105,6 +105,8 @@ export default function ViolationsAccordion({ hoaId }) {
       border-radius: 4px;
       overflow: hidden;
       background: white;
+     
+    
     }
 
     .accordion-header {
@@ -120,6 +122,7 @@ export default function ViolationsAccordion({ hoaId }) {
       font-weight: 500;
       transition: background-color 0.2s;
       min-height: 40px;
+    
     }
     .header-title {
       display: flex;
