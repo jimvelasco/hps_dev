@@ -1761,15 +1761,31 @@ Hover: #B91C1C
   color: #ffffff;
   border-color: #7690ab;
 }
-
 .strike {
   text-decoration: line-through;
-   text-decoration-thickness: 3px;
-      text-decoration-color: #2563EB;
-
-   
-
+  text-decoration-thickness: 3px;
+  text-decoration-color: #2563EB;
 }
+
+/*
+.btn-primary {
+  background-color: #2563EB;
+  color: #ffffff;
+  border-color: #2563EB;
+}
+  */
+
+/* Selected or Active State */
+/*
+
+.btn-primary.selected, 
+.btn-primary:active {
+  background-color: #1D4ED8;
+  border-color: #1D4ED8;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+  */
+
 
 /* BUTTONS BUTTONS BUTTONS BUTTONS */
 /* BUTTONS BUTTONS BUTTONS BUTTONS */

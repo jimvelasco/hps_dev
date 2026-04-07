@@ -371,8 +371,8 @@ export default function OwnerVehicles() {
             {/* {showTable ? "Hide Table" : "Show Table"} */}
 
             {showTable ?
-              (<span className="astrike">
-                --Table--</span>)
+              (<span className="strike">
+                Table</span>)
               : (<span>Table</span>)
             }
 
