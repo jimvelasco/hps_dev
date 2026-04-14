@@ -159,7 +159,7 @@ export default function OwnersDashboard() {
  navButtons.push({
       label: "Logout",
       onClick: handleLogout,
-      which: "goback"
+      which: "logout"
     }
   )
 

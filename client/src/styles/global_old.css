@@ -1905,25 +1905,25 @@ Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destruct
   border-color: #64748B;
 }
 .btn-secondary {
-  background-color: #ffc107;
-  color: #112e51;
+  background-color: #64748B;
+  color: #ffffff;
   border-color: #64748B;
 }
 
 /* Cancel: Slate-400 or Gray was btn-cancel */
 .btn-default {
-  background-color: #2196f3;
+  background-color: #94A3B8;
   color: #ffffff;
   border-color: #94A3B8;
 }
 .btn-cancel {
-  background-color: #2196f3;
+  background-color: #94A3B8;
   color: #ffffff;
   border-color: #94A3B8;
 }
-.btn-logout {
-  background-color: #d32f2f;
-  color: white;
+.btn-sort {
+  background-color: #94A3B8;
+  color: #500;
   border-color: #94A3B8;
 }
 
