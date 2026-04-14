@@ -40,6 +40,7 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 1200px;
   margin: 0 auto;
   border:0px solid yellow;
+   padding-bottom:20px;
 }
 /*style={{ padding: "30px", maxWidth: "1200px", margin: "0 auto" }} */
 .flexLayout {
@@ -1536,6 +1537,7 @@ input.standardinput:disabled {
   justify-content: center; /* Centers the whole row of cells */
   /* background-color: red; */
   /* border:1px solid white; */
+ 
 }
 
 .button-grid > :only-child {
