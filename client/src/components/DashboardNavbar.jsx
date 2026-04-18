@@ -1,6 +1,7 @@
 import React from "react";
 import NavButton from "./NavButton";
 import ParkingSpacesOverviewNB from "./ParkingSpacesOverviewNB";
+import hoaLogo from "../assets/HOA7.png";
 
 
 export default function DashboardNavbar({ title, title2, buttons }) {
@@ -13,7 +14,13 @@ export default function DashboardNavbar({ title, title2, buttons }) {
       <div className="tableview">
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div className="button-grid">
-            <div style={{ color: "#bbb", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div>
+            <img
+              src={hoaLogo}
+              alt="HOA Logo"
+              style={{ border:"0px solid white",marginTop:"0px", width: "200px", vAlign:"top",borderRadius: "4px" }}
+            />
+            {/* <div style={{ color: "#bbb", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div> */}
+  {/* <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div> */}
             <div style={{ color: "white", marginTop: "3px", marginBottom: "0px" }}>{title}</div>
             {/* <div style={{ color: "white", marginTop: "5px", marginBottom: "0px" }}>{title2}</div > */}
             <div style={{ color: "white", marginTop: "3px", marginBottom: "0px" }}> <ParkingSpacesOverviewNB /></div >
@@ -30,23 +37,29 @@ export default function DashboardNavbar({ title, title2, buttons }) {
             ))}
           </div>
         </nav>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "5px" }}>
+
+
+        </div>
+
       </div>
       <div className="phoneview">
         <nav style={{ backgroundColor: "#333", padding: "10px" }}>
           <div style={{
             color: "#bbb", marginBottom: "5px", alignItems: "center",
             justifyContent: "center", display: "flex", fontSize: "18px"
-          }}><b>HOA Parking Solutions</b></div>
+          }}>
+            {/* <b>HOA Parking Solutions</b> */}
+             <img
+              src={hoaLogo}
+              alt="HOA Logo"
+              style={{ border:"0px solid white",marginTop:"0px", width: "200px", vAlign:"top",borderRadius: "4px" }}
+            />
+            </div>
 
           <div style={{ marginBottom: "5px", color: "white", alignItems: "center", justifyContent: "center", display: "flex" }}>
             {title}
           </div>
-           {/* <div style={{ fontSize:"12px",marginBottom: "0px", color: "white", alignItems: "center", justifyContent: "center", display: "flex" }}>
-            {title2}
-          </div> */}
-          {/* <div style={{ color: "white", marginBottom: "0px" }}>{title2}</div> */}
-
-
           <div style={{ marginBottom: "10px", alignItems: "center", justifyContent: "center", display: "flex" }}>
             <ParkingSpacesOverviewNB />
           </div>
