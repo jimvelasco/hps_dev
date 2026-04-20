@@ -1793,6 +1793,14 @@ Hover: #B91C1C
 /* BUTTONS BUTTONS BUTTONS BUTTONS */
 /* BUTTONS BUTTONS BUTTONS BUTTONS */
 
+.navbarlink {
+  cursor:pointer;
+  color:#b9eaa1;
+  text-decoration:none;
+}
+.navbarlink:hover { 
+  filter: opacity(.7)
+}
 
 button.navbutton2 {
   padding:6px;

@@ -34,8 +34,11 @@ export default function DashboardNavbar({ title, title2, buttons }) {
 
             {/* <div style={{ color: "#bbb", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div> */}
             <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}>
-              <Link to="/" style={{ color: "#b9eaa1",textDecoration:"none"}} >
+              {/* <Link to="/" style={{ color: "#b9eaa1",textDecoration:"none",cursor:"pointer"}} >
                 <b>HOA Parking Solutions</b>
+              </Link> */}
+               <Link to="/" className="navbarlink" >
+                HOA Parking Solutions
               </Link>
             </div>
             <div style={{ color: "white", marginTop: "3px", marginBottom: "0px" }}>{title}</div>
@@ -67,7 +70,7 @@ export default function DashboardNavbar({ title, title2, buttons }) {
             justifyContent: "center", display: "flex", fontSize: "18px"
           }}>
             <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}>
-               <Link to="/" style={{ color: "#b9eaa1",textDecoration:"none"}} >
+               <Link to="/" style={{ color: "#b9eaa1",textDecoration:"none",cursor:"pointer"}} >
                 <b>HOA Parking Solutions</b>
               </Link>
             </div>
