@@ -70,8 +70,8 @@ export default function DashboardNavbar({ title, title2, buttons }) {
             justifyContent: "center", display: "flex", fontSize: "18px"
           }}>
             <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}>
-               <Link to="/" style={{ color: "#b9eaa1",textDecoration:"none",cursor:"pointer"}} >
-                <b>HOA Parking Solutions</b>
+               <Link to="/" className="navbarlink" >
+                HOA Parking Solutions
               </Link>
             </div>
 
