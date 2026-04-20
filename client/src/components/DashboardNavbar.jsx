@@ -33,7 +33,11 @@ export default function DashboardNavbar({ title, title2, buttons }) {
             </Link> */}
 
             {/* <div style={{ color: "#bbb", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div> */}
-            <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div>
+            <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}>
+              <Link to="/">
+              <b>HOA Parking Solutions</b>
+              </Link>
+              </div>
             <div style={{ color: "white", marginTop: "3px", marginBottom: "0px" }}>{title}</div>
             {/* <div style={{ color: "white", marginTop: "5px", marginBottom: "0px" }}>{title2}</div > */}
             <div style={{ color: "white", marginTop: "3px", marginBottom: "0px" }}> <ParkingSpacesOverviewNB /></div >
@@ -62,7 +66,11 @@ export default function DashboardNavbar({ title, title2, buttons }) {
             color: "#bbb", marginBottom: "5px", alignItems: "center",
             justifyContent: "center", display: "flex", fontSize: "18px"
           }}>
-                        <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}><b>HOA Parking Solutions</b></div>
+                        <div style={{ color: "#b9eaa1", marginBottom: "0px", fontSize: "18px" }}>
+                          <Link to="/">
+              <b>HOA Parking Solutions</b>
+              </Link>
+                          </div>
 
             {/* <img
               src={hoaLogo}
