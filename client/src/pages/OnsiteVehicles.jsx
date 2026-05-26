@@ -304,7 +304,7 @@ export default function OnsiteVehicles() {
        <div className="flex-container bg_lightgray" style={{
               overflowY: 'auto',
               border: "0px solid yellow",
-              maxWidth: '140px'
+              maxWidth: '130px'
             }}>
               <div style={{ display: 'flex', width: "100%", justifyContent: "center" }}>
                 <div className="header-title">Violations</div>

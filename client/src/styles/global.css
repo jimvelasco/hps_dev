@@ -372,9 +372,6 @@ button.standarddeletebutton180:hover:disabled {
 
 
 .close-button{
-  position: absolute;      /* Pulls the button out of the center flow */
-  top: 2px;               /* Distance from top */
-  right: 2px;             /* Distance from right */
   background: transparent;
   border: none;
   cursor: pointer;
