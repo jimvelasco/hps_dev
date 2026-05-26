@@ -213,7 +213,7 @@ export default function ViolationsAccordion({ hoaId }) {
       )}
 
       <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-        <button className="navbutton" onClick={handleShowNewViolation}>New Violation</button>
+        <button className="navbutton" onClick={handleShowNewViolation}>New</button>
       </div>
       <div className="accordion-container">
         {violations.map((item, index) => (
