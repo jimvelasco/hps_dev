@@ -264,30 +264,82 @@ export default function OnsiteVehicles() {
   let bgcolor = 'white';
 
 
-   const renderTitleBar = () => {
+  const renderTitleBar = () => {
     return (<div>
       <button className="navbutton2" onClick={handleShowGrid}
-            disabled={showTable}>
-            {isGridVisible ?
-              (<span className="strike">
-                Violations</span>)
-              : (<span>Violations</span>)
-            }
-          </button>
-          <button className="navbutton2" onClick={handleShowPlate}
-            disabled={showTable}>
-            {isPlateVisible ? "Details" : "Plates"}
-          </button>
-          <button className="navbutton2" onClick={handleShowTable}
-            disabled={isGridVisible}>
-            {showTable ?
-              (<span className="strike">
-                Table</span>)
-              : (<span>Table</span>)
-            }
-          </button>
+        disabled={showTable}>
+        {isGridVisible ?
+          (<span className="strike">
+            Violations</span>)
+          : (<span>Violations</span>)
+        }
+      </button>
+      <button className="navbutton2" onClick={handleShowPlate}
+        disabled={showTable}>
+        {isPlateVisible ? "Details" : "Plates"}
+      </button>
+      <button className="navbutton2" onClick={handleShowTable}
+        disabled={isGridVisible}>
+        {showTable ?
+          (<span className="strike">
+            Table</span>)
+          : (<span>Table</span>)
+        }
+      </button>
+    </div>
+    )
+  }
+
+  const renderGridIsVisible = () => {
+    return ( 
+     <div className='onsite-grid-container-2'>
+      <div>
+        {!showTable && (
+          vehicles.map((vehicle, index) => (
+            isPlateVisible ? renderVehiclePlate(vehicle) :
+              renderVehicleCard(vehicle)
+          ))
+        )}
       </div>
-      )
+       <div className="flex-container bg_lightgray" style={{
+              overflowY: 'auto',
+              border: "0px solid yellow",
+              width: '300px'
+            }}>
+              <div style={{ display: 'flex', width: "100%", justifyContent: "center" }}>
+                <div className="header-title">Violations</div>
+                <div onClick={handleShowGrid} className="close-button">
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                  />
+                </div>
+              </div>
+              <div style={{
+                maxHeight: '350px',
+                width: '90%',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                // backgroundColor: "#e0e0e0"
+              }}>
+                <ViolationsAccordion hoaId={hoaId} />
+              </div>
+
+            </div>
+      </div>
+
+  )
+  }
+  const renderGridIsNotVisible = () => {
+    return (
+      <div className='grid-flex-container'>
+        {!showTable && (
+          vehicles.map((vehicle, index) => (
+            isPlateVisible ? renderVehiclePlate(vehicle) :
+              renderVehicleCard(vehicle)
+          ))
+        )}
+      </div>
+    )
   }
 
   return (
@@ -330,7 +382,7 @@ export default function OnsiteVehicles() {
           </div>
         )}
 
-        {showTable && (
+        {showTable ? (
           <div style={{ overflowX: "auto", maxWidth: "100%" }}>
             <div style={{
               minWidth: "800px",
@@ -346,63 +398,11 @@ export default function OnsiteVehicles() {
                 utcDateOnly={utcDateOnly}
               />
             </div></div>
-        )
+        ) : (null)
         }
-        <div className='grid-flex-container' style={{ border: "0px solid yellow" }}>
-
-          {!showTable && (
-            vehicles.map((vehicle, index) => (
-              isPlateVisible ? renderVehiclePlate(vehicle) :
-                renderVehicleCard(vehicle)
-            ))
-          )
-          }
-        </div>
-
-        {isGridVisible && (
-          <div className='grid-flex-container'>
-            <div className="flex-container bg_lightgray" style={{
-              // maxHeight: '80vh',
-              overflowY: 'auto',
-              position: 'absolute',
-              top: '140px',
-              border: "0px solid yellow",
-              width:'300px'
-              //  maxHeight: '200px',
-              // backgroundColor: "#e0e0e0"
-            }}>
-             
-               <div style={{ display: 'flex', width: "100%", justifyContent: "center" }}>
-               
-                <div className="header-title">Violations</div>
-                <div onClick={handleShowGrid} className="close-button">
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                  />
-                </div>
-              </div>
-
-
-
-              
-              
-              <div style={{
-
-                maxHeight: '350px',
-                width: '90%',
-                overflowY: 'auto',
-                 overflowX: 'hidden',
-               
-                // backgroundColor: "#e0e0e0"
-              }}>
-
-                <ViolationsAccordion hoaId={hoaId} />
-              </div>
-            </div>
-          </div>
-
-        )
-        }
+       
+       
+        {isGridVisible ? renderGridIsVisible() : renderGridIsNotVisible()}
       </div>
     </div>
   );
