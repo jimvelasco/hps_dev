@@ -297,7 +297,7 @@ export default function OnsiteVehicles() {
 
     return ( 
      <div className='onsite-grid-container-2'>
-      <div>
+      <div className="grid-flex-container">
         {!showTable && (
           vehicles.map((vehicle, index) => (
             isPlateVisible ? renderVehiclePlate(vehicle) :
