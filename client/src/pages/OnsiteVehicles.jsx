@@ -291,6 +291,10 @@ export default function OnsiteVehicles() {
   }
 
   const renderGridIsVisible = () => {
+    const isPhonePortrait = /iPhone|Android/i.test(navigator.userAgent) && window.innerHeight > window.innerWidth;
+    let maxwid = isPhonePortrait ? '130px' : '260px';
+
+
     return ( 
      <div className='onsite-grid-container-2'>
       <div>
@@ -304,11 +308,11 @@ export default function OnsiteVehicles() {
        <div className="flex-container bg_lightgray" style={{
               overflowY: 'auto',
               border: "0px solid yellow",
-              maxWidth: '130px'
+              maxWidth: maxwid
             }}>
-              <div style={{ display: 'flex', width: "100%", justifyContent: "center" }}>
-                <div className="header-title">Violations</div>
-                <div onClick={handleShowGrid} className="close-button">
+              <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
+                <div className="header-title" style={{marginLeft:"10px"}}>Violations</div>
+                <div onClick={handleShowGrid} className="close-button" >
                   <FontAwesomeIcon
                     icon={faXmark}
                   />
