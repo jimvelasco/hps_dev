@@ -22,7 +22,6 @@ router.post("/forgot-password", forgotPasswordSES);
 
 
 router.post("/reset-password", resetPassword);
-// router.post("/send-email-from-hoa", sendEmailFromHoa);
 router.post("/send-email-from-hoa", sendEmailFromHoaSES);
 
 

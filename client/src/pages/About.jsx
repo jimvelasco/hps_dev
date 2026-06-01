@@ -19,7 +19,7 @@ export default function About() {
       qry = `/${hoaId}/email-from-hoa`
     }
      navigate(qry, {
-      state: { email:"contact@hoaparkingsolutions.com" }
+      state: { email:"contact@hoaparkingsolutions.com",fromwhere:"about" }
     });
   };
   return (

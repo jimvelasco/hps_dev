@@ -624,8 +624,9 @@ const forgotPasswordSES = async (req, res) => {
 
 
 const sendEmailFromHoaSES = async (req, res) => {
+  console.log('sendEmailFromHoaSES called');
   try {
-    const { hoaId, subject, returnEmail, message, toEmail } = req.body;
+    const { hoaId, subject, returnEmail, message, toEmail ,fromwhere} = req.body;
 
     const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
     if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
@@ -642,13 +643,20 @@ const sendEmailFromHoaSES = async (req, res) => {
       return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
     }
 
-   // console.log('toemail', toEmail)
+   // console.log('sendEmailFromHoaSES toemail', toEmail,'fromwhere',fromwhere)
 
-    let HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+    let HPS_EMAIL = toEmail; 
+    // process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
     let HPS_EMAILx = 'admin@hoaparkingsolutions.com';
     if (toEmail) {
     //    HPS_EMAIL = toEmail;
     }
+    if (fromwhere === 'about') {
+         HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+    }
+    //  if (fromwhere === 'hoainformation') {
+    //      HPS_EMAIL = toEmail;
+    // }
 
     // Set the AWS Region (e.g., "us-east-1")
     const REGION = "us-east-1";
@@ -738,7 +746,6 @@ const sendEmailFromHoaSES = async (req, res) => {
       }
     };
 
-    // Call the send function
     await sendEmail();
     res.json({
       message: "Email sent successfully"

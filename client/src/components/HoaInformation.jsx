@@ -26,15 +26,11 @@ export default function HoaInformation({ hoa }) {
     // console.log('handleEmailClick called with hoa:', hoa.contact_information[2].email)
 
     navigate(qry, {
-      state: { email:email }
+      state: { email:email,fromwhere:"hoainformation" }
     });
 
   };
 
-  // const handleEmailClick = () => {
-  //    const qry =`/${hoaId}/email-from-hoa`;
-  //   navigate(`/${hoaId}/email-from-hoa`);
-  // };
   return (
     <>
     {/* <div className="standardtitlebar2" style={{width:"300px",opacity: "1.0"}}>

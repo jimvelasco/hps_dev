@@ -14,6 +14,7 @@ export default function EmailFromHoa() {
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const location = useLocation();
   const email = location.state?.email;
+  const fromwhere = location.state?.fromwhere;
   //console.log('EmailFromHoa email is:', email);
 
   const [sending, setSending] = useState(false);
@@ -95,7 +96,8 @@ export default function EmailFromHoa() {
         subject: formData.subject,
         returnEmail: formData.returnEmail,
         message: formData.message,
-        toEmail: email
+        toEmail: email,
+        fromwhere:fromwhere
       });
 
       setModal({
