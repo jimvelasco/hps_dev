@@ -644,8 +644,8 @@ const sendEmailFromHoaSES = async (req, res) => {
 
    // console.log('toemail', toEmail)
 
-    let HPS_EMAILx = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
-    let HPS_EMAIL = 'admin@hoaparkingsolutions.com';
+    let HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+    let HPS_EMAILx = 'admin@hoaparkingsolutions.com';
     if (toEmail) {
     //    HPS_EMAIL = toEmail;
     }
