@@ -77,9 +77,11 @@ export default function OwnersLogin() {
         const flag = user.role; 
         let nav = `/${hoaId}/ownervehicles/${flag}`;
         if (flag === 'admin') {
-          // nav = `/${hoaId}/admin`;
           //  nav = `/${hoaId}/onsite`;
              nav = `/${hoaId}/dashboard`;
+        }
+         if (flag === 'enforcer') {
+            nav = `/${hoaId}/onsite`;
         }
         navigate(nav);
         }

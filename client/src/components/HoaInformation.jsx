@@ -53,7 +53,7 @@ export default function HoaInformation({ hoa }) {
         {hoa?.contact_information && hoa.contact_information.length > 0 && (
           <div className="hoainformation"  style={{ textAlign:"center",marginTop:"15px"}}>
             {hoa.contact_information.map((contact, index) => (
-              <div style={{marginTop:"15px"}}>
+              <div style={{marginTop:"15px"}} key={index}>
                 <strong>{contact.phone_description || "Contact"}:</strong><br />
                 {contact.phone_number && <span>Phone: {contact.phone_number}<br /></span>}
                 {/* {contact.email && <span>Email: {contact.email}</span>} */}

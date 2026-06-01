@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
+import { useLoggedInUser } from "../hooks/useLoggedInUser";
+
 import DashboardNavbar from "../components/DashboardNavbar";
 import { getVehicleActiveStatusBoolean, getVehicleIsActiveTodayBoolean, formatPhoneNumber, utcDateOnly } from "../utils/vehicleHelpers";
 import TableButton from "../components/TableButton";
@@ -18,6 +20,7 @@ export default function OnsiteVehicles() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
+   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const { setAppError } = useError();
   const [vehicles, setVehicles] = useState([]);
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
@@ -128,11 +131,25 @@ export default function OnsiteVehicles() {
     navigate(`/${hoaId}/dashboard`);
   };
 
+
+  const handleLogout = () => {
+    clearLoggedInUser();
+    navigate(`/${hoaId}`);
+  };
+
   const navButtons = [
     {
       label: "Dashboard",
       onClick: handleBackToDashboard,
       which: "goback"
+    }
+  ];
+
+   const navButtonsEnforcer = [
+    {
+      label: "Logout",
+      onClick: handleLogout,
+      which: "logout"
     }
   ];
   let backgroundImage = '';
@@ -353,7 +370,7 @@ export default function OnsiteVehicles() {
       backgroundPosition: "center", backgroundAttachment: "fixed"
     }}>
 
-      <DashboardNavbar title="Onsite Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
+      <DashboardNavbar title="Onsite Vehicles" title2={hoa && hoa.name} buttons={loggedInUser?.role === 'enforcer' ? navButtonsEnforcer : navButtons} />
       <div className="page-content">
 
         <div className="phoneview">
