@@ -16,6 +16,7 @@ export default function EmailFromHoa() {
   const email = location.state?.email;
   const fromwhere = location.state?.fromwhere;
   //console.log('EmailFromHoa email is:', email);
+  //console.log('EmailFromHoa fromwhere is:', fromwhere);
 
   const [sending, setSending] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null });
@@ -25,14 +26,23 @@ export default function EmailFromHoa() {
     message: ""
   });
 
-  const subjects = [
+  const subjectsabout = [
+    "General Inquiry",
+    "Join HOA Parking Solutions",
+    "Other"
+  ];
+
+   let subjects = [
     "General Inquiry",
     "Complaint",
     "Maintenance Request",
     "Billing Question",
-    "Rule Violation Report",
     "Other"
   ];
+  if (fromwhere == 'about') {
+    subjects = subjectsabout;
+  }
+
 
   const handleBackClick = () => {
     if (hoaId) {
