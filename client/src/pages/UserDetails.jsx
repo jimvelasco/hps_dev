@@ -436,6 +436,7 @@ export default function UserDetails() {
                   >
                     <option value="owner">Owner</option>
                     <option value="admin">Admin</option>
+                     <option value="enforcer">Enforcer</option>
                   </select>
               </div>
 

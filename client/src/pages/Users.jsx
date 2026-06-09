@@ -320,8 +320,8 @@ export default function Users() {
           )}
         </div>
       </div>
-      <div className="users-one">what</div>
-      <div className="users-two">where</div>
+      {/* <div className="users-one">what</div>
+      <div className="users-two">where</div> */}
     </div>
   );
 }
