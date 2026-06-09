@@ -36,9 +36,16 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields: first_name, last_name, phone, email, password, hoaid" });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User with this email already exists" });
+    const existingEmail = await User.findOne({ email, hoaid });
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email address already exists for this HOA" });
+    }
+
+    if (unitnumber) {
+      const existingUnit = await User.findOne({ unitnumber, hoaid });
+      if (existingUnit) {
+        return res.status(400).json({ message: "Unit number already exists for this HOA" });
+      }
     }
 
     const user = await User.create({
@@ -84,11 +91,25 @@ const updateUser = async (req, res) => {
     const { first_name, last_name, phone, email, unitnumber, bedrooms, role, company,
       pincode, password, inventory_allowed_owner, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
-    console.log("updateUser body:", req.body);
+   // console.log("updateUser body:", req.body);
 
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (email !== undefined && email !== user.email) {
+      const existingEmail = await User.findOne({ email, hoaid: user.hoaid, _id: { $ne: id } });
+      if (existingEmail) {
+        return res.status(400).json({ message: "Email address already exists for this HOA" });
+      }
+    }
+
+    if (unitnumber !== undefined && unitnumber !== user.unitnumber) {
+      const existingUnit = await User.findOne({ unitnumber, hoaid: user.hoaid, _id: { $ne: id } });
+      if (existingUnit) {
+        return res.status(400).json({ message: "Unit number already exists for this HOA" });
+      }
     }
 
     if (first_name !== undefined) user.first_name = first_name;
