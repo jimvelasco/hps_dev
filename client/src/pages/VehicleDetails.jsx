@@ -39,7 +39,7 @@ export default function VehicleDetails() {
 
   const handlePlateDetected = (data) => {
     // Mapping from Plate Recognizer vehicle types to our options
-     console.log('handlePlateDetected jjv data:', data);
+    console.log('handlePlateDetected jjv data:', data);
     const typeMapping = {
       'sedan': 'Car',
       'suv': 'Car',
@@ -95,7 +95,7 @@ export default function VehicleDetails() {
           carownerphone: "7777777777",
           make: "Lincoln",
           model: "Navigator",
-           color: "Green",
+          color: "Green",
           year: "2020",
           vehicle_type: "Car",
           plate: "",
@@ -179,7 +179,7 @@ export default function VehicleDetails() {
           // carownertype: role,
           make: response.data.make || "",
           model: response.data.model || "",
-           color: response.data.color || "",
+          color: response.data.color || "",
           year: response.data.year || "",
           vehicle_type: response.data.vehicle_type || "",
           plate: response.data.plate || "",
@@ -377,7 +377,7 @@ export default function VehicleDetails() {
         ownerid: oid,
         requires_payment: rpflag
       };
-     //  console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
+      //  console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
 
       if (isModifyMode) {
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
@@ -491,7 +491,7 @@ export default function VehicleDetails() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px" }}>
               {/* Owner Information */}
               <div >
-                <h3 style={{ color: "#1976d2" ,margin:"10px" }}>Owner</h3>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Owner</h3>
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
@@ -581,9 +581,43 @@ export default function VehicleDetails() {
               </div>
 
               <div>
-                  <h3 style={{ color: "#1976d2" ,margin:"10px" }}>Registration</h3>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Registration</h3>
 
-                    <div style={{ marginBottom: "15px" }}>
+              
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    License Plate *
+                  </label>
+
+                  <input className="standardinput"
+                    type="text"
+                    name="plate"
+                    value={formData.plate}
+                    onChange={handleFormChange}
+                    required
+                  />
+
+                </div>
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Plate State
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    maxLength={2}
+                    name="plate_state"
+                    value={formData.plate_state}
+                    onChange={handleFormChange}
+                    placeholder="e.g., CO, CA, TX"
+                  />
+
+                </div>
+
+                  <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
                     Vehicle Type
                   </label>
@@ -609,70 +643,22 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
-                
-                 <div style={{ marginBottom: "15px" }}>
-                  <label className="input-label">
-                    License Plate *
-                  </label>
 
-                  <input className="standardinput"
-                    type="text"
-                    name="plate"
-                    value={formData.plate}
-                    onChange={handleFormChange}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setIsPlateLookupOpen(true)}
-                    style={{
-                      padding: "5px 10px",
-                      fontSize: "12px",
-                      backgroundColor: "#1976d2",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginTop: "5px",
 
-                    }}
-                  >
-                    Lookup Plate
-                  </button>
-                </div>
 
-                  
-                <div style={{ marginBottom: "0px" }}>
-                  <label className="input-label">
-                    Plate State
-                  </label>
-                  <input className="standardinput"
-                    type="text"
-                    maxLength={2}
-                    name="plate_state"
-                    value={formData.plate_state}
-                    onChange={handleFormChange}
-                    placeholder="e.g., CO, CA, TX"
-                  />
-
-                </div>
-
-                
-                
-                
-                </div>
+              </div>
 
 
 
               {/* License Plate & Status */}
               <div>
-                <h3 style={{ color: "#1976d2" ,margin:"10px" }}>Vehicle</h3>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Vehicle</h3>
 
 
 
 
 
-            
+
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
@@ -698,7 +684,7 @@ export default function VehicleDetails() {
                     onChange={handleFormChange}
                   />
                 </div>
-                 <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
                     Color
                   </label>
@@ -722,14 +708,14 @@ export default function VehicleDetails() {
                   />
                 </div>
 
-              
+
 
               </div>
 
 
               {/* Vehicle Information */}
               <div>
-                <h3 style={{ color: "#1976d2" ,margin:"10px"}}>Stay</h3>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Stay</h3>
 
 
                 <div style={{ marginBottom: "15px" }}>
@@ -898,3 +884,23 @@ export default function VehicleDetails() {
     </div>
   );
 }
+
+/*
+  <button
+                    type="button"
+                    onClick={() => setIsPlateLookupOpen(true)}
+                    style={{
+                      padding: "5px 10px",
+                      fontSize: "12px",
+                      backgroundColor: "#1976d2",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      marginTop: "5px",
+
+                    }}
+                  >
+                    Lookup Plate
+                  </button>
+                  */
