@@ -16,7 +16,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
         <div className="grid-container-3_oldhoa" key={vehicle._id}>
           <div className="full-row">
             <div className="button-grid" style={{ marginBottom: '10px' }}>
-              <button className="btns btn-primary"
+              <button className="btns btn-secondary"
                 onClick={() => handleDetailsClick(vehicle)}>
                 {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
               </button>
@@ -37,7 +37,13 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           <div className="grid-item-bold">Type</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
-          <div className="grid-item-bold row-with-gap">&nbsp;</div>
+          <div className="grid-item-normal row-with-gap" >&nbsp;
+         
+            {/* {getVehicleActiveStatusBoolean(vehicle) ? (
+               <div style={{backgroundColor:"green",color:"white",padding:"3px",display:"inline-block"}}>Active</div> ) : 
+              ("Not Active")
+              }  */}
+            </div>
           <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 
           <div className="grid-item-bold">Make</div>
@@ -47,15 +53,18 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
           <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
           <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
-
+   
           <div className="grid-item-bold">Check In</div>
           <div className="grid-item-bold">Check Out</div>
-          <div className="grid-item-bold">Active</div>
+          <div className="grid-item-bold">Color</div>
+
+        
+
           
           <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkin)}</div>
           <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkout)}</div>
-          <div className="grid-item-normal row-with-gap"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
-
+           <div className="grid-item-normal row-with-gap">{vehicle.color}</div>
+        
 
 
 
@@ -64,7 +73,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           <div className="grid-item-normal">
             {vehicle.requires_payment == 1 ? (
               <div className="xbutton-grid">
-                <button className="btnxs btn-primary"
+                <button className="btnxs btn-primary" style={{width:"80%"}}
                   onClick={() => handlePaymentClick(vehicle)}>
                   Pay Now
                 </button>
@@ -75,6 +84,13 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
               <div className="grid-item-bold">Free</div>
             )}
           </div>
+            <div className="grid-item-normal " >
+         
+            {getVehicleActiveStatusBoolean(vehicle) ? (
+               <div style={{backgroundColor:"#16A34A",color:"white",padding:"3px",display:"inline-block"}}>Active</div> ) : 
+              ("Not Active")
+              } 
+            </div>
           {/* <div><b>{vehicle.carownertype}</b></div> */}
         </div>
       ))}

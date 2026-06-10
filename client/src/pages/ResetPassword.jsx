@@ -134,11 +134,11 @@ export default function ResetPassword() {
       backgroundColor: "#f5f5f5"
     }}>
       <div className="standardtitlebar">
-        <h1 style={{ fontSize: "24px" }}>HOA Parking Solutions</h1>
+        <h1 style={{ fontSize: "24px"}}>HOA Parking Solutions</h1>
       </div>
 
       <div className="loginboxes">
-        <h2>Reset Your Password</h2>
+        <h3 style={{marginTop:"20px"}}>Reset Your Password</h3>
 
         <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
           <div style={{ marginBottom: "15px" }}>
@@ -173,16 +173,16 @@ export default function ResetPassword() {
             />
           </div>
 
-          <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+          <div className="button-grid">
             <button
-              className="standardsubmitbutton"
+              className="btns btn-primary"
               type="submit"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Resetting..." : "Reset Password"}
+              {isSubmitting ? "Resetting..." : "Reset"}
             </button>
             <button
-              className="standardcancelbutton"
+              className="btns btn-cancel"
               type="button"
               onClick={() => navigate("/")}
               disabled={isSubmitting}

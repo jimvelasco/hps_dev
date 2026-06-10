@@ -50,13 +50,13 @@ export default function HoaSelector() {
       backgroundColor: "#f5f5f5"
     }}>
       <div className="standardtitlebar">
-        <h1 style={{ fontSize: "24px" }}>HOA Parking Solutions</h1>
+        <h3>HOA Parking Solutions</h3>
       </div>
 
       <div style={{
         marginTop: "50px",
         width: "300px",
-        margin: "50px auto",
+        margin: "40px auto",
         backgroundColor: "#fff",
         borderRadius: "8px",
         padding: "30px",

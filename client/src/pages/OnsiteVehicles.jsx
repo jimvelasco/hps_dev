@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
+import { useLoggedInUser } from "../hooks/useLoggedInUser";
+
 import DashboardNavbar from "../components/DashboardNavbar";
 import { getVehicleActiveStatusBoolean, getVehicleIsActiveTodayBoolean, formatPhoneNumber, utcDateOnly } from "../utils/vehicleHelpers";
 import TableButton from "../components/TableButton";
@@ -11,10 +13,14 @@ import { getAWSResource } from "../utils/awsHelper";
 import VehiclesTableOnsite from "../components/VehiclesTableOnsite";
 
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark, faHouse } from '@fortawesome/free-solid-svg-icons';
+
 export default function OnsiteVehicles() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
+   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const { setAppError } = useError();
   const [vehicles, setVehicles] = useState([]);
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
@@ -27,17 +33,49 @@ export default function OnsiteVehicles() {
   const [showCards, setShowCards] = useState(true);
   const [showTable, setShowTable] = useState(false);
 
+  // useEffect(() => {
+  //   if (hoaId) {
+  //     const fetchOnsiteVehicles = async () => {
+  //       try {
+  //         setVehiclesLoading(true);
+  //         const response = await axios.get(`/vehicles/${hoaId}`);
+  //         let newary = [];
+  //         response.data.forEach(element => {
+  //           if (getVehicleActiveStatusBoolean(element)) {
+  //             newary.push(element);
+  //           }
+  //         });
+  //         const sorted = [...newary].sort((a, b) => {
+  //           let valueA, valueB;
+  //           valueA = (a.plate || "").toLowerCase();
+  //           valueB = (b.plate || "").toLowerCase();
+  //           return valueA.localeCompare(valueB);
+  //         });
+  //         setVehicles(sorted);
+  //         setVehiclesError(null);
+  //       } catch (err) {
+  //         setVehiclesError(err.message || "Failed to load vehicles");
+  //         console.error("Error fetching vehicles:", err);
+  //       } finally {
+  //         setVehiclesLoading(false);
+  //       }
+  //     };
+  //     fetchOnsiteVehicles();
+  //   }
+  // }, [hoaId]);
+
+
   useEffect(() => {
     if (hoaId) {
       const fetchOnsiteVehicles = async () => {
         try {
           setVehiclesLoading(true);
-          const response = await axios.get(`/vehicles/${hoaId}`);
+          const response = await axios.get(`/vehicles/onsiteonly/${hoaId}`);
           let newary = [];
           response.data.forEach(element => {
-            if (getVehicleActiveStatusBoolean(element)) {
-              newary.push(element);
-            }
+            //  if (getVehicleActiveStatusBoolean(element)) {
+            newary.push(element);
+            //  }
           });
           const sorted = [...newary].sort((a, b) => {
             let valueA, valueB;
@@ -57,7 +95,6 @@ export default function OnsiteVehicles() {
       fetchOnsiteVehicles();
     }
   }, [hoaId]);
-
 
   const handleSort = (column) => {
     let newDirection = "asc";
@@ -94,11 +131,25 @@ export default function OnsiteVehicles() {
     navigate(`/${hoaId}/dashboard`);
   };
 
+
+  const handleLogout = () => {
+    clearLoggedInUser();
+    navigate(`/${hoaId}`);
+  };
+
   const navButtons = [
     {
-      label: "Back",
+      label: "Dashboard",
       onClick: handleBackToDashboard,
       which: "goback"
+    }
+  ];
+
+   const navButtonsEnforcer = [
+    {
+      label: "Logout",
+      onClick: handleLogout,
+      which: "logout"
     }
   ];
   let backgroundImage = '';
@@ -107,21 +158,23 @@ export default function OnsiteVehicles() {
   }
 
   const renderVehiclePlate = (vehicle) => {
-    return (<div className="grid-container-2-plate"
+    return (<div className="grid-container-3-plate"
       key={vehicle._id}>
       <div className="full-row" style={{
         fontWeight: "bold", fontSize: "24px", color: "#1976d2",
         borderBottom: "2px solid #1976d2", padding: "5px",
-        marginBottom: "10px",overflowX: "hidden"
+        marginBottom: "10px", overflowX: "hidden",
+        border: "0px solid white"
       }}>
 
         {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
-         {vehicle.plate} {vehicle.plate_state.substring(0,2)}
+        {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
       </div>
       {/* <div className="grid-item-bold">Name</div>
       <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
+      <div className="grid-item-bold">Unit</div>
 
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
       {/* <div className="grid-item-bold">Make</div>
@@ -133,6 +186,7 @@ export default function OnsiteVehicles() {
       ) : (
         <div className="grid-item-normal"> {utcDateOnly(vehicle.checkout)}</div>
       )}
+      <div className="grid-item-normal"> {vehicle.unitnumber || "N/A"} </div>
     </div>)
   }
   const renderVehicleCard = (vehicle) => {
@@ -153,25 +207,25 @@ export default function OnsiteVehicles() {
 
         <div className="full-row" style={{ fontSize: '.7rem', marginBottom: '5px' }}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
-         <div className="grid-item-bold">Unit</div>
-           <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
-          <div className="grid-item-bold">Type</div>
+        <div className="grid-item-bold">Unit</div>
+        <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
+        <div className="grid-item-bold">Type</div>
 
-          <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
-          <div className="grid-item-bold row-with-gap">&nbsp;</div>
-          <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
+        <div className="grid-item-bold row-with-gap">&nbsp;</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 
-          <div className="grid-item-bold">Make</div>
-          <div className="grid-item-bold">Model</div>
-          <div className="grid-item-bold">Year</div>
+        <div className="grid-item-bold">Make</div>
+        <div className="grid-item-bold">Model</div>
+        <div className="grid-item-bold">Year</div>
 
-       <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
-          <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
-          <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
 
-          <div className="grid-item-bold">Check In</div>
-          <div className="grid-item-bold">Check Out</div>
-          <div className="grid-item-bold">Active</div>
+        <div className="grid-item-bold">Check In</div>
+        <div className="grid-item-bold">Check Out</div>
+        <div className="grid-item-bold">Active</div>
 
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkin)}</div>
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkout)}</div>
@@ -189,6 +243,7 @@ export default function OnsiteVehicles() {
       </div>
     )
   }
+
 
 
   const handleShowTable = () => {
@@ -224,6 +279,90 @@ export default function OnsiteVehicles() {
   let role = "owner";
 
   let bgcolor = 'white';
+
+
+  const renderTitleBar = () => {
+    return (<div>
+      <button className="navbutton2" onClick={handleShowGrid}
+        disabled={showTable}>
+        {isGridVisible ?
+          (<span className="strike">
+            Violations</span>)
+          : (<span>Violations</span>)
+        }
+      </button>
+      <button className="navbutton2" onClick={handleShowPlate}
+        disabled={showTable}>
+        {isPlateVisible ? "Details" : "Plates"}
+      </button>
+      <button className="navbutton2" onClick={handleShowTable}
+        disabled={isGridVisible}>
+        {showTable ?
+          (<span className="strike">
+            Table</span>)
+          : (<span>Table</span>)
+        }
+      </button>
+    </div>
+    )
+  }
+
+  const renderGridIsVisible = () => {
+    const isPhonePortrait = /iPhone|Android/i.test(navigator.userAgent) && window.innerHeight > window.innerWidth;
+    let maxwid = isPhonePortrait ? '130px' : '260px';
+
+
+    return ( 
+     <div className='onsite-grid-container-2'>
+      <div className="grid-flex-container">
+        {!showTable && (
+          vehicles.map((vehicle, index) => (
+            isPlateVisible ? renderVehiclePlate(vehicle) :
+              renderVehicleCard(vehicle)
+          ))
+        )}
+      </div>
+       <div className="flex-container bg_lightgray" style={{
+              overflowY: 'auto',
+              border: "0px solid yellow",
+              maxWidth: maxwid
+            }}>
+              <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
+                <div className="header-title" style={{marginLeft:"10px"}}>Violations</div>
+                <div onClick={handleShowGrid} className="close-button" >
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                  />
+                </div>
+              </div>
+              <div style={{
+                maxHeight: '350px',
+                width: '90%',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                // backgroundColor: "#e0e0e0"
+              }}>
+                <ViolationsAccordion hoaId={hoaId} />
+              </div>
+
+            </div>
+      </div>
+
+  )
+  }
+  const renderGridIsNotVisible = () => {
+    return (
+      <div className='grid-flex-container'>
+        {!showTable && (
+          vehicles.map((vehicle, index) => (
+            isPlateVisible ? renderVehiclePlate(vehicle) :
+              renderVehicleCard(vehicle)
+          ))
+        )}
+      </div>
+    )
+  }
+
   return (
     <div style={{
       minHeight: "100vh", backgroundColor: "#f5f5f5",
@@ -231,53 +370,19 @@ export default function OnsiteVehicles() {
       backgroundPosition: "center", backgroundAttachment: "fixed"
     }}>
 
-      <DashboardNavbar title="Onsite Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
+      <DashboardNavbar title="Onsite Vehicles" title2={hoa && hoa.name} buttons={loggedInUser?.role === 'enforcer' ? navButtonsEnforcer : navButtons} />
       <div className="page-content">
 
-        <div className="standardtitlebar">
-          <h2>Onsite Vehicles</h2>
-          <div style={{ marginTop: '5px' }}>
-
-            <button className="navbutton2" onClick={handleShowTable}>
-              {showTable ? "Hide Table" : "Show Table"}
-            </button>
-
-            <button className="navbutton2" onClick={handleShowPlate}
-              disabled={showTable}>
-              {isPlateVisible ? "Show Cards" : "Show Plates"}
-            </button>
-
-            <button className="navbutton2" onClick={handleShowGrid}>
-              {isGridVisible ? "Hide Violations" : "Show Violations"}
-            </button>
-
+        <div className="phoneview">
+          <div className="standardtitlebar" style={{ border: "0px solid yellow " }}>
+            {renderTitleBar()}
           </div>
         </div>
-
-        {!showTable && (
-          <div className="standardtitlebar">
-          
-            <div className="button-grid">
-              <button className="btnxsp"
-                onClick={() => handleSort("owner")}>
-                Owner
-              </button>
-              <button className="btnxsp"
-                onClick={() => handleSort("plate")}>
-                Plate
-              </button>
-              <button className="btnxsp  "
-                onClick={() => handleSort("enddate")}>
-                Checkout
-              </button>
-              <button className="btnxsp"
-                onClick={() => handleSort("active")}>
-                Active
-              </button>
-            </div>
+        <div className="tableview">
+          <div className="standardtitlebar380" style={{ border: "0px solid yellow " }}>
+            {renderTitleBar()}
           </div>
-        )}
-
+        </div>
 
 
         {vehiclesError && (
@@ -298,84 +403,33 @@ export default function OnsiteVehicles() {
           </div>
         )}
 
-        {isGridVisible ? (
-          <div className="onsite-grid-container-2">
-            <div className='grid-flex-container'>
-              {showTable ? (
-                <div style={{ overflowX: "auto", maxWidth: "100%" }}>
-                <div style={{
-                  minWidth: "800px",
-                  overflowX: "auto"
-                }}>
-                <VehiclesTableOnsite
-                  vehicles={vehicles}
-                  role={role}
-                  sortColumn={sortColumn}
-                  sortDirection={sortDirection}
-                  handleSort={handleSort}
-                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                  utcDateOnly={utcDateOnly}
-                />
-                </div></div>
-
-              ) : (
-
-                vehicles.map((vehicle, index) => (
-                  isPlateVisible ? renderVehiclePlate(vehicle) :
-                    renderVehicleCard(vehicle)
-                ))
-              )}
-            </div>
-            <div className="flex-container" style={{
-              maxHeight: '80vh',
-              overflowY: 'auto',
-              position: 'sticky',
-              top: '20px'
+        {showTable ? (
+          <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+            <div style={{
+              minWidth: "800px",
+              overflowX: "auto"
             }}>
-              <div className="header-title">Violations</div>
-              <ViolationsAccordion hoaId={hoaId} />
-            </div>
-
-             {/* <div className="flex-container" >
-              <div className="header-title">Violations</div>
-              <ViolationsAccordion hoaId={hoaId} />
-            </div> */}
-
-          </div>
-
-        ) : (
-          <>
-            <div className='grid-flex-container'>
-              {showTable ? (
-                <div style={{ overflowX: "auto", maxWidth: "100%" }}>
-                <div style={{
-                  minWidth: "800px",
-                  overflowX: "auto"
-                }}>
-                <VehiclesTableOnsite
-                  vehicles={vehicles}
-                  role={role}
-                  sortColumn={sortColumn}
-                  sortDirection={sortDirection}
-                  handleSort={handleSort}
-                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                  utcDateOnly={utcDateOnly}
-                />
-                </div>
-                </div>
-
-              ) : (
-
-                vehicles.map((vehicle, index) => (
-                  isPlateVisible ? renderVehiclePlate(vehicle) :
-                    renderVehicleCard(vehicle)
-                ))
-              )}
-
-            </div>
-          </>
-        )}
+              <VehiclesTableOnsite
+                vehicles={vehicles}
+                role={role}
+                sortColumn={sortColumn}
+                sortDirection={sortDirection}
+                handleSort={handleSort}
+                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                utcDateOnly={utcDateOnly}
+              />
+            </div></div>
+        ) : (null)
+        }
+       
+       
+        {isGridVisible ? renderGridIsVisible() : renderGridIsNotVisible()}
       </div>
     </div>
   );
 }
+
+/*
+Solid Style: <i class="fas fa-window-close"></i> 
+— View on Font AwesomeRegular Style: <i class="far fa-window-close"></i> — View on Font Awesome
+*/

@@ -125,7 +125,8 @@ export default function RentersLogin() {
 
         }}>
             <div className="standardtitlebar">
-                <h2  onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions</h2>
+                <h3  onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions</h3>
+                 <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>
             </div>
 
              {/* navigate(`/${hoaId}`); */}
@@ -182,7 +183,7 @@ export default function RentersLogin() {
                             >
                                 Submit
                             </button>
-                            <button className="btn btn-default"
+                            <button className="btn btn-cancel"
                                 type="button"
                                 onClick={handleCancelClick}
                             >

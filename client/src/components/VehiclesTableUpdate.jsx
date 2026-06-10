@@ -29,7 +29,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             textDecoration: "underline",
             cursor: "pointer"
           }} onClick={() => handleSort("owner")}>
-            Owner Name
+            Name
             {sortColumn === "owner" && (
               <FontAwesomeIcon
                 icon={faArrowUp}
@@ -37,6 +37,21 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
               />
             )}
           </div>
+
+            <div className="standard-table-header" style={{
+            textDecoration: "underline",
+            cursor: "pointer"
+          }} onClick={() => handleSort("unit")}>
+            Unit
+            {sortColumn === "unit" && (
+              <FontAwesomeIcon
+                icon={faArrowUp}
+                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
+              />
+            )}
+          </div>
+
+          
 
 
            <div className="standard-table-header" style={{
@@ -52,18 +67,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             )}
           </div>
 
-
-          {/* <div className="standard-table-header ">Type</div> */}
-
-
-
-
-
-
-          <div className="standard-table-header ">Vehicle</div>
-          <div className="standard-table-header ">Make</div>
-          <div className="standard-table-header ">Model</div>
-          <div className="standard-table-header" style={{
+           <div className="standard-table-header" style={{
             textDecoration: "underline",
             cursor: "pointer"
           }} onClick={() => handleSort("plate")}>
@@ -75,6 +79,22 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
               />
             )}
           </div>
+
+
+
+
+          {/* <div className="standard-table-header ">Type</div> */}
+
+
+
+
+
+
+          <div className="standard-table-header ">Vehicle</div>
+          <div className="standard-table-header ">Make</div>
+          <div className="standard-table-header ">Model</div>
+
+         
           {/* <div className="standard-table-header" style={{ cursor: "pointer" }} onClick={() => handleSort("plate")}>
               <span style={{ textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "5px" }}>
                 Plate {sortColumn === "plate" ? (sortDirection === "asc" ? "▲" : "▼") : ""}
@@ -126,17 +146,19 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             <div className="standard-table-cell">
               {vehicle.carowner_lname}, {vehicle.carowner_fname}
             </div>
+             <div className="standard-table-cell "> {vehicle.unitnumber}</div>
             <div className="standard-table-cell "> {vehicle.carownertype}</div>
-            <div className="standard-table-cell ">{vehicle.vehicle_type}</div>
-            <div className="standard-table-cell ">{vehicle.make}</div>
-            <div className="standard-table-cell ">{vehicle.model}</div>
-
-            <div style={{ marginTop: '5px' }}>
-              <button className="btnxs btn-primary"
+              <div style={{ marginTop: '5px' }}>
+              <button className="btnxs btn-secondary"
                 onClick={() => handleDetailsClick(vehicle)}>
                 {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
               </button>
             </div>
+            <div className="standard-table-cell ">{vehicle.vehicle_type}</div>
+            <div className="standard-table-cell ">{vehicle.make}</div>
+            <div className="standard-table-cell ">{vehicle.model}</div>
+
+          
 
             {/* <div className="standard-table-cell">{vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}</div> */}
 

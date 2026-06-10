@@ -94,7 +94,7 @@ export default function ViolationsAccordion({ hoaId }) {
     .accordion-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 5px;
    
       width: 100%;
       font-size: 14px;
@@ -105,6 +105,8 @@ export default function ViolationsAccordion({ hoaId }) {
       border-radius: 4px;
       overflow: hidden;
       background: white;
+     
+    
     }
 
     .accordion-header {
@@ -112,13 +114,15 @@ export default function ViolationsAccordion({ hoaId }) {
       justify-content: center;
       align-items: center;
       padding: 0px;
-      background-color: #1976d2;
+      // background-color: #1976d2;
+       background-color: #6B7280;
       color: white;
       cursor: pointer;
       user-select: none;
       font-weight: 500;
       transition: background-color 0.2s;
       min-height: 40px;
+    
     }
     .header-title {
       display: flex;
@@ -129,7 +133,9 @@ export default function ViolationsAccordion({ hoaId }) {
       padding: 4px 0;
 }
     .accordion-header:hover {
-      background-color: #1565c0;
+      //  background-color: #1565c0;
+       filter: opacity(0.8);
+      
     }
 
     .accordion-toggle {
@@ -187,20 +193,32 @@ export default function ViolationsAccordion({ hoaId }) {
     return <p>Loading violations...</p>;
   }
 
-  if (violations.length === 0) {
-    return <p>No violations found.</p>;
-  }
+//  if (violations.length === 0) {
+//     return (
+//       <>
+//        <style>{accordionStyles}</style>
+//     <p>No violations found.</p>
+//      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+//         <button className="navbutton" onClick={handleShowNewViolation}>New Violation</button>
+//       </div>
+//     </>
+//     );
+//   } 
 
   return (
     <>
       <style>{accordionStyles}</style>
+      {violations.length === 0 && (
+        <p>No violations found.</p>
+      )}
+
       <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-        <button className="navbutton" onClick={handleShowNewViolation}>New Violation</button>
+        <button className="navbutton" onClick={handleShowNewViolation}>New</button>
       </div>
       <div className="accordion-container">
         {violations.map((item, index) => (
           <div key={index} className="accordion-item">
-            <div className="accordion-header" onClick={() => toggleItem(index)} >
+            <div className="accordion-header btn-secondary" onClick={() => toggleItem(index)} >
               <div>{item.title}</div>
             </div>
             <div className={`accordion-content ${expandedIndices.includes(index) ? "open" : ""}`}>

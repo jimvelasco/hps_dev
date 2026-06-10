@@ -202,7 +202,7 @@ export default function UserProfile() {
 
   const navButtons = [
     {
-      label: "Back",
+      label: "Dashboard",
       onClick: handleBackToDashboard,
       which: "goback"
     }
@@ -478,7 +478,7 @@ export default function UserProfile() {
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </button>
-              <button className="btn btn-default"
+              <button className="btn btn-cancel"
                 type="button"
                 onClick={handleBackToDashboard}
 

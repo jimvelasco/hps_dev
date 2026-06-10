@@ -14,8 +14,9 @@ export default function HPSRecordReport() {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [ownerTypeFilter, setOwnerTypeFilter] = useState("");
+  const [ownerTypeFilter, setOwnerTypeFilter] = useState("renter");
   const [unitFilter, setUnitFilter] = useState("");
+  const [deleteDate, setDeleteDate] = useState("");
 
   useEffect(() => {
     if (loggedInUser && loggedInUser.role === 'owner') {
@@ -41,6 +42,40 @@ export default function HPSRecordReport() {
       fetchRecords();
     }
   }, [hoaId]);
+
+  const handleDeleteBeforeDate = async () => {
+    if (!deleteDate) {
+      alert("Please select a date first.");
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to delete all HPS records created before ${deleteDate}?`)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.delete(`/vehicles/hpsrecords/${hoaId}?date=${deleteDate}`);
+      alert(response.data.message);
+      // Refresh records after deletion
+      const refreshResponse = await axios.get(`/vehicles/hpsrecords/${hoaId}`);
+      setRecords(refreshResponse.data);
+    } catch (err) {
+      setError(err.message || "Failed to delete records");
+      console.error("Error deleting HPS records:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const calculateDays = (start, end) => {
+    if (!start || !end) return "N/A";
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffTime = endDate - startDate;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? diffDays : "N/A";
+  };
 
   const handleBackClick = () => {
     navigate(`/${hoaId}/reports`);
@@ -96,7 +131,11 @@ export default function HPSRecordReport() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
-          <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+          {/* <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}> */}
+{/* <div style={{ border:"1px solid black",marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap",margin:"auto",alignItems: "center" }}> */}
+          <div className="generic-grid ">
+            <div>
+              <p>Owner Type</p>
             <select
               value={ownerTypeFilter}
               onChange={(e) => setOwnerTypeFilter(e.target.value)}
@@ -109,12 +148,19 @@ export default function HPSRecordReport() {
                 boxSizing: "border-box"
               }}
             >
-              <option value="">All Owner Types</option>
+              {/* <option value="">All Owner Types</option> */}
               <option value="owner">Owner</option>
               <option value="renter">Renter</option>
             </select>
+            </div>
+
 
             {loggedInUser && loggedInUser.role === 'admin' ? (
+              <div>
+                 <label className="input-label">
+                    Unit Number
+                  </label>
+                
               <select
                 value={unitFilter}
                 onChange={(e) => setUnitFilter(e.target.value)}
@@ -132,19 +178,65 @@ export default function HPSRecordReport() {
                   <option key={unit} value={unit}>{unit}</option>
                 ))}
               </select>
+              </div>
             ) : (
+              <div>
+               <p>Unit Number</p>
+              
               <div style={{
                 padding: "10px",
                 borderRadius: "4px",
                 border: "1px solid #ccc",
                 backgroundColor: "#eee",
                 minWidth: "100px",
-                display: "flex",
+                // display: "flex",
                 alignItems: "center"
               }}>
+              {/* <div> */}
+                
                 Unit: {unitFilter || "N/A"}
               </div>
+              </div>
             )}
+
+            {/* {loggedInUser && loggedInUser.role === 'admin' && ( */}
+              {/* <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "auto" }}> */}
+               
+               <div>
+                  <p>Before Date</p>
+                 <input
+                  type="date"
+                  value={deleteDate}
+                  onChange={(e) => setDeleteDate(e.target.value)}
+                  className="standardinput"
+                  style={{
+                    padding: "8px",
+                    borderRadius: "4px",
+                    border: "1px solid #ccc"
+                  }}
+                />
+                </div>
+                
+                <div>
+                   <p>&nbsp;</p>
+
+                <button
+                  onClick={handleDeleteBeforeDate}
+                  className="standardbutton"
+                  style={{
+                    backgroundColor: "#f44336",
+                    color: "white",
+                    border: "none",
+                    padding: "5px 10px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    width:"80px"
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            {/*  )} */}
           </div>
 
           {loading ? (
@@ -157,7 +249,7 @@ export default function HPSRecordReport() {
             <div style={{ overflowX: "auto", maxWidth: "100%" }}>
             <div style={{ 
               display: "grid", 
-              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr",
+              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 0.8fr 1fr 1fr 1fr 1fr .5fr",
               gap: "0px",
               marginTop: "20px" ,
               minWidth: "800px",
@@ -166,11 +258,13 @@ export default function HPSRecordReport() {
                <div className="standard-table-header">Date</div>
                <div className="standard-table-header">Unit</div>
                <div className="standard-table-header">Name</div>
-                <div className="standard-table-header">Created</div>
+              
                 <div className="standard-table-header">Type</div>
                <div className="standard-table-header">Plate</div>
                <div className="standard-table-header">Start</div>
                <div className="standard-table-header">End</div>
+                 <div className="standard-table-header">Days</div>
+                  <div className="standard-table-header">RP</div>
 
                {filteredRecords.map((record, index) => {
                  let hasOverlap = false;
@@ -182,9 +276,16 @@ export default function HPSRecordReport() {
                    const s2 = prevRecord.startdate || "";
                    const e2 = prevRecord.enddate || "";
                    
-                   if (s1 && e1 && s2 && e2) {
-                     // Check overlap: (StartA <= EndB) && (EndA >= StartB)
-                     if (s1 <= e2 && e1 >= s2) {
+                  //  if (s1 && e1 && s2 && e2) {
+                  //    // Check overlap: (StartA <= EndB) && (EndA >= StartB)
+                  //    if (s1 <= e2 && e1 >= s2) {
+                  //    //  hasOverlap = true;
+                  //    }
+                  //  }
+                   // assumes records are ordered by start date. If the second record start date 
+                   // is in between the previous records start and end date it gets flagged
+                    if (s1 && e1 && s2 && e2) {
+                     if (s1 >= s2  && s1 < e2) {
                        hasOverlap = true;
                      }
                    }
@@ -197,11 +298,13 @@ export default function HPSRecordReport() {
                      </div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.unitnumber}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{`${record.firstname} ${record.lastname}`}</div>
-                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.createdAt}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.ownertype}</div>
                       <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.plate}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.startdate}</div>
                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.enddate}</div>
+                    <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{calculateDays(record.startdate, record.enddate)}</div>
+                    <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.requires_payment}</div>
+
                    </React.Fragment>
                  );
                })}

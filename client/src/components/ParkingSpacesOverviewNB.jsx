@@ -39,18 +39,39 @@ export default function ParkingSpacesOverviewNB() {
   //   fetchVehicles();
   // }, [hoaId]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const fetchVehicles = async () => {
+  //     if (!hoaId) return;
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(`/vehicles/allhoaid/${hoaId}`);
+  //       const vehicles = response.data;
+  //       const occupied = vehicles.filter(vehicle => {
+  //         if (!vehicle.checkout) return false;
+  //         return getVehicleActiveStatusBoolean(vehicle);
+  //       }).length;
+  //       setOccupiedSpaces(occupied);
+  //     } catch (error) {
+  //       console.error("Error fetching vehicles:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchVehicles();
+  // }, [hoaId]);
+
+   useEffect(() => {
     const fetchVehicles = async () => {
       if (!hoaId) return;
       try {
         setLoading(true);
-        const response = await axios.get(`/vehicles/${hoaId}`);
+        const response = await axios.get(`/vehicles/onsiteonly/${hoaId}`);
         const vehicles = response.data;
-        const occupied = vehicles.filter(vehicle => {
-          if (!vehicle.checkout) return false;
-          return getVehicleActiveStatusBoolean(vehicle);
-        }).length;
-        setOccupiedSpaces(occupied);
+        // const occupied = vehicles.filter(vehicle => {
+        //   if (!vehicle.checkout) return false;
+        //   return getVehicleActiveStatusBoolean(vehicle);
+        // }).length;
+        setOccupiedSpaces(vehicles.length);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       } finally {
@@ -62,23 +83,52 @@ export default function ParkingSpacesOverviewNB() {
 
   const totalSpaces = hoa?.parking_allowed_hoa || 0;
   const remainingSpaces = totalSpaces - occupiedSpaces;
+  const hoaname = hoa?.name;
+//  return (
+//     <div className="parking-spaces-overview2">      
+//       {loading ? (
+//         <div className="parking-overview-loading">
+//           Loading...
+//         </div>
+//       ) : (
+//         <span style={{color: "#bbb", backgroundColor: "#333"}}>
+//           <div className="tableview">
+//            <span><b style={{color: "#fff"}}>{hoaname}</b></span>&nbsp;&nbsp;&nbsp;
+//             <span>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>&nbsp;&nbsp;&nbsp;
+
+//             <span>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>&nbsp;&nbsp;&nbsp;
+
+//             <span >Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
+//             </div>
+//              <div className="phoneview">
+//            <span><b style={{color: "#fff"}}>{hoaname}</b></span>&nbsp;&nbsp;&nbsp;
+//             <span>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>&nbsp;&nbsp;&nbsp;
+
+//             <span>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>&nbsp;&nbsp;&nbsp;
+
+//             <span >Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
+//             </div>
+//         </span>
+//       )}
+//     </div>
+//   );
 
   return (
-    <div className="parking-spaces-overview2">
-      {/* <h2 className="parking-overview-title">Parking Spaces</h2> */}
-      
+    <div className="parking-spaces-overview2">      
       {loading ? (
         <div className="parking-overview-loading">
           Loading...
         </div>
       ) : (
-        <span style={{color: "#bbb", backgroundColor: "#333"}}>
-            <span>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>&nbsp;,&nbsp;
+        <div  style={{color: "#bbb",  backgroundColor: "#333", border:"0px solid white"}}>
+          
+            <span><b style={{color: "#fff",textWrap: "nowrap"}}>{hoaname}</b></span>
+            <span style={{marginLeft:"5px",textWrap: "nowrap"}}>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>
 
-            <span>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>&nbsp;,&nbsp;
+            <span style={{marginLeft:"5px"}}>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>
 
-            <span >Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
-        </span>
+            <span style={{marginLeft:"5px"}}>Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
+        </div>
       )}
     </div>
   );

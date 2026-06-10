@@ -2,12 +2,14 @@ import express from "express";
 import { getVehiclesByHoaId ,getVehiclesByHoaIdOwner,getVehiclesByHoaIdOwnerId, getVehiclesByHoaIdUserId,
     getVehicleById, createVehicle, updateVehicle, deleteVehicle, 
     deleteVehiclesByStatusFlag, batchUpdateDateFields, 
-    updateVehiclePayment, jjvrunquery,getVehiclesForUnitNumber, getHPSRecordsByHoaId, deleteRenterVehicles} from "../controllers/vehicleController.js";
+    updateVehiclePayment, jjvrunquery,getVehiclesForUnitNumber, getHPSRecordsByHoaId, deleteRenterVehicles,
+    deleteHPSRecords, lookupPlate,getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId} from "../controllers/vehicleController.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { createVehicleSchema, updateVehicleSchema } from "../schemas/vehicleSchemas.js";
 
 const router = express.Router();
 
+router.post("/lookup-plate", lookupPlate);
 router.post("/", validateRequest(createVehicleSchema), createVehicle);
 router.post("/jjvrunquery/:hoaId", jjvrunquery);
 router.put("/batch/update-dates", batchUpdateDateFields);
@@ -15,6 +17,7 @@ router.put("/:vehicleId", validateRequest(updateVehicleSchema), updateVehicle);
 router.put("/payment/:vehicleId", updateVehiclePayment);
 router.delete("/status/:statusFlag", deleteVehiclesByStatusFlag);
 router.delete("/renter-vehicles/:hoaId", deleteRenterVehicles);
+router.delete("/hpsrecords/:hoaId", deleteHPSRecords);
 router.delete("/:vehicleId", deleteVehicle);
 router.get("/id/:vehicleId", getVehicleById);
 router.get("/hpsrecords/:hoaId", getHPSRecordsByHoaId);
@@ -24,6 +27,14 @@ router.get("/:hoaId/rentervehicles/:unitNumber", getVehiclesForUnitNumber);
 //router.get("/:hoaId/:role(owner|renter|admin)/:ownerid", getVehiclesByHoaIdOwnerId);
 
 //router.get("/:hoaId/:role",getVehiclesByHoaIdOwner);
-router.get("/:hoaId", getVehiclesByHoaId);
+router.get("/allhoaid/:hoaId", getVehiclesByHoaId); // this gets even the expired rental vehicles
+//router.get("/allhoaid/:hoaId", getOnsiteVehiclesByHoaId);
+
+router.get("/onsiteonly/:hoaId", getOnsiteVehiclesByHoaId);
+
+
+router.get("/adminvehicles/:hoaId", getAdminVehiclesByHoaId);
+
+
 
 export default router;

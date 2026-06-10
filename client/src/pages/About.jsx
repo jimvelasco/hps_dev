@@ -5,12 +5,22 @@ export default function About() {
   const navigate = useNavigate();
   const { hoaId } = useParams();
 
+  //  const qry = `/${hoaId}/email-from-hoa`;
+  //   // console.log('handleEmailClick called with hoa:', hoa.contact_information[2].email)
+
+  //   navigate(qry, {
+  //     state: { email:email }
+  //   });
+
+
   const handleEmailClick = () => {
+     let qry = `/email-from-hoa`;
     if (hoaId) {
-      navigate(`/${hoaId}/email-from-hoa`);
-    } else {
-      navigate("/email-from-hoa");
+      qry = `/${hoaId}/email-from-hoa`
     }
+     navigate(qry, {
+      state: { email:"contact@hoaparkingsolutions.com",fromwhere:"about" }
+    });
   };
   return (
     <div style={{
@@ -99,7 +109,7 @@ export default function About() {
         <div className="button-grid">
           {/* <button className="btns btn-primary" onClick={() =>{handleEmailClick()}}>Email</button> */}
           <button
-            className="btns btn-default"
+            className="btns btn-cancel"
             onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}
 
           >

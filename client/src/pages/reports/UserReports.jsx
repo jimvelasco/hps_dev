@@ -23,7 +23,7 @@ export default function UserReports() {
 
   const navButtons = [
     {
-      label: "Back",
+      label: "Dashboard",
       onClick: handleBackClick,
       which: "goback"
     }
@@ -50,12 +50,10 @@ export default function UserReports() {
       <DashboardNavbar title="User Reports" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
-        <div className="standardtitlebar">
-          <h1 style={{ fontSize: "24px" }}>User Reports</h1>
-        </div>
+      
 
         <div className="grid-flex-container">
-          <section className="standardsection">
+          <section className="standardsection" style={{minHeight:"176px"}}>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>HPS Record Log</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               View a detailed log of all HPS records and vehicle changes.
@@ -69,10 +67,10 @@ export default function UserReports() {
             </button>
           </section>
 
-          <section className="standardsection">
+          <section className="standardsection"  style={{minHeight:"176px"}}>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Owner List</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              View a complete list of all owners with their contact details.
+              A list of all owners with their contact details.
             </p>
             <button 
               className="standardsubmitbutton" 

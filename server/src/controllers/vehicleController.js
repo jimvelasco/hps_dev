@@ -12,6 +12,7 @@ const logHPSRecord = async (vehicle, oldStartDate = null, oldEndDate = null) => 
       firstname: vehicle.carowner_fname,
       lastname: vehicle.carowner_lname,
       phone: vehicle.carownerphone,
+      cartype: vehicle.vehicle_type,
       plate: vehicle.plate,
       platestate: vehicle.plate_state,
       requires_payment: vehicle.requires_payment,
@@ -22,6 +23,22 @@ const logHPSRecord = async (vehicle, oldStartDate = null, oldEndDate = null) => 
     });
   } catch (error) {
     console.error("Failed to log HPSRecord:", error);
+  }
+};
+
+const logHPSRecordUpdate = async (vehicleId, newStartDate, newEndDate) => {
+  try {
+    // await HPSRecord.findOneAndUpdate(
+    //   { vehicleId: vehicleId },
+    //   { startdate: newStartDate, enddate: newEndDate },
+    //   { sort: { createdAt: -1 } }
+    // );
+     await HPSRecord.findOneAndUpdate(
+      { vehicleId: vehicleId },
+      { startdate: newStartDate, enddate: newEndDate }
+    );
+  } catch (error) {
+    console.error("Failed to update HPSRecord:", error);
   }
 };
 
@@ -50,6 +67,90 @@ const getVehiclesByHoaId = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+const getOnsiteVehiclesByHoaId = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const { filter } = req.query;
+
+      
+
+        const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    const qry = { hoaid: hoaId,  checkout: { $gte: today } };
+  // console.log("getOnsiteVehiclesByHoaId Filter qry:", qry);
+
+   // const qry = { hoaid: hoaId };
+     // console.log("getVehiclesByHoaId Filter received:", filter,qry);
+
+    // if (filter === "owner") {
+    //   qry.carownertype = "owner";
+    // } else if (filter === "renter") {
+    //   qry.carownertype = "renter";
+    // }
+
+    //  qry.carownertype = "owner";
+
+    const vehicles = await Vehicle.find(qry);
+    //  console.log("getOnsiteVehiclesByHoaId reponse size is:", vehicles.length);
+    res.json(vehicles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getAdminVehiclesByHoaId = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    const qry = { hoaid: hoaId, checkout: { $gte: today } };
+   
+
+    const qry2 = {
+  $and: [
+    { hoaid: hoaId },
+    {
+      $or: [
+        { carownertype: { $ne: "renter" } },
+        {
+          $and: [
+            { carownertype: "renter" },
+            { checkout: { $gte: today } }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+ console.log("getAdminVehiclesByHoaId Filter qry:", qry2);
+
+    const vehicles = await Vehicle.find(qry2);
+    console.log("getAdminVehiclesByHoaId reponse size is:", vehicles.length);
+    res.json(vehicles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/*
+db.collection.find({
+  $or: [
+    { carownertype: { $ne: "renter" } },
+    {
+      carownertype: "renter",
+      enddate: { $gt: new Date().toISOString().slice(0,10) }
+    }
+  ]
+})
+*/
+
+
+
+
 
 const getVehiclesByHoaIdOwner = async (req, res) => {
   try {
@@ -105,11 +206,19 @@ const getVehiclesByHoaIdUserId = async (req, res) => {
 //616d84252dc9bd0016da9673
     // const oid2 = "616d84252dc9bd0016da9673";
 
-    const qry = { hoaid: hoaId, ownerid: ownerid };
+  //  const qry = { hoaid: hoaId, ownerid: ownerid };
     //console.log("Filter received:", filter);
     //  console.log("getVehiclesByHoaIdOwnerId role modified received:", role);
     // console.log("getVehiclesByHoaIdOwnerId oid received:", ownerid);
-   //  console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
+   
+
+  //  const today = new Date();
+ //   today.setUTCHours(0, 0, 0, 0);
+
+   // const qry = { hoaid: hoaId, ownerid:ownerid, carownertype: {$ne: "renter"}, checkout: { $gte: today } };
+      const qry = { hoaid: hoaId, ownerid:ownerid, carownertype: {$ne: "renter"}};
+     //  const qry = { hoaid: hoaId, ownerid:ownerid};
+   // console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);
     // console.log("vehicle controller shold be 19  qry built:", vehicles.length);
@@ -161,12 +270,12 @@ const getVehiclesForUnitNumber = async (req, res) => {
 const createVehicle = async (req, res) => {
   try {
     const vehicleData = req.validatedData;
-   // console.log("server Creating vehicle with data:", vehicleData);
+    console.log("server Creating vehicle with data:", vehicleData);
 
     const vehicle = await Vehicle.create(vehicleData);
 
     // Log new vehicle creation
-    await logHPSRecord(vehicle);
+    await logHPSRecord(vehicle,vehicleData.startdate,vehicleData.enddate);
 
     res.status(201).json(vehicle);
   } catch (error) {
@@ -192,8 +301,11 @@ const updateVehicle = async (req, res) => {
         oldVehicle.enddate !== updatedVehicle.enddate) {
       // await logHPSRecord(updatedVehicle, oldVehicle.startdate, oldVehicle.enddate);
       // log the date changes and ignore the old vehicle dates
-       await logHPSRecord(updatedVehicle);
+       await logHPSRecordUpdate(vehicleId, updatedVehicle.startdate, updatedVehicle.enddate);
     }
+
+    //const logHPSRecordUpdate = async (vehicleId, newStartDate, newEndDate) => {
+
 
     res.status(200).json(updatedVehicle);
   } catch (error) {
@@ -379,7 +491,8 @@ const jjvrunquery = async (req, res) => {
 const getHPSRecordsByHoaId = async (req, res) => {
   try {
     const { hoaId } = req.params;
-    const records = await HPSRecord.find({ hoaid: hoaId }).sort({ createdAt: -1 });
+   // const records = await HPSRecord.find({ hoaid: hoaId }).sort({ createdAt: -1 });
+      const records = await HPSRecord.find({ hoaid: hoaId }).sort({ startdate: 1 });
     res.json(records);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -420,9 +533,97 @@ const deleteRenterVehicles = async (req, res) => {
   }
 };
 
+const deleteHPSRecords = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ message: "Date is required" });
+    }
+
+    const result = await HPSRecord.deleteMany({
+      hoaid: hoaId,
+      createdAt: { $lt: new Date(date) }
+    });
+
+    res.status(200).json({
+      message: `${result.deletedCount} HPS record(s) deleted successfully`,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const lookupPlate = async (req, res) => {
+  const { image } = req.body;
+  if (!image) {
+    return res.status(400).json({ message: "Image is required" });
+  }
+
+  const PLATE_RECOGNIZER_TOKEN = process.env.PLATE_RECOGNIZER_TOKEN;
+  if (!PLATE_RECOGNIZER_TOKEN) {
+    return res.status(500).json({ message: "Plate Recognizer API token is missing on server" });
+  }
+  console.log('lookupPlate got to here', PLATE_RECOGNIZER_TOKEN);
+
+  try {
+    const formData = new FormData();
+    
+    if (typeof image === 'string' && image.startsWith('data:')) {
+      const base64Data = image.split(',')[1];
+      const buffer = Buffer.from(base64Data, 'base64');
+      const blob = new Blob([buffer], { type: 'image/jpeg' });
+      formData.append('upload', blob, 'plate.jpg');
+    } else {
+      formData.append('upload', image);
+    }
+
+
+    formData.append('mmc', 'true');
+ console.log('lookupPlate got to here 2 formdata',formData);
+
+    const response = await fetch('https://api.platerecognizer.com/v1/plate-reader/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${PLATE_RECOGNIZER_TOKEN}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+    console.log("WE HAVE A RESPONSE FROM PLATE RECOGNIZER",data);
+
+    if (data && data.results && data.results.length > 0) {
+      const result = data.results[0];
+      const mmc = result.vehicle || {};
+       console.log('vehicle controller RESULT PLATE:', result.plate);
+      console.log('vehicle controller mmc:', mmc);
+      
+      res.json({
+        plate: result.plate.toUpperCase(),
+        make: mmc.make ? mmc.make[0].make : '',
+        model: mmc.model ? mmc.model[0].model : '',
+        color: mmc.color ? mmc.color[0].color : '',
+        type: mmc.type ? mmc.type[0].type : '',
+        score: result.score,
+        dscore: result.dscore,
+      });
+    } else {
+       console.log("WE HAVE A NO IMAGE FOUND RESPONSE",data);
+      res.status(404).json({ message: "No plate detected" });
+    }
+  } catch (error) {
+    console.error("Error calling Plate Recognizer API:", error);
+    res.status(500).json({ message: "Error calling Plate Recognizer API", error: error.message });
+  }
+};
+
 export {
   getVehiclesByHoaId, getVehiclesByHoaIdOwner, getVehiclesByHoaIdOwnerId,
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
-  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles
+  updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, deleteHPSRecords, lookupPlate,
+  getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId
 };

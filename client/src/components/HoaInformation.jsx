@@ -26,38 +26,49 @@ export default function HoaInformation({ hoa }) {
     // console.log('handleEmailClick called with hoa:', hoa.contact_information[2].email)
 
     navigate(qry, {
-      state: { email:email }
+      state: { email:email,fromwhere:"hoainformation" }
     });
 
   };
 
-  // const handleEmailClick = () => {
-  //    const qry =`/${hoaId}/email-from-hoa`;
-  //   navigate(`/${hoaId}/email-from-hoa`);
-  // };
   return (
+    <>
+    {/* <div className="standardtitlebar2" style={{width:"300px",opacity: "1.0"}}>
+          <span style={{color:"#1976d2"}}><b>Home Owners Assocation</b></span>
+          
+        </div> */}
     <div style={{
       display: 'flex',
       flexWrap: 'wrap',
-      gap: '10px',
+      gap: '12px',
       justifyContent: 'center',
 
     }}>
       <section className="standardsectiondashboard">
-        <h3 style={{ color: "#1976d2", marginTop: 0 }}>Contact Information</h3>
+        <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"center"}}>Contact Information</h3>
         {hoa?.contact_information && hoa.contact_information.length > 0 && (
-          <div className="hoainformation">
+          <div className="hoainformation"  style={{ textAlign:"center",marginTop:"15px"}}>
             {hoa.contact_information.map((contact, index) => (
-              <div key={index}>
+              <div style={{marginTop:"15px"}} key={index}>
                 <strong>{contact.phone_description || "Contact"}:</strong><br />
                 {contact.phone_number && <span>Phone: {contact.phone_number}<br /></span>}
-                {contact.email && <span>Email: {contact.email}</span>}
-                {contact.contact_id == 'hoa_primary' && (
+                {/* {contact.email && <span>Email: {contact.email}</span>} */}
+                 {contact.email && (
+                  <div>
+                   {/* <div style={{marginTop:"2px",textAlign:"center"}}>Email:</div> */}
+                  <div className="button-gridx" style={{margin:"3px"}}>
+                   
+                  <button className="btns_nm btn-secondary" 
+                  onClick={() => { handleEmailClick(contact.email) }}
+                  style={{width:"100%"}}>{contact.email}</button>
+                  </div>
+                  </div>)}
+                {/* {contact.contact_id == 'hoa_primary' && (
                   <div className="button-grid" style={{margin:"5px 0"}}>
-                    <button className="btns btn-primary" onClick={() => { handleEmailClick(contact.email) }}>Email HOA</button>
+                    <button className="btns btn-secondary" onClick={() => { handleEmailClick(contact.email) }}>Email HOA</button>
                   </div>
 
-                )}
+                )} */}
 
               </div>
             ))}
@@ -66,9 +77,9 @@ export default function HoaInformation({ hoa }) {
 
       </section>
       <section className="standardsectiondashboard">
-        <h3 style={{ color: "#1976d2", marginTop: 0 }}>HOA Information</h3>
+        <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"center" }}>HOA Address</h3>
         {hoa && (
-          <div className="hoainformation">
+          <div className="hoainformation"  style={{ textAlign:"center",marginTop:"15px"}}>
             <div><strong>Name:</strong> {hoa.name}</div>
             <div><strong>Address:</strong> {hoa.address}</div>
             <div><strong>City:</strong> {hoa.city}</div>
@@ -86,9 +97,8 @@ export default function HoaInformation({ hoa }) {
           </div>
         )}
       </section>
-
-
-
     </div>
+        </>
+
   );
 }

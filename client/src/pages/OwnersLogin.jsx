@@ -27,7 +27,7 @@ export default function OwnersLogin() {
     localStorage.removeItem("token");
     if (hoa && hoa.use_demo_mode) {
       setPassword("123456");
-      setEmail("jim@gmail.com");
+      setEmail("jim.velasco@gmail.com");
       if (hoaId === 'LODGE') {
         setEmail('jim.lodge@gmail.com');
       }
@@ -71,10 +71,25 @@ export default function OwnersLogin() {
       });
 
       if (response.status === 200 && response.data.token) {
-        console.log("Login successful");
+        console.log("Login successful", response.data);
         localStorage.setItem("token", response.data.token);
-        navigate(`/${hoaId}/dashboard`);
-      }
+         const user = response.data.user; 
+        const flag = user.role; 
+        let nav = `/${hoaId}/ownervehicles/${flag}`;
+        if (flag === 'admin') {
+          //  nav = `/${hoaId}/onsite`;
+             nav = `/${hoaId}/dashboard`;
+        }
+         if (flag === 'enforcer') {
+            nav = `/${hoaId}/onsite`;
+        }
+        navigate(nav);
+        }
+
+        //navigate(`/${hoaId}/admin`),
+
+       // navigate(`/${hoaId}/dashboard`);
+       //  navigate(`/${hoaId}/ownervehicles/${flag}`);
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || "Login failed";
       console.error(errorMessage);
@@ -114,7 +129,7 @@ export default function OwnersLogin() {
       padding: "20px"
     }}>
       <div className="standardtitlebar">
-        <h2 onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions </h2>
+        <h3 onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions </h3>
         <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>
       </div>
 
@@ -170,7 +185,7 @@ export default function OwnersLogin() {
             >
               {isLoggingIn ? "Logging in..." : "Submit"}
             </button>
-            <button className="btn btn-default"
+            <button className="btn btn-cancel"
               type="button"
               disabled={isLoggingIn}
               onClick={() => navigate(-1)}

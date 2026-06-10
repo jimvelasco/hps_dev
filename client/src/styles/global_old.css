@@ -40,7 +40,6 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 1200px;
   margin: 0 auto;
   border:0px solid yellow;
-   padding-bottom:20px;
 }
 /*style={{ padding: "30px", maxWidth: "1200px", margin: "0 auto" }} */
 .flexLayout {
@@ -372,11 +371,14 @@ button.standarddeletebutton180:hover:disabled {
 
 
 .close-button{
+  position: absolute;      /* Pulls the button out of the center flow */
+  top: 2px;               /* Distance from top */
+  right: 2px;             /* Distance from right */
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 5px;
-  font-size: 1.0rem;
+  font-size: 1.2rem;
   /* color: #666; */
 }
 
@@ -468,8 +470,8 @@ button.navbutton2:hover {
 
 
 button.navbutton3 {
-  padding:6px;
-  font-size: 14px;
+  padding:4px;
+  font-size: 13px;
   background-color: #1976d2;
   color: white;
   border: none;
@@ -477,9 +479,8 @@ button.navbutton3 {
   cursor: pointer;
   font-weight: normal;
   min-width:50px;
-  /* height: 24px;
-  margin: 2px; */
-  margin:5px;
+  height: 28px;
+  margin: 2px;
 
 }
 
@@ -832,7 +833,7 @@ section.standardsectiondashboard {
   align-items: start;
 
   margin: 2px;
-  border: 0px solid yellow;
+  border: 0px solid white;
   width: 100%;
  
 }
@@ -953,7 +954,7 @@ section.standardsectiondashboard {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-   width: 200px;
+   width: 220px;
   /* width: 180px; */
   /* height: 100px */
   
@@ -1535,7 +1536,6 @@ input.standardinput:disabled {
   justify-content: center; /* Centers the whole row of cells */
   /* background-color: red; */
   /* border:1px solid white; */
- 
 }
 
 .button-grid > :only-child {
@@ -1791,14 +1791,6 @@ Hover: #B91C1C
 /* BUTTONS BUTTONS BUTTONS BUTTONS */
 /* BUTTONS BUTTONS BUTTONS BUTTONS */
 
-.navbarlink {
-  cursor:pointer;
-  color:#b9eaa1;
-  text-decoration:none;
-}
-.navbarlink:hover { 
-  filter: opacity(.7)
-}
 
 button.navbutton2 {
   padding:6px;
@@ -1913,25 +1905,25 @@ Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destruct
   border-color: #64748B;
 }
 .btn-secondary {
-  background-color: #ffc107;
-  color: #112e51;
+  background-color: #64748B;
+  color: #ffffff;
   border-color: #64748B;
 }
 
 /* Cancel: Slate-400 or Gray was btn-cancel */
 .btn-default {
-  background-color: #2196f3;
+  background-color: #94A3B8;
   color: #ffffff;
   border-color: #94A3B8;
 }
 .btn-cancel {
-  background-color: #2196f3;
+  background-color: #94A3B8;
   color: #ffffff;
   border-color: #94A3B8;
 }
-.btn-logout {
-  background-color: #d22f2f;
-  color: white;
+.btn-sort {
+  background-color: #94A3B8;
+  color: #500;
   border-color: #94A3B8;
 }
 

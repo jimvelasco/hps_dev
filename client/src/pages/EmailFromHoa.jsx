@@ -14,7 +14,9 @@ export default function EmailFromHoa() {
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const location = useLocation();
   const email = location.state?.email;
- // console.log('EmailFromHoa email is:', email);
+  const fromwhere = location.state?.fromwhere;
+  //console.log('EmailFromHoa email is:', email);
+  //console.log('EmailFromHoa fromwhere is:', fromwhere);
 
   const [sending, setSending] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null });
@@ -24,22 +26,34 @@ export default function EmailFromHoa() {
     message: ""
   });
 
-  const subjects = [
+  const subjectsabout = [
+    "General Inquiry",
+    "Join HOA Parking Solutions",
+    "Parking refund request",
+    "Other"
+  ];
+
+   let subjects = [
     "General Inquiry",
     "Complaint",
     "Maintenance Request",
     "Billing Question",
-    "Rule Violation Report",
     "Other"
   ];
+  if (fromwhere == 'about') {
+    subjects = subjectsabout;
+  }
+
 
   const handleBackClick = () => {
     if (hoaId) {
-      navigate(`/${hoaId}`);
+      navigate(`/${hoaId}/dashboard`);
     } else {
       navigate("/")
     }
   };
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,7 +107,8 @@ export default function EmailFromHoa() {
         subject: formData.subject,
         returnEmail: formData.returnEmail,
         message: formData.message,
-        toEmail: email
+        toEmail: email,
+        fromwhere:fromwhere
       });
 
       setModal({
@@ -269,7 +284,7 @@ export default function EmailFromHoa() {
                   type="button"
                   onClick={handleBackClick}
                   disabled={sending}
-                  className="btn btn-default"
+                  className="btn btn-cancel"
                   style={{
                     backgroundColor: "#999",
                     opacity: sending ? 0.6 : 1,

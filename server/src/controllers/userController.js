@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken";
 import sgMail from "@sendgrid/mail";
 
 const getUsers = async (req, res) => {
- 
+
   const { hoaId } = req.query;
-  const filter = hoaId ? { hoaid:hoaId } : {};
- //  console.log("getUsers and hoaId:", hoaId,filter);
+  const filter = hoaId ? { hoaid: hoaId } : {};
+  //  console.log("getUsers and hoaId:", hoaId,filter);
   const users = await User.find(filter).sort({ unitnumber: 1 });
   res.json(users);
 };
@@ -15,11 +15,11 @@ const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    
+
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -28,17 +28,24 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { first_name, last_name, phone, email,  hoaid, 
-      unitnumber, bedrooms, role ,password ,pincode,inventory_allowed_owner,parking_allowed_renter,
-      parking_allowed_owner,owner_free_parking, renter_free_parking, company} = req.body;
+    const { first_name, last_name, phone, email, hoaid,
+      unitnumber, bedrooms, role, password, pincode, inventory_allowed_owner, parking_allowed_renter,
+      parking_allowed_owner, owner_free_parking, renter_free_parking, company } = req.body;
 
     if (!first_name || !last_name || !phone || !email || !password || !hoaid) {
       return res.status(400).json({ message: "Missing required fields: first_name, last_name, phone, email, password, hoaid" });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User with this email already exists" });
+    const existingEmail = await User.findOne({ email, hoaid });
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email address already exists for this HOA" });
+    }
+
+    if (unitnumber) {
+      const existingUnit = await User.findOne({ unitnumber, hoaid });
+      if (existingUnit) {
+        return res.status(400).json({ message: "Unit number already exists for this HOA" });
+      }
     }
 
     const user = await User.create({
@@ -81,14 +88,28 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { first_name, last_name, phone, email, unitnumber, bedrooms, role, company, 
-      pincode, password, inventory_allowed_owner, parking_allowed_renter, 
+    const { first_name, last_name, phone, email, unitnumber, bedrooms, role, company,
+      pincode, password, inventory_allowed_owner, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
-      console.log("updateUser body:", req.body);  
+   // console.log("updateUser body:", req.body);
 
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (email !== undefined && email !== user.email) {
+      const existingEmail = await User.findOne({ email, hoaid: user.hoaid, _id: { $ne: id } });
+      if (existingEmail) {
+        return res.status(400).json({ message: "Email address already exists for this HOA" });
+      }
+    }
+
+    if (unitnumber !== undefined && unitnumber !== user.unitnumber) {
+      const existingUnit = await User.findOne({ unitnumber, hoaid: user.hoaid, _id: { $ne: id } });
+      if (existingUnit) {
+        return res.status(400).json({ message: "Unit number already exists for this HOA" });
+      }
     }
 
     if (first_name !== undefined) user.first_name = first_name;
@@ -101,8 +122,8 @@ const updateUser = async (req, res) => {
     if (company !== undefined) user.company = company;
     if (pincode !== undefined) user.pincode = pincode;
     if (password !== undefined) user.password = password;
-  //  if (is_verified !== undefined) user.is_verified = is_verified;
-  //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
+    //  if (is_verified !== undefined) user.is_verified = is_verified;
+    //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
     if (inventory_allowed_owner !== undefined) user.inventory_allowed_owner = inventory_allowed_owner;
     if (parking_allowed_renter !== undefined) user.parking_allowed_renter = parking_allowed_renter;
     if (parking_allowed_owner !== undefined) user.parking_allowed_owner = parking_allowed_owner;
@@ -119,7 +140,7 @@ const updateUser = async (req, res) => {
         last_name: user.last_name,
         email: user.email,
         phone: user.phone,
-         pincode: user.pincode,
+        pincode: user.pincode,
         unitnumber: user.unitnumber,
         role: user.role
       }
@@ -132,7 +153,7 @@ const updateUser = async (req, res) => {
 const updateAllUsers = async (req, res) => {
   try {
     const { owner_free_parking, renter_free_parking, inventory_allowed_owner, parking_allowed_renter, parking_allowed_owner, hoaid } = req.body;
-    
+
     if (!hoaid) {
       return res.status(400).json({ message: "HOA ID is required" });
     }
@@ -172,7 +193,7 @@ const updateAllUsers = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-  //  console.log("loginUser called with email:", req.body);
+    //  console.log("loginUser called with email:", req.body);
 
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
@@ -183,7 +204,7 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-// we need to implement this.  the comparePassword method is  in User model
+    // we need to implement this.  the comparePassword method is  in User model
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -231,8 +252,8 @@ const loginUser = async (req, res) => {
 const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
-   // console.log("getCurrentUser userId:", req.user.userId, "user:", user);
- //console.log("getCurrentUser userId:", req.user.userId);
+    // console.log("getCurrentUser userId:", req.user.userId, "user:", user);
+    //console.log("getCurrentUser userId:", req.user.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -266,20 +287,20 @@ const verifyRenterPin = async (req, res) => {
     const { hoaId, unitNumber, pinCode } = req.body;
 
     if (!hoaId || !unitNumber || !pinCode) {
-      return res.status(400).json({ 
-        message: "Missing required fields: hoaId, unitNumber, pinCode" 
+      return res.status(400).json({
+        message: "Missing required fields: hoaId, unitNumber, pinCode"
       });
     }
 
-    const user = await User.findOne({ 
-      hoaid: hoaId, 
-      unitnumber: unitNumber, 
-      pincode: pinCode 
+    const user = await User.findOne({
+      hoaid: hoaId,
+      unitnumber: unitNumber,
+      pincode: pinCode
     });
 
     if (!user) {
-      return res.status(401).json({ 
-        message: "Invalid unit number or PIN" 
+      return res.status(401).json({
+        message: "Invalid unit number or PIN"
       });
     }
 
@@ -302,62 +323,6 @@ const verifyRenterPin = async (req, res) => {
   }
 };
 
-const forgotPassword = async (req, res) => {
-  try {
-    const { email, hoaId } = req.body;
-
-    if (!email || !hoaId) {
-      return res.status(400).json({ message: "Email and HOA ID are required" });
-    }
-
-    const user = await User.findOne({ email, hoaid: hoaId });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found for this email and HOA" });
-    }
-
-    const resetToken = jwt.sign(
-      {
-        userId: user._id,
-        email: user.email,
-        hoaId: user.hoaid
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-    const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
-    const resetLink = `${serverUrl}/reset-password/${resetToken}`;
-
-    const msg = {
-      to: user.email,
-      from: process.env.SENDGRID_FROM_EMAIL || "verify@hoaparkingsolutions.com",
-      subject: "Password Reset Request",
-      html: `
-        <h2>Password Reset Request</h2>
-        <p>Hi ${user.first_name},</p>
-        <p>We received a request to reset your password. Click the link below to create a new password:</p>
-        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
-          Reset Password
-        </a>
-        <p>This link will expire in 1 hour.</p>
-        <p>If you didn't request a password reset, please ignore this email.</p>
-        <p>Best regards,<br/>HOA Parking Solutions</p>
-      `
-    };
-
-    await sgMail.send(msg);
-
-    res.status(200).json({
-      message: "Password reset email sent successfully"
-    });
-  } catch (error) {
-    console.error("Forgot password error:", error);
-    res.status(500).json({ message: error.message });
-  }
-};
 
 const resetPassword = async (req, res) => {
   try {
@@ -418,11 +383,70 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email, hoaId } = req.body;
+
+    if (!email || !hoaId) {
+      return res.status(400).json({ message: "Email and HOA ID are required" });
+    }
+
+    const user = await User.findOne({ email, hoaid: hoaId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found for this email and HOA" });
+    }
+
+    const resetToken = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        hoaId: user.hoaid
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
+    const resetLink = `${serverUrl}/reset-password/${resetToken}`;
+
+    const msg = {
+      to: user.email,
+      from: process.env.SENDGRID_FROM_EMAIL || "verify@hoaparkingsolutions.com",
+      subject: "Password Reset Request",
+      html: `
+        <h2>Password Reset Request</h2>
+        <p>Hi ${user.first_name},</p>
+        <p>We received a request to reset your password. Click the link below to create a new password:</p>
+        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+          Reset Password
+        </a>
+        <p>This link will expire in 1 hour.</p>
+        <p>If you didn't request a password reset, please ignore this email.</p>
+        <p>Best regards,<br/>HOA Parking Solutions</p>
+      `
+    };
+
+    await sgMail.send(msg);
+
+    res.status(200).json({
+      message: "Password reset email sent successfully"
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const sendEmailFromHoa = async (req, res) => {
   try {
-    const { hoaId, subject, returnEmail, message ,toEmail} = req.body;
+    const { hoaId, subject, returnEmail, message, toEmail } = req.body;
 
-    if ( !subject || !returnEmail || !message) {
+    if (!subject || !returnEmail || !message) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -440,12 +464,14 @@ const sendEmailFromHoa = async (req, res) => {
       HPS_EMAIL = toEmail;
     }
 
-   // console.log('sendEmailFromHoa toEmail:', toEmail);
-   // console.log('sendEmailFromHoa HOA_EMAIL:', HOA_EMAIL);
+    // console.log('sendEmailFromHoa toEmail:', toEmail);
+    // console.log('sendEmailFromHoa HOA_EMAIL:', HOA_EMAIL);
 
     // yampa view email yampahoa@gmail.com
 
     const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+
+    //  console.log('sendEmailFromHoa HOA_EMAIL:', HOA_EMAIL,SENDGRID_API_KEY);
 
     if (!SENDGRID_API_KEY) {
       return res.status(500).json({ message: "Email service not configured" });
@@ -472,15 +498,15 @@ const sendEmailFromHoa = async (req, res) => {
       <h3>Message:</h3>
       <p>${message.replace(/\n/g, '<br>')}</p>
     `;
-// from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparkingsolutions.com",
+    // from: process.env.SENDGRID_FROM_EMAIL || "noreply@hoaparkingsolutions.com",
     const msg = {
       to: HPS_EMAIL,
-      from:  "noreply@hoaparkingsolutions.com",
+      from: "noreply@hoaparkingsolutions.com",
       replyTo: returnEmail,
       subject: `${subj}`,
       html: emailContent
     };
-//subject: `[${hoaId}] ${subject}`,
+    //subject: `[${hoaId}] ${subject}`,
     await sgMail.send(msg);
 
     res.json({
@@ -492,6 +518,315 @@ const sendEmailFromHoa = async (req, res) => {
   }
 };
 
-export { getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser, getCurrentUser, verifyRenterPin, forgotPassword, resetPassword, deleteUser, sendEmailFromHoa };
+
+
+// ############ SEND MAIL STUFF ######################
+
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+
+
+
+const forgotPasswordSES = async (req, res) => {
+  try {
+    const { email, hoaId } = req.body;
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
+    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
+      return res.status(500).json({ message: "AWS configuration is missing" });
+    }
+    if (!email || !hoaId) {
+      return res.status(400).json({ message: "Email and HOA ID are required" });
+    }
+    const user = await User.findOne({ email, hoaid: hoaId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found for this email and HOA" });
+    }
+    const resetToken = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        hoaId: user.hoaid
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+
+   // let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
+     let HPS_EMAIL = 'admin@hoaparkingsolutions.com';
+    // if (toEmail) {
+    //    HPS_EMAIL = toEmail;
+    // }
+
+
+
+    const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
+    const resetLink = `${serverUrl}/reset-password/${resetToken}`;
+
+
+    const SES_CONFIG = {
+      region: "us-east-1", // Replace with your AWS region (e.g., 'us-west-2')
+      credentials: {
+        accessKeyId: AWS_ACCESS_KEY_ID, // Replace with your access key ID
+        secretAccessKey: AWS_SECRET_ACCESS_KEY // Replace with your secret access key
+      }
+    };
+    const sesClient = new SESClient(SES_CONFIG);
+
+
+
+    const emailContent = `
+      <h2>Password Reset Request</h2>
+        <p>Hi ${user.first_name},</p>
+        <p>We received a request to reset your password. Click the link below to create a new password:</p>
+        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+          Reset Password
+        </a>
+        <p>This link will expire in 1 hour.</p>
+        <p>If you didn't request a password reset, please ignore this email.</p>
+        <p>Best regards,<br/>HOA Parking Solutions</p>
+      `;
+
+
+
+    const params = {
+      Source: HPS_EMAIL,
+      //"no.reply@hoaparkingsolutions.com", // Verified sender email address
+      // sender@example.com", // Verified sender email address
+      Destination: {
+        // ToAddresses: ["recipient@example.com"], // Verified recipient email address(es)
+        ToAddresses: [user.email], // Verified recipient email address(es)
+
+      },
+      Message: {
+        Subject: {
+          Charset: "UTF-8",
+          Data: "Reset Password Request",
+        },
+        Body: {
+          Text: {
+            Charset: "UTF-8",
+            Data: emailContent,
+          },
+          Html: {
+            Charset: "UTF-8",
+            Data: emailContent,
+          },
+        },
+      },
+    };
+
+
+
+
+
+    const sendEmail = async () => {
+      try {
+        const command = new SendEmailCommand(params);
+        const data = await sesClient.send(command);
+        // console.log("Email sent successfully. Message ID:", data.MessageId);
+        return data;
+      } catch (err) {
+        console.error("Failed to send email:", err);
+      }
+    };
+
+    // Call the send function
+    await sendEmail();
+    res.json({
+      message: "Email sent successfully"
+    });
+
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+const sendEmailFromHoaSES = async (req, res) => {
+  console.log('sendEmailFromHoaSES called');
+  try {
+    const { hoaId, subject, returnEmail, message, toEmail ,fromwhere} = req.body;
+
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
+    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
+      return res.status(500).json({ message: "AWS configuration is missing" });
+    }
+    if (!subject || !returnEmail || !message) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(returnEmail)) {
+      return res.status(400).json({ message: "Invalid email address" });
+    }
+    if (message.length > 5000) {
+      return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
+    }
+
+   // console.log('sendEmailFromHoaSES toemail', toEmail,'fromwhere',fromwhere)
+
+    let HPS_EMAIL = toEmail; 
+    // process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+    let HPS_EMAILx = 'admin@hoaparkingsolutions.com';
+    if (toEmail) {
+    //    HPS_EMAIL = toEmail;
+    }
+    if (fromwhere === 'about') {
+         HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+    }
+    //  if (fromwhere === 'hoainformation') {
+    //      HPS_EMAIL = toEmail;
+    // }
+
+    // Set the AWS Region (e.g., "us-east-1")
+    const REGION = "us-east-1";
+
+    // Create an SES service object
+    //const sesClient = new SESClient({ region: REGION });
+
+    const SES_CONFIG = {
+      region: REGION, // Replace with your AWS region (e.g., 'us-west-2')
+      credentials: {
+        accessKeyId: AWS_ACCESS_KEY_ID, // Replace with your access key ID
+        secretAccessKey: AWS_SECRET_ACCESS_KEY // Replace with your secret access key
+      }
+    };
+
+    // Create the SES client with the specified configuration
+    const sesClient = new SESClient(SES_CONFIG);
+
+    // Email parameters
+
+    let subj = subject;
+    let hoid = "N/A";
+    if (hoaId) {
+      subj = `[${hoaId}] ${subject}`;
+      hoid = hoaId;
+    }
+
+    const emailContent = `
+      <h2>New Email from HOA Portal</h2>
+      <p><strong>Subject:</strong> ${subj}</p>
+      <p><strong>To Email:</strong> ${toEmail}</p>
+      <p><strong>From (Return Email):</strong> ${returnEmail}</p>
+      <p><strong>HOA ID:</strong> ${hoid}</p>
+      <hr>
+      <h3>Message:</h3>
+      <p>${message.replace(/\n/g, '<br>')}</p>
+    `;
+
+    const emailContentText = `
+      <b>New Email from HOA Portal</b>
+      <p><strong>Subject:</strong> ${subj}</p>
+      <p><strong>To Email:</strong> ${toEmail}</p>
+      <p><strong>From (Return Email):</strong> ${returnEmail}</p>
+      <p><strong>HOA ID:</strong> ${hoid}</p>
+      <hr>
+      <h3>Message:</h3>
+      <p>${message.replace(/\n/g, '<br>')}</p>
+    `;
+
+    const params = {
+      Source: HPS_EMAIL,
+      //"no.reply@hoaparkingsolutions.com", // Verified sender email address
+      // sender@example.com", // Verified sender email address
+      Destination: {
+        // ToAddresses: ["recipient@example.com"], // Verified recipient email address(es)
+        // this will be contact@hoaparkingsolutions.com or something like that depending on where the email is triggered
+        ToAddresses: [toEmail], // Verified recipient email address(es)
+
+      },
+      Message: {
+        Subject: {
+          Charset: "UTF-8",
+          Data: subj,
+        },
+        Body: {
+          Text: {
+            Charset: "UTF-8",
+            Data: emailContentText,
+          },
+          Html: {
+            Charset: "UTF-8",
+            Data: emailContent,
+          },
+        },
+      },
+    };
+
+    // Async function to send the email
+    const sendEmail = async () => {
+      try {
+        const command = new SendEmailCommand(params);
+        const data = await sesClient.send(command);
+        // console.log("Email sent successfully. Message ID:", data.MessageId);
+        return data;
+      } catch (err) {
+        console.error("Failed to send email:", err);
+      }
+    };
+
+    await sendEmail();
+    res.json({
+      message: "Email sent successfully"
+    });
+
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: error.message || "Error sending email" });
+  }
+};
+
+export {
+  getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser,
+  getCurrentUser, verifyRenterPin, forgotPasswordSES, resetPassword, deleteUser,
+  sendEmailFromHoa, sendEmailFromHoaSES
+};
+
+
+
+
+
+// const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+
+
+// if (!SENDGRID_API_KEY) {
+//   return res.status(500).json({ message: "Email service not configured" });
+// }
+
+// let subj = subject;
+// let hoid = "N/A";
+// if (hoaId) {
+//   subj = `[${hoaId}] ${subject}`;
+//   hoid = hoaId;
+// }
+
+// sgMail.setApiKey(SENDGRID_API_KEY);
+
+
+// const emailContent = `
+//   <h2>New Email from HOA Portal</h2>
+//   <p><strong>Subject:</strong> ${subj}</p>
+//   <p><strong>To Email:</strong> ${HPS_EMAIL}</p>
+//   <p><strong>From (Return Email):</strong> ${returnEmail}</p>
+//   <p><strong>HOA ID:</strong> ${hoid}</p>
+//   <hr>
+//   <h3>Message:</h3>
+//   <p>${message.replace(/\n/g, '<br>')}</p>
+// `;
+// const msg = {
+//   to: HPS_EMAIL,
+//   from:  "noreply@hoaparkingsolutions.com",
+//   replyTo: returnEmail,
+//   subject: `${subj}`,
+//   html: emailContent
+// };
+// await sgMail.send(msg);
+
+// res.json({
+//   message: "Email sent successfully"
+// });
+
 
 

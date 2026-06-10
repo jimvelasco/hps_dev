@@ -436,6 +436,7 @@ export default function UserDetails() {
                   >
                     <option value="owner">Owner</option>
                     <option value="admin">Admin</option>
+                     <option value="enforcer">Enforcer</option>
                   </select>
               </div>
 
@@ -519,7 +520,7 @@ export default function UserDetails() {
                   {isSubmitting ? "Saving..." : isEditMode ? "Update User" : "Create User"}
                 </button>
 
-                <button className="btn btn-default"
+                <button className="btn btn-cancel"
                   type="button"
                   onClick={handleBackToUsers}
                   disabled={isSubmitting}

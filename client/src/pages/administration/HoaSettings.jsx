@@ -300,7 +300,7 @@ let backgroundImage = '';
             </button>
             <button
               onClick={handleBackClick}
-              className="btn btn-default"
+              className="btn btn-cancel"
             >
               Cancel
             </button>

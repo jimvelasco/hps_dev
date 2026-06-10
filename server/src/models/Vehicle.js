@@ -41,6 +41,10 @@ const vehicleSchema = new mongoose.Schema(
   model: {
     type: String
   },
+   color: {
+    type: String,
+    default: ""
+  },
   year: {
     type: String
 
@@ -87,6 +91,17 @@ const vehicleSchema = new mongoose.Schema(
   startdate: {
     type: String
   },
+
+  starttime: {
+    type: String,
+    default:"00:00:00"
+  },
+    endtime: {
+    type: String,
+    default:"00:00:00"
+  },
+
+ 
 
   checkout: {
     type: Date,

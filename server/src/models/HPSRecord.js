@@ -40,6 +40,12 @@ const hpsrecordSchema = new mongoose.Schema(
         phone: {
             type: String
         },
+
+        cartype: {
+            type: String,
+            default: "Car"
+        },
+        
         plate: {
             type: String,
             required: true

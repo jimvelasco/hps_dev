@@ -133,7 +133,7 @@ export default function DeleteRenterVehiclesModal({ isOpen, onClose, onDelete, i
               type="button"
               onClick={handleClose}
               disabled={isLoading}
-              className="btn btn-default"
+              className="btn btn-cancel"
               style={{
                 opacity: isLoading ? 0.6 : 1,
                 cursor: isLoading ? "not-allowed" : "pointer"

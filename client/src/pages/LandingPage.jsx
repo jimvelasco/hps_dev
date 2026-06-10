@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 import { getAWSResource } from "../utils/awsHelper";
 
+import DashboardNavbar from "../components/DashboardNavbar";
+
+
 
 export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
- // console.log("Landing Page",hoa);
+  // console.log("Landing Page",hoa);
 
   const buttonStyle = {
     padding: "8px 16px",
@@ -18,29 +21,37 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
     cursor: "pointer",
     transition: "background-color 0.3s",
   };
-  
-   let backImage = '';
-    if (hoa) {
-      backImage = getAWSResource(hoa, 'BI');
+
+  let backImage = '';
+  if (hoa) {
+    backImage = getAWSResource(hoa, 'BI');
     //  console.log('lp', hoa,backImage);
-    } else {
-     return '<div>no hoa</div>';
-    }
+  } else {
+    return '<div>no hoa</div>';
+  }
 
   return (
     <div style={{
-      backgroundImage:  `url('${ backImage}`,
+      backgroundImage: `url('${backImage}`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
       minHeight: "100vh",
       padding: "20px"
     }}>
-      <div className="xtableview">
+
+     
+
+      {/* <DashboardNavbar title="HOA Parking Solutions" title2={null} buttons={null} /> */}
+      <div className="tableview">
         <div className="standardtitlebar">
-          <h2 onClick={() => navigate("/")}>HOA Parking Solutions</h2>
-          <h3 style={{marginTop: "5px"}}>{hoa && hoa.name}</h3>
-        </div>
+          <h3 onClick={() => navigate("/")}>HOA Parking Solutions </h3>
+          <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>        </div>
+      </div>
+      <div className="phoneview">
+        <div className="standardtitlebar">
+          <h3 onClick={() => navigate("/")}>HOA Parking Solutions </h3>
+          <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>        </div>
       </div>
       {/* <div className="phoneview">
         <div className="standardtitlebar">
@@ -64,33 +75,35 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
         </div>
       ) : (
         <>
-        <div style={{margin:"0px auto", textAlign:"center",border:"0px solid black",
-          maxWidth:"360px", backgroundColor: "#fff",
-          borderRadius: "8px", padding: "15px", opacity: ".8"}}>
-        <div className="button-grid">
+          <div style={{
+            margin: "0px auto", textAlign: "center", border: "0px solid black",
+            maxWidth: "360px", backgroundColor: "#fff",
+            borderRadius: "8px", padding: "15px", opacity: ".8"
+          }}>
+            <div className="button-grid">
               <button
-             className="btn btn-primary"
-             onClick={() => navigate(`/${hoaId}/ownerslogin`)}
-           >
-             Owners
-           </button>
-           <button
-             className="btn btn-primary"
-             onClick={() => navigate(`/${hoaId}/renterslogin`)}
-           >
-             Renters
-           </button>
-        </div>
-        <div className="button-grid" style={{ marginTop: "15px" }}>
-          <button
-            className="btnxs btn-secondary"
-            onClick={() => navigate(`/${hoaId}/about`)}
-          >
-            About
-          </button>
-        </div>
-        </div>
-        {/* <div style={{
+                className="btn btn-primary"
+                onClick={() => navigate(`/${hoaId}/ownerslogin`)}
+              >
+                Owners
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate(`/${hoaId}/renterslogin`)}
+              >
+                Renters
+              </button>
+            </div>
+            <div className="button-grid" style={{ marginTop: "15px" }}>
+              <button
+                className="btnxs btn-secondary"
+                onClick={() => navigate(`/${hoaId}/about`)}
+              >
+                About
+              </button>
+            </div>
+          </div>
+          {/* <div style={{
           marginTop: "30px",
           width: "350px",
           margin: "auto",

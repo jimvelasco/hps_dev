@@ -26,6 +26,7 @@ export default function OwnersDashboard() {
     tlink = "ownervehicles";
   }
 
+
   useEffect(() => {
     if (role === "admin" && hoa) {
       checkStripeStatus();
@@ -102,7 +103,7 @@ export default function OwnersDashboard() {
   };
 
   const handleVehiclesClick = () => {
-  //  console.log('handleVehiclesClick role is:',role);
+   // console.log('handleVehiclesClick role is:',role);
     navigate(`/${hoaId}/${tlink}/${role}`);
   };
 
@@ -133,8 +134,8 @@ export default function OwnersDashboard() {
     {
       label: "Onsite",
       onClick: handleOnsiteClick,
-      color: "#2196f3",
-      hoverColor: "#1976d2",
+    //  color: "#2196f3",
+    //  hoverColor: "#1976d2",
       which: "standard"
     },
      ];
@@ -158,7 +159,7 @@ export default function OwnersDashboard() {
  navButtons.push({
       label: "Logout",
       onClick: handleLogout,
-      which: "goback"
+      which: "logout"
     }
   )
 
@@ -200,9 +201,9 @@ export default function OwnersDashboard() {
 
 
       <div className="page-content">
-        <div className="standardtitlebar" style={{marginTop:"10px"}}>
+        {/* <div className="standardtitlebar" style={{marginTop:"10px"}}>
           <h2>Welcome to {hoa?.name}</h2>
-        </div>
+        </div> */}
 
         <HoaInformation hoa={hoa} />
 

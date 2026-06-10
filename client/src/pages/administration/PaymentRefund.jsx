@@ -508,7 +508,7 @@ export default function PaymentRefund() {
                     type="button"
                     onClick={() => setSelectedPayment(null)}
                     disabled={loading}
-                    className="btn btn-default"
+                    className="btn btn-cancel"
                     style={{
                       backgroundColor: "#999",
                       opacity: loading ? 0.6 : 1,

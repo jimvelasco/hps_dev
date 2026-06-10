@@ -8,6 +8,7 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
+import PlateLookup from "../components/PlateLookup";
 
 import mongoose from "mongoose";
 
@@ -34,6 +35,31 @@ export default function VehicleDetails() {
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
 
+  const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
+
+  const handlePlateDetected = (data) => {
+    // Mapping from Plate Recognizer vehicle types to our options
+    console.log('handlePlateDetected jjv data:', data);
+    const typeMapping = {
+      'sedan': 'Car',
+      'suv': 'Car',
+      'van': 'Car',
+      'pickup': 'Truck',
+      'truck': 'Truck',
+      'bus': 'Other',
+      'motorcycle': 'Motorcyle',
+      'rv': 'RV'
+    };
+
+    setFormData(prev => ({
+      ...prev,
+      plate: data.plate || prev.plate,
+      make: data.make ? (data.make.charAt(0).toUpperCase() + data.make.slice(1)) : prev.make,
+      model: data.model ? (data.model.charAt(0).toUpperCase() + data.model.slice(1)) : prev.model,
+      vehicle_type: typeMapping[data.type?.toLowerCase()] || (data.type ? 'Other' : prev.vehicle_type)
+    }));
+  };
+
   const edate = new Date();
   edate.setDate(edate.getDate() + 3);
 
@@ -47,6 +73,7 @@ export default function VehicleDetails() {
     carownerphone: "",
     make: "",
     model: "",
+    color: "",
     year: "",
     vehicle_type: "",
     plate: "",
@@ -68,6 +95,7 @@ export default function VehicleDetails() {
           carownerphone: "7777777777",
           make: "Lincoln",
           model: "Navigator",
+          color: "Green",
           year: "2020",
           vehicle_type: "Car",
           plate: "",
@@ -151,6 +179,7 @@ export default function VehicleDetails() {
           // carownertype: role,
           make: response.data.make || "",
           model: response.data.model || "",
+          color: response.data.color || "",
           year: response.data.year || "",
           vehicle_type: response.data.vehicle_type || "",
           plate: response.data.plate || "",
@@ -348,7 +377,7 @@ export default function VehicleDetails() {
         ownerid: oid,
         requires_payment: rpflag
       };
-      // console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
+      //  console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
 
       if (isModifyMode) {
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
@@ -461,8 +490,8 @@ export default function VehicleDetails() {
           <form onSubmit={handleFormSubmit}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px" }}>
               {/* Owner Information */}
-              <div>
-                <h3 style={{ color: "#1976d2" }}>Owner Information</h3>
+              <div >
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Owner</h3>
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
@@ -524,7 +553,7 @@ export default function VehicleDetails() {
                     {role !== 'renter' && (
                       <>
                         <option value="owner">Owner</option>
-                         <option value="family">Family</option>
+                        <option value="family">Family</option>
                         <option value="friend">Friend</option>
                       </>
                     )}
@@ -535,7 +564,7 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
-                <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
                     Unit Number
                   </label>
@@ -551,48 +580,44 @@ export default function VehicleDetails() {
 
               </div>
 
-              {/* Vehicle Information */}
               <div>
-                <h3 style={{ color: "#1976d2" }}>Vehicle Information</h3>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Registration</h3>
+
+              
+
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
-                    Make *
+                    License Plate *
                   </label>
+
                   <input className="standardinput"
                     type="text"
-                    name="make"
-                    value={formData.make}
+                    name="plate"
+                    value={formData.plate}
                     onChange={handleFormChange}
                     required
                   />
+
                 </div>
+
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
-                    Model
+                    Plate State
                   </label>
                   <input className="standardinput"
                     type="text"
-                    name="model"
-                    value={formData.model}
+                    maxLength={2}
+                    name="plate_state"
+                    value={formData.plate_state}
                     onChange={handleFormChange}
+                    placeholder="e.g., CO, CA, TX"
                   />
+
                 </div>
 
-                <div style={{ marginBottom: "15px" }}>
-                  <label className="input-label">
-                    Year
-                  </label>
-                  <input className="standardinput"
-                    type="text"
-                    name="year"
-                    value={formData.year}
-                    onChange={handleFormChange}
-                  />
-                </div>
-
-                <div style={{ marginBottom: "15px" }}>
+                  <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
                     Vehicle Type
                   </label>
@@ -618,20 +643,31 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
+
+
+
               </div>
+
+
 
               {/* License Plate & Status */}
               <div>
-                <h3 style={{ color: "#1976d2" }}>Registration & Status</h3>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Vehicle</h3>
+
+
+
+
+
+
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
-                    License Plate *
+                    Make *
                   </label>
                   <input className="standardinput"
                     type="text"
-                    name="plate"
-                    value={formData.plate}
+                    name="make"
+                    value={formData.make}
                     onChange={handleFormChange}
                     required
                   />
@@ -639,17 +675,48 @@ export default function VehicleDetails() {
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
-                    Plate State
+                    Model
                   </label>
                   <input className="standardinput"
                     type="text"
-                    maxLength={2}
-                    name="plate_state"
-                    value={formData.plate_state}
+                    name="model"
+                    value={formData.model}
                     onChange={handleFormChange}
-                    placeholder="e.g., CO, CA, TX"
                   />
                 </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Color
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="color"
+                    value={formData.color}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                <div style={{ marginBottom: "0px" }}>
+                  <label className="input-label">
+                    Year
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+
+
+              </div>
+
+
+              {/* Vehicle Information */}
+              <div>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Stay</h3>
+
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
@@ -666,7 +733,9 @@ export default function VehicleDetails() {
                   />
                 </div>
 
-                <div style={{ marginBottom: "15px" }}>
+
+
+                <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
                     Check Out
                   </label>
@@ -678,19 +747,11 @@ export default function VehicleDetails() {
                   />
                 </div>
 
-                {/* <div style={{ marginBottom: "15px" }}>
-                    <label style={{ display: "flex", alignItems: "center", fontWeight: "bold" }}>
-                      <input
-                        type="checkbox"
-                        name="active_flag"
-                        checked={formData.active_flag === 1}
-                        onChange={handleFormChange}
-                        style={{ marginRight: "10px", width: "18px", height: "18px" }}
-                      />
-                      Active
-                    </label>
-                  </div> */}
+
               </div>
+
+
+
             </div>
 
             <div style={{ marginTop: "20px" }}>
@@ -772,7 +833,7 @@ export default function VehicleDetails() {
                   {formSubmitting ? (isModifyMode ? "Updating..." : "Creating...") : (isModifyMode ? "Update" : "Create")}
                 </button>
 
-                <button className="btn btn-default"
+                <button className="btn btn-cancel"
                   type="button"
                   onClick={handleBackClick}
                 >
@@ -814,6 +875,32 @@ export default function VehicleDetails() {
         onConfirm={modal.onConfirm}
         onCancel={modal.onCancel}
       />
+
+      <PlateLookup
+        isOpen={isPlateLookupOpen}
+        onClose={() => setIsPlateLookupOpen(false)}
+        onPlateDetected={handlePlateDetected}
+      />
     </div>
   );
 }
+
+/*
+  <button
+                    type="button"
+                    onClick={() => setIsPlateLookupOpen(true)}
+                    style={{
+                      padding: "5px 10px",
+                      fontSize: "12px",
+                      backgroundColor: "#1976d2",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      marginTop: "5px",
+
+                    }}
+                  >
+                    Lookup Plate
+                  </button>
+                  */
