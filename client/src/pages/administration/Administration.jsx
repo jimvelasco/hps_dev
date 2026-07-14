@@ -38,7 +38,7 @@ export default function Administration() {
   //   setDeleteLoading(true);
   //   try {
   //     const response = await axios.delete("/vehicles/status/8");
-      
+
   //     if (response.status === 200) {
   //       alert(`Successfully deleted ${response.data.deletedCount} vehicle(s)`);
   //     }
@@ -58,7 +58,7 @@ export default function Administration() {
   //   setUpdateDateLoading(true);
   //   try {
   //     const response = await axios.put("/vehicles/batch/update-dates");
-      
+
   //     if (response.status === 200) {
   //       alert(`Successfully updated ${response.data.updatedCount} vehicle(s)`);
   //     }
@@ -74,7 +74,7 @@ export default function Administration() {
   //   setJjvrunqueryLoading(true);
   //   try {
   //     const response = await axios.post(`/vehicles/jjvrunquery/${hoaId}`);
-      
+
   //     if (response.status === 200) {
   //       alert(`jjvrunquery executed successfully. Result: ${response.data.message || "Done"}`);
   //     }
@@ -102,12 +102,12 @@ export default function Administration() {
   // };
   //  const handleTestModelGet = async () => {
   //   console.log("handleTestModel called");
-    
+
   //    const startd = "2025-12-27";
   //   try {
   //     const response = await axios.get(`/tests/${startd}`);
   //     if (response.status === 200) {
-       
+
   //       console.log("Test Models fetched:", response.data);
   //     }
   //   } catch (err) {
@@ -140,7 +140,7 @@ export default function Administration() {
     navigate(`/${hoaId}/pdf-upload`);
   };
 
-   const handleShowProfile = () => {
+  const handleShowProfile = () => {
     navigate(`/${hoaId}/profile`);
   };
 
@@ -200,7 +200,7 @@ export default function Administration() {
     }
   ];
 
-let backgroundImage = '';
+  let backgroundImage = '';
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
@@ -220,81 +220,42 @@ let backgroundImage = '';
           </div>
         </div>
 
-          <div className="grid-flex-container">
-         
-           <section className="standardsection">
+        <div className="grid-flex-container">
+
+          <h3 className="adminpage_heading">Manage</h3>
+
+          <section className="standardsection">
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Profile</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Manage HOA Profile including password reset
             </p>
             <button className="standardsubmitbutton"
               onClick={handleShowProfile}
-              style={{width:"200px"}}>
-             HOA Profile
-            </button>
-          </section>
-
-           <section className="standardsection">
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Settings</h3>
-            <p style={{ color: "#666", marginBottom: "20px" }}>
-              Configure HOA property and parking policies
-            </p>
-            <button  className="standardsubmitbutton"
-              onClick={handleManageHoaSettings}
-               style={{width:"200px"}}>
-              HOA Settings
-            </button>
-          </section>
-
-         
-
-           <section className="standardsection">
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Create S3 Folder</h3>
-            <p style={{ color: "#666", marginBottom: "20px" }}>
-              Create a new folder in the HOA parking S3 bucket
-            </p>
-            <button className="standardsubmitbutton"
-              onClick={() => setShowCreateFolderModal(true)}
-              style={{width:"200px"}}>
-             Create Folder
-            </button>
-          </section>
-
-           <section className="standardsection">
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Image Upload</h3>
-            <p style={{ color: "#666", marginBottom: "20px" }}>
-              Upload images to AWS S3 bucket
-            </p>
-            <button className="standardsubmitbutton"
-              onClick={handleImageUpload}
-              style={{width:"200px"}}>
-             Upload Image
+              style={{ width: "200px" }}>
+              HOA Profile
             </button>
           </section>
 
           <section className="standardsection">
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>PDF Upload</h3>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Settings</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Upload PDF files to AWS S3 bucket
+              Configure HOA property and parking policies
             </p>
             <button className="standardsubmitbutton"
-              onClick={handlePdfUpload}
-              style={{width:"200px"}}>
-             Upload PDF
+              onClick={handleManageHoaSettings}
+              style={{ width: "200px" }}>
+              HOA Settings
             </button>
           </section>
 
-
-
-
-           <section className="standardsection">
+          <section className="standardsection">
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Contact Information</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Manage HOA contact details and phone numbers
             </p>
-            <button  className="standardsubmitbutton"
+            <button className="standardsubmitbutton"
               onClick={handleManageContactInformation}
-               style={{width:"200px"}} >
+              style={{ width: "200px" }} >
               Contact Information
             </button>
           </section>
@@ -306,10 +267,13 @@ let backgroundImage = '';
             </p>
             <button className="standardsubmitbutton"
               onClick={handleManagePaymentRanges}
-              style={{width:"200px"}}>
+              style={{ width: "200px" }}>
               Payment Ranges
             </button>
           </section>
+
+            <h3 className="adminpage_heading">Operations</h3>
+
 
           <section className="standardsection">
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Payment Refunds</h3>
@@ -318,7 +282,7 @@ let backgroundImage = '';
             </p>
             <button className="standardsubmitbutton"
               onClick={handlePaymentRefund}
-              style={{width:"200px"}}>
+              style={{ width: "200px" }}>
               Process Refund
             </button>
           </section>
@@ -330,7 +294,7 @@ let backgroundImage = '';
             </p>
             <button className="standardsubmitbutton"
               onClick={handleUpdateAllUsers}
-              style={{width:"200px"}}>
+              style={{ width: "200px" }}>
               Update Users
             </button>
           </section>
@@ -342,10 +306,52 @@ let backgroundImage = '';
             </p>
             <button className="standardsubmitbutton"
               onClick={() => setShowDeleteRenterVehiclesModal(true)}
-              style={{width:"200px", backgroundColor: "#d32f2f"}}>
+              style={{ width: "200px", backgroundColor: "#d32f2f" }}>
               Purge Renters
             </button>
           </section>
+
+          <h3 className="adminpage_heading">AWS</h3>
+
+          <section className="standardsection">
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Create S3 Folder</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Create a new folder in the HOA parking S3 bucket
+            </p>
+            <button className="standardsubmitbutton"
+              onClick={() => setShowCreateFolderModal(true)}
+              style={{ width: "200px" }}>
+              Create Folder
+            </button>
+          </section>
+
+          <section className="standardsection">
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Image Upload</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Upload images to AWS S3 bucket
+            </p>
+            <button className="standardsubmitbutton"
+              onClick={handleImageUpload}
+              style={{ width: "200px" }}>
+              Upload Image
+            </button>
+          </section>
+
+          <section className="standardsection">
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>PDF Upload</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              Upload PDF files to AWS S3 bucket
+            </p>
+            <button className="standardsubmitbutton"
+              onClick={handlePdfUpload}
+              style={{ width: "200px" }}>
+              Upload PDF
+            </button>
+          </section>
+
+
+
+        
 
         </div>
 
