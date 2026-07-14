@@ -222,9 +222,10 @@ export default function Administration() {
 
         <div className="grid-flex-container">
 
-          <h3 className="adminpage_heading">Manage</h3>
+         
 
-          <section className="standardsection">
+          <section className="admin_section">
+            <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Profile</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Manage HOA Profile including password reset
@@ -236,7 +237,8 @@ export default function Administration() {
             </button>
           </section>
 
-          <section className="standardsection">
+           <section className="admin_section">
+            <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Settings</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Configure HOA property and parking policies
@@ -248,7 +250,8 @@ export default function Administration() {
             </button>
           </section>
 
-          <section className="standardsection">
+           <section className="admin_section">
+            <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Contact Information</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Manage HOA contact details and phone numbers
@@ -260,7 +263,8 @@ export default function Administration() {
             </button>
           </section>
 
-          <section className="standardsection">
+           <section className="admin_section">
+            <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Payment Ranges</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Manage parking rate schedules by date ranges
@@ -272,10 +276,10 @@ export default function Administration() {
             </button>
           </section>
 
-            <h3 className="adminpage_heading">Operations</h3>
 
 
-          <section className="standardsection">
+          <section className="admin_section">
+            <h5 className="admin_section_title">Operations</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Payment Refunds</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Process refunds for completed parking payments
@@ -287,7 +291,8 @@ export default function Administration() {
             </button>
           </section>
 
-          <section className="standardsection">
+          <section className="admin_section">
+            <h5 className="admin_section_title">Operations</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Update Users Parking</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Batch update free parking values for all users
@@ -299,7 +304,8 @@ export default function Administration() {
             </button>
           </section>
 
-          <section className="standardsection">
+         <section className="admin_section">
+            <h5 className="admin_section_title">Operations</h5>
             <h3 style={{ color: "#d32f2f", marginTop: 0 }}>Purge Renter Vehicles</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Delete renter vehicles ending before a selected date
@@ -311,9 +317,9 @@ export default function Administration() {
             </button>
           </section>
 
-          <h3 className="adminpage_heading">AWS</h3>
 
-          <section className="standardsection">
+          <section className="admin_section">
+            <h5 className="admin_section_title">AWS</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Create S3 Folder</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Create a new folder in the HOA parking S3 bucket
@@ -325,7 +331,8 @@ export default function Administration() {
             </button>
           </section>
 
-          <section className="standardsection">
+          <section className="admin_section">
+            <h5 className="admin_section_title">AWS</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Image Upload</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Upload images to AWS S3 bucket
@@ -337,7 +344,8 @@ export default function Administration() {
             </button>
           </section>
 
-          <section className="standardsection">
+          <section className="admin_section">
+            <h5 className="admin_section_title">AWS</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>PDF Upload</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Upload PDF files to AWS S3 bucket
