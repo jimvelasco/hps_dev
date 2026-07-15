@@ -27,7 +27,6 @@ export default function HoaSettings() {
     parking_allowed_owner: 2,
     renter_free_parking_spots: 1,
     owner_free_parking_spots: 5,
-    background_image_url: "",
     parking_information_url: ""
   });
 
@@ -48,7 +47,6 @@ export default function HoaSettings() {
         parking_allowed_owner: hoa.parking_allowed_owner || 2,
         renter_free_parking_spots: hoa.renter_free_parking_spots || 1,
         owner_free_parking_spots: hoa.owner_free_parking_spots || 5,
-        background_image_url: hoa.background_image_url || "",
         parking_information_url: hoa.parking_information_url || ""
       });
     }
@@ -266,7 +264,7 @@ let backgroundImage = '';
               />
             </div>
 
-            <div className="hoa-settings-full-width">
+            {/* <div className="hoa-settings-full-width">
               <label className="input-label">Background Image URL</label>
               <input
                 type="text"
@@ -275,7 +273,7 @@ let backgroundImage = '';
                 value={formData.background_image_url}
                 onChange={handleInputChange}
               />
-            </div>
+            </div> */}
 
             <div className="hoa-settings-full-width">
               <label className="input-label">Parking Information URL</label>

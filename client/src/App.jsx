@@ -76,14 +76,18 @@ function AppContent() {
 
   // src={`${getAWSResource(hoa, 'RTC')}`}
 
-  let backgroundImage = hoa && hoa.background_image_url ? 
+  let xbackgroundImage = hoa && hoa.background_image_url ? 
 `url(${getAWSResource(hoa, 'BI')})` : "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg"
 
-// if (hoa) {
-//   console.log('background image is',hoa.background_image_url);
-//    backgroundImage = getAWSResource(hoa, 'BI');
-//     console.log('aws background image is',backgroundImage);
-// }
+ let backgroundImage = ''; 
+//  hoa && hoa.background_image_url ? 
+// `url(${getAWSResource(hoa, 'BI')})` : "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg"
+
+if (hoa) {
+ // console.log('background image is',hoa.background_image_url);
+   backgroundImage = getAWSResource(hoa, 'BI');
+    console.log('aws background image is',backgroundImage);
+}
   return <LandingPage backgroundImage={backgroundImage} hoaId={hoaId} hoaError={error} />;
 }
 

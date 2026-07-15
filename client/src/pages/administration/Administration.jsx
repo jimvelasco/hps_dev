@@ -317,7 +317,7 @@ export default function Administration() {
             </button>
           </section>
 
-
+{/* 
           <section className="admin_section">
             <h5 className="admin_section_title">AWS</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Create S3 Folder</h3>
@@ -329,7 +329,7 @@ export default function Administration() {
               style={{ width: "200px" }}>
               Create Folder
             </button>
-          </section>
+          </section> */}
 
           <section className="admin_section">
             <h5 className="admin_section_title">AWS</h5>
