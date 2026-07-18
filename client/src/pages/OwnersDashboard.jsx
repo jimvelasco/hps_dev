@@ -219,7 +219,8 @@ export default function OwnersDashboard() {
           </div>
         )}
 
-        {role === "admin" && (
+        {/* we will disable all stripe stuff on the dasboard */}
+        {role === "xx_admin" && (
           <section className="standardsection-wide" style={{  justifyItems: "center", alignItems: "center", display: "flex", flexDirection: "column", maxWidth: "320px", margin: "20px auto" }}>
             <h3 style={{ color: "#1976d2", marginTop: 0 }}>Stripe Payouts</h3>
             <p style={{ fontSize: "14px", marginBottom: "15px" }}>
