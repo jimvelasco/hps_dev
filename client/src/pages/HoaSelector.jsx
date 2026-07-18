@@ -5,7 +5,7 @@ import axios from "../services/api";
 export default function HoaSelector() {
   const navigate = useNavigate();
   const [hoas, setHoas] = useState([]);
-  const [selectedHoaId, setSelectedHoaId] = useState("");
+  const [selectedHoaId, setSelectedHoaId] = useState("YV");  // this will default the option list to have Yampa View selected
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,8 +16,8 @@ export default function HoaSelector() {
         const response = await axios.get("/hoas");
         // let tary = [];
         // tary.push(response.data)
-        //setHoas(tary);
-         setHoas(response.data);
+        // setHoas(tary);
+        setHoas(response.data);
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load HOAs");

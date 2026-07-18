@@ -18,9 +18,22 @@ const getHoaById = async (req, res) => {
   }
 };
 
-const getHoas = async (req, res) => {
+// for demo this got all of the hoas including LODGE and TIMBERS to show different backgrounds
+const getallHoas = async (req, res) => {
   try {
     const hoas = await Hoa.find();
+    res.json(hoas);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// FOR NOW WE JUST GET YAMPA VIEW
+const getHoas = async (req, res) => {
+  const qry = {hoaid:"YV"}
+  try {
+    const hoas = await Hoa.find(qry);
+   // console.log('hoa',hoas)
     res.json(hoas);
   } catch (error) {
     res.status(500).json({ message: error.message });
