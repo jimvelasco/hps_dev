@@ -4,9 +4,9 @@ import sgMail from "@sendgrid/mail";
 
 const getUsers = async (req, res) => {
 
-  const { hoaId } = req.query;
-  const filter = hoaId ? { hoaid: hoaId } : {};
-  //  console.log("getUsers and hoaId:", hoaId,filter);
+  const { hoaid } = req.query;
+  const filter = hoaid ? { hoaid: hoaid ,role:'owner'} : {};
+   // console.log("getUsers and hoaId is:", hoaid,filter);
   const users = await User.find(filter).sort({ unitnumber: 1 });
   res.json(users);
 };

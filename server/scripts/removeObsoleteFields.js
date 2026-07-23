@@ -9,7 +9,7 @@ dotenv.config();
 const removeObsoleteFields = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/hoa_livexx");
-    console.log("Connected to MongoDB",process.env.MONGO_URI);
+    console.log("removeObsoleteFields Connected to MongoDB",process.env.MONGO_URI);
 
     // 1. Update Vehicles
     const vehicleResult = await Vehicle.updateMany({}, { 
