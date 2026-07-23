@@ -228,7 +228,7 @@ export default function ViolationsAccordion({ hoaId }) {
                   <div className="accordion-value">{detail.value}</div>
                 </div>
               ))}
-              {loggedInUser && loggedInUser.role === 'admin' &&
+              {loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'enforcer') &&
                 <div style={{ textAlign: 'center', margin: '5px' }}>
                   <button className="btnxs btn-danger" style={{marginTop:"5px"}} onClick={() => deleteViolation(item)}>Delete</button>
                 </div>

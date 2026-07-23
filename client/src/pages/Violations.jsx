@@ -195,8 +195,7 @@ let backgroundImage = '';
           </div>
         </div>
       </div>
-      <div className="tableview">what</div>
-       <div className="phoneview">where</div>
+     
     </div>
   );
 }
