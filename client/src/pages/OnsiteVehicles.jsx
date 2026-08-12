@@ -354,8 +354,8 @@ const renderVehicleCard = (vehicle) => {
       <div className="grid-flex-container">
         {!showTable && (
           vehicles.map((vehicle, index) => (
-            isPlateVisible ? renderVehiclePlate(vehicle) :
-              renderVehiclePlate2(vehicle)
+            isPlateVisible ? renderVehiclePlate2(vehicle) :
+              renderVehiclePlate(vehicle)
           ))
         )}
       </div>
@@ -392,8 +392,8 @@ const renderVehicleCard = (vehicle) => {
       <div className='grid-flex-container'>
         {!showTable && (
           vehicles.map((vehicle, index) => (
-            isPlateVisible ? renderVehiclePlate(vehicle) :
-              renderVehiclePlate2(vehicle)
+            isPlateVisible ? renderVehiclePlate2(vehicle) :
+              renderVehiclePlate(vehicle)
           ))
         )}
       </div>
