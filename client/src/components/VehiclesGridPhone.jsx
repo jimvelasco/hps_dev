@@ -33,16 +33,12 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           style={{fontSize:'.7rem',marginBottom:'0px'}}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
           <div className="grid-item-bold">Unit</div>
-           <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
+           <div className="grid-item-bold">{vehicle.carownertype}</div>
           <div className="grid-item-bold">Type</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
           <div className="grid-item-normal row-with-gap" >&nbsp;
          
-            {/* {getVehicleActiveStatusBoolean(vehicle) ? (
-               <div style={{backgroundColor:"green",color:"white",padding:"3px",display:"inline-block"}}>Active</div> ) : 
-              ("Not Active")
-              }  */}
             </div>
           <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 

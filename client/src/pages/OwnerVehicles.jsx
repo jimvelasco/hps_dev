@@ -45,7 +45,7 @@ export default function OwnerVehicles() {
     if (loggedInUser) {
       setRole(loggedInUser.role);
       setOwnerId(loggedInUser._id);
-      // console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
+       console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
     } else {
       console.log("owner vehicles loggedInUser is null")
     }
@@ -506,22 +506,26 @@ export default function OwnerVehicles() {
                 </div>
               </div>
 
-            ) : (
+            ) : 
+            
+            (
 
               <div className='grid-flex-container'>
+                
                 <VehiclesGridPhone
                   vehicles={vehicles}
                   role={role}
-                  // sortColumn={sortColumn}
-                  // sortDirection={sortDirection}
-                  // handleSort={handleSort}
+                 
                   handleDetailsClick={handleDetailsClick}
                   handlePaymentClick={handlePaymentClick}
                   getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
                   utcDateOnly={utcDateOnly}
                 />
               </div>
-            )}
+            )
+
+
+            }
           </>
         ) : (
           <div className="noresultsfound">
