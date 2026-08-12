@@ -30,8 +30,8 @@ export const createVehicleSchema = z.object({
 
 export const updateVehicleSchema = z.object({
   ownerid: z.string(),
-  unitnumber: z.string(),
-  carownertype: z.string(),
+  unitnumber: z.string().min(1, 'Unit Number is required'),
+  carownertype: z.string().min(1, 'Car Owner type is required'),
   // carownername: z.string().optional(),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
