@@ -169,6 +169,10 @@ export default function OnsiteVehicles() {
 
         {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
       </div>
+
+        <div className="full-row" 
+              style={{ marginBottom: '0px' }}>{vehicle.carowner_lname || "N/A"}, 
+              {vehicle.carowner_fname || "N/A"}</div>
     
 
  <div className="grid-item-bold">Make</div>
@@ -207,9 +211,7 @@ export default function OnsiteVehicles() {
       }}>
         {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
       </div>
-              <div className="full-row" 
-              style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, 
-              {vehicle.carowner_fname || "N/A"}</div>
+            
 
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
