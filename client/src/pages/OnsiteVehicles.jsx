@@ -208,7 +208,7 @@ export default function OnsiteVehicles() {
         <div className="full-row" style={{ fontSize: '.7rem', marginBottom: '5px' }}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
         <div className="grid-item-bold">Unit</div>
-        <div className="grid-item-bold">{vehicle.carownertype.toUpperCase()}</div>
+        <div className="grid-item-bold">{vehicle.carownertype}</div>
         <div className="grid-item-bold">Type</div>
 
         <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
