@@ -1,59 +1,51 @@
 import { z } from 'zod';
 
 export const createVehicleSchema = z.object({
-  ownerid: z.string(),
-  unitnumber: z.string(),
-  carownertype: z.string(),
-  // carownername: z.string().optional(),
+  ownerid: z.string().nullable().optional().or(z.literal('')),
+  unitnumber: z.string().min(1, 'Unit number is required'),
+  carownertype: z.string().min(1, 'Owner type is required'),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
-  carownerphone: z.string().min(10, 'Phone number must be valid'),
+  carownerphone: z.string().min(10, 'Phone number must be at least 10 digits'),
   make: z.string().min(1, 'Make is required'),
-  model: z.string().min(1, 'Model is required'),
-   color: z.string(),
-  year: z.string().min(4, 'Year is required'),
+  model: z.string().optional().or(z.literal('')),
+  color: z.string().optional().or(z.literal('')),
+  year: z.string().optional().or(z.literal('')),
   vehicle_type: z.string().min(1, 'Vehicle type is required'),
   plate: z.string().min(1, 'License plate is required').toUpperCase(),
   plate_state: z.string().min(1, 'Plate state is required').toUpperCase(),
-  hoaid: z.string(),
-  // active_flag: z.number().optional(),
-  //  status_flag: z.number().optional(),
+  hoaid: z.string().min(1, 'HOA ID is required'),
   enddate: z.string().min(1, 'End date is required'),
   startdate: z.string().min(1, 'Start date is required'),
   requires_payment: z.number().optional(),
-  // change_history: z.array(z.unknown()).optional()
 }).transform((data) => ({
   ...data,
-  checkin: new Date(data.startdate).toISOString(),
-  checkout: new Date(data.enddate).toISOString()
+  checkin: data.startdate ? new Date(data.startdate).toISOString() : new Date().toISOString(),
+  checkout: data.enddate ? new Date(data.enddate).toISOString() : new Date().toISOString()
 }));
 
 export const updateVehicleSchema = z.object({
-  ownerid: z.string(),
-  unitnumber: z.string().min(1, 'Unit Number is required'),
-  carownertype: z.string().min(1, 'Car Owner type is required'),
-  // carownername: z.string().optional(),
+  ownerid: z.string().nullable().optional().or(z.literal('')),
+  unitnumber: z.string().min(1, 'Unit number is required'),
+  carownertype: z.string().min(1, 'Owner type is required'),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
-  carownerphone: z.string().min(10, 'Phone number must be valid'),
+  carownerphone: z.string().min(10, 'Phone number must be at least 10 digits'),
   make: z.string().min(1, 'Make is required'),
-  model: z.string().min(1, 'Model is required'),
-  color: z.string(),
-  year: z.string().min(1, 'Year is required').max(4, 'Year must be 4 digits'),
-  // year: z.string().min(4, 'Year must be 4 digits'),
+  model: z.string().optional().or(z.literal('')),
+  color: z.string().optional().or(z.literal('')),
+  year: z.string().optional().or(z.literal('')),
   vehicle_type: z.string().min(1, 'Vehicle type is required'),
   plate: z.string().min(1, 'License plate is required').toUpperCase(),
   plate_state: z.string().min(1, 'Plate state is required').toUpperCase(),
-  hoaid: z.string(),
-  // active_flag: z.number().optional(),
-  // status_flag: z.number().optional(),
+  hoaid: z.string().min(1, 'HOA ID is required'),
   enddate: z.string().min(1, 'End date is required'),
   startdate: z.string().min(1, 'Start date is required'),
   requires_payment: z.number().optional(),
 }).transform((data) => ({
   ...data,
-  checkin: new Date(data.startdate).toISOString(),
-  checkout: new Date(data.enddate).toISOString()
+  checkin: data.startdate ? new Date(data.startdate).toISOString() : new Date().toISOString(),
+  checkout: data.enddate ? new Date(data.enddate).toISOString() : new Date().toISOString()
 }));
   // enddate: z.string().refine((value) => {
   //   const date = new Date(value);

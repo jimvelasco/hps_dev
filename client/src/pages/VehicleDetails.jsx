@@ -148,18 +148,25 @@ export default function VehicleDetails() {
 
   useEffect(() => {
     // if (userLoading) {return}
+    const targetUnit = formData.unitnumber || unitNumber;
 
-    if (hoaId && unitNumber) {
+    if (hoaId && targetUnit) {
       const fetchUserForUnit = async () => {
         try {
+          // Use hoaId as param (backend now supports both hoaid and hoaId)
           const response = await axios.get("/users", { params: { hoaId } });
-          const user = response.data.find(u => u.unitnumber === unitNumber && u.hoaid === hoaId);
+          const user = response.data.find(u => u.unitnumber === targetUnit && u.hoaid === hoaId);
           if (user) {
             // console.log('we found a user for unit:',unitNumber,user);
             setUserIdForUnit(user._id);
             setUnitOwner(user);
           } else {
-            console.log('No user found for unit:', unitNumber);
+            console.log('No user found for unit:', targetUnit);
+            // Don't clear userIdForUnit if we are in modify mode and it was already loaded
+            if (!isModifyMode) {
+              setUserIdForUnit(null);
+              setUnitOwner(null);
+            }
           }
         } catch (err) {
           // console.error("Error fetching user for unit:", err);
@@ -167,7 +174,7 @@ export default function VehicleDetails() {
       };
       fetchUserForUnit();
     }
-  }, [hoaId, unitNumber]);
+  }, [hoaId, unitNumber, formData.unitnumber, isModifyMode]);
 
   useEffect(() => {
     //  if (userLoading) {return}
@@ -298,12 +305,12 @@ export default function VehicleDetails() {
     e.preventDefault();
     // console.log('handleFormSubmit role is:', role);
     if (!formData.carowner_fname || !formData.carowner_lname || !formData.carownerphone
-      || !formData.make || !formData.plate) {
+      || !formData.make || !formData.plate || !formData.plate_state || !formData.unitnumber) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: "Please fill in all required fields",
+        message: "Please fill in all required fields (marked with *)",
         confirmText: "OK",
         onConfirm: () => {
           setModal(prev => ({ ...prev, isOpen: false }))
@@ -389,7 +396,9 @@ export default function VehicleDetails() {
 
 
     try {
-      let oid = loggedInUser ? loggedInUser._id : userIdForUnit;
+      // Prefer the user associated with the unit, fallback to logged in user (e.g. admin or owner creating for themselves)
+      let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
+      
       const vehiclePayload = {
         ...formData,
         hoaid: hoaId,
@@ -433,21 +442,18 @@ export default function VehicleDetails() {
         }
       }
     } catch (err) {
-      // console.log('xxxxxxerror in form submit:', err);
-      // console.log('err.response?.data', err.response.data.errors[0].message, err.response.data.errors[0].code);
-      // let msg = err.response?.data.errors[0].message + ' OR ' + err.response.data.errors[0].code;
-      // console.log('msg:', msg,err.message);
+      const errorMessage = err.response?.data?.errors?.[0]?.message || 
+                          err.response?.data?.message || 
+                          err.message;
 
       setModal({
         isOpen: true,
         type: "alert",
         title: "Error",
-        //  message: `Error ${isModifyMode ? "updating" : "creating"} vehicle: ${err.response?.data.message || err.message}`,
-        message: `Error ${isModifyMode ? "updating" : "creating"} vehicle: ${err.response?.data.errors[0].message || err.message}`,
+        message: `Error ${isModifyMode ? "updating" : "creating"} vehicle: ${errorMessage}`,
         confirmText: "OK",
         onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
       });
-      // return
     } finally {
       // console.log('finally block reached');
       setFormSubmitting(false);
@@ -585,14 +591,14 @@ export default function VehicleDetails() {
 
                 <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
-                    Unit Number
+                    Unit Number *
                   </label>
                   <input className="standardinput"
                     type="text"
                     name="unitnumber"
                     value={formData.unitnumber}
                     onChange={handleFormChange}
-                   
+                    required
                   />
                 </div>
 
@@ -623,7 +629,7 @@ export default function VehicleDetails() {
 
                 <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
-                    Plate State
+                    Plate State *
                   </label>
                   <input className="standardinput"
                     type="text"
@@ -632,8 +638,8 @@ export default function VehicleDetails() {
                     value={formData.plate_state}
                     onChange={handleFormChange}
                     placeholder="e.g., CO, CA, TX"
+                    required
                   />
-
                 </div>
 
                   <div style={{ marginBottom: "15px" }}>

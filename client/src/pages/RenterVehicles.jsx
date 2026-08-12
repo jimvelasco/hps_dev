@@ -56,11 +56,15 @@ export default function RenterVehicles() {
           setVehiclesLoading(true);
           //  const response = await axios.get(`/vehicles/${hoaId}/renter/${unitNumber}`);
           const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
+          console.log('unitnumber',unitNumber);
+         
           const updatedVehicles = response.data.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
           setVehicles(updatedVehicles);
+          
+// console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");

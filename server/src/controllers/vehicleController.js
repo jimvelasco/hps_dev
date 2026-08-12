@@ -3,26 +3,27 @@ import HPSRecord from "../models/HPSRecord.js";
 
 const logHPSRecord = async (vehicle, oldStartDate = null, oldEndDate = null) => {
   try {
+    // console.log("Logging HPSRecord for vehicle:", vehicle._id, "owner:", vehicle.ownerid);
     await HPSRecord.create({
       hoaid: vehicle.hoaid,
       vehicleId: vehicle._id,
-      ownerId: vehicle.ownerid,
-      unitnumber: vehicle.unitnumber,
-      ownertype: vehicle.carownertype,
-      firstname: vehicle.carowner_fname,
-      lastname: vehicle.carowner_lname,
-      phone: vehicle.carownerphone,
-      cartype: vehicle.vehicle_type,
-      plate: vehicle.plate,
-      platestate: vehicle.plate_state,
-      requires_payment: vehicle.requires_payment,
+      ownerId: vehicle.ownerid || null,
+      unitnumber: vehicle.unitnumber || "N/A",
+      ownertype: vehicle.carownertype || "unknown",
+      firstname: vehicle.carowner_fname || "unknown",
+      lastname: vehicle.carowner_lname || "unknown",
+      phone: vehicle.carownerphone || "",
+      cartype: vehicle.vehicle_type || "Car",
+      plate: vehicle.plate || "UNKNOWN",
+      platestate: vehicle.plate_state || "XX",
+      requires_payment: vehicle.requires_payment || 0,
       original_startdate: oldStartDate || vehicle.startdate,
       original_enddate: oldEndDate || vehicle.enddate,
       startdate: vehicle.startdate,
       enddate: vehicle.enddate
     });
   } catch (error) {
-    console.error("Failed to log HPSRecord:", error);
+    console.error("Failed to log HPSRecord:", error.message);
   }
 };
 

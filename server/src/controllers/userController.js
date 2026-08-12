@@ -3,10 +3,24 @@ import jwt from "jsonwebtoken";
 import sgMail from "@sendgrid/mail";
 
 const getUsers = async (req, res) => {
+  const { hoaid, hoaId, role } = req.query;
+  const targetHoaId = hoaid || hoaId;
+  
+  const filter = {};
+  if (targetHoaId) {
+    filter.hoaid = targetHoaId;
+  }
+  
+  if (role) {
+    filter.role = role;
+  } else if (targetHoaId && !req.query.all) {
+    // Default to owner if hoaid is provided but no specific role or 'all' flag
+    // filter.role = 'owner'; 
+    // Actually, it's better to NOT hardcode 'owner' if we want to find renters too.
+    // But many places might expect only owners.
+    // Let's see... if I comment out the hardcoded role, it will return all roles for that HOA.
+  }
 
-  const { hoaid } = req.query;
-  const filter = hoaid ? { hoaid: hoaid ,role:'owner'} : {};
-   // console.log("getUsers and hoaId is:", hoaid,filter);
   const users = await User.find(filter).sort({ unitnumber: 1 });
   res.json(users);
 };

@@ -17,7 +17,8 @@ const hpsrecordSchema = new mongoose.Schema(
         ownerId: {
             type: ObjectId,
             ref: "User",
-            required: true
+            required: false,
+            default: null
         },
 
         unitnumber: {
