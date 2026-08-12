@@ -157,7 +157,57 @@ export default function OnsiteVehicles() {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
 
-  const renderVehiclePlate = (vehicle) => {
+  const renderVehiclePlate= (vehicle) => {
+    return (<div className="grid-container-3-plate"
+      key={vehicle._id}>
+      <div className="full-row" style={{
+        fontWeight: "bold", fontSize: "24px", color: "#1976d2",
+        borderBottom: "2px solid #1976d2", padding: "5px",
+        marginBottom: "10px", overflowX: "hidden",
+        border: "0px solid white"
+      }}>
+
+        {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
+        {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
+      </div>
+      {/* <div className="grid-item-bold">Name</div>
+      <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
+
+
+ <div className="grid-item-bold">Make</div>
+        <div className="grid-item-bold">Model</div>
+        <div className="grid-item-bold">Year</div>
+
+        <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
+
+
+
+      <div className="grid-item-bold">User</div>
+      <div className="grid-item-bold">Checkout</div>
+      <div className="grid-item-bold">Unit</div>
+
+
+      
+
+
+      <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
+      {/* <div className="grid-item-bold">Make</div>
+      <div className="grid-item-normal">{vehicle.make}, {vehicle.model}</div> */}
+      {getVehicleIsActiveTodayBoolean(vehicle) ? (
+        <div className="grid-item-normal-highlight">
+          {utcDateOnly(vehicle.checkout)}
+        </div>
+      ) : (
+        <div className="grid-item-normal"> {utcDateOnly(vehicle.checkout)}</div>
+      )}
+      <div className="grid-item-normal"> {vehicle.unitnumber || "N/A"} </div>
+    </div>
+    )
+  }
+
+  const renderVehiclePlate2= (vehicle) => {
     return (<div className="grid-container-3-plate"
       key={vehicle._id}>
       <div className="full-row" style={{
@@ -175,6 +225,10 @@ export default function OnsiteVehicles() {
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
       <div className="grid-item-bold">Unit</div>
+
+
+      
+
 
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
       {/* <div className="grid-item-bold">Make</div>
@@ -319,7 +373,7 @@ const renderVehicleCard = (vehicle) => {
         {!showTable && (
           vehicles.map((vehicle, index) => (
             isPlateVisible ? renderVehiclePlate(vehicle) :
-              renderVehiclePlate(vehicle)
+              renderVehiclePlate2(vehicle)
           ))
         )}
       </div>
@@ -357,7 +411,7 @@ const renderVehicleCard = (vehicle) => {
         {!showTable && (
           vehicles.map((vehicle, index) => (
             isPlateVisible ? renderVehiclePlate(vehicle) :
-              renderVehiclePlate(vehicle)
+              renderVehiclePlate2(vehicle)
           ))
         )}
       </div>
