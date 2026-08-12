@@ -202,13 +202,26 @@ export default function OnsiteVehicles() {
           {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
         </div>
 
-         <div className="sfull-row" style={{
+         {/* <div className="full-row" style={{
           fontWeight: "bold", fontSize: "24px", color: "#1976d2",
           borderBottom: "2px solid #1976d2", padding: "5px",
           marginBottom: "10px"
         }}>
           {vehicle.plate} {vehicle.plate_state}
-        </div>
+        </div> */}
+
+         <div className="full-row" style={{
+        fontWeight: "bold", fontSize: "24px", color: "#1976d2",
+        borderBottom: "2px solid #1976d2", padding: "5px",
+        marginBottom: "10px", overflowX: "hidden",
+        border: "0px solid white"
+      }}>
+
+        {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
+        {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
+      </div>
+
+        
 
         {/* <div className="full-row" style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
 
