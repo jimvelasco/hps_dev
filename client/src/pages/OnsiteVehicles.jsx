@@ -208,7 +208,7 @@ export default function OnsiteVehicles() {
 
         <div className="full-row" style={{ fontSize: '.7rem', marginBottom: '5px' }}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
-        <div className="grid-item-bold">Unit</div> */}
+        <div className="grid-item-bold">Unit</div>
         <div className="grid-item-bold">{vehicle.carownertype}</div>
         <div className="grid-item-bold">Type</div>
 
@@ -227,7 +227,7 @@ export default function OnsiteVehicles() {
         <div className="grid-item-bold">Check In</div>
         <div className="grid-item-bold">Check Out</div>
         <div className="grid-item-bold">Active</div>
-
+ */}
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkin)}</div>
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkout)}</div>
         <div className="grid-item-normal"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
