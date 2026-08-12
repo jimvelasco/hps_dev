@@ -189,7 +189,63 @@ export default function OnsiteVehicles() {
       <div className="grid-item-normal"> {vehicle.unitnumber || "N/A"} </div>
     </div>)
   }
+
   const renderVehicleCard = (vehicle) => {
+    return (
+      <div className="grid-container-3_oldhoa" key={vehicle._id}>
+
+        <div className="full-row" style={{
+          fontWeight: "bold", fontSize: "24px", color: "#1976d2",
+          borderBottom: "2px solid #1976d2", padding: "5px",
+          marginBottom: "10px"
+        }}>
+          {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
+        </div>
+
+        {/* <div className="full-row" style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
+
+        </div>
+
+        <div className="full-row" style={{ fontSize: '.7rem', marginBottom: '5px' }}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
+
+        <div className="grid-item-bold">Unit</div> */}
+        <div className="grid-item-bold">{vehicle.carownertype}</div>
+        <div className="grid-item-bold">Type</div>
+
+        <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
+        <div className="grid-item-bold row-with-gap">&nbsp;</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
+
+        <div className="grid-item-bold">Make</div>
+        <div className="grid-item-bold">Model</div>
+        <div className="grid-item-bold">Year</div>
+
+        <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
+        <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
+
+        <div className="grid-item-bold">Check In</div>
+        <div className="grid-item-bold">Check Out</div>
+        <div className="grid-item-bold">Active</div>
+
+        <div className="grid-item-normal">{utcDateOnly(vehicle.checkin)}</div>
+        <div className="grid-item-normal">{utcDateOnly(vehicle.checkout)}</div>
+        <div className="grid-item-normal"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
+
+
+
+
+        <div className="grid-item-bold">Payment</div>
+        <div className="grid-item-bold" style={{ backgroundColor: "#ffffff" }}>
+          {vehicle.requires_payment == 1 ? (
+            "Pay Now"
+          ) : vehicle.requires_payment == 2 ? (<b>Paid</b>) : (<b>Free</b>)}
+        </div>
+      </div>
+    )
+  }
+
+const renderVehicleCardBU = (vehicle) => {
     return (
       <div className="grid-container-3_oldhoa" key={vehicle._id}>
 
@@ -243,7 +299,6 @@ export default function OnsiteVehicles() {
       </div>
     )
   }
-
 
 
   const handleShowTable = () => {
