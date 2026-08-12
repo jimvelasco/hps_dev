@@ -395,7 +395,7 @@ const renderVehicleCardBU = (vehicle) => {
         {!showTable && (
           vehicles.map((vehicle, index) => (
             isPlateVisible ? renderVehiclePlate(vehicle) :
-              renderVehicleCard(vehicle)
+              renderVehiclePlate(vehicle)
           ))
         )}
       </div>
