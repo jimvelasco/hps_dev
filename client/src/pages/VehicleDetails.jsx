@@ -573,7 +573,7 @@ export default function VehicleDetails() {
                     name="unitnumber"
                     value={formData.unitnumber}
                     onChange={handleFormChange}
-                    disabled
+                   
                   />
                 </div>
 
