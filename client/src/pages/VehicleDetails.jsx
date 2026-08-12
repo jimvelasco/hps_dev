@@ -308,7 +308,7 @@ export default function VehicleDetails() {
     e.preventDefault();
     // console.log('handleFormSubmit role is:', role);
     if (!formData.carowner_fname || !formData.carowner_lname || !formData.carownerphone
-      || !formData.make || !formData.plate || !formData.plate_state || !formData.unitnumber) {
+      || !formData.make ) {
       setModal({
         isOpen: true,
         type: "alert",
