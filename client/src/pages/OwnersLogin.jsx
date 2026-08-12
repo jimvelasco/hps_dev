@@ -74,8 +74,8 @@ export default function OwnersLogin() {
         console.log("Login successful", response.data);
         localStorage.setItem("token", response.data.token);
          const user = response.data.user; 
-         const um = user.unitnumber;
-         localStorage.setItem('unitNumber',um)
+         const unum = user.unitnumber;
+         localStorage.setItem('unitNumber',unum)
         const flag = user.role; 
         let nav = `/${hoaId}/ownervehicles/${flag}`;
         if (flag === 'admin') {

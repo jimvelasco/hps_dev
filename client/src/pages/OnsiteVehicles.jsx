@@ -167,12 +167,9 @@ export default function OnsiteVehicles() {
         border: "0px solid white"
       }}>
 
-        {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
         {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
       </div>
-      {/* <div className="grid-item-bold">Name</div>
-      <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
-
+    
 
  <div className="grid-item-bold">Make</div>
         <div className="grid-item-bold">Model</div>
@@ -182,19 +179,11 @@ export default function OnsiteVehicles() {
         <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
         <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
 
-
-
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
       <div className="grid-item-bold">Unit</div>
-
-
-      
-
-
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
-      {/* <div className="grid-item-bold">Make</div>
-      <div className="grid-item-normal">{vehicle.make}, {vehicle.model}</div> */}
+     
       {getVehicleIsActiveTodayBoolean(vehicle) ? (
         <div className="grid-item-normal-highlight">
           {utcDateOnly(vehicle.checkout)}
@@ -216,23 +205,16 @@ export default function OnsiteVehicles() {
         marginBottom: "10px", overflowX: "hidden",
         border: "0px solid white"
       }}>
-
-        {/* {vehicle.plate} {vehicle.plate_state && `(${vehicle.plate_state})`} */}
         {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
       </div>
-      {/* <div className="grid-item-bold">Name</div>
-      <div className="grid-item-normal"> {vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}</div> */}
+              <div className="full-row" 
+              style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, 
+              {vehicle.carowner_fname || "N/A"}</div>
+
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
       <div className="grid-item-bold">Unit</div>
-
-
-      
-
-
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
-      {/* <div className="grid-item-bold">Make</div>
-      <div className="grid-item-normal">{vehicle.make}, {vehicle.model}</div> */}
       {getVehicleIsActiveTodayBoolean(vehicle) ? (
         <div className="grid-item-normal-highlight">
           {utcDateOnly(vehicle.checkout)}
