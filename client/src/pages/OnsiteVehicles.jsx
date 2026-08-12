@@ -171,7 +171,7 @@ export default function OnsiteVehicles() {
       </div>
 
         <div className="full-row" 
-              style={{ marginBottom: '0px' }}>{vehicle.carowner_lname || "N/A"}, 
+              style={{ marginBottom: '5px',marginTop:'5px'}}>{vehicle.carowner_lname || "N/A"}, 
               {vehicle.carowner_fname || "N/A"}</div>
     
 
