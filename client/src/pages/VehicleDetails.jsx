@@ -107,6 +107,25 @@ export default function VehicleDetails() {
         }
         )
       }
+      if (dmode === 0) {
+        setFormData({
+          carowner_fname: "",
+          carowner_lname: "",
+          carownerphone: "",
+          make: "",
+          model: "",
+          color: "",
+          year: "",
+          vehicle_type: "Car",
+          plate: "",
+          plate_state: "",
+          unitnumber: "",
+          carownertype: role,
+          startdate: new Date().toLocaleDateString("en-CA"),
+          enddate: edate.toLocaleDateString("en-CA"),
+        }
+        )
+      }
     }
   }, [hoaId]);
 
@@ -172,8 +191,8 @@ export default function VehicleDetails() {
           carowner_fname: response.data.carowner_fname || "",
           carowner_lname: response.data.carowner_lname || "",
           carownerphone: response.data.carownerphone || "",
-          //   unitnumber: response.data.unitnumber || "",
-          unitnumber: unitNumber || "",
+             unitnumber: response.data.unitnumber || "",
+         // unitnumber: unitNumber || "",
           carownertype: response.data.carownertype || "owner",
           //  carownertype: loggedInUser ? loggedInUser.role : "renter",
           // carownertype: role,
