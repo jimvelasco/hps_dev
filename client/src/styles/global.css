@@ -1008,7 +1008,7 @@ section.standardsectiondashboard {
   display: grid;
   grid-column-gap: 1px;
    /* grid-row-gap: 10px; */
-  grid-template-columns: 1.5fr 1.5fr .8fr;
+  grid-template-columns: 1.2fr 1.2fr 1.0fr;
    /* grid-template-columns: 1fr 1fr 1fr; */
   background-color: white;
   padding: 5px;
