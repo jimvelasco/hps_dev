@@ -202,6 +202,14 @@ export default function OnsiteVehicles() {
           {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
         </div>
 
+         <div className="sfull-row" style={{
+          fontWeight: "bold", fontSize: "24px", color: "#1976d2",
+          borderBottom: "2px solid #1976d2", padding: "5px",
+          marginBottom: "10px"
+        }}>
+          {vehicle.plate} {vehicle.plate_state}
+        </div>
+
         {/* <div className="full-row" style={{ marginBottom: '5px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
 
         </div>
@@ -227,7 +235,7 @@ export default function OnsiteVehicles() {
         <div className="grid-item-bold">Check In</div>
         <div className="grid-item-bold">Check Out</div>
         <div className="grid-item-bold">Active</div>
- */}
+
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkin)}</div>
         <div className="grid-item-normal">{utcDateOnly(vehicle.checkout)}</div>
         <div className="grid-item-normal"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
@@ -241,6 +249,7 @@ export default function OnsiteVehicles() {
             "Pay Now"
           ) : vehicle.requires_payment == 2 ? (<b>Paid</b>) : (<b>Free</b>)}
         </div>
+         */}
       </div>
     )
   }
