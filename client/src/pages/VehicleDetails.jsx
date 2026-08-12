@@ -78,7 +78,7 @@ export default function VehicleDetails() {
     vehicle_type: "",
     plate: "",
     plate_state: "",
-    unitnumber: "",
+    unitnumber: localStorage.getItem('unitNumber'),
     carownertype: "",
     startdate: new Date().toLocaleDateString("en-CA"),
     enddate: edate.toLocaleDateString("en-CA")
@@ -150,6 +150,8 @@ export default function VehicleDetails() {
     // if (userLoading) {return}
     const targetUnit = formData.unitnumber || unitNumber;
 
+   
+
     if (hoaId && targetUnit) {
       const fetchUserForUnit = async () => {
         try {
@@ -217,6 +219,7 @@ export default function VehicleDetails() {
           requires_payment: response.data.requires_payment || 0,
         });
         // console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
+        
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load vehicle details");
@@ -596,10 +599,12 @@ export default function VehicleDetails() {
                   <input className="standardinput"
                     type="text"
                     name="unitnumber"
-                    value={formData.unitnumber}
+                    value={localStorage.getItem('unitNumber')}
                     onChange={handleFormChange}
                     required
+                     disabled
                   />
+                 
                 </div>
 
 
