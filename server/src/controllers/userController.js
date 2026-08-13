@@ -467,6 +467,8 @@ const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}
 
 /*
 https://www.hoaparkingsolutions.com/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTdjOTRmMzVhYmUzMGQyNmI3NWQ4N2QiLCJlbWFpbCI6ImppbS52ZWxhc2NvQGdtYWlsLmNvbSIsImhvYUlkIjoiWVYiLCJpYXQiOjE3ODY2MzgxMTEsImV4cCI6MTc4NjY0MTcxMX0.wlgq99YxAmSMRaMx8DA-JYH_5UGhq0bLJ3I5ATl85cU
+
+https://hps-dev-3b2912f737e0.herokuapp.com/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTdjYTRkMTVhYmUzMGQyNmI3NWQ4ODkiLCJlbWFpbCI6ImppbS52ZWxhc2NvQGdtYWlsLmNvbSIsImhvYUlkIjoiWVYiLCJpYXQiOjE3ODY2Mzk3NTksImV4cCI6MTc4NjY0MzM1OX0.k9QxLCnpxWMtsl8raTerO25HxVOuCUmUk86bNppymUo
 */
 
 const sendEmailFromHoa = async (req, res) => {
@@ -589,6 +591,9 @@ const forgotPasswordSES = async (req, res) => {
     const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
     const resetLink = `${serverUrl}/reset-password/${resetToken}`;
 
+    const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+
+
 
     const SES_CONFIG = {
       region: "us-east-1", // Replace with your AWS region (e.g., 'us-west-2')
@@ -603,9 +608,9 @@ const forgotPasswordSES = async (req, res) => {
 
     const emailContent = `
       <h2>Password Reset Request</h2>
-        <p>Hi ${user.first_name},</p>
+        <p>Hello ${user.first_name},</p>
         <p>We received a request to reset your password. Click the link below to create a new password:</p>
-        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+        <a href="${resetLink3}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
           Reset Password
         </a>
         <p>This link will expire in 1 hour.</p>
