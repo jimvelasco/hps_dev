@@ -427,7 +427,9 @@ const forgotPassword = async (req, res) => {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
     const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
+    const serverUrl2 = process.env.SERVER_URL;
     const resetLink = `${serverUrl}/reset-password/${resetToken}`;
+     const resetLink2 = `${serverUrl2}/reset-password/${resetToken}`;
 
     const msg = {
       to: user.email,
@@ -436,8 +438,8 @@ const forgotPassword = async (req, res) => {
       html: `
         <h2>Password Reset Request</h2>
         <p>Hi ${user.first_name},</p>
-        <p>We received a request to reset your password. Click the link below to create a new password:</p>
-        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+        <p>We received a request to reset your password. Follow the link below to create a new password:</p>
+        <a href="${resetLink2}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
           Reset Password
         </a>
         <p>This link will expire in 1 hour.</p>
