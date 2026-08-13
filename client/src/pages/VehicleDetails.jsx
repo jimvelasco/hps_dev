@@ -78,7 +78,7 @@ export default function VehicleDetails() {
     vehicle_type: "",
     plate: "",
     plate_state: "",
-    unitnumber: localStorage.getItem('unitNumber'),
+    unitnumber: unitNumber || "",
     carownertype: "",
     startdate: new Date().toLocaleDateString("en-CA"),
     enddate: edate.toLocaleDateString("en-CA")
@@ -308,7 +308,7 @@ export default function VehicleDetails() {
     e.preventDefault();
     // console.log('handleFormSubmit role is:', role);
     if (!formData.carowner_fname || !formData.carowner_lname || !formData.carownerphone
-      || !formData.make ) {
+      || !formData.make || !formData.plate || !formData.plate_state || !formData.unitnumber) {
       setModal({
         isOpen: true,
         type: "alert",
@@ -599,12 +599,10 @@ export default function VehicleDetails() {
                   <input className="standardinput"
                     type="text"
                     name="unitnumber"
-                    value={localStorage.getItem('unitNumber')}
+                    value={formData.unitnumber}
                     onChange={handleFormChange}
                     required
-                     disabled
                   />
-                 
                 </div>
 
 
