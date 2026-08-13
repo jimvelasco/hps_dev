@@ -666,7 +666,7 @@ const sendEmailFromHoaSES = async (req, res) => {
 
     const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
     if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION) {
-      return res.status(500).json({ message: "AWS configuration is missing" });
+      return res.status(500).json({ message: "AWS configuration is missing!" });
     }
     if (!subject || !returnEmail || !message) {
       return res.status(400).json({ message: "All fields are required" });
