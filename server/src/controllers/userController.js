@@ -461,6 +461,10 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+/*
+https://www.hoaparkingsolutions.com/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTdjOTRmMzVhYmUzMGQyNmI3NWQ4N2QiLCJlbWFpbCI6ImppbS52ZWxhc2NvQGdtYWlsLmNvbSIsImhvYUlkIjoiWVYiLCJpYXQiOjE3ODY2MzgxMTEsImV4cCI6MTc4NjY0MTcxMX0.wlgq99YxAmSMRaMx8DA-JYH_5UGhq0bLJ3I5ATl85cU
+*/
+
 const sendEmailFromHoa = async (req, res) => {
   try {
     const { hoaId, subject, returnEmail, message, toEmail } = req.body;
