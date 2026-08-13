@@ -441,8 +441,6 @@ const forgotPassword = async (req, res) => {
         <p>We received a request to reset your password. Follow the link below to create a new password:</p>
         <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
           Reset Password
-        </a> <a href="${resetLink2}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
-          Reset Password 2
         </a>
         <p>This link will expire in 1 hour.</p>
         <p>If you didn't request a password reset, please ignore this email.</p>
