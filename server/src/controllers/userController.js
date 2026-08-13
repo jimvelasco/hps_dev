@@ -431,6 +431,10 @@ const forgotPassword = async (req, res) => {
     const resetLink = `${serverUrl}/reset-password/${resetToken}`;
      const resetLink2 = `${serverUrl2}/reset-password/${resetToken}`;
 
+     // Usually better to point directly to the React app
+const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+
+
     const msg = {
       to: user.email,
       from: process.env.SENDGRID_FROM_EMAIL || "verify@hoaparkingsolutions.com",
@@ -439,7 +443,7 @@ const forgotPassword = async (req, res) => {
         <h2>Password Reset Request</h2>
         <p>Hello ${user.first_name},</p>
         <p>We received a request to reset your password. Follow the link below to create a new password:</p>
-        <a href="${resetLink}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
+        <a href="${resetLink3}" style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
           Reset Password
         </a>
         <p>This link will expire in 1 hour.</p>
@@ -447,6 +451,8 @@ const forgotPassword = async (req, res) => {
         <p>Best regards,<br/>HOA Parking Solutions</p>
       `
     };
+
+    console.log('we have send the message ',msg);
 
     await sgMail.send(msg);
 
