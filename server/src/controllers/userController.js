@@ -544,8 +544,8 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 const forgotPasswordSES = async (req, res) => {
   try {
     const { email, hoaId } = req.body;
-    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
-    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
+    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION) {
       return res.status(500).json({ message: "AWS configuration is missing" });
     }
     if (!email || !hoaId) {
@@ -664,8 +664,8 @@ const sendEmailFromHoaSES = async (req, res) => {
   try {
     const { hoaId, subject, returnEmail, message, toEmail ,fromwhere} = req.body;
 
-    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET } = process.env;
-    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION || !AWS_S3_BUCKET) {
+    const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
+    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION) {
       return res.status(500).json({ message: "AWS configuration is missing" });
     }
     if (!subject || !returnEmail || !message) {
