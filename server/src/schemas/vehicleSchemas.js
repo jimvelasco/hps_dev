@@ -1,16 +1,16 @@
 import { z } from 'zod';
 
 export const createVehicleSchema = z.object({
-  ownerid: z.string().nullable().optional().or(z.literal('')),
+  ownerid: z.string().nullable().optional(),
   unitnumber: z.string().min(1, 'Unit number is required'),
  carownertype: z.string().optional(),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
   carownerphone: z.string().min(10, 'Phone number must be at least 10 digits'),
   make: z.string().min(1, 'Make is required'),
-  model: z.string().optional().or(z.literal('')),
-  color: z.string().optional().or(z.literal('')),
-  year: z.string().optional().or(z.literal('')),
+  model: z.string().optional().nullable(),
+  color: z.string().optional().nullable(),
+  year: z.string().optional().nullable(),
   vehicle_type: z.string().min(1, 'Vehicle type is required'),
   plate: z.string().min(1, 'License plate is required').toUpperCase(),
   plate_state: z.string().min(1, 'Plate state is required').toUpperCase(),
@@ -25,16 +25,16 @@ export const createVehicleSchema = z.object({
 }));
 
 export const updateVehicleSchema = z.object({
-  ownerid: z.string().nullable().optional().or(z.literal('')),
+  ownerid: z.string().nullable().optional(),
  unitnumber: z.string().min(1, 'Unit number is required'),
  carownertype: z.string().optional(),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
   carownerphone: z.string().min(10, 'Phone number must be at least 10 digits'),
   make: z.string().min(1, 'Make is required'),
-  model: z.string().optional().or(z.literal('')),
-  color: z.string().optional().or(z.literal('')),
-  year: z.string().optional().or(z.literal('')),
+  model: z.string().optional().nullable(),
+  color: z.string().optional().nullable(),
+  year: z.string().optional().nullable(),
   vehicle_type: z.string().min(1, 'Vehicle type is required'),
   plate: z.string().min(1, 'License plate is required').toUpperCase(),
   plate_state: z.string().min(1, 'Plate state is required').toUpperCase(),
