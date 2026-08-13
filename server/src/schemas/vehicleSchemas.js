@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const createVehicleSchema = z.object({
   ownerid: z.string().nullable().optional().or(z.literal('')),
- // unitnumber: z.string().min(1, 'Unit number is required'),
+  unitnumber: z.string().min(1, 'Unit number is required'),
  carownertype: z.string().optional(),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
@@ -26,7 +26,7 @@ export const createVehicleSchema = z.object({
 
 export const updateVehicleSchema = z.object({
   ownerid: z.string().nullable().optional().or(z.literal('')),
-// unitnumber: z.string().min(1, 'Unit number is required'),
+ unitnumber: z.string().min(1, 'Unit number is required'),
  carownertype: z.string().optional(),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),

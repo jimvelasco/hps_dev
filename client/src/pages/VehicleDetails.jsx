@@ -119,7 +119,7 @@ export default function VehicleDetails() {
           vehicle_type: "Car",
           plate: "",
           plate_state: "",
-          unitnumber: "",
+          unitnumber: unitNumber,
           carownertype: role,
           startdate: new Date().toLocaleDateString("en-CA"),
           enddate: edate.toLocaleDateString("en-CA"),

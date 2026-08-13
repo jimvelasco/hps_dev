@@ -89,7 +89,8 @@ const createUser = async (req, res) => {
         last_name: user.last_name,
         email: user.email,
         phone: user.phone,
-        role: user.role
+        role: user.role,
+        unitnumber: user.unitnumber
       }
     });
   } catch (error) {

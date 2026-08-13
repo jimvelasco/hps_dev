@@ -33,6 +33,7 @@ export default function OwnerVehicles() {
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const [showTable, setShowTable] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+   const [showUnitId, setShowUnitId] = useState("");
 
 
 
@@ -45,7 +46,9 @@ export default function OwnerVehicles() {
     if (loggedInUser) {
       setRole(loggedInUser.role);
       setOwnerId(loggedInUser._id);
+      setShowUnitId(loggedInUser.unitnumber);
        console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
+      //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
     } else {
       console.log("owner vehicles loggedInUser is null")
     }
