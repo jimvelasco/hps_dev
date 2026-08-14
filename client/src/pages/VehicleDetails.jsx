@@ -80,7 +80,7 @@ export default function VehicleDetails() {
     plate: "",
     plate_state: "",
     unitnumber: unitNumber || "",
-    carownertype: "",
+    carownertype: role,
     startdate: new Date().toLocaleDateString("en-CA"),
     enddate: edate.toLocaleDateString("en-CA")
   });
@@ -102,7 +102,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "TX",
           unitnumber: unitNumber,
-          carownertype: role,
+      //    carownertype: role,
           startdate: new Date().toLocaleDateString("en-CA"),
           enddate: edate.toLocaleDateString("en-CA"),
         }
@@ -121,7 +121,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "",
           unitnumber: unitNumber,
-          carownertype: role,
+        //  carownertype: role,
           startdate: new Date().toLocaleDateString("en-CA"),
           enddate: edate.toLocaleDateString("en-CA"),
         }
