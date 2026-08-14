@@ -85,7 +85,7 @@ export default function VehicleDetails() {
   });
 
   useEffect(() => {
-    if (hoa) {
+    if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
       console.log('dmode:', dmode);
       if (dmode === 1) {
