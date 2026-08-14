@@ -592,7 +592,13 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
-                <div style={{ marginBottom: "0px" }}>
+                 <input
+                  type="hidden"
+                  name="unitnumber"
+                  value={formData.unitnumber}
+                />
+
+                {/* <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
                     Unit Number *
                   </label>
@@ -603,7 +609,7 @@ export default function VehicleDetails() {
                     onChange={handleFormChange}
                     required
                   />
-                </div>
+                </div> */}
 
 
               </div>
