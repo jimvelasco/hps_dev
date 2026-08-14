@@ -591,8 +591,8 @@ export default function VehicleDetails() {
                     )}
                   </select>
                 </div>
-                <div>
-                  {formData.unitnumber}
+                <div style={{marginLeft:"3px",fontSize:"11pt"}}>
+                {formData.unitnumber}
                 </div>
 
                  <input
