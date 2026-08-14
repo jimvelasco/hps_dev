@@ -591,6 +591,9 @@ export default function VehicleDetails() {
                     )}
                   </select>
                 </div>
+                <div>
+                  {formData.unitnumber}
+                </div>
 
                  <input
                   type="hidden"
