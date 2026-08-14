@@ -64,7 +64,8 @@ export default function VehicleDetails() {
   edate.setDate(edate.getDate() + 3);
 
 
-  //console.log(edate);
+  // console.log('edate is ', edate);
+  //  console.log('unitNumber is ', unitNumber);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [formData, setFormData] = useState({

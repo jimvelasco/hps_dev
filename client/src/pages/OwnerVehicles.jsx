@@ -47,7 +47,7 @@ export default function OwnerVehicles() {
       setRole(loggedInUser.role);
       setOwnerId(loggedInUser._id);
       setShowUnitId(loggedInUser.unitnumber);
-       console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
+     //  console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
       //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
     } else {
       console.log("owner vehicles loggedInUser is null")
