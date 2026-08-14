@@ -84,50 +84,50 @@ export default function VehicleDetails() {
     enddate: edate.toLocaleDateString("en-CA")
   });
 
-  useEffect(() => {
-    if (hoa && !isModifyMode) {
-      let dmode = hoa.use_demo_mode;
-      console.log('dmode:', dmode);
-      if (dmode === 1) {
-        setFormData({
-          carowner_fname: "JJV",
-          carowner_lname: "Velasco",
-          carownerphone: "7777777777",
-          make: "Lincoln",
-          model: "Navigator",
-          color: "Green",
-          year: "2020",
-          vehicle_type: "Car",
-          plate: "",
-          plate_state: "TX",
-          unitnumber: unitNumber,
-          carownertype: role,
-          startdate: new Date().toLocaleDateString("en-CA"),
-          enddate: edate.toLocaleDateString("en-CA"),
-        }
-        )
-      }
-      if (dmode === 0) {
-        setFormData({
-          carowner_fname: "",
-          carowner_lname: "",
-          carownerphone: "",
-          make: "",
-          model: "",
-          color: "",
-          year: "",
-          vehicle_type: "Car",
-          plate: "",
-          plate_state: "",
-          unitnumber: unitNumber,
-          carownertype: role,
-          startdate: new Date().toLocaleDateString("en-CA"),
-          enddate: edate.toLocaleDateString("en-CA"),
-        }
-        )
-      }
-    }
-  }, [hoaId]);
+  // useEffect(() => {
+  //   if (hoa && !isModifyMode) {
+  //     let dmode = hoa.use_demo_mode;
+  //     console.log('dmode:', dmode);
+  //     if (dmode === 1) {
+  //       setFormData({
+  //         carowner_fname: "JJV",
+  //         carowner_lname: "Velasco",
+  //         carownerphone: "7777777777",
+  //         make: "Lincoln",
+  //         model: "Navigator",
+  //         color: "Green",
+  //         year: "2020",
+  //         vehicle_type: "Car",
+  //         plate: "",
+  //         plate_state: "TX",
+  //         unitnumber: unitNumber,
+  //         carownertype: role,
+  //         startdate: new Date().toLocaleDateString("en-CA"),
+  //         enddate: edate.toLocaleDateString("en-CA"),
+  //       }
+  //       )
+  //     }
+  //     if (dmode === 0) {
+  //       setFormData({
+  //         carowner_fname: "",
+  //         carowner_lname: "",
+  //         carownerphone: "",
+  //         make: "",
+  //         model: "",
+  //         color: "",
+  //         year: "",
+  //         vehicle_type: "Car",
+  //         plate: "",
+  //         plate_state: "",
+  //         unitnumber: unitNumber,
+  //         carownertype: role,
+  //         startdate: new Date().toLocaleDateString("en-CA"),
+  //         enddate: edate.toLocaleDateString("en-CA"),
+  //       }
+  //       )
+  //     }
+  //   }
+  // }, [hoaId]);
 
 
 
