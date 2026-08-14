@@ -81,8 +81,8 @@ export default function VehicleDetails() {
     plate_state: "",
     unitnumber: unitNumber || "",
     carownertype: role,
-    startdate: new Date().toLocaleDateString("en-CA"),
-    enddate: edate.toLocaleDateString("en-CA")
+    startdate: new Date().toISOString().split('T')[0],
+    enddate: edate.toISOString().split('T')[0]
   });
 
   useEffect(() => {
@@ -103,8 +103,8 @@ export default function VehicleDetails() {
           plate_state: "TX",
           unitnumber: unitNumber,
       //    carownertype: role,
-          startdate: new Date().toLocaleDateString("en-CA"),
-          enddate: edate.toLocaleDateString("en-CA"),
+          startdate: new Date().toISOString().split('T')[0],
+          enddate: edate.toISOString().split('T')[0],
         }
         )
       }
@@ -122,8 +122,8 @@ export default function VehicleDetails() {
           plate_state: "",
           unitnumber: unitNumber,
         //  carownertype: role,
-          startdate: new Date().toLocaleDateString("en-CA"),
-          enddate: edate.toLocaleDateString("en-CA"),
+          startdate: new Date().toISOString().split('T')[0],
+          enddate: edate.toISOString().split('T')[0],
         }
         )
       }
@@ -307,14 +307,28 @@ export default function VehicleDetails() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // console.log('handleFormSubmit role is:', role);
-    if (!formData.carowner_fname || !formData.carowner_lname || !formData.carownerphone
-      || !formData.make || !formData.plate || !formData.plate_state || !formData.unitnumber) {
+    
+    const requiredFields = {
+      carowner_fname: "First Name",
+      carowner_lname: "Last Name",
+      carownerphone: "Phone",
+      carownertype: "Owner Type",
+      make: "Make",
+      plate: "License Plate",
+      plate_state: "Plate State",
+      unitnumber: "Unit Number"
+    };
+
+    const missingFields = Object.entries(requiredFields)
+      .filter(([key]) => !formData[key])
+      .map(([, label]) => label);
+
+    if (missingFields.length > 0) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: "Please fill in all required fields (marked with *)",
+        message: `Please fill in the following required fields: ${missingFields.join(", ")}`,
         confirmText: "OK",
         onConfirm: () => {
           setModal(prev => ({ ...prev, isOpen: false }))
@@ -324,7 +338,7 @@ export default function VehicleDetails() {
     }
 
     if (role === 'renter') {
-      const todayStr = new Date().toLocaleDateString("en-CA");
+      const todayStr = new Date().toISOString().split('T')[0];
       const edate = formData.enddate;
       //  console.log('Renter enddate is:', edate);
       //  console.log('todayStr is:', todayStr);
