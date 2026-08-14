@@ -581,14 +581,18 @@ export default function VehicleDetails() {
                   >
                     {role !== 'renter' && (
                       <>
+                       <option value="">---</option>
                         <option value="owner">Owner</option>
                         <option value="family">Family</option>
                         <option value="friend">Friend</option>
                       </>
                     )}
                     {role === 'renter' && (
+                      <>
+                       <option value="">---</option>
 
                       <option value="renter">Renter</option>
+                      </>
                     )}
                   </select>
                 </div>
