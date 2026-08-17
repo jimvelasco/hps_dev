@@ -465,12 +465,6 @@ const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}
   }
 };
 
-/*
-https://www.hoaparkingsolutions.com/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTdjOTRmMzVhYmUzMGQyNmI3NWQ4N2QiLCJlbWFpbCI6ImppbS52ZWxhc2NvQGdtYWlsLmNvbSIsImhvYUlkIjoiWVYiLCJpYXQiOjE3ODY2MzgxMTEsImV4cCI6MTc4NjY0MTcxMX0.wlgq99YxAmSMRaMx8DA-JYH_5UGhq0bLJ3I5ATl85cU
-
-https://hps-dev-3b2912f737e0.herokuapp.com/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTdjYTRkMTVhYmUzMGQyNmI3NWQ4ODkiLCJlbWFpbCI6ImppbS52ZWxhc2NvQGdtYWlsLmNvbSIsImhvYUlkIjoiWVYiLCJpYXQiOjE3ODY2Mzk3NTksImV4cCI6MTc4NjY0MzM1OX0.k9QxLCnpxWMtsl8raTerO25HxVOuCUmUk86bNppymUo
-*/
-
 const sendEmailFromHoa = async (req, res) => {
   try {
     const { hoaId, subject, returnEmail, message, toEmail } = req.body;
