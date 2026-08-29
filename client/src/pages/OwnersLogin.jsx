@@ -32,7 +32,7 @@ export default function OwnersLogin() {
         setEmail('jim.lodge@gmail.com');
       }
        if (hoaId === 'TIMBER') {
-        setEmail('jim.timber@gmail.com');
+        setEmail('jim.velasco@gmail.com');
       }
     //  console.log("OwnersLogin component mounted", hoa);
     }
