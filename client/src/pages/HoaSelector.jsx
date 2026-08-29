@@ -9,15 +9,28 @@ export default function HoaSelector() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  /*
+  if (hoa && !isModifyMode) {
+      let dmode = hoa.use_demo_mode;
+      */
+
   useEffect(() => {
     const fetchHoas = async () => {
       try {
         setLoading(true);
         const response = await axios.get("/hoas");
         // let tary = [];
+        // const wary = response.data;
+        // wary.forEach(element => {
+        //   if (element.hoaid !== 'xYV') {
+        //     tary.push(element);
+        //   }
+        // });
         // tary.push(response.data)
-        // setHoas(tary);
-        setHoas(response.data);
+      //  setHoas(tary);
+      //  console.log('all hoas ', response.data)
+      //  console.log('all tary ', tary)
+         setHoas(response.data);
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load HOAs");
@@ -138,7 +151,7 @@ export default function HoaSelector() {
               >
                 Continue
               </button>
-              
+
             </div>
             <div className="button-grid" style={{ marginTop: "15px" }}>
               <button

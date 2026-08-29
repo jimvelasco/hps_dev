@@ -18,10 +18,19 @@ const getHoaById = async (req, res) => {
   }
 };
 
+  //  await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/hps_dev");
+
+
 // for demo this got all of the hoas including LODGE and TIMBERS to show different backgrounds
 const getHoas = async (req, res) => {
+  let curl = process.env.CLIENT_URL;
+//  console.log('getHoas client url',    curl );
+  let qry = {};
+  if (curl === 'hoaparkingsolutions.com') {
+    qry = {hoaid:"YV"}
+  }
   try {
-    const hoas = await Hoa.find();
+    const hoas = await Hoa.find(qry);
     res.json(hoas);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -25,7 +25,7 @@ export default function UserDetails() {
     password: "",
     unitnumber: "",
     bedrooms: "",
-    role: "",
+    role: "owner",
     inventory_allowed_owner: "",
     parking_allowed_renter: "",
     owner_free_parking: "",
@@ -143,6 +143,8 @@ export default function UserDetails() {
         owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : undefined,
         renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : undefined
       };
+
+      console.log('user detail submit data is ',submitData);
 
       // if (!isEditMode) {. i will put this back in later instead of always like above?
        //  submitData.password = formData.password;
