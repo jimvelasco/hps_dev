@@ -620,6 +620,7 @@ export default function VehicleDetails() {
                   name="unitnumber"
                   value={formData.unitnumber}
                 />
+                {/* the hidden filed will have the value for for unit number */}
 
                 {/* <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">

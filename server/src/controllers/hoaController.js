@@ -24,6 +24,7 @@ const getHoaById = async (req, res) => {
 // for demo this got all of the hoas including LODGE and TIMBERS to show different backgrounds
 const getHoas = async (req, res) => {
   let curl = process.env.CLIENT_URL;
+  // we get it from the environmental variable
 //  console.log('getHoas client url',    curl );
   let qry = {};
   if (curl === 'hoaparkingsolutions.com') {
