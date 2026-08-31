@@ -65,7 +65,7 @@ export default function VehicleDetails() {
 
 
   // console.log('edate is ', edate);
-  //  console.log('unitNumber is ', unitNumber);
+   // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [formData, setFormData] = useState({
@@ -84,7 +84,7 @@ export default function VehicleDetails() {
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
   });
-
+ console.log('vehicle details formData is ', formData);
   useEffect(() => {
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
@@ -102,7 +102,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "TX",
           unitnumber: unitNumber,
-      //    carownertype: role,
+          carownertype: role,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -121,7 +121,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "",
           unitnumber: unitNumber,
-        //  carownertype: role,
+          carownertype: role,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -595,7 +595,7 @@ export default function VehicleDetails() {
                   >
                     {role !== 'renter' && (
                       <>
-                       <option value="">---</option>
+                       {/* <option value="">---</option> */}
                         <option value="owner">Owner</option>
                         <option value="family">Family</option>
                         <option value="friend">Friend</option>
@@ -603,7 +603,7 @@ export default function VehicleDetails() {
                     )}
                     {role === 'renter' && (
                       <>
-                       <option value="">---</option>
+                       {/* <option value="">---</option> */}
 
                       <option value="renter">Renter</option>
                       </>
@@ -611,7 +611,7 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
-                <div style={{marginLeft:"15px",fontSize:"10pt"}}>
+                <div style={{marginLeft:"5px",fontSize:"10pt"}}>
                 {formData.unitnumber}
                 </div>
 
