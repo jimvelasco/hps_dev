@@ -8,7 +8,7 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
-import PlateLookup from "../components/PlateLookup";
+//import PlateLookup from "../components/PlateLookup";
 
 import mongoose from "mongoose";
 
@@ -65,7 +65,7 @@ export default function VehicleDetails() {
 
 
   // console.log('edate is ', edate);
-  //  console.log('unitNumber is ', unitNumber);
+   // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [formData, setFormData] = useState({
@@ -84,7 +84,7 @@ export default function VehicleDetails() {
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
   });
-
+ console.log('vehicle details formData is ', formData);
   useEffect(() => {
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
@@ -102,7 +102,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "TX",
           unitnumber: unitNumber,
-      //    carownertype: role,
+          carownertype: role,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -121,7 +121,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "",
           unitnumber: unitNumber,
-        //  carownertype: role,
+          carownertype: role,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -308,20 +308,18 @@ export default function VehicleDetails() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     
-    const requiredFields = {
-      carowner_fname: "First Name",
-      carowner_lname: "Last Name",
-      carownerphone: "Phone",
-      carownertype: "Owner Type",
-      make: "Make",
-      plate: "License Plate",
-      plate_state: "Plate State",
-      unitnumber: "Unit Number"
-    };
+    const requiredFields = [
+      "carowner_fname",
+      "carowner_lname",
+      "carownerphone",
+      "carownertype",
+      "make",
+      "plate",
+      "plate_state",
+      "unitnumber"
+    ];
 
-    const missingFields = Object.entries(requiredFields)
-      .filter(([key]) => !formData[key])
-      .map(([, label]) => label);
+    const missingFields = requiredFields.filter(field => !formData[field]);
 
     if (missingFields.length > 0) {
       setModal({
@@ -595,7 +593,7 @@ export default function VehicleDetails() {
                   >
                     {role !== 'renter' && (
                       <>
-                       <option value="">---</option>
+                       {/* <option value="">---</option> */}
                         <option value="owner">Owner</option>
                         <option value="family">Family</option>
                         <option value="friend">Friend</option>
@@ -603,7 +601,7 @@ export default function VehicleDetails() {
                     )}
                     {role === 'renter' && (
                       <>
-                       <option value="">---</option>
+                       {/* <option value="">---</option> */}
 
                       <option value="renter">Renter</option>
                       </>
@@ -611,7 +609,7 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
-                <div style={{marginLeft:"15px",fontSize:"10pt"}}>
+                <div style={{marginLeft:"5px",fontSize:"10pt"}}>
                 {formData.unitnumber}
                 </div>
 
@@ -620,6 +618,7 @@ export default function VehicleDetails() {
                   name="unitnumber"
                   value={formData.unitnumber}
                 />
+                {/* the hidden filed will have the value for for unit number */}
 
                 {/* <div style={{ marginBottom: "0px" }}>
                   <label className="input-label">
@@ -933,11 +932,11 @@ export default function VehicleDetails() {
         onCancel={modal.onCancel}
       />
 
-      <PlateLookup
+      {/* <PlateLookup
         isOpen={isPlateLookupOpen}
         onClose={() => setIsPlateLookupOpen(false)}
         onPlateDetected={handlePlateDetected}
-      />
+      /> */}
     </div>
   );
 }
