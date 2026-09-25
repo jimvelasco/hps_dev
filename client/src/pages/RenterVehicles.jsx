@@ -219,7 +219,7 @@ export default function RenterVehicles() {
   return (
     <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
       {/* <DashboardNavbar title={`Renter Vehicles - Unit ${unitNumber} - ${hoa?.name || "HOA"}`} buttons={navButtons} /> */}
-      <DashboardNavbar title="Renter Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
+      <DashboardNavbar title="Guest / Renter Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
       <div className="page-content">
 
         {/* <div className="standardtitlebar">

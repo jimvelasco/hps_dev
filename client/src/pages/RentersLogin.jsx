@@ -133,7 +133,7 @@ export default function RentersLogin() {
 
             <div className="loginboxes">
                 <div style={{ marginTop: "10px", textAlign: "center" }}>
-                    <h3>Renter Unit Select</h3>
+                    <h3>Unit Selection</h3>
 
                 </div>
 
