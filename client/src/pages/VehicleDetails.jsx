@@ -8,7 +8,7 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
-import PlateLookup from "../components/PlateLookup";
+//import PlateLookup from "../components/PlateLookup";
 
 import mongoose from "mongoose";
 
@@ -308,20 +308,18 @@ export default function VehicleDetails() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     
-    const requiredFields = {
-      carowner_fname: "First Name",
-      carowner_lname: "Last Name",
-      carownerphone: "Phone",
-      carownertype: "Owner Type",
-      make: "Make",
-      plate: "License Plate",
-      plate_state: "Plate State",
-      unitnumber: "Unit Number"
-    };
+    const requiredFields = [
+      "carowner_fname",
+      "carowner_lname",
+      "carownerphone",
+      "carownertype",
+      "make",
+      "plate",
+      "plate_state",
+      "unitnumber"
+    ];
 
-    const missingFields = Object.entries(requiredFields)
-      .filter(([key]) => !formData[key])
-      .map(([, label]) => label);
+    const missingFields = requiredFields.filter(field => !formData[field]);
 
     if (missingFields.length > 0) {
       setModal({
@@ -934,11 +932,11 @@ export default function VehicleDetails() {
         onCancel={modal.onCancel}
       />
 
-      <PlateLookup
+      {/* <PlateLookup
         isOpen={isPlateLookupOpen}
         onClose={() => setIsPlateLookupOpen(false)}
         onPlateDetected={handlePlateDetected}
-      />
+      /> */}
     </div>
   );
 }
