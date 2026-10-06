@@ -38,6 +38,12 @@ const userSchema = new mongoose.Schema({
     type: String
   },
 
+
+pincode: {
+    type: String,
+    default: ""
+  },
+
   // these will be moved to unit model
 
   bedrooms: {
@@ -65,10 +71,6 @@ const userSchema = new mongoose.Schema({
     default: 1
   },
 
-pincode: {
-    type: String,
-    default: ""
-  },
   company: {
     type: String,
     default: ""
