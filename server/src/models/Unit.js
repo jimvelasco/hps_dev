@@ -68,6 +68,6 @@ const unitSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-const User = mongoose.model("User", userSchema);
+const Unit = mongoose.model("Unit", unitSchema);
 
-export default User;
+export default Unit;
