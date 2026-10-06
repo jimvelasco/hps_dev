@@ -65,7 +65,10 @@ const userSchema = new mongoose.Schema({
     default: 1
   },
 
-
+pincode: {
+    type: String,
+    default: ""
+  },
   company: {
     type: String,
     default: ""
