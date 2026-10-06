@@ -2,9 +2,17 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
- name: {
-    type: String
 
+  hoaid: {
+    type: String,
+    required: true
+  },
+  role: {
+    type: String,
+    default: "owner"
+  },
+  name: {
+    type: String
   },
   first_name: {
     type: String,
@@ -29,12 +37,14 @@ const userSchema = new mongoose.Schema({
   unitnumber: {
     type: String
   },
+
+  // these will be moved to unit model
+
   bedrooms: {
     type: Number,
-    default : 0
+    default: 0
   },
-  
-   inventory_allowed_owner: {
+  inventory_allowed_owner: {
     type: Number,
     default: 5
   },
@@ -42,7 +52,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 2
   },
-   parking_allowed_owner: {
+  parking_allowed_owner: {
     type: Number,
     default: 2
   },
@@ -54,18 +64,8 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 1
   },
-  role: {
-    type: String,
-    default: ""
-  },
-  pincode: {
-    type: String,
-    default: ""
-  },
-  hoaid: {
-    type: String,
-    required: true
-  },
+
+
   company: {
     type: String,
     default: ""
