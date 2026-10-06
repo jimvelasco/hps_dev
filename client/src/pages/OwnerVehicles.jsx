@@ -66,8 +66,11 @@ export default function OwnerVehicles() {
       const fetchVehicles = async () => {
         try {
           setVehiclesLoading(true);
-          qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
-          //   console.log("OwnerVehicles.jsx qry:", qry);
+      //    qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
+
+      // we get all vehicles for the unit not just the ownerid
+              qry = `/vehicles/${hoaId}/allvehicles/${showUnitId}`
+             console.log("OwnerVehicles.jsx qry:", qry);
           if (role === "admin" || role === "manager") {
 
             qry = `/vehicles/adminvehicles/${hoaId}`

@@ -48,21 +48,9 @@ const getVehiclesByHoaId = async (req, res) => {
     const { hoaId } = req.params;
     const { filter } = req.query;
 
-    //   console.log("getVehiclesByHoaId Filter received params:", req.params);
-
     const qry = { hoaid: hoaId };
-     // console.log("getVehiclesByHoaId Filter received:", filter,qry);
-
-    // if (filter === "owner") {
-    //   qry.carownertype = "owner";
-    // } else if (filter === "renter") {
-    //   qry.carownertype = "renter";
-    // }
-
-    //  qry.carownertype = "owner";
-
+    
     const vehicles = await Vehicle.find(qry);
-      //console.log("getVehiclesByHoaId reponse size is:", vehicles.length);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -80,19 +68,7 @@ const getOnsiteVehiclesByHoaId = async (req, res) => {
         const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
     const qry = { hoaid: hoaId,  checkout: { $gte: today } };
-  // console.log("getOnsiteVehiclesByHoaId Filter qry:", qry);
-
-   // const qry = { hoaid: hoaId };
-     // console.log("getVehiclesByHoaId Filter received:", filter,qry);
-
-    // if (filter === "owner") {
-    //   qry.carownertype = "owner";
-    // } else if (filter === "renter") {
-    //   qry.carownertype = "renter";
-    // }
-
-    //  qry.carownertype = "owner";
-
+ 
     const vehicles = await Vehicle.find(qry);
     //  console.log("getOnsiteVehiclesByHoaId reponse size is:", vehicles.length);
     res.json(vehicles);
@@ -127,7 +103,7 @@ const getAdminVehiclesByHoaId = async (req, res) => {
   ]
 }
 
- console.log("getAdminVehiclesByHoaId Filter qry:", qry2);
+//console.log("getAdminVehiclesByHoaId Filter qry:", qry2);
 
     const vehicles = await Vehicle.find(qry2);
     console.log("getAdminVehiclesByHoaId reponse size is:", vehicles.length);
@@ -159,17 +135,7 @@ const getVehiclesByHoaIdOwner = async (req, res) => {
     // const { filter } = req.query;
 
     const qry = { hoaid: hoaId };
-    //console.log("Filter received:", filter);
-    //  console.log("getVehiclesByHoaIdOwner role received:", role,req.params);
-
-    // if (filter === "owner") {
-    //   qry.carownertype = "owner";
-    // } else if (filter === "renter") {
-    //   qry.carownertype = "renter";
-    // }
-
-    //  qry.carownertype = "owner";
-
+   
     const vehicles = await Vehicle.find(qry);
     res.json(vehicles);
   } catch (error) {
@@ -200,6 +166,7 @@ const getVehiclesByHoaIdOwnerId = async (req, res) => {
 
 // this called from rount allvehicles
 
+// this will get vehicles for a particular userid (multiple userids could belong to the same unit.
 const getVehiclesByHoaIdUserId = async (req, res) => {
   try {
     let { hoaId, ownerid } = req.params;
@@ -223,6 +190,20 @@ const getVehiclesByHoaIdUserId = async (req, res) => {
 
     const vehicles = await Vehicle.find(qry);
     // console.log("vehicle controller shold be 19  qry built:", vehicles.length);
+    res.json(vehicles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// this will get all vehicles for the unit regardless of which owner enetered them
+const getVehiclesByHoaIdUnitNumber = async (req, res) => {
+  try {
+    let { hoaId, unitnumber } = req.params;
+    let { filter } = req.query;
+  //  console.log('filter',filter);
+      const qry = { hoaid: hoaId, unitnumber:unitnumber, carownertype: {$ne: "renter"}};
+    const vehicles = await Vehicle.find(qry);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -626,5 +607,5 @@ export {
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
   updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, deleteHPSRecords, lookupPlate,
-  getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId
+  getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId,getVehiclesByHoaIdUnitNumber
 };

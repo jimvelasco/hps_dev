@@ -3,7 +3,7 @@ import { getVehiclesByHoaId ,getVehiclesByHoaIdOwner,getVehiclesByHoaIdOwnerId, 
     getVehicleById, createVehicle, updateVehicle, deleteVehicle, 
     deleteVehiclesByStatusFlag, batchUpdateDateFields, 
     updateVehiclePayment, jjvrunquery,getVehiclesForUnitNumber, getHPSRecordsByHoaId, deleteRenterVehicles,
-    deleteHPSRecords, lookupPlate,getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId} from "../controllers/vehicleController.js";
+    deleteHPSRecords, lookupPlate,getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId,getVehiclesByHoaIdUnitNumber} from "../controllers/vehicleController.js";
 import validateRequest from "../middleware/validateRequest.js";
 import { createVehicleSchema, updateVehicleSchema } from "../schemas/vehicleSchemas.js";
 
@@ -21,7 +21,9 @@ router.delete("/hpsrecords/:hoaId", deleteHPSRecords);
 router.delete("/:vehicleId", deleteVehicle);
 router.get("/id/:vehicleId", getVehicleById);
 router.get("/hpsrecords/:hoaId", getHPSRecordsByHoaId);
-router.get("/:hoaId/allvehicles/:ownerid", getVehiclesByHoaIdUserId);
+//router.get("/:hoaId/allvehicles/:ownerid", getVehiclesByHoaIdUserId);
+router.get("/:hoaId/allvehicles/:unitnumber", getVehiclesByHoaIdUnitNumber);
+
 router.get("/:hoaId/rentervehicles/:unitNumber", getVehiclesForUnitNumber);
 
 //router.get("/:hoaId/:role(owner|renter|admin)/:ownerid", getVehiclesByHoaIdOwnerId);

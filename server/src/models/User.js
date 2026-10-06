@@ -33,11 +33,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default : 0
   },
-  // /* not used */
-  // parking_allowed: {
-  //   type: Number,
-  //   default: 3
-  // },
+  
    inventory_allowed_owner: {
     type: Number,
     default: 5
@@ -62,10 +58,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
-  // crud: {
-  //   type: String,
-  //   default: ""
-  // },
   pincode: {
     type: String,
     default: ""
@@ -90,12 +82,6 @@ const userSchema = new mongoose.Schema({
   status_flag: {
     type: Number, default: 1
   },
-  // is_verified: {
-  //   type: Number, default: 0
-  // },
-  // has_read_terms: {
-  //   type: Number, default: 0
-  // },
   date: {
     type: Date,
     default: Date.now
@@ -106,7 +92,6 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
-
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -119,7 +104,6 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = async function (plainPassword) {
   return await bcrypt.compare(plainPassword, this.password);
 };
-
 const User = mongoose.model("User", userSchema);
 
 export default User;
