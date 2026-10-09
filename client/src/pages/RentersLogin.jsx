@@ -152,8 +152,8 @@ export default function RentersLogin() {
                                 value={otherType}
                                 onChange={(e) => setOtherType(e.target.value)}
                             >
-                                <option value="renter">Renter</option>
-                                <option value="tenant">Tenant</option>
+                                <option value="renter">Short Term Renter</option>
+                                <option value="tenant">Tenant (Long Term Renter)</option>
                                  <option value="family">Family/Friend</option>
                                 <option value="visitor">Visitor/Day Guest</option>
                                 <option value="contractor">Contractor/Vendor</option>
