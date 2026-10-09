@@ -29,3 +29,4 @@ createUnitTable();
 
 // from server dir
 //node scripts/v2scripts/createUnitTable.js
+//heroku run node server/scripts/createUnitTable.js -a hoaparking-test

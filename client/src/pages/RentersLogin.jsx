@@ -155,8 +155,9 @@ export default function RentersLogin() {
                                 <option value="renter">Renter</option>
                                 <option value="tenant">Tenant</option>
                                  <option value="family">Family/Friend</option>
-                                <option value="dayonly">Day Use Only (Contractor/Vendor)</option>
-                                <option value="overnight">Overnight (Contractor/Vendor)</option>
+                                <option value="visitor">Visitor/Day Guest</option>
+                                <option value="contractor">Contractor/Vendor</option>
+
                             </select>
                         </div>
                         <div style={{ marginBottom: "15px" }}>
