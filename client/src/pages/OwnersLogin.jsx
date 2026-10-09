@@ -71,7 +71,7 @@ export default function OwnersLogin() {
       });
 
       if (response.status === 200 && response.data.token) {
-        console.log("Login successful", response.data);
+      //  console.log("Login successful", response.data);
         localStorage.setItem("token", response.data.token);
          const user = response.data.user; 
          const unum = user.unitnumber;

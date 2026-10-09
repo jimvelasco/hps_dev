@@ -72,15 +72,20 @@ export default function UserProfile() {
             last_name: response.data.last_name || "",
             phone: response.data.phone || "",
             email: response.data.email || "",
-            pincode: response.data.pincode || "",
             unitnumber: response.data.unitnumber || "",
-            renter_free_parking: response.data.renter_free_parking || "",
-            owner_free_parking: response.data.owner_free_parking || "",
-            inventory_allowed_owner: response.data.inventory_allowed_owner || "",
-            parking_allowed_owner: response.data.parking_allowed_owner || "",
-            parking_allowed_renter: response.data.parking_allowed_renter || "",
             password: "",
-            passwordConfirm: ""
+            passwordConfirm: "",
+
+            // these get moved to Unit table
+
+
+            // pincode: response.data.pincode || "",
+            // renter_free_parking: response.data.renter_free_parking || "",
+            // owner_free_parking: response.data.owner_free_parking || "",
+            // inventory_allowed_owner: response.data.inventory_allowed_owner || "",
+            // parking_allowed_owner: response.data.parking_allowed_owner || "",
+            // parking_allowed_renter: response.data.parking_allowed_renter || "",
+           
           });
         } catch (err) {
           setError(err.response?.data?.message || err.message || "Failed to fetch user profile");
@@ -154,9 +159,11 @@ export default function UserProfile() {
         last_name: formData.last_name,
         phone: formData.phone,
         email: formData.email,
-        pincode: formData.pincode,
-        renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : 1,
-        owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : 1
+
+        // unit table
+        // pincode: formData.pincode,
+        // renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : 1,
+        // owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : 1
       };
 
       if (formData.password) {
@@ -322,7 +329,7 @@ export default function UserProfile() {
 
               <>
                 <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  {/* <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     PIN Code *
                   </label>
                   <input
@@ -332,7 +339,7 @@ export default function UserProfile() {
                     value={formData.pincode}
                     onChange={handleInputChange}
                     required
-                  />
+                  /> */}
                 </div>
                  <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
@@ -347,7 +354,7 @@ export default function UserProfile() {
                     disabled
                   />
                 </div>
-                  <div style={{ marginBottom: "15px" }}>
+                  {/* <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                    Inventory Allowed
                   </label>
@@ -416,7 +423,7 @@ export default function UserProfile() {
                     onChange={handleInputChange}
                      disabled
                   />
-                </div>
+                </div> */}
               </>
 
             )

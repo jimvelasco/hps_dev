@@ -8,15 +8,14 @@ import HoaSelector from "./pages/HoaSelector";
 import LandingPage from "./pages/LandingPage";
 import RentersLogin from "./pages/RentersLogin";
 import RenterVehicles from "./pages/RenterVehicles";
-//import Renters from "./pages/xRenters";
 import ErrorPage from "./pages/ErrorPage";
 import OwnersDashboard from "./pages/OwnersDashboard";
 import OnsiteVehicles from "./pages/OnsiteVehicles";
 import Violations from "./pages/Violations";
 import Users from "./pages/Users";
 import UserDetails from "./pages/UserDetails";
+import UnitDetails from "./pages/UnitDetails";
 import Notifications from "./pages/Notifications";
-// import Vehicles from "./pages/Vehicles";
 import OwnerVehicles from "./pages/OwnerVehicles";
 import VehicleDetails from "./pages/VehicleDetails";
 import OwnersLogin from "./pages/OwnersLogin";
@@ -24,6 +23,8 @@ import Administration from "./pages/administration/Administration";
 import PaymentRanges from "./pages/administration/PaymentRanges";
 import PaymentRefund from "./pages/administration/PaymentRefund";
 import UpdateAllUsers from "./pages/administration/UpdateAllUsers";
+import UpdateAllUnits from "./pages/administration/UpdateAllUnits";
+
 import ContactInformation from "./pages/administration/ContactInformation";
 import HoaSettings from "./pages/administration/HoaSettings";
 import ImageUpload from "./pages/administration/ImageUpload";
@@ -61,12 +62,12 @@ function AppContent() {
     }
   }, [hoaId, fetchHoaById, setAppError, navigate])
 
-   if (loading) {
+  if (loading) {
     return (
-      <div className="standardtitlebar" style={{marginTop:"50px",backgroundColor:"cyan"}}>
+      <div className="standardtitlebar" style={{ marginTop: "50px", backgroundColor: "cyan" }}>
         <h1>Loading HOA data...</h1>
       </div>)
-     
+
   }
 
 
@@ -76,18 +77,18 @@ function AppContent() {
 
   // src={`${getAWSResource(hoa, 'RTC')}`}
 
-  let xbackgroundImage = hoa && hoa.background_image_url ? 
-`url(${getAWSResource(hoa, 'BI')})` : "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg"
+  let xbackgroundImage = hoa && hoa.background_image_url ?
+    `url(${getAWSResource(hoa, 'BI')})` : "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg"
 
- let backgroundImage = ''; 
-//  hoa && hoa.background_image_url ? 
-// `url(${getAWSResource(hoa, 'BI')})` : "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg"
+  let backgroundImage = '';
+  //  hoa && hoa.background_image_url ? 
+  // `url(${getAWSResource(hoa, 'BI')})` : "http://hoaparking.s3.amazonaws.com/xyampa_103022.jpg"
 
-if (hoa) {
- // console.log('background image is',hoa.background_image_url);
-   backgroundImage = getAWSResource(hoa, 'BI');
-    console.log('aws background image is',backgroundImage);
-}
+  if (hoa) {
+    // console.log('background image is',hoa.background_image_url);
+    backgroundImage = getAWSResource(hoa, 'BI');
+    //  console.log('aws background image is',backgroundImage);
+  }
   return <LandingPage backgroundImage={backgroundImage} hoaId={hoaId} hoaError={error} />;
 }
 
@@ -103,162 +104,174 @@ function App() {
       <HoaProvider>
         <Elements stripe={stripePromise}>
           <Routes>
-          <Route path="/" element={<HoaSelector />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/:hoaId/about" element={<About />} />
-          <Route path="/:hoaId" element={<AppContent />} />
-          <Route path="/:hoaId/ownerslogin" element={
-            <OwnersLogin />
-          } />
-          <Route path="/:hoaId/dashboard" element={
-            <ProtectedRoute>
-              <OwnersDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/profile" element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/onsite" element={
-            <ProtectedRoute>
-              <OnsiteVehicles />
-            </ProtectedRoute>} />
+            <Route path="/" element={<HoaSelector />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/:hoaId/about" element={<About />} />
+            <Route path="/:hoaId" element={<AppContent />} />
+            <Route path="/:hoaId/ownerslogin" element={
+              <OwnersLogin />
+            } />
+            <Route path="/:hoaId/dashboard" element={
+              <ProtectedRoute>
+                <OwnersDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/profile" element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/onsite" element={
+              <ProtectedRoute>
+                <OnsiteVehicles />
+              </ProtectedRoute>} />
 
-          {/* <Route path="/:hoaId/renters" element={<Renters />} /> */}
+            {/* <Route path="/:hoaId/renters" element={<Renters />} /> */}
 
-          <Route path="/:hoaId/violations" element={
-            <ProtectedRoute>
-              <Violations />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/users" element={
-            <ProtectedRoute>
-              <Users />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/user" element={
-            <ProtectedRoute>
-              < UserDetails />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/user/:userId" element={
-            <ProtectedRoute>
-              <UserDetails />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/renterslogin" element={
-            <RentersLogin />
-          } />
+            <Route path="/:hoaId/violations" element={
+              <ProtectedRoute>
+                <Violations />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/users" element={
+              <ProtectedRoute>
+                <Users />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/user" element={
+              <ProtectedRoute>
+                < UserDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/user/:userId" element={
+              <ProtectedRoute>
+                <UserDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/unitdetailsnav" element={
+              <ProtectedRoute>
+                <UnitDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/unitdetailsnav/:unitnumber" element={
+              <ProtectedRoute>
+                <UnitDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/renterslogin" element={
+              <RentersLogin />
+            } />
+            <Route path="/:hoaId/rentervehicles/:unitNumber" element={
+              <RenterVehicles />
+            } />
+            <Route path="/:hoaId/notifications" element={
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            } />
+            {/* <Route path="/:hoaId/vehicles" element={<OwnerVehicles />} /> */}
+            <Route path="/:hoaId/ownervehicles" element={
+              <ProtectedRoute>
+                <OwnerVehicles />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/ownervehicles/:role" element={
+              <ProtectedRoute>
+                <OwnerVehicles />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/vehicledetails/:which/:vehicleId" element={
+              <ProtectedRoute>
+                <VehicleDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/terms-and-conditions" element={
+              <ProtectedRoute>
+                <TermsAndConditions />
+              </ProtectedRoute>
+            } />
 
-          <Route path="/:hoaId/rentervehicles/:unitNumber" element={
-            <RenterVehicles />
-          } />
+            <Route path="/:hoaId/admin" element={
+              <Administration />
+            } />
+            <Route path="/:hoaId/image-upload" element={
+              <ProtectedRoute>
+                <ImageUpload />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/pdf-upload" element={
+              <ProtectedRoute>
+                <PDFUpload />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/hoa-settings" element={
+              <ProtectedRoute>
+                <HoaSettings />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/payment-ranges" element={
+              <ProtectedRoute>
+                <PaymentRanges />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/payment-refund" element={
+              <ProtectedRoute>
+                <PaymentRefund />
+              </ProtectedRoute>
+            } />
+            {/* <Route path="/:hoaId/update-all-users" element={
+              <ProtectedRoute>
+                <UpdateAllUsers />
+              </ProtectedRoute>
+            } /> */}
 
-          {/* <Route path="/:hoaId/rentervehicles" element={<RenterVehicles />} /> */}
+             <Route path="/:hoaId/update-all-units" element={
+              <ProtectedRoute>
+                <UpdateAllUnits />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/reports" element={
+              <ProtectedRoute>
+                <UserReports />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/owner-list" element={
+              <ProtectedRoute>
+                <OwnerList />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/hps-record-report" element={
+              <ProtectedRoute>
+                <HPSRecordReport />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/contact-information" element={
+              <ProtectedRoute>
+                <ContactInformation />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/email-from-hoa" element={
+              <EmailFromHoa />
+            } />
+            <Route path="/email-from-hoa" element={
+              <EmailFromHoa />
+            } />
 
-          <Route path="/:hoaId/notifications" element={
-            <ProtectedRoute>
-              <Notifications />
-            </ProtectedRoute>
-          } />
-          {/* <Route path="/:hoaId/vehicles" element={<OwnerVehicles />} /> */}
-          <Route path="/:hoaId/ownervehicles" element={
-            <ProtectedRoute>
-              <OwnerVehicles />
-            </ProtectedRoute>
-          } />
-           <Route path="/:hoaId/ownervehicles/:role" element={
-            <ProtectedRoute>
-              <OwnerVehicles />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/vehicledetails/:which/:vehicleId" element={
-            <ProtectedRoute>
-              <VehicleDetails />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/terms-and-conditions" element={
-            <ProtectedRoute>
-              <TermsAndConditions />
-            </ProtectedRoute>
-          } />
+            <Route path="/:hoaId/payment" element={
+              <ParkingPayment />
+            } />
 
-          <Route path="/:hoaId/admin" element={
-            <Administration />
-          } />
-          <Route path="/:hoaId/image-upload" element={
-            <ProtectedRoute>
-              <ImageUpload />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/pdf-upload" element={
-            <ProtectedRoute>
-              <PDFUpload />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/hoa-settings" element={
-            <ProtectedRoute>
-              <HoaSettings />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/payment-ranges" element={
-            <ProtectedRoute>
-              <PaymentRanges />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/payment-refund" element={
-            <ProtectedRoute>
-              <PaymentRefund />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/update-all-users" element={
-            <ProtectedRoute>
-              <UpdateAllUsers />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/reports" element={
-            <ProtectedRoute>
-              <UserReports />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/owner-list" element={
-            <ProtectedRoute>
-              <OwnerList />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/hps-record-report" element={
-            <ProtectedRoute>
-              <HPSRecordReport />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/contact-information" element={
-            <ProtectedRoute>
-              <ContactInformation />
-            </ProtectedRoute>
-          } />
-          <Route path="/:hoaId/email-from-hoa" element={
-            <EmailFromHoa />
-          } />
-           <Route path="/email-from-hoa" element={
-            <EmailFromHoa />
-          } />
+            <Route path="/:hoaId/test" element={<TestPage />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-password-error" element={<ErrorPage />} />
+            <Route path="/:hoaId/error" element={
 
-          <Route path="/:hoaId/payment" element={
-            <ParkingPayment />
-          } />
-
-          <Route path="/:hoaId/test" element={<TestPage />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/reset-password-error" element={<ErrorPage />} />
-          <Route path="/:hoaId/error" element={
-
-            <ErrorPage />
-          } />
-          <Route path="/error" element={<ErrorPage />} />
+              <ErrorPage />
+            } />
+            <Route path="/error" element={<ErrorPage />} />
 
 
-        </Routes>
+          </Routes>
         </Elements>
       </HoaProvider>
     </ErrorProvider>
@@ -266,3 +279,7 @@ function App() {
 }
 
 export default App;
+
+/*
+rsync -avr  .  /Users/jamesvelasco/Documents/react_apps_ai/archives/hps_dev_100826  --exclude node_modules --exclude client/node_modules --exclude .git
+*/

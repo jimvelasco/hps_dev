@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import unitRoutes from "./routes/unitRoutes.js";
 import hoaRoutes from "./routes/hoaRoutes.js";
 import vehicleRoutes from "./routes/vehicleRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
@@ -25,6 +26,8 @@ app.use(express.json());
 
 // API routes
 app.use("/api/users", userRoutes);
+// units
+app.use("/api/units", unitRoutes);
 app.use("/api/hoas", hoaRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/payments", paymentRoutes);

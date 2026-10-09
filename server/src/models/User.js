@@ -37,9 +37,12 @@ const userSchema = new mongoose.Schema({
   unitnumber: {
     type: String
   },
+  handicapped: {
+    type: Boolean,
+    default: false
+  },
 
-
-pincode: {
+  pincode: {
     type: String,
     default: ""
   },

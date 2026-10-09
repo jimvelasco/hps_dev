@@ -15,6 +15,7 @@ export default function RentersLogin() {
     const [units, setUnits] = useState([]);
     const [selectedUnit, setSelectedUnit] = useState("");
     const [pin, setPin] = useState("");
+    const [otherType, setOtherType] = useState("");
     const [loadingUnits, setLoadingUnits] = useState(false);
 
     useEffect(() => {
@@ -125,11 +126,11 @@ export default function RentersLogin() {
 
         }}>
             <div className="standardtitlebar">
-                <h3  onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions</h3>
-                 <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>
+                <h3 onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions</h3>
+                <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>
             </div>
 
-             {/* navigate(`/${hoaId}`); */}
+            {/* navigate(`/${hoaId}`); */}
 
             <div className="loginboxes">
                 <div style={{ marginTop: "10px", textAlign: "center" }}>
@@ -141,6 +142,23 @@ export default function RentersLogin() {
                     <p>Loading units...</p>
                 ) : (
                     <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
+
+                        <div style={{ marginBottom: "15px", marginTop: "10px" }}>
+                            <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                                Other Type
+                            </label>
+
+                            <select className="standardselect100"
+                                value={otherType}
+                                onChange={(e) => setOtherType(e.target.value)}
+                            >
+                                <option value="renter">Renter</option>
+                                <option value="tenant">Tenant</option>
+                                 <option value="family">Family/Friend</option>
+                                <option value="dayonly">Day Use Only (Contractor/Vendor)</option>
+                                <option value="overnight">Overnight (Contractor/Vendor)</option>
+                            </select>
+                        </div>
                         <div style={{ marginBottom: "15px" }}>
                             <label htmlFor="unit" style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>
                                 Unit Number

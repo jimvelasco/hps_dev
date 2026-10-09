@@ -1933,6 +1933,7 @@ Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destruct
   background-color: #2563EB;
   color: #ffffff;
   border-color: #2563EB;
+  /* width:70px; */
 }
 
 /* Secondary: Slate-500 */

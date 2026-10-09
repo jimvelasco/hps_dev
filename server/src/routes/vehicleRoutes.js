@@ -21,8 +21,7 @@ router.delete("/hpsrecords/:hoaId", deleteHPSRecords);
 router.delete("/:vehicleId", deleteVehicle);
 router.get("/id/:vehicleId", getVehicleById);
 router.get("/hpsrecords/:hoaId", getHPSRecordsByHoaId);
-router.get("/:hoaId/allvehicles/:ownerid", getVehiclesByHoaIdUserId);
-//router.get("/:hoaId/allvehicles/:unitnumber", getVehiclesByHoaIdUnitNumber);
+router.get("/:hoaId/allvehicles/:unitnumber", getVehiclesByHoaIdUnitNumber);
 
 router.get("/:hoaId/rentervehicles/:unitNumber", getVehiclesForUnitNumber);
 

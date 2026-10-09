@@ -4,7 +4,6 @@ import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
-import VehiclesGrid from "../components/VehiclesGrid";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
@@ -26,6 +25,7 @@ export default function RenterVehicles() {
   const [sortDirection, setSortDirection] = useState("asc");
   const [userIdForUnit, setUserIdForUnit] = useState(null);
   const [ownerOfUnit, setOwnerOfUnit] = useState(null);
+  const [unitForRenter, setUnitForRenter] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
 
 
@@ -48,6 +48,23 @@ export default function RenterVehicles() {
     }
   }, [hoaId, unitNumber]);
 
+  useEffect(() => {
+    setUnitForRenter(null);
+    if (!hoaId || !unitNumber) return;
+
+    let cancelled = false;
+    const fetchUnit = async () => {
+      try {
+        const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(unitNumber)}`);
+        if (!cancelled) setUnitForRenter(response.data);
+      } catch (err) {
+        if (!cancelled) console.error("Error fetching unit:", err);
+      }
+    };
+
+    fetchUnit();
+    return () => { cancelled = true; };
+  }, [hoaId, unitNumber]);
 
   useEffect(() => {
     if (hoaId && unitNumber) {
@@ -56,7 +73,7 @@ export default function RenterVehicles() {
           setVehiclesLoading(true);
           //  const response = await axios.get(`/vehicles/${hoaId}/renter/${unitNumber}`);
           const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
-          console.log('unitnumber',unitNumber);
+        //  console.log('unitnumber',unitNumber);
          
           const updatedVehicles = response.data.map(v => ({
             ...v,
@@ -132,7 +149,7 @@ export default function RenterVehicles() {
     navigate(qry, {
       state: {
         unitNumber: uid, role: "renter",
-        vehicles: vehicles, ownerOfUnit: ownerOfUnit, vehid: vid
+        vehicles: vehicles, ownerOfUnit: ownerOfUnit, vehid: vid, unit: unitForRenter
       }
     });
   }
@@ -140,12 +157,12 @@ export default function RenterVehicles() {
   // navigate(qry, { state: { unitNumber: uid, role: arole, numberOfVehicles: vehicles.length } });
 
   const handleCreateClick = () => {
-    if (!ownerOfUnit) {
+    if (!ownerOfUnit || !unitForRenter) {
       alert("Unable to load unit information");
       return;
     }
-    const parkingLimit = ownerOfUnit.parking_allowed_renter || 0;
-    const renterFreeParking = ownerOfUnit.renter_free_parking || 0;
+    const parkingLimit = unitForRenter.parking_allowed_renter || 0;
+    const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
     // const spotsTheyCanUse = 1 + (ownerOfUnit?.additional_parking_spots_paid || 0);
     // const nextSpotNumber = currentVehicleCount; // 1 for 2nd vehicle, 2 for 3rd
@@ -175,6 +192,7 @@ export default function RenterVehicles() {
         unitNumber: unitNumber, role: "renter",
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
+        unit: unitForRenter,
         vehid: null
       }
     });

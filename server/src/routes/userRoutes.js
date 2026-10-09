@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser, getCurrentUser,verifyRenterPin, 
+import { getUsers, getUserById, createUser, updateUser, loginUser, getCurrentUser,verifyRenterPin, 
     forgotPasswordSES, resetPassword, deleteUser, sendEmailFromHoaSES } from "../controllers/userController.js";
 import authenticateToken from "../middleware/authenticateToken.js";
 import validateRequest from "../middleware/validateRequest.js";
@@ -11,7 +11,7 @@ router.get("/", getUsers);
 router.get("/me", authenticateToken, getCurrentUser);
 router.get("/:id", getUserById);
 router.post("/", createUser);
-router.put("/batch/update-parking", authenticateToken, updateAllUsers);
+// router.put("/batch/update-parking", authenticateToken, updateAllUsers);
 router.put("/:id", validateRequest(updateUserDetailsSchema), updateUser);
 router.put("/profile/:id", validateRequest(updateUserProfileSchema), updateUser);
 router.delete("/:id", deleteUser);

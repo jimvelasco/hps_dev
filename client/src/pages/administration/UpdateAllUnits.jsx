@@ -6,7 +6,7 @@ import ModalAlert from "../../components/ModalAlert";
 import { useHoa } from "../../context/HoaContext";
 import { getAWSResource } from "../../utils/awsHelper";
 
-export default function UpdateAllUsers() {
+export default function UpdateAllUnits() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa } = useHoa();
@@ -62,10 +62,22 @@ export default function UpdateAllUsers() {
     });
   };
 
-  const processUpdate = async () => {
+  const processUpdate_test = async () => {
+    let obj =  {
+        hoaid: hoaId,
+        owner_free_parking: formData.owner_free_parking,
+        renter_free_parking: formData.renter_free_parking,
+        inventory_allowed_owner: formData.inventory_allowed_owner,
+        parking_allowed_renter: formData.parking_allowed_renter,
+        parking_allowed_owner: formData.parking_allowed_owner
+      };
+      console.log("mass update values ", obj)
+  };
+
+   const processUpdate = async () => {
     setLoading(true);
     try {
-      const response = await axios.put("/users/batch/update-parking", {
+      const response = await axios.put("/units/batch/update-parking", {
         hoaid: hoaId,
         owner_free_parking: formData.owner_free_parking,
         renter_free_parking: formData.renter_free_parking,
@@ -96,6 +108,9 @@ export default function UpdateAllUsers() {
       setLoading(false);
     }
   };
+
+
+
 
   const navButtons = [
     {

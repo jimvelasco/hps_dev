@@ -5,7 +5,6 @@ import { useError } from "../context/ErrorContext";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
-import VehiclesGrid from "../components/VehiclesGrid";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
 import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
@@ -27,13 +26,15 @@ export default function OwnerVehicles() {
   const [role, setRole] = useState(null);
   const [ownerId, setOwnerId] = useState(null);
   const [filterType, setFilterType] = useState("owner");
+  const [plateSearch, setPlateSearch] = useState("");
   const [filterDate, setFilterDate] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const [showTable, setShowTable] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-   const [showUnitId, setShowUnitId] = useState("");
+  const [showUnitId, setShowUnitId] = useState("");
+  const [unitForOwner, setUnitForOwner] = useState(null);
 
 
 
@@ -47,12 +48,39 @@ export default function OwnerVehicles() {
       setRole(loggedInUser.role);
       setOwnerId(loggedInUser._id);
       setShowUnitId(loggedInUser.unitnumber);
-     //  console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
+      //  console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
       //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
     } else {
       console.log("owner vehicles loggedInUser is null")
     }
   }, [loggedInUser, userLoading]);
+
+  useEffect(() => {
+    if (userLoading || !hoaId || !loggedInUser?.unitnumber) {
+      setUnitForOwner(null);
+      return;
+    }
+    // console.log("WE ARE GETTING THE UNIT");
+
+    let cancelled = false;
+    const fetchUnit = async () => {
+      try {
+        const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(loggedInUser.unitnumber)}`);
+        if (!cancelled) {
+          //  console.log('the unit is ',response.data);
+          setUnitForOwner(response.data);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setUnitForOwner(null);
+          console.error("Error fetching unit:", err);
+        }
+      }
+    };
+
+    fetchUnit();
+    return () => { cancelled = true; };
+  }, [hoaId, userLoading, loggedInUser?.unitnumber]);
 
   useEffect(() => {
     //   console.log("Vehicles.jsx role:", role);
@@ -66,12 +94,12 @@ export default function OwnerVehicles() {
       const fetchVehicles = async () => {
         try {
           setVehiclesLoading(true);
-      //    qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
+          //  qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
 
-      // we get all vehicles for the unit not just the ownerid
-              qry = `/vehicles/${hoaId}/allvehicles/${showUnitId}`
-             console.log("OwnerVehicles.jsx qry:", qry);
-          if (role === "admin" || role === "manager") {
+          // we get all vehicles for the unit not just the ownerid
+          qry = `/vehicles/${hoaId}/allvehicles/${showUnitId}`
+          // console.log("OwnerVehicles.jsx qry:", qry);
+          if (role === "admin") {
 
             qry = `/vehicles/adminvehicles/${hoaId}`
           }
@@ -93,8 +121,6 @@ export default function OwnerVehicles() {
             return String(valueB).localeCompare(String(valueA));
           });
 
-          //console.log("updatedVehicles length about to set", updatedVehicles.length)
-
           setVehicles(updatedVehicles);
           setAllVehicles(updatedVehicles);
           setVehiclesError(null);
@@ -110,21 +136,11 @@ export default function OwnerVehicles() {
     }
   }, [hoaId, ownerId]);
 
-  useEffect(() => {
-    if (allVehicles.length > 0) {
-      const today = new Date();
-      const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-      //const formattedDate = oneYearAgo.toISOString().split('T')[0];
-      const formattedDate = utcDateOnly(oneYearAgo);
-      setFilterDate(formattedDate);
-    }
-  }, [allVehicles]);
+
 
   useEffect(() => {
-    if (allVehicles.length > 0) {
-      handleFilterApply();
-    }
-  }, [allVehicles, filterType, filterDate]);
+    handlePlateSearch(plateSearch);
+  }, [allVehicles, filterType, plateSearch]);
 
 
   if (loading) {
@@ -180,104 +196,147 @@ export default function OwnerVehicles() {
     setVehicles(sorted);
   };
 
-  const handleFilterApply = () => {
-    let filtered = [...allVehicles];
-    //  console.log("ENTRY **** FILTER APPLIED LEN",filterType,filtered.length)
+  const handleFilterApply = (matchingVehicles) => {
     if (filterType === "owner") {
-      filtered = filtered.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family");
-    } else if (filterType === "renter") {
-      filtered = filtered.filter(v => v.carownertype === "renter");
+      return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
     }
-    // if (filterDate) {
-    //   const filterDateObj = filterDate;
-    //   filtered = filtered.filter(v => {
-    //     const checkoutDate = v.enddate;
-    //     return checkoutDate >= filterDateObj;
-    //   });
-    // }
-
-    // why was this put in ?
-    // if (filterDate && filterType === "renter") {
-    //   const filterDateObj = filterDate;
-    //   filtered = filtered.filter(v => {
-    //     const checkoutDate = v.enddate;
-    //     return checkoutDate >= filterDateObj;
-    //   });
-    // }
-    //  console.log("FILTER APPLIED LEN",filterType,filtered.length)
-    setVehicles(filtered);
+    if (filterType === "renter") {
+      return matchingVehicles.filter(v => v.carownertype === "renter");
+    }
+     if (filterType === "all") {
+      return matchingVehicles;
+    }
+    return matchingVehicles;
   };
 
-  const handleDetailsClick = (vehicle) => {
+
+  const handleDetailsClick = async (vehicle) => {
 
     const vid = vehicle._id;
     const uid = vehicle.unitnumber;
-    //  console.log('ov handle details click vehicle:', vehicle.carownertype);
-    if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
+
+    try {
+
+      //  console.log('ov handle details click vehicle:', vehicle.carownertype);
+      if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: `Owners cannot modify renter vehicles.`,
+          confirmText: "OK",
+          onConfirm: () => {
+            setModal(prev => ({ ...prev, isOpen: false }));
+          },
+        });
+        return;
+      }
+
+      const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
+      // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
+      let unitNumber = uid; //loggedInUser ? loggedInUser.unitnumber : "999999999999";
+      let arole = "owner";
+      navigate(qry, {
+        state: {
+          unitNumber: unitNumber,
+          role: arole,
+          vehicles: vehicles,
+          ownerOfUnit: loggedInUser,
+          vehid: vid,
+          unit: unitForOwner
+        }
+      });
+    } catch (err) {
       setModal({
         isOpen: true,
         type: "alert",
-        title: "Validation Error",
-        message: `Owners cannot modify renter vehicles.`,
+        title: "Error",
+        message: err.response?.data?.message || err.message || "Failed to load unit inventory limit.",
         confirmText: "OK",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
+        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
       });
-      return;
     }
-
-    const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
-    // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
-    let unitNumber = uid; //loggedInUser ? loggedInUser.unitnumber : "999999999999";
-    //let arole = loggedInUser ? loggedInUser.role : "owner";
-    let arole = "owner";
-    //  console.log("loggedInUser", loggedInUser);
-    // console.log("****** handleDetailsClick OwnerVehicles.jsx handleDetailsClick loggedInUser:", loggedInUser);
-    navigate(qry, {
-      state: {
-        unitNumber: unitNumber,
-        role: arole,
-        vehicles: vehicles,
-        ownerOfUnit: loggedInUser,
-        vehid: vid
-      }
-    });
     //vid } });
     //navigate(qry);
   };
 
-  const handleCreateClick = () => {
-    let uid = loggedInUser ? loggedInUser.unitnumber : "999999999999";
-    const qry = `/${hoaId}/vehicledetails/create/${uid}`;
-    let arole = loggedInUser ? loggedInUser.role : "owner";
-    const parkingLimit = loggedInUser.inventory_allowed_owner;
-    const currentVehicleCount = vehicles.length;
-    if (currentVehicleCount >= parkingLimit) {
+  const handleCreateClick = async () => {
+    const uid = loggedInUser?.unitnumber;
+    if (!hoaId || !uid) {
       setModal({
         isOpen: true,
         type: "alert",
-        title: "Validation Error",
-        message: `Vehicle limit reached. You can only have ${parkingLimit} vehicles in your inventory.`,
+        title: "Error",
+        message: "Unable to determine the unit for this user.",
         confirmText: "OK",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
+        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
       });
       return;
     }
 
+    try {
+      const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(uid)}`);
+      const unit = response.data;
+      if (!unit) {
+        const contact = hoa?.contact_information?.find(item => item.contact_id === "pm_renter");
+        const contactDetails = [contact?.phone_description, contact?.phone_number, contact?.email].filter(Boolean).join(" ** ");
+        //  const contactDetails = [contact?.phone_description, contact?.phone_number, contact?.email].filter(Boolean);
+        let cstr = "";
+        // contactDetails.forEach(element => {
+        //   cstr += element + "<br />";
 
-    navigate(qry, {
-      state: {
-        unitNumber: uid,
-        role: arole,
-        numberOfVehicles: vehicles.length,
-        vehicles: vehicles,
-        vehid: null
+        // });
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Unit Not Found",
+          message: <>Your unit is not registered for this HOA.<br />Please contact {contactDetails || "your property manager"}.</>,
+          confirmText: "OK",
+          onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+        });
+        return;
       }
-    });
-    // navigate(qry);
+
+      setUnitForOwner(unit);
+      const parkingLimit = Number(unit.inventory_allowed_owner);
+      console.log('parking limit in ow',parkingLimit);
+      if (unit.inventory_allowed_owner == null || !Number.isFinite(parkingLimit)) {
+        throw new Error("Unit inventory limit is unavailable.");
+      }
+
+      if (vehicles.length >= parkingLimit) {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: `Vehicle limit reached. You can only have ${parkingLimit} vehicles in your inventory.`,
+          confirmText: "OK",
+          onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+        });
+        return;
+      }
+
+      navigate(`/${hoaId}/vehicledetails/create/${uid}`, {
+        state: {
+          unitNumber: uid,
+          role: loggedInUser.role,
+          numberOfVehicles: vehicles.length,
+          vehicles: vehicles,
+          vehid: null,
+          ownerOfUnit: loggedInUser,
+          unit
+        }
+      });
+    } catch (err) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Error",
+        message: err.response?.data?.message || err.message || "Failed to load unit inventory limit.",
+        confirmText: "OK",
+        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+      });
+    }
   };
   const handlePaymentClick = (vehicle) => {
     console.log("Payment click for vehicle id:", vehicle._id);
@@ -301,18 +360,7 @@ export default function OwnerVehicles() {
         unitNumber: loggedInUser.unitnumber, userId: ownerId, hoaId: hoaId, role: "owner"
       }
     });
-    // if (role !== "owner") {
-    //  setModal({
-    //     isOpen: true,
-    //     type: "alert",
-    //     title: "Information",
-    //     message: `Cannot pay for renter vehicle from the owners screen.`,
-    //     confirmText: "OK",
-    //     onConfirm: () => {
-    //       setModal(prev => ({ ...prev, isOpen: false }));
-    //     },
-    //   });
-    //   }
+
   }
   const handleShowHidenClick = () => {
     setIsVisible(!isVisible)
@@ -348,6 +396,12 @@ export default function OwnerVehicles() {
     // console.log("VEHICLES LENGTH IS ",vehicles.length );
   }
 
+  let titlestr = "Owner Vehicles";
+  if (role === "admin") {
+    titlestr = "Admininistrator All Vehicles";
+  }
+
+
   const renderTitleBar = () => {
     return (<div>
       <div className="button-grid">
@@ -359,6 +413,7 @@ export default function OwnerVehicles() {
             >
               <option value="owner">Owner</option>
               <option value="renter">Renter</option>
+               <option value="all">All</option>
             </select>
           </div>
         )}
@@ -394,9 +449,35 @@ export default function OwnerVehicles() {
       </div>
     </div>)
   }
+
+  const handlePlateSearch = (searchTerm) => {
+    const query = searchTerm.trim().toLowerCase();
+    const matchingVehicles = allVehicles.filter(vehicle =>
+      (vehicle.plate || "").toLowerCase().includes(query)
+    );
+    setVehicles(handleFilterApply(matchingVehicles));
+  };
+
+  const renderPlateSearch = () => {
+    return (
+      <div className="standardtitlebar380">
+        <label htmlFor="plate-search">Plate Search</label>
+        <input
+          id="plate-search"
+          className="standardinput"
+          type="search"
+          value={plateSearch}
+          onChange={(event) => setPlateSearch(event.target.value)}
+          placeholder="Enter license plate"
+        />
+      </div>
+    );
+  };
+
+
   return (
     <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
-      <DashboardNavbar title="Owner Vehicles" title2={ttitle2} buttons={navButtons} />
+      <DashboardNavbar title={titlestr} title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
         <div className="phoneview">
@@ -453,6 +534,8 @@ export default function OwnerVehicles() {
           
         </div> */}
 
+        {renderPlateSearch()}
+
 
 
         {vehiclesError && (
@@ -470,31 +553,12 @@ export default function OwnerVehicles() {
         ) : vehicles && vehicles.length > 0 ? (
           <>
 
-            {/*<div className="xphoneview">
-              <VehiclesGrid
-                vehicles={vehicles}
-                role={"owner"}
-                sortColumn={sortColumn}
-                sortDirection={sortDirection}
-                handleSort={handleSort}
-                handleDetailsClick={handleDetailsClick}
-                handlePaymentClick={handlePaymentClick}
-                getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                utcDateOnly={utcDateOnly}
-              /> 
-              </div> */}
-
             {showTable ? (
               <div style={{ overflowX: "auto", maxWidth: "100%" }}>
                 <div style={{
                   minWidth: "800px",
                   overflowX: "auto"
                 }}>
-
-
-
-
-
 
                   <div className='grid-flex-container'>
                     <VehiclesTableUpdate
@@ -512,23 +576,23 @@ export default function OwnerVehicles() {
                 </div>
               </div>
 
-            ) : 
-            
-            (
+            ) :
 
-              <div className='grid-flex-container'>
-                
-                <VehiclesGridPhone
-                  vehicles={vehicles}
-                  role={role}
-                 
-                  handleDetailsClick={handleDetailsClick}
-                  handlePaymentClick={handlePaymentClick}
-                  getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
-                  utcDateOnly={utcDateOnly}
-                />
-              </div>
-            )
+              (
+
+                <div className='grid-flex-container'>
+
+                  <VehiclesGridPhone
+                    vehicles={vehicles}
+                    role={role}
+
+                    handleDetailsClick={handleDetailsClick}
+                    handlePaymentClick={handlePaymentClick}
+                    getVehicleActiveStatusBoolean={getVehicleActiveStatusBoolean}
+                    utcDateOnly={utcDateOnly}
+                  />
+                </div>
+              )
 
 
             }

@@ -75,11 +75,6 @@ export default function DashboardNavbar({ title, title2, buttons }) {
               </Link>
             </div>
 
-            {/* <img
-              src={hoaLogo}
-              alt="HOA Logo"
-              style={{ border:"0px solid white",marginTop:"0px", width: "200px", vAlign:"top",borderRadius: "4px" }}
-            /> */}
           </div>
 
           <div style={{ marginBottom: "5px", color: "white", alignItems: "center", justifyContent: "center", display: "flex" }}>

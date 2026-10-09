@@ -27,45 +27,60 @@ export default function VehicleDetails() {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const location = useLocation();
-  // the unitNumber is passed via state when navigating to create a vehicle from RenterVehicles.jsx
-  // if we get to the page from OwnerVehicles.jsx the loggedInUser will have the unitnumber so we can use that
-  const { unitNumber, role, vehicles, ownerOfUnit, vehid } = location.state || {};
+  
+
+  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
+
+ 
+  /*
+   state: {
+          unitNumber: uid,
+          role: loggedInUser.role,
+          numberOfVehicles: vehicles.length,
+          vehicles: vehicles,
+          vehid: null,
+          ownerOfUnit: loggedInUser,
+          unit: unit
+        }
+  */
+
   const [userIdForUnit, setUserIdForUnit] = useState();
   const [unitOwner, setUnitOwner] = useState();
+   const [stateUnit, setStateUnit] = useState();
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
 
   const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
 
-  const handlePlateDetected = (data) => {
-    // Mapping from Plate Recognizer vehicle types to our options
-    console.log('handlePlateDetected jjv data:', data);
-    const typeMapping = {
-      'sedan': 'Car',
-      'suv': 'Car',
-      'van': 'Car',
-      'pickup': 'Truck',
-      'truck': 'Truck',
-      'bus': 'Other',
-      'motorcycle': 'Motorcyle',
-      'rv': 'RV'
-    };
+  // const handlePlateDetected = (data) => {
+  //   // Mapping from Plate Recognizer vehicle types to our options
+  //   console.log('handlePlateDetected jjv data:', data);
+  //   const typeMapping = {
+  //     'sedan': 'Car',
+  //     'suv': 'Car',
+  //     'van': 'Car',
+  //     'pickup': 'Truck',
+  //     'truck': 'Truck',
+  //     'bus': 'Other',
+  //     'motorcycle': 'Motorcyle',
+  //     'rv': 'RV'
+  //   };
 
-    setFormData(prev => ({
-      ...prev,
-      plate: data.plate || prev.plate,
-      make: data.make ? (data.make.charAt(0).toUpperCase() + data.make.slice(1)) : prev.make,
-      model: data.model ? (data.model.charAt(0).toUpperCase() + data.model.slice(1)) : prev.model,
-      vehicle_type: typeMapping[data.type?.toLowerCase()] || (data.type ? 'Other' : prev.vehicle_type)
-    }));
-  };
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     plate: data.plate || prev.plate,
+  //     make: data.make ? (data.make.charAt(0).toUpperCase() + data.make.slice(1)) : prev.make,
+  //     model: data.model ? (data.model.charAt(0).toUpperCase() + data.model.slice(1)) : prev.model,
+  //     vehicle_type: typeMapping[data.type?.toLowerCase()] || (data.type ? 'Other' : prev.vehicle_type)
+  //   }));
+  // };
 
   const edate = new Date();
   edate.setDate(edate.getDate() + 3);
 
 
   // console.log('edate is ', edate);
-   // console.log('vehicle details unitNumber is ', unitNumber,role);
+  // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [formData, setFormData] = useState({
@@ -84,11 +99,13 @@ export default function VehicleDetails() {
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
   });
- console.log('vehicle details formData is ', formData);
+  //  console.log('vehicle details formData is ', formData);
+  // console.log('LOCATION STATE IS  owner ', location.state.ownerOfUnit);
+ // console.log('LOCATION STATE IS  unit ', location.state.unit);
   useEffect(() => {
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
-      console.log('dmode:', dmode);
+    //  console.log('dmode:', dmode);
       if (dmode === 1) {
         setFormData({
           carowner_fname: "JJV",
@@ -140,44 +157,16 @@ export default function VehicleDetails() {
     }
   }, []);
 
-  // useEffect(() => {
-  //  console.log('VehicleDetails.jsx useEffect - location.state:', location.state);
-  // }, [location.state]);
-
-
-
-
   useEffect(() => {
-    // if (userLoading) {return}
-    const targetUnit = formData.unitnumber || unitNumber;
 
-   
+    setUserIdForUnit(ownerOfUnit._id);
+    setUnitOwner(ownerOfUnit);
+    setStateUnit(unit)
+    
 
-    if (hoaId && targetUnit) {
-      const fetchUserForUnit = async () => {
-        try {
-          // Use hoaId as param (backend now supports both hoaid and hoaId)
-          const response = await axios.get("/users", { params: { hoaId } });
-          const user = response.data.find(u => u.unitnumber === targetUnit && u.hoaid === hoaId);
-          if (user) {
-            // console.log('we found a user for unit:',unitNumber,user);
-            setUserIdForUnit(user._id);
-            setUnitOwner(user);
-          } else {
-            console.log('No user found for unit:', targetUnit);
-            // Don't clear userIdForUnit if we are in modify mode and it was already loaded
-            if (!isModifyMode) {
-              setUserIdForUnit(null);
-              setUnitOwner(null);
-            }
-          }
-        } catch (err) {
-          // console.error("Error fetching user for unit:", err);
-        }
-      };
-      fetchUserForUnit();
-    }
   }, [hoaId, unitNumber, formData.unitnumber, isModifyMode]);
+
+
 
   useEffect(() => {
     //  if (userLoading) {return}
@@ -201,11 +190,8 @@ export default function VehicleDetails() {
           carowner_fname: response.data.carowner_fname || "",
           carowner_lname: response.data.carowner_lname || "",
           carownerphone: response.data.carownerphone || "",
-             unitnumber: response.data.unitnumber || "",
-         // unitnumber: unitNumber || "",
+          unitnumber: response.data.unitnumber || "",
           carownertype: response.data.carownertype || "owner",
-          //  carownertype: loggedInUser ? loggedInUser.role : "renter",
-          // carownertype: role,
           make: response.data.make || "",
           model: response.data.model || "",
           color: response.data.color || "",
@@ -213,14 +199,12 @@ export default function VehicleDetails() {
           vehicle_type: response.data.vehicle_type || "",
           plate: response.data.plate || "",
           plate_state: response.data.plate_state || "",
-          //  active_flag: response.data.active_flag || 0,
-          // startdate: response.data.startdate || "",
           startdate: sd,
           enddate: ed,
           requires_payment: response.data.requires_payment || 0,
         });
         // console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
-        
+
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load vehicle details");
@@ -258,7 +242,7 @@ export default function VehicleDetails() {
   };
 
   const handleDeleteClick = () => {
-    console.log('delete button clicked');
+ //   console.log('delete button clicked');
     setModal({
       isOpen: true,
       type: "confirm",
@@ -307,7 +291,7 @@ export default function VehicleDetails() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    
+
     const requiredFields = [
       "carowner_fname",
       "carowner_lname",
@@ -358,25 +342,21 @@ export default function VehicleDetails() {
     }
 
 
+//  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
 
 
-
-    const renterFreeParking = ownerOfUnit?.renter_free_parking || 0;
-    const ownerFreeParking = ownerOfUnit?.owner_free_parking || 0;
-    // console.log('renterFreeParking:', renterFreeParking);
-    //  console.log('ownerFreeParking:', ownerFreeParking);
-    // console.log('vehicles:', vehicles);
-    // console.log('role:', role);
-    // console.log('unitOwner:', unitOwner);
-    let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
+    // const renterFreeParking = ownerOfUnit?.renter_free_parking || 0;
+    // const ownerFreeParking = ownerOfUnit?.owner_free_parking || 0;
+   
+    // let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
 
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
     let oktoaddobj = { oktoadd: false, activecount: 0 };;
     let rpflag = 0;
     if (role === 'owner') {
       // rpflag = 0;
-      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid);
-      console.log('oktoaddobj:', oktoaddobj);
+      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit);
+   //   console.log('submitting oktoaddobj:', oktoaddobj);
       if (!oktoaddobj.oktoadd) {
         setModal({
           isOpen: true,
@@ -394,8 +374,8 @@ export default function VehicleDetails() {
       }
     }
     if (role === 'renter') {
-      console.log('renter vehid', vehid, vehicles.length);
-      oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid);
+      console.log('unit is', unit);
+      oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit);
       rpflag = oktoaddobj.rpflag;
       // if (vehicles.length < renterFreeParking) {
       //   rpflag = oktoaddobj.rpflag;;
@@ -414,14 +394,14 @@ export default function VehicleDetails() {
     try {
       // Prefer the user associated with the unit, fallback to logged in user (e.g. admin or owner creating for themselves)
       let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
-      
+
       const vehiclePayload = {
         ...formData,
         hoaid: hoaId,
         ownerid: oid,
         requires_payment: rpflag
       };
-      console.log("Submitting vehiclePayload:", isModifyMode,vehiclePayload);
+  //    console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
 
       if (isModifyMode) {
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
@@ -458,9 +438,9 @@ export default function VehicleDetails() {
         }
       }
     } catch (err) {
-      const errorMessage = err.response?.data?.errors?.[0]?.message || 
-                          err.response?.data?.message || 
-                          err.message;
+      const errorMessage = err.response?.data?.errors?.[0]?.message ||
+        err.response?.data?.message ||
+        err.message;
 
       setModal({
         isOpen: true,
@@ -593,27 +573,28 @@ export default function VehicleDetails() {
                   >
                     {role !== 'renter' && (
                       <>
-                       {/* <option value="">---</option> */}
+                        {/* <option value="">---</option> */}
                         <option value="owner">Owner</option>
                         <option value="family">Family</option>
                         <option value="friend">Friend</option>
+                        <option value="contractor">Contractor</option>
                       </>
                     )}
                     {role === 'renter' && (
                       <>
-                       {/* <option value="">---</option> */}
+                        {/* <option value="">---</option> */}
 
-                      <option value="renter">Renter</option>
+                        <option value="renter">Renter</option>
                       </>
                     )}
                   </select>
                 </div>
 
-                <div style={{marginLeft:"5px",fontSize:"10pt"}}>
-                {formData.unitnumber}
+                <div style={{ marginLeft: "5px", fontSize: "10pt" }}>
+                  {formData.unitnumber}
                 </div>
 
-                 <input
+                <input
                   type="hidden"
                   name="unitnumber"
                   value={formData.unitnumber}
@@ -639,7 +620,7 @@ export default function VehicleDetails() {
               <div>
                 <h3 style={{ color: "#1976d2", margin: "10px" }}>Registration</h3>
 
-              
+
 
 
                 <div style={{ marginBottom: "15px" }}>
@@ -673,7 +654,7 @@ export default function VehicleDetails() {
                   />
                 </div>
 
-                  <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
                     Vehicle Type
                   </label>
@@ -819,22 +800,7 @@ export default function VehicleDetails() {
                   onChange={handleTermsAcknowledged}
                   style={{ width: "18px", height: "18px", cursor: "pointer" }}
                 />
-                {/* <label htmlFor="termsCheckbox" style={{ margin: 0, cursor: "pointer", color: "#666" }}>
-                  I have read and acknowledge the{" "}
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigate(`/${hoaId}/terms-and-conditions`, {
-                        state: {
-                          role: role,
-                        }
-                      });
-                    }}
-                    href="#"
-                    style={{ color: "#1976d2", textDecoration: "underline", cursor: "pointer" }}>
-                    Terms and Conditions
-                  </a>
-                </label> */}
+
 
                 <label htmlFor="termsCheckbox" style={{ margin: 0, cursor: "pointer", color: "#666" }}>
                   I have read and acknowledge the{" "}

@@ -128,6 +128,33 @@ export default function Users() {
     navigate(`/${hoaId}/user/${userId}`);
   };
 
+
+  const handleCreateUnitClick = () => {
+   let qry = `/${hoaId}/unitdetailsnav`;
+     navigate(qry, {
+      state: {
+        numonunit: undefined,
+        homeownersid: hoaId,
+        which: "admin"
+      }
+    });
+  };
+
+    const handleEditUnitClick = (unitnumber) => {
+  //  navigate(`/${hoaId}/unit/${encodeURIComponent(unitnumber)}`);
+  //const handleUnitClick = () => {
+    let qry = `/${hoaId}/unitdetailsnav`;
+     navigate(qry, {
+      state: {
+        numonunit: unitnumber,
+        homeownersid: hoaId,
+        which: "admin"
+      }
+    });
+   //  navigate(`/${hoaId}/unitdetailsnav/:unitnumber`);
+  };
+ // /:hoaId/unitdetailsnav/:unitnumber
+
   const handleSort = (column) => {
     let newDirection = "asc";
     if (sortColumn === column && sortDirection === "asc") {
@@ -178,14 +205,24 @@ export default function Users() {
 
       <div className="page-content">
 
-        <div className="flexLayout" style={{justifyContent: "flex-end"}}>
+        {/* <div className="flexLayout" style={{justifyContent: "flex-end"}}> */}
+           <div className="standardtitlebar380" >
+
+              <div className="button-grid">
+            <button className="btns btn-primary"
          
 
-          <button className="standardsubmitbutton"
+         
             onClick={handleCreateUserClick}
           >
             New User
           </button>
+           <button className="btns btn-primary"
+            onClick={handleCreateUnitClick}
+          >
+            New Unit
+          </button>
+        </div>
         </div>
 
         <div style={{
@@ -297,7 +334,18 @@ export default function Users() {
                   </div>
                   <div className="standard-table-cell">{user.email || "—"}</div>
                   <div className="standard-table-cell">{user.phone || "—"}</div>
-                  <div className="standard-table-cell standard-table-extra">{user.unitnumber || "—"}
+                  <div className="standard-table-cell standard-table-extra"
+                   onClick={() => user.unitnumber && handleEditUnitClick(user.unitnumber)}
+                    style={{
+                      cursor: "pointer",
+                      color: "#1976d2",
+                      textDecoration: "underline",
+                      fontWeight: "500"
+                    }}
+                    onMouseEnter={(e) => e.target.style.textDecoration = "underline"}
+                    onMouseLeave={(e) => e.target.style.textDecoration = "underline"}
+                  >
+                    {user.unitnumber || "—"}
                     
                   </div>
                   <div className="standard-table-cell standard-table-extra">

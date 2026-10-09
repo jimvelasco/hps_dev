@@ -13,6 +13,18 @@ export function useLoggedInUser() {
       return;
     }
 
+    let payload;
+    try {
+      payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    } catch {
+      payload = null;
+    }
+
+    if (payload?.role === "renter" && payload.unitId && !payload.userId) {
+      setLoading(false);
+      return;
+    }
+
     const fetchUser = async () => {
       try {
         const response = await api.get("/users/me");

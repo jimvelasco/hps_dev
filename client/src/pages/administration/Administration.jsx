@@ -148,8 +148,12 @@ export default function Administration() {
     navigate(`/${hoaId}/payment-refund`);
   };
 
-  const handleUpdateAllUsers = () => {
-    navigate(`/${hoaId}/update-all-users`);
+  // const handleUpdateAllUsers = () => {
+  //   navigate(`/${hoaId}/update-all-users`);
+  // };
+
+   const handleUpdateAllUnits = () => {
+    navigate(`/${hoaId}/update-all-units`);
   };
 
   const handleCreateFolder = async (folderName) => {
@@ -228,7 +232,7 @@ export default function Administration() {
             <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Profile</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Manage HOA Profile including password reset
+              Manage HOA Profile including password reset.
             </p>
             <button className="standardsubmitbutton"
               onClick={handleShowProfile}
@@ -241,7 +245,7 @@ export default function Administration() {
             <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Settings</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Configure HOA property and parking policies
+              Configure HOA property and parking policies.
             </p>
             <button className="standardsubmitbutton"
               onClick={handleManageHoaSettings}
@@ -254,7 +258,7 @@ export default function Administration() {
             <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Contact Information</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Manage HOA contact details and phone numbers
+              Manage HOA contact details and phone numbers.
             </p>
             <button className="standardsubmitbutton"
               onClick={handleManageContactInformation}
@@ -267,7 +271,7 @@ export default function Administration() {
             <h5 className="admin_section_title">Manage</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Payment Ranges</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Manage parking rate schedules by date ranges
+              Manage parking rate schedules by date ranges.
             </p>
             <button className="standardsubmitbutton"
               onClick={handleManagePaymentRanges}
@@ -282,7 +286,7 @@ export default function Administration() {
             <h5 className="admin_section_title">Operations</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Payment Refunds</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Process refunds for completed parking payments
+              Process refunds for completed parking payments.
             </p>
             <button className="standardsubmitbutton"
               onClick={handlePaymentRefund}
@@ -293,14 +297,14 @@ export default function Administration() {
 
           <section className="admin_section">
             <h5 className="admin_section_title">Operations</h5>
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Update Users Parking</h3>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Update Unit Parking</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Batch update free parking values for all users
+              Batch update free parking values for all units.
             </p>
             <button className="standardsubmitbutton"
-              onClick={handleUpdateAllUsers}
+              onClick={handleUpdateAllUnits}
               style={{ width: "200px" }}>
-              Update Users
+              Update Units
             </button>
           </section>
 
@@ -308,7 +312,7 @@ export default function Administration() {
             <h5 className="admin_section_title">Operations</h5>
             <h3 style={{ color: "#d32f2f", marginTop: 0 }}>Purge Renter Vehicles</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Delete renter vehicles ending before a selected date
+              Delete renter vehicles ending before a selected date.
             </p>
             <button className="standardsubmitbutton"
               onClick={() => setShowDeleteRenterVehiclesModal(true)}
@@ -335,7 +339,7 @@ export default function Administration() {
             <h5 className="admin_section_title">AWS</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Image Upload</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Upload images to AWS S3 bucket
+              Upload images to AWS S3 bucket.
             </p>
             <button className="standardsubmitbutton"
               onClick={handleImageUpload}
@@ -348,7 +352,7 @@ export default function Administration() {
             <h5 className="admin_section_title">AWS</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>PDF Upload</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Upload PDF files to AWS S3 bucket
+              Upload PDF files to AWS S3 bucket.
             </p>
             <button className="standardsubmitbutton"
               onClick={handlePdfUpload}

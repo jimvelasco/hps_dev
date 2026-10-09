@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate ,useLocation} from "react-router-dom";
 import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
@@ -15,6 +15,8 @@ export default function UserDetails() {
   const { setAppError } = useError();
   const [loading, setLoading] = useState(userId ? true : false);
   const [error, setError] = useState(null);
+   const location = useLocation();
+  const { numonunit, homeownersid, which,lastname } = location.state ?? {};
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
 
   const [formData, setFormData] = useState({
@@ -22,15 +24,12 @@ export default function UserDetails() {
     last_name: "",
     phone: "",
     email: "",
-    password: "",
     unitnumber: "",
-    bedrooms: "",
     role: "owner",
-    inventory_allowed_owner: "",
-    parking_allowed_renter: "",
-    owner_free_parking: "",
-    renter_free_parking: "",
-    pincode: ""
+    handicapped: false,
+    hoaid: "",
+    password: "",
+    
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -45,16 +44,12 @@ export default function UserDetails() {
             last_name: response.data.last_name || "",
             phone: response.data.phone || "",
             email: response.data.email || "",
-            password: response.data.password || "",
             unitnumber: response.data.unitnumber || "",
-            bedrooms: response.data.bedrooms || "",
             role: response.data.role || "",
-            inventory_allowed_owner: response.data.inventory_allowed_owner || "",
-            parking_allowed_owner: response.data.parking_allowed_owner || "",
-            parking_allowed_renter: response.data.parking_allowed_renter || "",
-            owner_free_parking: response.data.owner_free_parking || "",
-            renter_free_parking: response.data.renter_free_parking || "",
-            pincode: response.data.pincode || ""
+            handicapped: response.data.handicapped ?? false,
+            hoaid: response.data.hoaid || "",
+             password: response.data.password || "",
+
           });
         } catch (err) {
           setError(err.response?.data?.message || err.message || "Failed to fetch user");
@@ -65,13 +60,24 @@ export default function UserDetails() {
       };
       fetchUser();
     } else if (hoa && !userId) {
+       console.log('we are creating a new user',location.state)
       setFormData(prev => ({
         ...prev,
-        inventory_allowed_owner: hoa.inventory_allowed_owner || "",
-        parking_allowed_owner: hoa.parking_allowed_owner || "",
-        parking_allowed_renter: hoa.parking_allowed_renter || "",
-        owner_free_parking: hoa.owner_free_parking_spots || "",
-        renter_free_parking: hoa.renter_free_parking_spots || ""
+        // inventory_allowed_owner: hoa.inventory_allowed_owner || "",
+        // parking_allowed_owner: hoa.parking_allowed_owner || "",
+        // parking_allowed_renter: hoa.parking_allowed_renter || "",
+        // owner_free_parking: hoa.owner_free_parking_spots || "",
+        // renter_free_parking: hoa.renter_free_parking_spots || ""
+       
+
+        first_name: prev.first_name || "",
+        last_name: lastname || prev.last_name || "",
+        phone: prev.phone || "",
+        email: prev.email || "",
+        unitnumber:  numonunit || prev.unitnumber || "",
+        hoaid: prev.hoaid || "",
+        role: "owner",
+        password: ""
       }));
     }
   }, [userId, hoa]);
@@ -87,15 +93,16 @@ export default function UserDetails() {
   }
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === "checkbox" ? checked : value
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('THE FORM DATA IS ',formData)
 
     if (!formData.first_name || !formData.last_name || !formData.phone || !formData.email) {
       setModal({
@@ -125,6 +132,7 @@ export default function UserDetails() {
       return;
     }
 
+
     setIsSubmitting(true);
     try {
       const submitData = {
@@ -133,27 +141,16 @@ export default function UserDetails() {
         phone: formData.phone,
         email: formData.email,
         unitnumber: formData.unitnumber,
-        password: formData.password,
-        bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : 0,
         role: formData.role,
-        pincode: formData.pincode,
-        inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,
-        parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,
-        parking_allowed_owner: formData.parking_allowed_owner ? parseInt(formData.parking_allowed_owner) : undefined,
-        owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : undefined,
-        renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : undefined
+        handicapped: formData.handicapped,
+        hoaid: formData.hoaid,
+        password: formData.password,
       };
 
-      console.log('user detail submit data is ',submitData);
-
-      // if (!isEditMode) {. i will put this back in later instead of always like above?
-       //  submitData.password = formData.password;
-      // }
+    //  console.log('user detail submit data is ', submitData);
 
       if (userId) {
         const response = await axios.put(`/users/${userId}`, submitData);
-        // alert(`User updated successfully: ${response.data.user.first_name} ${response.data.user.last_name}`);
-        //console.log("***** opening modal User update response:", response);
         if (response.status === 200) {
           setModal({
             isOpen: true,
@@ -176,8 +173,6 @@ export default function UserDetails() {
           ...submitData,
           hoaid: hoaId
         });
-        // alert(`User created successfully: ${response.data.user.first_name} ${response.data.user.last_name}`);
-        // navigate(`/${hoaId}/users`);
         setModal({
           isOpen: true,
           type: "alert",
@@ -190,10 +185,7 @@ export default function UserDetails() {
           }
         });
       }
-      //   navigate(`/${hoaId}/users`);
     } catch (err) {
-      //  alert(`Error: ${err.response?.data?.message || err.message}`);
-    // console.log("***** opening modal Error:", err);
       let serverResponse = err.response.data;
       setModal({
         isOpen: true,
@@ -214,7 +206,8 @@ export default function UserDetails() {
   // message: `Error: ${err.response?.data?.message || err.message}`,
 
   const handleBackToUsers = () => {
-    navigate(`/${hoaId}/users`);
+    //navigate(`/${hoaId}/users`);
+     navigate(-1);
   };
 
   const handleDelete = async () => {
@@ -229,12 +222,12 @@ export default function UserDetails() {
         setModal(prev => ({ ...prev, isOpen: false }));
         setIsSubmitting(true);
         try {
-          await axios.delete(`/users/${userId}`);
+          const response = await axios.delete(`/users/${userId}`);
           setModal({
             isOpen: true,
             type: "alert",
             title: "Success",
-            message: "User deleted successfully",
+            message: response.data.message,
             confirmText: "OK",
             onConfirm: () => {
               setModal(prev => ({ ...prev, isOpen: false }));
@@ -276,6 +269,13 @@ export default function UserDetails() {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
   const isEditMode = !!userId;
+  let ph = "";
+  if (isEditMode)  ph = "Leave blank to keep current password";
+
+  let disablefield = false;
+  if (which == 'ownersdashboard') {
+    disablefield = true;
+  }
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
@@ -309,6 +309,38 @@ export default function UserDetails() {
             </h2>
 
             <form onSubmit={handleSubmit}>
+
+              <div style={{ marginBottom: "15px", marginTop: "10px" }}>
+                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  Role
+                </label>
+
+                <select className="standardselect"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  name="role"
+                >
+                   <option value="admin">Admin</option>
+                  <option value="owner">Owner</option>
+                  <option value="contractor">Contractor</option>
+                  <option value="enforcer">Enforcer</option>
+                </select>
+              </div>
+
+             
+
+              <div style={{ marginBottom: "15px" }}>
+                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  Unit Number
+                </label>
+                <input className="standardinput"
+                  type="text"
+                  name="unitnumber"
+                  value={formData.unitnumber}
+                  onChange={handleInputChange}
+                   disabled={disablefield}
+                />
+              </div>
               <div style={{ marginBottom: "15px" }}>
                 <label className="input-label"
                 >
@@ -359,7 +391,6 @@ export default function UserDetails() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  // disabled={isEditMode}
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -367,12 +398,10 @@ export default function UserDetails() {
                     borderRadius: "4px",
                     fontSize: "14px",
                     boxSizing: "border-box",
-                    // backgroundColor: isEditMode ? "#f5f5f5" : "white"
                   }}
                 />
               </div>
-
-              {/* {!isEditMode && ( we have this so I can change pws*/}
+              {/* {!isEditMode && ( */}
                 <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Password *
@@ -382,7 +411,7 @@ export default function UserDetails() {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    required
+                     placeholder={ph}
                     style={{
                       width: "100%",
                       padding: "10px",
@@ -393,128 +422,22 @@ export default function UserDetails() {
                     }}
                   />
                 </div>
+                 <div style={{ marginBottom: "15px" }}>
+                <label className="input-label">
+                  <input
+                    type="checkbox"
+                    name="handicapped"
+                    checked={formData.handicapped}
+                    onChange={handleInputChange}
+                  />
+                  {" "}Handicapped
+                </label>
+              </div>
               {/* )} */}
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Unit Number
-                </label>
-                <input className="standardinput"
-                  type="text"
-                  name="unitnumber"
-                  value={formData.unitnumber}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Bedrooms
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="bedrooms"
-                  value={formData.bedrooms}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Role
-                </label>
-                {/* <input className="standardinput"
-                  type="text"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleInputChange}
-                  placeholder="e.g., admin, owner, renter"
-                  disabled={isEditMode}
-                /> */}
-                 <select className="standardselect"
-                    value={formData.role}
-                    onChange={handleInputChange}
-                    name="role"
-                  >
-                    <option value="owner">Owner</option>
-                    <option value="admin">Admin</option>
-                     <option value="enforcer">Enforcer</option>
-                  </select>
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  PIN Code
-                </label>
-                <input className="standardinput"
-                  type="text"
-                  name="pincode"
-                  value={formData.pincode}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Inventory Allowed
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="inventory_allowed_owner"
-                  value={formData.inventory_allowed_owner}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Owner Parking Allowed
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="parking_allowed_owner"
-                  value={formData.parking_allowed_owner}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Renter Parking Allowed
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="parking_allowed_renter"
-                  value={formData.parking_allowed_renter}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Owner Free Parking
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="owner_free_parking"
-                  value={formData.owner_free_parking}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Renter Free Parking
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="renter_free_parking"
-                  value={formData.renter_free_parking}
-                  onChange={handleInputChange}
-                />
-              </div>
 
 
-               <div className="button-grid">
+              <div className="button-grid">
                 <button className="btn btn-primary"
                   type="submit"
                   disabled={isSubmitting}
@@ -531,8 +454,8 @@ export default function UserDetails() {
                 </button>
                 {isEditMode && (
                   <button className="btn btn-danger"
-                  type="button"
-                    
+                    type="button"
+
                     onClick={handleDelete}
                     disabled={isSubmitting}
                   >

@@ -26,57 +26,51 @@ export default function OwnersDashboard() {
     tlink = "ownervehicles";
   }
 
+  // all the following needs to be in for stripe ability
 
-  useEffect(() => {
-    if (role === "admin" && hoa) {
-      checkStripeStatus();
-    }
-  }, [role, hoa]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("stripe_onboarding") === "success") {
-      setStripeSuccess("Stripe onboarding completed successfully!");
-      checkStripeStatus();
-    } else if (params.get("stripe_onboarding") === "refresh") {
-      setStripeErrorMsg("Stripe onboarding was interrupted. Please try again.");
-    }
-  }, [location]);
-
-  const checkStripeStatus = async () => {
-    try {
-      const response = await axios.get(`/hoas/${hoaId}/stripe-status`);
-      setStripeStatus(response.data);
-    } catch (err) {
-      console.error("Error checking Stripe status:", err);
-    }
-  };
-
-  const handleConnectStripe = async () => {
-    setStripeLoading(true);
-    setStripeErrorMsg(null);
-    try {
-      const response = await axios.post(`/hoas/${hoaId}/stripe-connect`);
-      if (response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (err) {
-      setStripeErrorMsg("Failed to initialize Stripe onboarding");
-      console.error("Stripe connect error:", err);
-    } finally {
-      setStripeLoading(false);
-    }
-  };
 
   // useEffect(() => {
-  //   if (hoaId) {
-  //     fetchHoaById(hoaId).catch((err) => {
-  //       setAppError(err.message || "Failed to load HOA data");
-  //      // navigate("/error");
-  //        navigate(`/${hoaId}/error`);
-  //     });
+  //   if (role === "admin" && hoa) {
+  //     checkStripeStatus();
   //   }
-  // }, [hoaId, fetchHoaById, setAppError, navigate]);
+  // }, [role, hoa]);
+
+  // useEffect(() => {
+  //   const params = new URLSearchParams(location.search);
+  //   if (params.get("stripe_onboarding") === "success") {
+  //     setStripeSuccess("Stripe onboarding completed successfully!");
+  //     checkStripeStatus();
+  //   } else if (params.get("stripe_onboarding") === "refresh") {
+  //     setStripeErrorMsg("Stripe onboarding was interrupted. Please try again.");
+  //   }
+  // }, [location]);
+
+  // const checkStripeStatus = async () => {
+  //   try {
+  //     const response = await axios.get(`/hoas/${hoaId}/stripe-status`);
+  //     setStripeStatus(response.data);
+  //   } catch (err) {
+  //     console.error("Error checking Stripe status:", err);
+  //   }
+  // };
+
+  // const handleConnectStripe = async () => {
+  //   setStripeLoading(true);
+  //   setStripeErrorMsg(null);
+  //   try {
+  //     const response = await axios.post(`/hoas/${hoaId}/stripe-connect`);
+  //     if (response.data.url) {
+  //       window.location.href = response.data.url;
+  //     }
+  //   } catch (err) {
+  //     setStripeErrorMsg("Failed to initialize Stripe onboarding");
+  //     console.error("Stripe connect error:", err);
+  //   } finally {
+  //     setStripeLoading(false);
+  //   }
+  // };
+
+
 
   if (loading || userLoading) {
     return <div style={{ padding: "20px" }}>Loading...</div>;
@@ -88,6 +82,26 @@ export default function OwnersDashboard() {
     navigate(`/${hoaId}/error`);
     return null;
   }
+
+  const handleCreateUserClick = () => {
+    //  navigate(`/${hoaId}/user`);
+    let qry = `/${hoaId}/user`;
+     navigate(qry, {
+      state: {
+        numonunit: loggedInUser.unitnumber,
+        homeownersid: hoaId,
+        which: 'ownersdashboard',
+        lastname: loggedInUser.last_name
+      }
+    });
+    // let obj =
+    // {
+    //   numonunit: loggedInUser.unitnumber,
+    //   homeownersid: hoaId,
+    //   which: 'nonadmin'
+    // }
+    // console.log('obj is', obj);
+  };
 
   const handleReportClick = () => {
     navigate(`/${hoaId}/reports`);
@@ -103,7 +117,7 @@ export default function OwnersDashboard() {
   };
 
   const handleVehiclesClick = () => {
-   // console.log('handleVehiclesClick role is:',role);
+    // console.log('handleVehiclesClick role is:',role);
     navigate(`/${hoaId}/${tlink}/${role}`);
   };
 
@@ -123,6 +137,21 @@ export default function OwnersDashboard() {
     navigate(`/${hoaId}/profile`);
   };
 
+  const handleUnitClick = () => {
+    let qry = `/${hoaId}/unitdetailsnav`;
+    navigate(qry, {
+      state: {
+        numonunit: loggedInUser.unitnumber,
+        homeownersid: hoaId,
+        which: 'nonadmin'
+      }
+    });
+
+    //  navigate(`/${hoaId}/unitdetailsnav`);
+
+
+  };
+
   let navButtons = [
     {
       label: "Vehicles",
@@ -134,37 +163,50 @@ export default function OwnersDashboard() {
     {
       label: "Onsite",
       onClick: handleOnsiteClick,
-    //  color: "#2196f3",
-    //  hoverColor: "#1976d2",
+      //  color: "#2196f3",
+      //  hoverColor: "#1976d2",
       which: "standard"
     },
-     ];
-      if (loggedInUser.role != "admin") {
-      navButtons.push({
+  ];
+  if (loggedInUser.role != "admin") {
+    navButtons.push({
       label: "Profile",
       onClick: handleProfileClick,
       color: "#2196f3",
       hoverColor: "#1976d2",
       which: "standard"
     });
-    }
-
-     navButtons.push({
-      label: "Reports",
-      onClick: handleReportClick,
+    navButtons.push({
+      label: "Unit",
+      onClick: handleUnitClick,
       which: "standard"
     }
+    )
+  }
+  //  navButtons.push({
+  //   label: "Unit",
+  //   onClick: handleReportClick,
+  //   which: "standard"
+  // },
+
+
+
+  navButtons.push({
+    label: "Reports",
+    onClick: handleReportClick,
+    which: "standard"
+  }
   )
 
- navButtons.push({
-      label: "Logout",
-      onClick: handleLogout,
-      which: "logout"
-    }
+  navButtons.push({
+    label: "Logout",
+    onClick: handleLogout,
+    which: "logout"
+  }
   )
 
-    
- 
+
+
   if (loggedInUser.role == "admin") {
     navButtons.unshift({
       label: "Users",
@@ -182,8 +224,8 @@ export default function OwnersDashboard() {
   let backgroundImage = '';
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
-  }  
-  
+  }
+
   let ttitle = "Administrator";
   if (hoa) {
     if (loggedInUser.role == "owner") {
@@ -196,16 +238,28 @@ export default function OwnersDashboard() {
   // console.log("OwnersDashboard render loggedInUser", loggedInUser);
 
   return (
-    <div style={{ marginTop: "0px",minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+    <div style={{ marginTop: "0px", minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={`${ttitle} Dashboard`} title2={hoa?.name} buttons={navButtons} />
 
 
       <div className="page-content">
-        {/* <div className="standardtitlebar" style={{marginTop:"10px"}}>
-          <h2>Welcome to {hoa?.name}</h2>
-        </div> */}
+
+        {(role !== "admin") && (
+           <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
+          <button className="standardsubmitbutton"
+            onClick={handleCreateUserClick}
+          >
+            New User
+          </button>
+        </div>
+
+        )}
+
+       
 
         <HoaInformation hoa={hoa} />
+
+
 
         {stripeErrorMsg && (
           <div className="editable-table-error" style={{ maxWidth: "320px", margin: "10px auto" }}>
@@ -219,17 +273,16 @@ export default function OwnersDashboard() {
           </div>
         )}
 
-        {/* we will disable all stripe stuff on the dasboard */}
-        {role === "xx_admin" && (
-          <section className="standardsection-wide" style={{  justifyItems: "center", alignItems: "center", display: "flex", flexDirection: "column", maxWidth: "320px", margin: "20px auto" }}>
+        {/* {role === "xx_admin" && (
+          <section className="standardsection-wide" style={{ justifyItems: "center", alignItems: "center", display: "flex", flexDirection: "column", maxWidth: "320px", margin: "20px auto" }}>
             <h3 style={{ color: "#1976d2", marginTop: 0 }}>Stripe Payouts</h3>
             <p style={{ fontSize: "14px", marginBottom: "15px" }}>
-              To receive payments, you must connect your Stripe account. 
+              To receive payments, you must connect your Stripe account.
               HOA Parking Solutions takes a small fee from each transaction and deposits the rest directly into your account.
             </p>
-            
+
             {stripeStatus.onboardingComplete ? (
-              <div style={{  padding: "15px", backgroundColor: "#e8f5e9", borderRadius: "4px", border: "1px solid #c8e6c9", display: "flex", alignItems: "center", gap: "10px" }}>
+              <div style={{ padding: "15px", backgroundColor: "#e8f5e9", borderRadius: "4px", border: "1px solid #c8e6c9", display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ color: "#2e7d32", fontSize: "20px" }}>✅</span>
                 <div>
                   <strong style={{ color: "#2e7d32" }}>Stripe Connected & Ready</strong>
@@ -239,13 +292,13 @@ export default function OwnersDashboard() {
                 </div>
               </div>
             ) : stripeStatus.details_submitted ? (
-              <div style={{  padding: "15px", backgroundColor: "#fff3e0", borderRadius: "4px", border: "1px solid #ffe0b2" }}>
+              <div style={{ padding: "15px", backgroundColor: "#fff3e0", borderRadius: "4px", border: "1px solid #ffe0b2" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
                   <span style={{ color: "#ef6c00", fontSize: "20px" }}>⏳</span>
                   <strong style={{ color: "#ef6c00" }}>Pending Verification</strong>
                 </div>
                 <p style={{ fontSize: "13px", margin: "0 0 10px 0" }}>
-                  Your details have been submitted, but Stripe is still verifying your account for transfers. 
+                  Your details have been submitted, but Stripe is still verifying your account for transfers.
                   This usually takes a few minutes but can take up to 24 hours.
                 </p>
                 <button
@@ -268,7 +321,7 @@ export default function OwnersDashboard() {
               </button>
             )}
           </section>
-        )}
+        )} */}
       </div>
     </div>
   );

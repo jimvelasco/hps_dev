@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 
 const unitSchema = new mongoose.Schema({
-  unitid: {
-    type: ObjectId,
-    required: true,
-    default: null
-  },
 
   hoaid: {
     type: String,

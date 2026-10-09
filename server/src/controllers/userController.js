@@ -1,16 +1,17 @@
 import User from "../models/User.js";
+import Unit from "../models/Unit.js";
 import jwt from "jsonwebtoken";
 import sgMail from "@sendgrid/mail";
 
 const getUsers = async (req, res) => {
   const { hoaid, hoaId, role } = req.query;
   const targetHoaId = hoaid || hoaId;
-  
+
   const filter = {};
   if (targetHoaId) {
     filter.hoaid = targetHoaId;
   }
-  
+
   if (role) {
     filter.role = role;
   } else if (targetHoaId && !req.query.all) {
@@ -43,10 +44,18 @@ const getUserById = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const { first_name, last_name, phone, email, hoaid,
-      unitnumber, bedrooms, role, password, pincode, inventory_allowed_owner, parking_allowed_renter,
-      parking_allowed_owner, owner_free_parking, renter_free_parking, company } = req.body;
+      unitnumber, role, password, handicapped } = req.body;
+    console.log('controller ', req.body)
 
-    if (!first_name || !last_name || !phone || !email || !password || !hoaid) {
+    if (!first_name || !last_name || !phone || !email || !password || !hoaid || !unitnumber) {
+      console.log("create user we failed here");
+      console.log('first_name ', first_name);
+      console.log('last_name ', last_name);
+      console.log('phone ', phone);
+      console.log('email ', email);
+      console.log('password ', password);
+      console.log('hoaid ', hoaid);
+      console.log('unitnumber ', unitnumber);
       return res.status(400).json({ message: "Missing required fields: first_name, last_name, phone, email, password, hoaid" });
     }
 
@@ -55,12 +64,14 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: "Email address already exists for this HOA" });
     }
 
-    if (unitnumber) {
-      const existingUnit = await User.findOne({ unitnumber, hoaid });
-      if (existingUnit) {
-        return res.status(400).json({ message: "Unit number already exists for this HOA" });
-      }
-    }
+    // if (unitnumber) {
+    //   const existingUnit = await User.findOne({ unitnumber, hoaid });
+    //   if (existingUnit) {
+    //     return res.status(400).json({ message: "Unit number already exists for this HOA" });
+    //   }
+    // }
+
+    console.log('WE ARE CREATING USER')
 
     const user = await User.create({
       first_name,
@@ -70,16 +81,11 @@ const createUser = async (req, res) => {
       password,
       hoaid,
       unitnumber,
-      bedrooms,
       role,
-      company,
-      pincode,
-      inventory_allowed_owner,
-      parking_allowed_renter,
-      parking_allowed_owner,
-      owner_free_parking,
-      renter_free_parking
+      handicapped
+
     });
+
 
     res.status(201).json({
       message: "User created successfully",
@@ -90,7 +96,8 @@ const createUser = async (req, res) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
-        unitnumber: user.unitnumber
+        unitnumber: user.unitnumber,
+        handicapped: user.handicapped
       }
     });
   } catch (error) {
@@ -105,8 +112,8 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
     const { first_name, last_name, phone, email, unitnumber, bedrooms, role, company,
       pincode, password, inventory_allowed_owner, parking_allowed_renter,
-      parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
-   // console.log("updateUser body:", req.body);
+      parking_allowed_owner, owner_free_parking, renter_free_parking, handicapped } = req.body;
+    // console.log("updateUser body:", req.body);
 
     const user = await User.findById(id);
     if (!user) {
@@ -132,18 +139,19 @@ const updateUser = async (req, res) => {
     if (phone !== undefined) user.phone = phone;
     if (email !== undefined) user.email = email;
     if (unitnumber !== undefined) user.unitnumber = unitnumber;
-    if (bedrooms !== undefined) user.bedrooms = bedrooms;
+    //  if (bedrooms !== undefined) user.bedrooms = bedrooms;
     if (role !== undefined) user.role = role;
+    if (handicapped !== undefined) user.handicapped = handicapped;
     if (company !== undefined) user.company = company;
-    if (pincode !== undefined) user.pincode = pincode;
+    //  if (pincode !== undefined) user.pincode = pincode;
     if (password !== undefined) user.password = password;
     //  if (is_verified !== undefined) user.is_verified = is_verified;
     //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
-    if (inventory_allowed_owner !== undefined) user.inventory_allowed_owner = inventory_allowed_owner;
-    if (parking_allowed_renter !== undefined) user.parking_allowed_renter = parking_allowed_renter;
-    if (parking_allowed_owner !== undefined) user.parking_allowed_owner = parking_allowed_owner;
-    if (owner_free_parking !== undefined) user.owner_free_parking = owner_free_parking;
-    if (renter_free_parking !== undefined) user.renter_free_parking = renter_free_parking;
+    // if (inventory_allowed_owner !== undefined) user.inventory_allowed_owner = inventory_allowed_owner;
+    // if (parking_allowed_renter !== undefined) user.parking_allowed_renter = parking_allowed_renter;
+    // if (parking_allowed_owner !== undefined) user.parking_allowed_owner = parking_allowed_owner;
+    // if (owner_free_parking !== undefined) user.owner_free_parking = owner_free_parking;
+    // if (renter_free_parking !== undefined) user.renter_free_parking = renter_free_parking;
 
     await user.save();  // we use save because the model has a pre-save hook to hash password
 
@@ -155,9 +163,10 @@ const updateUser = async (req, res) => {
         last_name: user.last_name,
         email: user.email,
         phone: user.phone,
-        pincode: user.pincode,
+        //    pincode: user.pincode,
         unitnumber: user.unitnumber,
-        role: user.role
+        role: user.role,
+        handicapped: user.handicapped
       }
     });
   } catch (error) {
@@ -165,45 +174,45 @@ const updateUser = async (req, res) => {
   }
 };
 
-const updateAllUsers = async (req, res) => {
-  try {
-    const { owner_free_parking, renter_free_parking, inventory_allowed_owner, parking_allowed_renter, parking_allowed_owner, hoaid } = req.body;
+// const updateAllUsers = async (req, res) => {
+//   try {
+//     const { owner_free_parking, renter_free_parking, inventory_allowed_owner, parking_allowed_renter, parking_allowed_owner, hoaid } = req.body;
 
-    if (!hoaid) {
-      return res.status(400).json({ message: "HOA ID is required" });
-    }
+//     if (!hoaid) {
+//       return res.status(400).json({ message: "HOA ID is required" });
+//     }
 
-    const updateFields = {};
-    if (owner_free_parking !== undefined && owner_free_parking !== "" && owner_free_parking !== null) {
-      updateFields.owner_free_parking = parseInt(owner_free_parking);
-    }
-    if (renter_free_parking !== undefined && renter_free_parking !== "" && renter_free_parking !== null) {
-      updateFields.renter_free_parking = parseInt(renter_free_parking);
-    }
-    if (inventory_allowed_owner !== undefined && inventory_allowed_owner !== "" && inventory_allowed_owner !== null) {
-      updateFields.inventory_allowed_owner = parseInt(inventory_allowed_owner);
-    }
-    if (parking_allowed_renter !== undefined && parking_allowed_renter !== "" && parking_allowed_renter !== null) {
-      updateFields.parking_allowed_renter = parseInt(parking_allowed_renter);
-    }
-    if (parking_allowed_owner !== undefined && parking_allowed_owner !== "" && parking_allowed_owner !== null) {
-      updateFields.parking_allowed_owner = parseInt(parking_allowed_owner);
-    }
+//     const updateFields = {};
+//     if (owner_free_parking !== undefined && owner_free_parking !== "" && owner_free_parking !== null) {
+//       updateFields.owner_free_parking = parseInt(owner_free_parking);
+//     }
+//     if (renter_free_parking !== undefined && renter_free_parking !== "" && renter_free_parking !== null) {
+//       updateFields.renter_free_parking = parseInt(renter_free_parking);
+//     }
+//     if (inventory_allowed_owner !== undefined && inventory_allowed_owner !== "" && inventory_allowed_owner !== null) {
+//       updateFields.inventory_allowed_owner = parseInt(inventory_allowed_owner);
+//     }
+//     if (parking_allowed_renter !== undefined && parking_allowed_renter !== "" && parking_allowed_renter !== null) {
+//       updateFields.parking_allowed_renter = parseInt(parking_allowed_renter);
+//     }
+//     if (parking_allowed_owner !== undefined && parking_allowed_owner !== "" && parking_allowed_owner !== null) {
+//       updateFields.parking_allowed_owner = parseInt(parking_allowed_owner);
+//     }
 
-    if (Object.keys(updateFields).length === 0) {
-      return res.status(400).json({ message: "No fields to update" });
-    }
+//     if (Object.keys(updateFields).length === 0) {
+//       return res.status(400).json({ message: "No fields to update" });
+//     }
 
-    const result = await User.updateMany({ hoaid }, { $set: updateFields });
+//     const result = await User.updateMany({ hoaid }, { $set: updateFields });
 
-    res.json({
-      message: `Successfully updated ${result.modifiedCount} users`,
-      updatedCount: result.modifiedCount
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//     res.json({
+//       message: `Successfully updated ${result.modifiedCount} users`,
+//       updatedCount: result.modifiedCount
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 const loginUser = async (req, res) => {
   try {
@@ -241,6 +250,7 @@ const loginUser = async (req, res) => {
       token,
       user: {
         _id: user._id,
+        hoaid: user.hoaid,
         name: user.name,
         first_name: user.first_name,
         last_name: user.last_name,
@@ -268,36 +278,57 @@ const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     // console.log("getCurrentUser userId:", req.user.userId, "user:", user);
-    //console.log("getCurrentUser userId:", req.user.userId);
+    console.log("getCurrentUser userId:", req.user.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({
+    let nme = user.last_name + ', ' + user.first_name;
+
+    let jsonobj = {
       _id: user._id,
-      name: user.name,
+      hoaid: user.hoaid,
+      name: nme,
       first_name: user.first_name,
       last_name: user.last_name,
       phone: user.phone,
       email: user.email,
       unitnumber: user.unitnumber,
-      bedrooms: user.bedrooms,
       role: user.role,
-      pincode: user.pincode,
-      // is_verified: user.is_verified,
-      // has_read_terms: user.has_read_terms,
-      inventory_allowed_owner: user.inventory_allowed_owner,
-      parking_allowed_renter: user.parking_allowed_renter,
-      parking_allowed_owner: user.parking_allowed_owner,
-      owner_free_parking: user.owner_free_parking,
-      renter_free_parking: user.renter_free_parking
-    });
+
+      // these will be obtained from unit table when needed.
+      // pincode: user.pincode,
+      // bedrooms: user.bedrooms,
+      // inventory_allowed_owner: user.inventory_allowed_owner,
+      // parking_allowed_renter: user.parking_allowed_renter,
+      // parking_allowed_owner: user.parking_allowed_owner,
+      // owner_free_parking: user.owner_free_parking,
+      // renter_free_parking: user.renter_free_parking
+    }
+
+    //  console.log('getcurrentuser jsonobj',jsonobj)
+
+    // res.status(200).json({
+    //   _id: user._id,
+    //   hoaid: user.hoaid,
+    //   name: user.name,
+    //   first_name: user.first_name,
+    //   last_name: user.last_name,
+    //   phone: user.phone,
+    //   email: user.email,
+    //   unitnumber: user.unitnumber,
+    //   role: user.role,
+    // });
+
+    res.status(200).json(jsonobj);
+
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const verifyRenterPin = async (req, res) => {
+const verifyRenterPin_user = async (req, res) => {
   try {
     const { hoaId, unitNumber, pinCode } = req.body;
 
@@ -333,6 +364,43 @@ const verifyRenterPin = async (req, res) => {
         role: "renter"
       }
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const verifyRenterPin = async (req, res) => {
+  try {
+    const { hoaId, unitNumber, pinCode } = req.body;
+
+    if (!hoaId || !unitNumber || !pinCode) {
+      return res.status(400).json({
+        message: "Missing required fields: hoaId, unitNumber, pinCode"
+      });
+    }
+
+    // console.log('verifyRenterPin', req.body)
+
+    const unit = await Unit.findOne({
+      hoaid: hoaId,
+      unitnumber: unitNumber,
+      pincode: pinCode
+    });
+
+    if (!unit) {
+      return res.status(401).json({
+        message: "Invalid unit number or PIN"
+      });
+    }
+
+    const token = jwt.sign(
+      { unitId: unit._id, role: "renter", hoaId: unit.hoaid },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.json({ token });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -384,8 +452,18 @@ const deleteUser = async (req, res) => {
 
     await User.findByIdAndDelete(id);
 
+    let unitDeleted = false;
+    if (user.hoaid && user.unitnumber) {
+      const remainingUser = await User.exists({ hoaid: user.hoaid, unitnumber: user.unitnumber });
+      if (!remainingUser) {
+        const result = await Unit.deleteOne({ hoaid: user.hoaid, unitnumber: user.unitnumber });
+        unitDeleted = result.deletedCount > 0;
+      }
+    }
+
     res.status(200).json({
-      message: "User deleted successfully",
+      message: unitDeleted ? "User and unit deleted successfully" : "User deleted successfully",
+      unitDeleted,
       user: {
         _id: user._id,
         first_name: user.first_name,
@@ -429,10 +507,10 @@ const forgotPassword = async (req, res) => {
     const serverUrl = process.env.SERVER_URL || "http://localhost:5002";
     const serverUrl2 = process.env.SERVER_URL;
     const resetLink = `${serverUrl}/reset-password/${resetToken}`;
-     const resetLink2 = `${serverUrl2}/reset-password/${resetToken}`;
+    const resetLink2 = `${serverUrl2}/reset-password/${resetToken}`;
 
-     // Usually better to point directly to the React app
-const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+    // Usually better to point directly to the React app
+    const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
 
 
     const msg = {
@@ -452,7 +530,7 @@ const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}
       `
     };
 
-    console.log('we have send the message ',msg);
+    console.log('we have send the message ', msg);
 
     await sgMail.send(msg);
 
@@ -574,8 +652,8 @@ const forgotPasswordSES = async (req, res) => {
     );
 
 
-   // let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
-     let HPS_EMAIL = 'admin@hoaparkingsolutions.com';
+    // let HPS_EMAIL = process.env.HPS_EMAIL || "no.reply@hoaparkingsolutions.com";
+    let HPS_EMAIL = 'admin@hoaparkingsolutions.com';
     // if (toEmail) {
     //    HPS_EMAIL = toEmail;
     // }
@@ -673,7 +751,7 @@ const forgotPasswordSES = async (req, res) => {
 const sendEmailFromHoaSES = async (req, res) => {
   console.log('sendEmailFromHoaSES called');
   try {
-    const { hoaId, subject, returnEmail, message, toEmail ,fromwhere} = req.body;
+    const { hoaId, subject, returnEmail, message, toEmail, fromwhere } = req.body;
 
     const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
     if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION) {
@@ -690,16 +768,16 @@ const sendEmailFromHoaSES = async (req, res) => {
       return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
     }
 
-   // console.log('sendEmailFromHoaSES toemail', toEmail,'fromwhere',fromwhere)
+    // console.log('sendEmailFromHoaSES toemail', toEmail,'fromwhere',fromwhere)
 
-    let HPS_EMAIL = toEmail; 
+    let HPS_EMAIL = toEmail;
     // process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
     let HPS_EMAILx = 'admin@hoaparkingsolutions.com';
     if (toEmail) {
-    //    HPS_EMAIL = toEmail;
+      //    HPS_EMAIL = toEmail;
     }
     if (fromwhere === 'about') {
-         HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
+      HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
     }
     //  if (fromwhere === 'hoainformation') {
     //      HPS_EMAIL = toEmail;
@@ -805,7 +883,7 @@ const sendEmailFromHoaSES = async (req, res) => {
 };
 
 export {
-  getUsers, getUserById, createUser, updateUser, updateAllUsers, loginUser,
+  getUsers, getUserById, createUser, updateUser,  loginUser,
   getCurrentUser, verifyRenterPin, forgotPasswordSES, resetPassword, deleteUser,
   sendEmailFromHoa, sendEmailFromHoaSES
 };

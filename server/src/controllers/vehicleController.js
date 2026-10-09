@@ -147,7 +147,7 @@ const getVehiclesByHoaIdOwnerId = async (req, res) => {
   try {
     let { hoaId, role, ownerid } = req.params;
     let { filter } = req.query;
-    //  console.log("getVehiclesByHoaIdOwnerId role received params:",  req.params);
+      console.log("getVehiclesByHoaIdOwnerId role received params:",  req.params);
     //   console.log("getVehiclesByHoaIdOwnerId role received:", role,filter);
     // const oid2 = "616d84252dc9bd0016da9673";
     if (!filter) filter = "owner";
@@ -189,7 +189,7 @@ const getVehiclesByHoaIdUserId = async (req, res) => {
    // console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);
-    // console.log("vehicle controller shold be 19  qry built:", vehicles.length);
+     console.log("vehicle controller shold be 19  qry built:", vehicles);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
