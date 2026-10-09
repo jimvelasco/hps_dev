@@ -45,13 +45,31 @@ export default function RentersLogin() {
         }
     }, [hoaId]);
 
-    const fetchUnits = async (hoaId) => {
+    const fetchUnitsx = async (hoaId) => {
         setLoadingUnits(true);
         try {
             const response = await axios.get("/users", { params: { hoaid: hoaId } });
             const unitNumbers = response.data
                 .filter(user => user.unitnumber)
                 .map(user => ({ id: user._id, unitnumber: user.unitnumber }));
+            unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
+            setUnits(unitNumbers);
+        } catch (err) {
+            // console.error("Error fetching units:", err);
+            setAppError("Failed to load unit numbers");
+            navigate(`/${hoaId}/error`);
+        } finally {
+            setLoadingUnits(false);
+        }
+    };
+
+     const fetchUnits = async (hoaId) => {
+        setLoadingUnits(true);
+        try {
+            const response = await axios.get("/units", { params: { hoaid: hoaId } });
+            const unitNumbers = response.data
+                .filter(unit => unit.unitnumber)
+                .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber }));
             unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
             setUnits(unitNumbers);
         } catch (err) {

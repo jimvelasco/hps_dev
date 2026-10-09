@@ -6,7 +6,7 @@ import { updateUnitDetailsSchema } from "../schemas/userSchemas.js";
 
 const router = express.Router();
 
-router.get("/:hoaId/", getUnits);
+router.get("/", getUnits);
 router.get("/:hoaid/:unitnumber", getUnit);
 
 router.put("/batch/update-parking", authenticateToken, updateAllUnits);
