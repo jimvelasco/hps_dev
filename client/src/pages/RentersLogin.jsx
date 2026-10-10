@@ -181,8 +181,8 @@ export default function RentersLogin() {
                                 <option value="tenant">Tenant (Long Term Renter)</option>
                                 <option value="family">Family</option>
                                 <option value="friend">Friend</option>
-                                <option value="visitor">Visitor/Day Guest</option>
-                                <option value="contractor">Contractor/Vendor</option>
+                                <option value="visitor">Visitor / Day Guest</option>
+                                <option value="contractor">Contractor / Vendor</option>
 
                             </select>
                         </div>
