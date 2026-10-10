@@ -23,6 +23,7 @@ export default function OnsiteVehicles() {
    const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const { setAppError } = useError();
   const [vehicles, setVehicles] = useState([]);
+  const [plateSearch, setPlateSearch] = useState("");
   const [vehiclesLoading, setVehiclesLoading] = useState(true);
   const [vehiclesError, setVehiclesError] = useState(null);
   const [isPlateVisible, setIsPlateVisible] = useState(true);
@@ -95,6 +96,11 @@ export default function OnsiteVehicles() {
       fetchOnsiteVehicles();
     }
   }, [hoaId]);
+
+  const plateQuery = plateSearch.trim().toLowerCase();
+  const filteredVehicles = vehicles.filter(vehicle =>
+    (vehicle.plate || "").toLowerCase().includes(plateQuery)
+  );
 
   const handleSort = (column) => {
     let newDirection = "asc";
@@ -355,7 +361,7 @@ const renderVehicleCard = (vehicle) => {
      <div className='onsite-grid-container-2'>
       <div className="grid-flex-container">
         {!showTable && (
-          vehicles.map((vehicle, index) => (
+          filteredVehicles.map((vehicle, index) => (
             isPlateVisible ? renderVehiclePlate2(vehicle) :
               renderVehiclePlate(vehicle)
           ))
@@ -393,7 +399,7 @@ const renderVehicleCard = (vehicle) => {
     return (
       <div className='grid-flex-container'>
         {!showTable && (
-          vehicles.map((vehicle, index) => (
+          filteredVehicles.map((vehicle, index) => (
             isPlateVisible ? renderVehiclePlate2(vehicle) :
               renderVehiclePlate(vehicle)
           ))
@@ -424,6 +430,18 @@ const renderVehicleCard = (vehicle) => {
         </div>
 
 
+        <div className="standardtitlebar380">
+          <label htmlFor="onsite-plate-search">Plate Search</label>
+          <input
+            id="onsite-plate-search"
+            className="standardinput"
+            type="search"
+            value={plateSearch}
+            onChange={(event) => setPlateSearch(event.target.value)}
+            placeholder="Enter license plate"
+          />
+        </div>
+
         {vehiclesError && (
           <div className="displayerror">
             Error: {vehiclesError}
@@ -436,9 +454,9 @@ const renderVehicleCard = (vehicle) => {
           </div>
         )}
 
-        {!vehiclesLoading && vehicles.length === 0 && (
+        {!vehiclesLoading && filteredVehicles.length === 0 && (
           <div className="displayerror">
-            No onsite vehicles found
+            {plateQuery ? "No matching license plates found" : "No onsite vehicles found"}
           </div>
         )}
 
@@ -449,7 +467,7 @@ const renderVehicleCard = (vehicle) => {
               overflowX: "auto"
             }}>
               <VehiclesTableOnsite
-                vehicles={vehicles}
+                vehicles={filteredVehicles}
                 role={role}
                 sortColumn={sortColumn}
                 sortDirection={sortDirection}
