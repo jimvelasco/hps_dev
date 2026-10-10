@@ -239,8 +239,18 @@ const getVehiclesForUnitNumber = async (req, res) => {
     // ));
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
+    console.log('get vehicles for ',unitNumber);
 
-    const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter", checkout: { $gte: today } };
+  //  const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter", checkout: { $gte: today } };
+   //   const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter" };
+   //    const qry = { hoaid: hoaId, unitnumber: unitNumber };
+
+    const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: {$ne:"owner" }} ;
+
+
+
+
+
     //   console.log("getVehiclesForUnitNumber qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);

@@ -149,7 +149,7 @@ export default function OwnerVehicles() {
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");
-          console.error("Error fetching vehicles:", err);
+        //  console.error("Error fetching vehicles:", err);
         } finally {
           setVehiclesLoading(false);
         }

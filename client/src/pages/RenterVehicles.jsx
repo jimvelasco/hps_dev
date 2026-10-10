@@ -28,7 +28,8 @@ export default function RenterVehicles() {
   const [unitForRenter, setUnitForRenter] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
-  const otherType = location.state?.otherTypeText;
+  const otherType = location.state?.otherType;
+  const otherTypeText = location.state?.otherTypeText;
   const pinAction = location.state?.action;
 
   useEffect(() => {
@@ -81,7 +82,17 @@ export default function RenterVehicles() {
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
-          setVehicles(updatedVehicles);
+
+          console.log('other type',otherType)
+
+          const today = new Date().toLocaleDateString("en-CA");
+          const matchingVehicles = updatedVehicles.filter(v => {
+            if (v.carownertype !== otherType) return false;
+            if (v.carownertype !== "renter" || !v.enddate) return true;
+            const endDate = new Date(v.enddate);
+            return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+          });
+          setVehicles(matchingVehicles);
 
           // console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
@@ -95,7 +106,7 @@ export default function RenterVehicles() {
 
       fetchVehicles();
     }
-  }, [hoaId, unitNumber]);
+  }, [hoaId, unitNumber, otherType]);
 
   if (loading) {
     return <div style={{ padding: "20px" }}>Loading HOA data...</div>;
@@ -238,7 +249,7 @@ export default function RenterVehicles() {
     return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }
 
-  const t = otherType + ' Vehicles'
+  const t = otherTypeText + ' Vehicles'
 
   return (
     <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
