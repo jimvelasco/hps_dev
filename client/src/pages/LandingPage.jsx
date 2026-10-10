@@ -91,7 +91,7 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
                 className="btn btn-primary"
                 onClick={() => navigate(`/${hoaId}/renterslogin`)}
               >
-                Other
+                Non-Owners
               </button>
             </div>
             <div className="button-grid" style={{ marginTop: "15px" }}>
