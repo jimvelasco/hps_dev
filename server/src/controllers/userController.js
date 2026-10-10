@@ -385,7 +385,7 @@ const verifyRenterPin = async (req, res) => {
     const unit = await Unit.findOne({
       hoaid: hoaId,
       unitnumber: unitNumber,
-      pincode: pinCode
+      "pincodeary.pincode": pinCode
     });
 
     if (!unit) {
@@ -394,13 +394,14 @@ const verifyRenterPin = async (req, res) => {
       });
     }
 
+    const matchedPin = unit.pincodeary.find(entry => entry?.pincode === pinCode);
     const token = jwt.sign(
       { unitId: unit._id, role: "renter", hoaId: unit.hoaid },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 
-    res.json({ token });
+    res.json({ token, action: matchedPin?.action ?? "" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

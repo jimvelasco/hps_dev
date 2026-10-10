@@ -63,7 +63,7 @@ export default function RentersLogin() {
         }
     };
 
-     const fetchUnits = async (hoaId) => {
+    const fetchUnits = async (hoaId) => {
         setLoadingUnits(true);
         try {
             const response = await axios.get("/units", { params: { hoaid: hoaId } });
@@ -85,6 +85,7 @@ export default function RentersLogin() {
     const handleSubmit = async (e) => {
         //  console.log("handleSubmit called in renterslogin.jsx");
         e.preventDefault();
+        const otherTypeText = otherType ? e.currentTarget.elements.namedItem("otherType").selectedOptions[0].text : "";
         if (!selectedUnit || !pin) {
             setAppError("Please select a unit and enter a pin");
             navigate(`/${hoaId}/error`);
@@ -101,7 +102,10 @@ export default function RentersLogin() {
             localStorage.setItem("token", response.data.token);
 
             // Navigate to renter vehicles
-            navigate(`/${hoaId}/rentervehicles/${selectedUnit}`);
+            navigate(`/${hoaId}/rentervehicles/${selectedUnit}`, {
+                state: { otherType, otherTypeText, action: response.data.action }
+            });
+
         } catch (err) {
             setAppError(err.response?.data?.message || "Invalid PIN");
             // navigate("/error");
@@ -167,12 +171,15 @@ export default function RentersLogin() {
                             </label>
 
                             <select className="standardselect100"
+                                name="otherType"
                                 value={otherType}
                                 onChange={(e) => setOtherType(e.target.value)}
+                                   required
                             >
+                                 <option value="">-- Select type --</option>
                                 <option value="renter">Short Term Renter</option>
                                 <option value="tenant">Tenant (Long Term Renter)</option>
-                                 <option value="family">Family/Friend</option>
+                                <option value="family">Family/Friend</option>
                                 <option value="visitor">Visitor/Day Guest</option>
                                 <option value="contractor">Contractor/Vendor</option>
 

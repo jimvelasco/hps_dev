@@ -38,7 +38,8 @@ export default function UnitDetails() {
     parking_allowed_renter: "",
     owner_free_parking: "",
     renter_free_parking: "",
-    pincode: ""
+    pincode: "",
+    pincodeary: []
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,7 +110,8 @@ export default function UnitDetails() {
           parking_allowed_renter: response.data.parking_allowed_renter || "",
           owner_free_parking: response.data.owner_free_parking || "",
           renter_free_parking: response.data.renter_free_parking || "",
-          pincode: response.data.pincode || ""
+          pincode: response.data.pincode || "",
+          pincodeary: response.data.pincodeary || []
         });
       } catch (err) {
         setError(err.response?.data?.message || err.message || "Failed to fetch user");
@@ -133,6 +135,22 @@ export default function UnitDetails() {
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handlePinEntryChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      pincodeary: prev.pincodeary.map((entry, entryIndex) =>
+        entryIndex === index ? { ...entry, [field]: value } : entry
+      )
+    }));
+  };
+
+  const handleAddPinEntry = () => {
+    setFormData(prev => ({
+      ...prev,
+      pincodeary: [...prev.pincodeary, { pincode: "", action: "" }]
     }));
   };
 
@@ -160,6 +178,7 @@ export default function UnitDetails() {
         unitnumber: formData.unitnumber,
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : 0,
         pincode: formData.pincode,
+        pincodeary: formData.pincodeary,
         inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,
         parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,
         parking_allowed_owner: formData.parking_allowed_owner ? parseInt(formData.parking_allowed_owner) : undefined,
@@ -363,7 +382,76 @@ export default function UnitDetails() {
                 />
               </div>
 
+              {isAdminView ? (
+                 <fieldset className="input-group">
+                <legend>PIN Entries</legend>
+                {formData.pincodeary.map((entry, index) => (
+                  <div className="input-group" key={entry._id || index}>
+                    <label className="input-label" htmlFor={`unit-pin-${index}`}>
+                      PIN #{index + 1}
+                    </label>
+                    <input
+                      id={`unit-pin-${index}`}
+                      className="standardinput"
+                      type="text"
+                      value={entry.pincode ?? ""}
+                      onChange={(e) => handlePinEntryChange(index, "pincode", e.target.value)}
+                    />
+                    <label className="input-label" htmlFor={`unit-pin-action-${index}`}>
+                      Action
+                    </label>
+                    <input
+                      id={`unit-pin-action-${index}`}
+                      className="standardinput"
+                      type="text"
+                      value={entry.action ?? ""}
+                      onChange={(e) => handlePinEntryChange(index, "action", e.target.value)}
+                    />
+                  </div>
+                ))}
+                <button className="btns btn-primary" type="button" onClick={handleAddPinEntry}>
+                  Add PIN Entry
+                </button>
+              </fieldset>
+
+              ) : (
+                 <fieldset className="input-group">
+                <legend>PIN Entries</legend>
+                {formData.pincodeary.map((entry, index) => (
+                  <div className="input-group" key={entry._id || index}>
+                    <label className="input-label" htmlFor={`unit-pin-${index}`}>
+                      PIN #{index + 1}
+                    </label>
+                    <input
+                      id={`unit-pin-${index}`}
+                      className="standardinput"
+                      type="text"
+                      value={entry.pincode ?? ""}
+                      onChange={(e) => handlePinEntryChange(index, "pincode", e.target.value)}
+                    />
+                    <label className="input-label" htmlFor={`unit-pin-action-${index}`}>
+                      Action
+                    </label>
+                    <input
+                      id={`unit-pin-action-${index}`}
+                      className="standardinput"
+                      type="text"
+                      value={entry.action ?? ""}
+                      onChange={(e) => handlePinEntryChange(index, "action", e.target.value)}
+                      disabled
+                    />
+                  </div>
+                ))}
+               
+              </fieldset>
+
+              )}
+
+
              
+
+
+
 
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>

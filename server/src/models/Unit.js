@@ -15,6 +15,14 @@ const unitSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
+  
+
+   pincodeary: [
+    {
+      pincode: { type: String },
+      action: { type: String }
+    }
+  ],
   bedrooms: {
     type: Number,
     default: 1

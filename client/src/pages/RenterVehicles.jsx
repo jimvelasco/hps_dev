@@ -27,7 +27,9 @@ export default function RenterVehicles() {
   const [ownerOfUnit, setOwnerOfUnit] = useState(null);
   const [unitForRenter, setUnitForRenter] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
-
+  const location = useLocation();
+  const otherType = location.state?.otherTypeText;
+  const pinAction = location.state?.action;
 
   useEffect(() => {
     if (hoaId && unitNumber) {
@@ -51,7 +53,7 @@ export default function RenterVehicles() {
   useEffect(() => {
     setUnitForRenter(null);
     if (!hoaId || !unitNumber) return;
-
+console.log('passed action is ',pinAction);
     let cancelled = false;
     const fetchUnit = async () => {
       try {
@@ -73,15 +75,15 @@ export default function RenterVehicles() {
           setVehiclesLoading(true);
           //  const response = await axios.get(`/vehicles/${hoaId}/renter/${unitNumber}`);
           const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
-        //  console.log('unitnumber',unitNumber);
-         
+          //  console.log('unitnumber',unitNumber);
+
           const updatedVehicles = response.data.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
           setVehicles(updatedVehicles);
-          
-// console.log('updatedVehicles',updatedVehicles)
+
+          // console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");
@@ -234,10 +236,12 @@ export default function RenterVehicles() {
     return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }
 
+  const t = otherType + ' Vehicles'
+
   return (
     <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
       {/* <DashboardNavbar title={`Renter Vehicles - Unit ${unitNumber} - ${hoa?.name || "HOA"}`} buttons={navButtons} /> */}
-      <DashboardNavbar title="Guest / Renter Vehicles" title2={hoa && hoa.name} buttons={navButtons} />
+      <DashboardNavbar title={t} title2={hoa && hoa.name} buttons={navButtons} />
       <div className="page-content">
 
         {/* <div className="standardtitlebar">
@@ -248,41 +252,41 @@ export default function RenterVehicles() {
             </div> */}
 
 
-          <div className="tableview">
-            <div className="standardtitlebar" style={{width: "420px"}}>
-              <label className="input-label2">
-                {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber}
-              </label><br />
-              <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
-                New Vehicle
-              </button>
-            </div>
+        <div className="tableview">
+          <div className="standardtitlebar" style={{ width: "420px" }}>
+            <label className="input-label2">
+              {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber}
+            </label><br />
+            <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
+              New Vehicle
+            </button>
+          </div>
+        </div>
+
+        <div className="phoneview">
+          <div className="standardtitlebar">
+
+            <label className="input-label2">
+              {ownerOfUnit.first_name} {ownerOfUnit.last_name}
+            </label>
+            <br />
+            <label className="input-label2">
+              {ownerOfUnit.phone}
+            </label>
+            <br />
+
+            <label className="input-label2">
+              Unit: {unitNumber}
+            </label>
+            <br />
+
+
+            <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
+              New Vehicle
+            </button>
           </div>
 
-          <div className="phoneview">
-            <div className="standardtitlebar">
-
-              <label className="input-label2">
-                {ownerOfUnit.first_name} {ownerOfUnit.last_name}
-              </label>
-              <br />
-              <label className="input-label2">
-                {ownerOfUnit.phone}
-              </label>
-              <br />
-
-              <label className="input-label2">
-                Unit: {unitNumber}
-              </label>
-              <br />
-
-
-              <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
-                New Vehicle
-              </button>
-            </div>
-
-          </div>
+        </div>
 
         {vehiclesError && (
           <div className="displayerror">
