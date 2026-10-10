@@ -29,8 +29,9 @@ export default function VehicleDetails() {
   const location = useLocation();
   
 
-  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
-
+  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,createdfrom } = location.state || {};
+  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] = 
+  useState(['owner', 'renter','tenant','family','friend','visitor','contractor']);
  
   /*
    state: {
@@ -79,7 +80,7 @@ export default function VehicleDetails() {
   edate.setDate(edate.getDate() + 3);
 
 
-  // console.log('edate is ', edate);
+  
   // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
@@ -95,7 +96,7 @@ export default function VehicleDetails() {
     plate: "",
     plate_state: "",
     unitnumber: unitNumber || "",
-    carownertype: role,
+    carownertype: isModifyMode ? carownertype || "" : (vehicleOwnerTypeAry.includes(role) ? role : ""),
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
   });
@@ -119,7 +120,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "TX",
           unitnumber: unitNumber,
-          carownertype: role,
+          carownertype: vehicleOwnerTypeAry.includes(role) ? role : "",
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -138,7 +139,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "",
           unitnumber: unitNumber,
-          carownertype: role,
+          carownertype: vehicleOwnerTypeAry.includes(role) ? role : "",
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -161,7 +162,8 @@ export default function VehicleDetails() {
 
     setUserIdForUnit(ownerOfUnit._id);
     setUnitOwner(ownerOfUnit);
-    setStateUnit(unit)
+    setStateUnit(unit);
+    console.log('useEffect createdfrom ', createdfrom);
     
 
   }, [hoaId, unitNumber, formData.unitnumber, isModifyMode]);
@@ -191,7 +193,7 @@ export default function VehicleDetails() {
           carowner_lname: response.data.carowner_lname || "",
           carownerphone: response.data.carownerphone || "",
           unitnumber: response.data.unitnumber || "",
-          carownertype: response.data.carownertype || "owner",
+          carownertype: response.data.carownertype || carownertype || role || "owner",
           make: response.data.make || "",
           model: response.data.model || "",
           color: response.data.color || "",
@@ -560,45 +562,32 @@ export default function VehicleDetails() {
                     Owner Type
                   </label>
                   <select
+                    className="standardselect100"
                     name="carownertype"
-                    value={formData.carownertype}
+                    value={formData.carownertype || ""}
                     onChange={handleFormChange}
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      boxSizing: "border-box"
-                    }}
+                    disabled={isModifyMode || createdfrom === "rentervehicles"}
                   >
-                    {role !== 'renter' && (
-                      <>
-                        {/* <option value="">---</option> */}
-                        <option value="owner">Owner</option>
-                        <option value="family">Family</option>
-                        <option value="friend">Friend</option>
-                        <option value="contractor">Contractor</option>
-                      </>
-                    )}
-                    {role === 'renter' && (
-                      <>
-                        {/* <option value="">---</option> */}
-
-                        <option value="renter">Renter</option>
-                      </>
-                    )}
+                    <option value="" disabled>Select owner type</option>
+                    {vehicleOwnerTypeAry.map(type => (
+                      <option key={type} value={type}>
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                      </option>
+                    ))}
                   </select>
                 </div>
-
+{/* 
                 <div style={{ marginLeft: "5px", fontSize: "10pt" }}>
                   {formData.unitnumber}
-                </div>
+                </div> */}
 
-                <input
+                {/* <input
                   type="hidden"
                   name="unitnumber"
                   value={formData.unitnumber}
-                />
+                /> */}
+
+                
                 {/* the hidden filed will have the value for for unit number */}
 
                 {/* <div style={{ marginBottom: "0px" }}>
@@ -678,6 +667,19 @@ export default function VehicleDetails() {
                     <option value="Motorcyle">Motorcyle</option>
                     <option value="Other">Other</option>
                   </select>
+                </div>
+
+                 <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Unit
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="unitnumber"
+                    value={formData.unitnumber}
+                    onChange={handleFormChange}
+                   disabled
+                  />
                 </div>
 
 

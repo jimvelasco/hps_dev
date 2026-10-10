@@ -53,7 +53,7 @@ export default function RenterVehicles() {
   useEffect(() => {
     setUnitForRenter(null);
     if (!hoaId || !unitNumber) return;
-console.log('passed action is ',pinAction);
+//console.log('passed action is ',pinAction);
     let cancelled = false;
     const fetchUnit = async () => {
       try {
@@ -150,7 +150,7 @@ console.log('passed action is ',pinAction);
     const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
     navigate(qry, {
       state: {
-        unitNumber: uid, role: "renter",
+        unitNumber: uid, role: "renter", carownertype: vehicle.carownertype,
         vehicles: vehicles, ownerOfUnit: ownerOfUnit, vehid: vid, unit: unitForRenter
       }
     });
@@ -191,11 +191,13 @@ console.log('passed action is ',pinAction);
     //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
     navigate(qry, {
       state: {
-        unitNumber: unitNumber, role: "renter",
+        unitNumber: unitNumber, role: location.state?.otherType || "renter",
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
         unit: unitForRenter,
-        vehid: null
+        vehid: null,
+        createdfrom: 'rentervehicles'
+
       }
     });
     // console.log("Create navigating to:", qry);

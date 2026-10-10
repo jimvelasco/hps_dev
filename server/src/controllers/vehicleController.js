@@ -202,7 +202,8 @@ const getVehiclesByHoaIdUnitNumber = async (req, res) => {
     let { hoaId, unitnumber } = req.params;
     let { filter } = req.query;
   //  console.log('filter',filter);
-      const qry = { hoaid: hoaId, unitnumber:unitnumber, carownertype: {$ne: "renter"}};
+     // const qry = { hoaid: hoaId, unitnumber:unitnumber, carownertype: {$ne: "renter"}};
+      const qry = { hoaid: hoaId, unitnumber:unitnumber};
     const vehicles = await Vehicle.find(qry);
     res.json(vehicles);
   } catch (error) {

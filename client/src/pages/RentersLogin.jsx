@@ -15,15 +15,15 @@ export default function RentersLogin() {
     const [units, setUnits] = useState([]);
     const [selectedUnit, setSelectedUnit] = useState("");
     const [pin, setPin] = useState("");
-    const [otherType, setOtherType] = useState("");
+    const [otherType, setOtherType] = useState("renter");
     const [loadingUnits, setLoadingUnits] = useState(false);
 
     useEffect(() => {
         localStorage.removeItem("token");
         // console.log("RentersLogin component mounted");
         if (hoa && hoa.use_demo_mode) {
-            setSelectedUnit('111');
-            setPin('111');
+            setSelectedUnit('995');
+            setPin('995');
 
         }
 
@@ -167,7 +167,7 @@ export default function RentersLogin() {
 
                         <div style={{ marginBottom: "15px", marginTop: "10px" }}>
                             <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                                Other Type
+                                Type
                             </label>
 
                             <select className="standardselect100"
@@ -176,10 +176,11 @@ export default function RentersLogin() {
                                 onChange={(e) => setOtherType(e.target.value)}
                                    required
                             >
-                                 <option value="">-- Select type --</option>
+                                <option value="">-- Select type --</option>
                                 <option value="renter">Short Term Renter</option>
                                 <option value="tenant">Tenant (Long Term Renter)</option>
-                                <option value="family">Family/Friend</option>
+                                <option value="family">Family</option>
+                                <option value="friend">Friend</option>
                                 <option value="visitor">Visitor/Day Guest</option>
                                 <option value="contractor">Contractor/Vendor</option>
 

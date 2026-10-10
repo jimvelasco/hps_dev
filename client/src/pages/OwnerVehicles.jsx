@@ -36,7 +36,25 @@ export default function OwnerVehicles() {
   const [showUnitId, setShowUnitId] = useState("");
   const [unitForOwner, setUnitForOwner] = useState(null);
 
+  // these are vehicle types that will show up on this page
+  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] = 
+  useState(['owner', 'renter','tenant','family','friend','visitor','contractor']);
 
+
+/*
+        return matchingVehicles.filter(v => v.carownertype === "owner" ||
+         v.carownertype === "family" ||
+          v.carownertype === "family"|| 
+          v.carownertype === "contractor");
+
+          <option value="">-- Select type --</option>
+          <option value="renter">Short Term Renter</option>
+          <option value="tenant">Tenant (Long Term Renter)</option>
+          <option value="family">Family</option>
+          <option value="friend">Friend</option>
+          <option value="visitor">Visitor/Day Guest</option>
+          <option value="contractor">Contractor/Vendor</option>
+*/
 
   useEffect(() => {
     if (userLoading) {
@@ -107,7 +125,12 @@ export default function OwnerVehicles() {
           //    console.log("OwnerVehicles.jsx qry:", qry);
           const response = await axios.get(qry);
           //   console.log("fetchVehicles client received:", response.data.length)
-          const updatedVehicles = response.data.map(v => ({
+          const today = new Date().toLocaleDateString("en-CA");
+          const updatedVehicles = response.data.filter(v => {
+            if (role === "admin" || v.carownertype !== "renter" || !v.enddate) return true;
+            const endDate = new Date(v.enddate);
+            return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+          }).map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
@@ -134,7 +157,7 @@ export default function OwnerVehicles() {
 
       fetchVehicles();
     }
-  }, [hoaId, ownerId]);
+  }, [hoaId, ownerId, role]);
 
 
 
@@ -198,10 +221,13 @@ export default function OwnerVehicles() {
 
   const handleFilterApply = (matchingVehicles) => {
     if (filterType === "owner") {
-      return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
+      //return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
+     // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
+      return matchingVehicles;
     }
     if (filterType === "renter") {
-      return matchingVehicles.filter(v => v.carownertype === "renter");
+      //return matchingVehicles.filter(v => v.carownertype === "renter");
+      return matchingVehicles;
     }
      if (filterType === "all") {
       return matchingVehicles;
@@ -218,19 +244,20 @@ export default function OwnerVehicles() {
     try {
 
       //  console.log('ov handle details click vehicle:', vehicle.carownertype);
-      if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: `Owners cannot modify renter vehicles.`,
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }));
-          },
-        });
-        return;
-      }
+// editing allowed for all
+      // if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
+      //   setModal({
+      //     isOpen: true,
+      //     type: "alert",
+      //     title: "Validation Error",
+      //     message: `Owners cannot modify renter vehicles.`,
+      //     confirmText: "OK",
+      //     onConfirm: () => {
+      //       setModal(prev => ({ ...prev, isOpen: false }));
+      //     },
+      //   });
+      //   return;
+      // }
 
       const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
       // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
@@ -240,6 +267,7 @@ export default function OwnerVehicles() {
         state: {
           unitNumber: unitNumber,
           role: arole,
+          carownertype: vehicle.carownertype,
           vehicles: vehicles,
           ownerOfUnit: loggedInUser,
           vehid: vid,
@@ -324,7 +352,8 @@ export default function OwnerVehicles() {
           vehicles: vehicles,
           vehid: null,
           ownerOfUnit: loggedInUser,
-          unit
+          unit,
+          createdfrom: 'ownervehicles'
         }
       });
     } catch (err) {
@@ -450,6 +479,7 @@ export default function OwnerVehicles() {
     </div>)
   }
 
+  
   const handlePlateSearch = (searchTerm) => {
     const query = searchTerm.trim().toLowerCase();
     const matchingVehicles = allVehicles.filter(vehicle =>
