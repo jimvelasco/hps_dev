@@ -430,8 +430,8 @@ export default function OnsiteVehicles() {
         </div>
 
 
-        <div className="standardtitlebar380">
-          <label htmlFor="plate-search" style={{ marginRight: "10px" }}>Plate Search</label>
+         <div className="standardtitlebar380" style={{width:"300px"}}>
+        <label htmlFor="plate-search" style={{marginRight:"10px"}}>Plate</label>
           <input
             id="plate-search"
             className="standardinput plate-search-input"
