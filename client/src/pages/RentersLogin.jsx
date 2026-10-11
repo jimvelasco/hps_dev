@@ -103,7 +103,7 @@ export default function RentersLogin() {
 
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${selectedUnit}`, {
-                state: { nonownerType, nonownerTypeText, pincodeAction: response.data.action }
+                state: { nonownerType, nonownerTypeText, unitNumber: selectedUnit,pincodeAction: response.data.action }
             });
 
         } catch (err) {
