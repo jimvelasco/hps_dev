@@ -246,7 +246,7 @@ export default function OwnersDashboard() {
 
         {(role !== "admin") && (
            <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
-          <button className="standardsubmitbutton"
+          <button className="btns btn-primary"
             onClick={handleCreateUserClick}
           >
             New User
