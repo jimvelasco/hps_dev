@@ -271,7 +271,9 @@ export default function OwnerVehicles() {
           vehicles: vehicles,
           ownerOfUnit: loggedInUser,
           vehid: vid,
-          unit: unitForOwner
+          unit: unitForOwner,
+          pincodeAction:"",
+          createdfrom: "ownervehicles"
         }
       });
     } catch (err) {
@@ -327,7 +329,7 @@ export default function OwnerVehicles() {
 
       setUnitForOwner(unit);
       const parkingLimit = Number(unit.inventory_allowed_owner);
-      console.log('parking limit in ow',parkingLimit);
+   //   console.log('parking limit in ow',parkingLimit);
       if (unit.inventory_allowed_owner == null || !Number.isFinite(parkingLimit)) {
         throw new Error("Unit inventory limit is unavailable.");
       }
@@ -353,7 +355,8 @@ export default function OwnerVehicles() {
           vehid: null,
           ownerOfUnit: loggedInUser,
           unit,
-          createdfrom: 'ownervehicles'
+          createdfrom: 'ownervehicles',
+          pincodeAction:""
         }
       });
     } catch (err) {

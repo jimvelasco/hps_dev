@@ -28,11 +28,13 @@ export default function RenterVehicles() {
   const [unitForRenter, setUnitForRenter] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
-  const otherType = location.state?.otherType;
-  const otherTypeText = location.state?.otherTypeText;
-  const pinAction = location.state?.action;
+  const nonownerType = location.state?.nonownerType;
+  const nonownerTypeText = location.state?.nonownerTypeText;
+  const pincodeAction = location.state?.pincodeAction;
+
 
   useEffect(() => {
+    console.log("RV state",location.state);
     if (hoaId && unitNumber) {
       const fetchUserForUnit = async () => {
         try {
@@ -54,7 +56,7 @@ export default function RenterVehicles() {
   useEffect(() => {
     setUnitForRenter(null);
     if (!hoaId || !unitNumber) return;
-//console.log('passed action is ',pinAction);
+//console.log('passed action is ',pincodeAction);
     let cancelled = false;
     const fetchUnit = async () => {
       try {
@@ -83,11 +85,9 @@ export default function RenterVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          console.log('other type',otherType)
-
           const today = new Date().toLocaleDateString("en-CA");
           const matchingVehicles = updatedVehicles.filter(v => {
-            if (v.carownertype !== otherType) return false;
+            if (v.carownertype !== nonownerType) return false;
             if (v.carownertype !== "renter" || !v.enddate) return true;
             const endDate = new Date(v.enddate);
             return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
@@ -106,7 +106,7 @@ export default function RenterVehicles() {
 
       fetchVehicles();
     }
-  }, [hoaId, unitNumber, otherType]);
+  }, [hoaId, unitNumber, nonownerType]);
 
   if (loading) {
     return <div style={{ padding: "20px" }}>Loading HOA data...</div>;
@@ -161,11 +161,32 @@ export default function RenterVehicles() {
     const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
     navigate(qry, {
       state: {
-        unitNumber: uid, role: "renter", carownertype: vehicle.carownertype,
-        vehicles: vehicles, ownerOfUnit: ownerOfUnit, vehid: vid, unit: unitForRenter
+        unitNumber: uid, 
+        role: "renter", 
+        carownertype: vehicle.carownertype,
+        vehicles: vehicles, 
+        ownerOfUnit: ownerOfUnit, 
+        vehid: vid, 
+        unit: unitForRenter,
+        createdfrom: 'rentervehicles',
+        pincodeAction: pincodeAction
       }
     });
   }
+
+  /*
+   state: {
+        unitNumber: unitNumber, role: 
+        location.state?.nonownerType || "renter",
+        vehicles: vehicles,
+        ownerOfUnit: ownerOfUnit,
+        unit: unitForRenter,
+        vehid: null,
+        createdfrom: 'rentervehicles',
+        pincodeAction: pincodeAction
+
+      }
+        */
 
   // navigate(qry, { state: { unitNumber: uid, role: arole, numberOfVehicles: vehicles.length } });
 
@@ -202,12 +223,14 @@ export default function RenterVehicles() {
     //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
     navigate(qry, {
       state: {
-        unitNumber: unitNumber, role: location.state?.otherType || "renter",
+        unitNumber: unitNumber, 
+        role: location.state?.nonownerType || "renter",
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
         unit: unitForRenter,
         vehid: null,
-        createdfrom: 'rentervehicles'
+        createdfrom: 'rentervehicles',
+        pincodeAction: pincodeAction
 
       }
     });
@@ -249,7 +272,7 @@ export default function RenterVehicles() {
     return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }
 
-  const t = otherTypeText + ' Vehicles'
+  const t = nonownerTypeText + ' Vehicles'
 
   return (
     <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>

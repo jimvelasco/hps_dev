@@ -29,7 +29,7 @@ export default function VehicleDetails() {
   const location = useLocation();
   
 
-  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,createdfrom } = location.state || {};
+  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,createdfrom,pincodeAction } = location.state || {};
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] = 
   useState(['owner', 'renter','tenant','family','friend','visitor','contractor']);
  
@@ -44,6 +44,8 @@ export default function VehicleDetails() {
           unit: unit
         }
   */
+
+      
 
   const [userIdForUnit, setUserIdForUnit] = useState();
   const [unitOwner, setUnitOwner] = useState();
@@ -104,6 +106,7 @@ export default function VehicleDetails() {
   // console.log('LOCATION STATE IS  owner ', location.state.ownerOfUnit);
  // console.log('LOCATION STATE IS  unit ', location.state.unit);
   useEffect(() => {
+      console.log("VEHICLE DETAILS location state is ",location.state);
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
     //  console.log('dmode:', dmode);
@@ -163,9 +166,6 @@ export default function VehicleDetails() {
     setUserIdForUnit(ownerOfUnit._id);
     setUnitOwner(ownerOfUnit);
     setStateUnit(unit);
-    console.log('useEffect createdfrom ', createdfrom);
-    
-
   }, [hoaId, unitNumber, formData.unitnumber, isModifyMode]);
 
 

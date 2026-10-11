@@ -15,7 +15,7 @@ export default function RentersLogin() {
     const [units, setUnits] = useState([]);
     const [selectedUnit, setSelectedUnit] = useState("");
     const [pin, setPin] = useState("");
-    const [otherType, setOtherType] = useState("renter");
+    const [nonownerType, setOtherType] = useState("renter");
     const [loadingUnits, setLoadingUnits] = useState(false);
 
     useEffect(() => {
@@ -85,7 +85,7 @@ export default function RentersLogin() {
     const handleSubmit = async (e) => {
         //  console.log("handleSubmit called in renterslogin.jsx");
         e.preventDefault();
-        const otherTypeText = otherType ? e.currentTarget.elements.namedItem("otherType").selectedOptions[0].text : "";
+        const nonownerTypeText = nonownerType ? e.currentTarget.elements.namedItem("nonownerType").selectedOptions[0].text : "";
         if (!selectedUnit || !pin) {
             setAppError("Please select a unit and enter a pin");
             navigate(`/${hoaId}/error`);
@@ -103,7 +103,7 @@ export default function RentersLogin() {
 
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${selectedUnit}`, {
-                state: { otherType, otherTypeText, action: response.data.action }
+                state: { nonownerType, nonownerTypeText, pincodeAction: response.data.action }
             });
 
         } catch (err) {
@@ -171,8 +171,8 @@ export default function RentersLogin() {
                             </label>
 
                             <select className="standardselect100"
-                                name="otherType"
-                                value={otherType}
+                                name="nonownerType"
+                                value={nonownerType}
                                 onChange={(e) => setOtherType(e.target.value)}
                                    required
                             >
