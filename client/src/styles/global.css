@@ -553,6 +553,10 @@ input.standardinput {
 
 }
 
+input.standardinput.plate-search-input {
+  width: 200px;
+}
+
 input.input-date {
   padding: 8px 12px;
   border-radius: 4px;

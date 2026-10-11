@@ -491,10 +491,10 @@ export default function OwnerVehicles() {
   const renderPlateSearch = () => {
     return (
       <div className="standardtitlebar380">
-        <label htmlFor="plate-search">Plate Search</label>
+        <label htmlFor="plate-search" style={{marginRight:"10px"}}>Plate Search</label>
         <input
           id="plate-search"
-          className="standardinput"
+          className="standardinput plate-search-input"
           type="search"
           value={plateSearch}
           onChange={(event) => setPlateSearch(event.target.value)}

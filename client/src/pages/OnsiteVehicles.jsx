@@ -20,7 +20,7 @@ export default function OnsiteVehicles() {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
-   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
+  const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const { setAppError } = useError();
   const [vehicles, setVehicles] = useState([]);
   const [plateSearch, setPlateSearch] = useState("");
@@ -151,7 +151,7 @@ export default function OnsiteVehicles() {
     }
   ];
 
-   const navButtonsEnforcer = [
+  const navButtonsEnforcer = [
     {
       label: "Logout",
       onClick: handleLogout,
@@ -163,7 +163,7 @@ export default function OnsiteVehicles() {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
 
-  const renderVehiclePlate= (vehicle) => {
+  const renderVehiclePlate = (vehicle) => {
     return (<div className="grid-container-3-plate"
       key={vehicle._id}>
       <div className="full-row" style={{
@@ -176,24 +176,24 @@ export default function OnsiteVehicles() {
         {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
       </div>
 
-        <div className="full-row" 
-              style={{ marginBottom: '5px',marginTop:'5px'}}>{vehicle.carowner_lname || "N/A"}, 
-              {vehicle.carowner_fname || "N/A"}</div>
-    
+      <div className="full-row"
+        style={{ marginBottom: '5px', marginTop: '5px' }}>{vehicle.carowner_lname || "N/A"},
+        {vehicle.carowner_fname || "N/A"}</div>
 
- <div className="grid-item-bold">Make</div>
-        <div className="grid-item-bold">Model</div>
-        <div className="grid-item-bold">Year</div>
 
-        <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
-        <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
-        <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
+      <div className="grid-item-bold">Make</div>
+      <div className="grid-item-bold">Model</div>
+      <div className="grid-item-bold">Year</div>
+
+      <div className="grid-item-normal row-with-gap">{vehicle.make || "N/A"}</div>
+      <div className="grid-item-normal row-with-gap">{vehicle.model || "N/A"}</div>
+      <div className="grid-item-normal row-with-gap">{vehicle.year || "N/A"}</div>
 
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
       <div className="grid-item-bold">Unit</div>
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
-     
+
       {getVehicleIsActiveTodayBoolean(vehicle) ? (
         <div className="grid-item-normal-highlight">
           {utcDateOnly(vehicle.checkout)}
@@ -206,7 +206,7 @@ export default function OnsiteVehicles() {
     )
   }
 
-  const renderVehiclePlate2= (vehicle) => {
+  const renderVehiclePlate2 = (vehicle) => {
     return (<div className="grid-container-3-plate"
       key={vehicle._id}>
       <div className="full-row" style={{
@@ -217,7 +217,7 @@ export default function OnsiteVehicles() {
       }}>
         {vehicle.plate} ({vehicle.plate_state.substring(0, 2)})
       </div>
-            
+
 
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
@@ -235,7 +235,7 @@ export default function OnsiteVehicles() {
   }
 
 
-const renderVehicleCard = (vehicle) => {
+  const renderVehicleCard = (vehicle) => {
     return (
       <div className="grid-container-3_oldhoa" key={vehicle._id}>
 
@@ -357,43 +357,43 @@ const renderVehicleCard = (vehicle) => {
     let maxwid = isPhonePortrait ? '130px' : '260px';
 
 
-    return ( 
-     <div className='onsite-grid-container-2'>
-      <div className="grid-flex-container">
-        {!showTable && (
-          filteredVehicles.map((vehicle, index) => (
-            isPlateVisible ? renderVehiclePlate2(vehicle) :
-              renderVehiclePlate(vehicle)
-          ))
-        )}
-      </div>
-       <div className="flex-container bg_lightgray" style={{
-              overflowY: 'auto',
-              border: "0px solid yellow",
-              maxWidth: maxwid
-            }}>
-              <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
-                <div className="header-title" style={{marginLeft:"10px"}}>Violations</div>
-                <div onClick={handleShowGrid} className="close-button" >
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                  />
-                </div>
-              </div>
-              <div style={{
-                maxHeight: '350px',
-                width: '90%',
-                overflowY: 'auto',
-                overflowX: 'hidden',
-                // backgroundColor: "#e0e0e0"
-              }}>
-                <ViolationsAccordion hoaId={hoaId} />
-              </div>
-
+    return (
+      <div className='onsite-grid-container-2'>
+        <div className="grid-flex-container">
+          {!showTable && (
+            filteredVehicles.map((vehicle, index) => (
+              isPlateVisible ? renderVehiclePlate2(vehicle) :
+                renderVehiclePlate(vehicle)
+            ))
+          )}
+        </div>
+        <div className="flex-container bg_lightgray" style={{
+          overflowY: 'auto',
+          border: "0px solid yellow",
+          maxWidth: maxwid
+        }}>
+          <div style={{ display: 'flex', width: "100%", justifyContent: "space-between" }}>
+            <div className="header-title" style={{ marginLeft: "10px" }}>Violations</div>
+            <div onClick={handleShowGrid} className="close-button" >
+              <FontAwesomeIcon
+                icon={faXmark}
+              />
             </div>
+          </div>
+          <div style={{
+            maxHeight: '350px',
+            width: '90%',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            // backgroundColor: "#e0e0e0"
+          }}>
+            <ViolationsAccordion hoaId={hoaId} />
+          </div>
+
+        </div>
       </div>
 
-  )
+    )
   }
   const renderGridIsNotVisible = () => {
     return (
@@ -431,10 +431,10 @@ const renderVehicleCard = (vehicle) => {
 
 
         <div className="standardtitlebar380">
-          <label htmlFor="onsite-plate-search">Plate Search</label>
+          <label htmlFor="plate-search" style={{ marginRight: "10px" }}>Plate Search</label>
           <input
-            id="onsite-plate-search"
-            className="standardinput"
+            id="plate-search"
+            className="standardinput plate-search-input"
             type="search"
             value={plateSearch}
             onChange={(event) => setPlateSearch(event.target.value)}
@@ -478,8 +478,8 @@ const renderVehicleCard = (vehicle) => {
             </div></div>
         ) : (null)
         }
-       
-       
+
+
         {isGridVisible ? renderGridIsVisible() : renderGridIsNotVisible()}
       </div>
     </div>
