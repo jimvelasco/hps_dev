@@ -38,7 +38,6 @@ export default function UnitDetails() {
     parking_allowed_renter: "",
     owner_free_parking: "",
     renter_free_parking: "",
-    pincode: "",
     pincodeary: []
   });
 
@@ -110,7 +109,6 @@ export default function UnitDetails() {
           parking_allowed_renter: response.data.parking_allowed_renter || "",
           owner_free_parking: response.data.owner_free_parking || "",
           renter_free_parking: response.data.renter_free_parking || "",
-          pincode: response.data.pincode || "",
           pincodeary: response.data.pincodeary || []
         });
       } catch (err) {
@@ -158,12 +156,12 @@ export default function UnitDetails() {
     e.preventDefault();
     console.log('WE ARE SUBMITTING')
 
-    if (!formData.pincode) {
+    if (!formData.pincodeary.some(entry => typeof entry?.pincode === "string" && entry.pincode.trim())) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: "Please fill in all required fields (picode ,bedrooms)",
+        message: "Please enter at least one PIN in PIN Entries.",
         confirmText: "OK",
         onConfirm: () => {
           setModal(prev => ({ ...prev, isOpen: false }))
@@ -177,7 +175,6 @@ export default function UnitDetails() {
         hoaid: formData.hoaid,
         unitnumber: formData.unitnumber,
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : 0,
-        pincode: formData.pincode,
         pincodeary: formData.pincodeary,
         inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,
         parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,

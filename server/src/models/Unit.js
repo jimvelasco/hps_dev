@@ -11,10 +11,10 @@ const unitSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  pincode: {
-    type: String,
-    default: ""
-  },
+  // pincode: {
+  //   type: String,
+  //   default: ""
+  // },
   
 
    pincodeary: [
