@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "../../services/api";
 import { useHoa } from "../../context/HoaContext";
 import DashboardNavbar from "../../components/DashboardNavbar";
+import ModalAlert from "../../components/ModalAlert";
 import { getAWSResource } from "../../utils/awsHelper";
 
 export default function HoaSettings() {
@@ -13,7 +14,7 @@ export default function HoaSettings() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     hoaid: "",
     name: "",
@@ -69,18 +70,16 @@ export default function HoaSettings() {
       ...prev,
       [name]: numericFields.includes(name) ? parseInt(value) || 0 : value
     }));
-    setSuccess(null);
   };
 
   const handleSave = async () => {
     setSaving(true);
     setError(null);
-    setSuccess(null);
 
     try {
       const response = await axios.put(`/hoas/${hoaId}`, formData);
       if (response.status === 200) {
-        setSuccess("HOA settings saved successfully");
+        setIsSuccessModalOpen(true);
         fetchHoaById(hoaId);
       }
     } catch (err) {
@@ -124,12 +123,6 @@ let backgroundImage = '';
         {error && (
           <div className="editable-table-error">
             {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="editable-table-success">
-            {success}
           </div>
         )}
 
@@ -307,7 +300,7 @@ let backgroundImage = '';
               disabled={saving}
               className="btn btn-primary"
             >
-              {saving ? "Saving..." : "Save Settings"}
+              {saving ? "Updating..." : "Update HOA"}
             </button>
             <button
               onClick={handleBackClick}
@@ -318,6 +311,17 @@ let backgroundImage = '';
           </div>
         </div>
       </div>
+      <ModalAlert
+        isOpen={isSuccessModalOpen}
+        type="alert"
+        title="Success"
+        message="HOA Update Successfull"
+        confirmText="OK"
+        onConfirm={() => {
+          setIsSuccessModalOpen(false);
+          navigate(`/${hoaId}/admin`);
+        }}
+      />
     </div>
   );
 }

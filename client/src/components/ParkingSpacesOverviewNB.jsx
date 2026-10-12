@@ -81,37 +81,10 @@ export default function ParkingSpacesOverviewNB() {
     fetchVehicles();
   }, [hoaId]);
 
-  const totalSpaces = hoa?.parking_allowed_hoa || 0;
+  const totalSpaces = hoa?.parking_allowed_hoa +  hoa?.parking_handicapped_hoa|| 0;
   const remainingSpaces = totalSpaces - occupiedSpaces;
   const hoaname = hoa?.name;
-//  return (
-//     <div className="parking-spaces-overview2">      
-//       {loading ? (
-//         <div className="parking-overview-loading">
-//           Loading...
-//         </div>
-//       ) : (
-//         <span style={{color: "#bbb", backgroundColor: "#333"}}>
-//           <div className="tableview">
-//            <span><b style={{color: "#fff"}}>{hoaname}</b></span>&nbsp;&nbsp;&nbsp;
-//             <span>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>&nbsp;&nbsp;&nbsp;
 
-//             <span>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>&nbsp;&nbsp;&nbsp;
-
-//             <span >Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
-//             </div>
-//              <div className="phoneview">
-//            <span><b style={{color: "#fff"}}>{hoaname}</b></span>&nbsp;&nbsp;&nbsp;
-//             <span>Total <b style={{color: "#fff"}}>{totalSpaces}</b></span>&nbsp;&nbsp;&nbsp;
-
-//             <span>Occupied  <b style={{color: "#fff"}}>{occupiedSpaces}</b></span>&nbsp;&nbsp;&nbsp;
-
-//             <span >Remaining  <b style={{color: "#fff"}}>{remainingSpaces}</b></span>
-//             </div>
-//         </span>
-//       )}
-//     </div>
-//   );
 
   return (
     <div className="parking-spaces-overview2">      
