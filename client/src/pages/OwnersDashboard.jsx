@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
@@ -86,7 +88,7 @@ export default function OwnersDashboard() {
   const handleCreateUserClick = () => {
     //  navigate(`/${hoaId}/user`);
     let qry = `/${hoaId}/user`;
-     navigate(qry, {
+    navigate(qry, {
       state: {
         numonunit: loggedInUser.unitnumber,
         homeownersid: hoaId,
@@ -245,17 +247,20 @@ export default function OwnersDashboard() {
       <div className="page-content">
 
         {(role !== "admin") && (
-           <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
-          <button className="btns btn-primary"
-            onClick={handleCreateUserClick}
-          >
-            New User
-          </button>
-        </div>
+          <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
+            <button className="btns btn-primary"
+              onClick={handleCreateUserClick}
+            >
+              <FontAwesomeIcon
+              icon={faPlus}
+            />  Add User
+            </button>
+            
+          </div>
 
         )}
 
-       
+
 
         <HoaInformation hoa={hoa} />
 

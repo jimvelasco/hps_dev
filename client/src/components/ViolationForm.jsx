@@ -1,6 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../services/api";
 import ModalAlert from "./ModalAlert";
+
+const getCurrentDateTime = () => {
+  const now = new Date();
+  const pad = value => String(value).padStart(2, "0");
+  return {
+    violation_date: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+    violation_time: `${pad(now.getHours())}:${pad(now.getMinutes())}`
+  };
+};
 
 export default function ViolationForm({ isOpen, hoaId, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -8,12 +17,20 @@ export default function ViolationForm({ isOpen, hoaId, onClose, onSuccess }) {
     violation_state: "",
     violation_location: "",
     violation_type: "",
-    violation_date: "",
-    violation_time: "",
+    ...getCurrentDateTime(),
     violation_reporter: "",
     violation_description: ""
   });
 
+  const [violationTypes] = useState([
+    "Unregistered Vehicle",
+    "Improper Parking",
+    "Fire Hydrant Blocking",
+    "No Parking Zone",
+    "Disabled Space Violation",
+    "Street Parking",
+    "Other"
+  ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modal, setModal] = useState({
     isOpen: false,
@@ -22,6 +39,12 @@ export default function ViolationForm({ isOpen, hoaId, onClose, onSuccess }) {
     message: "",
     onConfirm: null
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(prev => ({ ...prev, ...getCurrentDateTime() }));
+    }
+  }, [isOpen]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,8 +91,7 @@ export default function ViolationForm({ isOpen, hoaId, onClose, onSuccess }) {
             violation_state: "",
             violation_location: "",
             violation_type: "",
-            violation_date: "",
-            violation_time: "",
+            ...getCurrentDateTime(),
             violation_reporter: "",
             violation_description: ""
           });
@@ -232,13 +254,9 @@ export default function ViolationForm({ isOpen, hoaId, onClose, onSuccess }) {
                   required
                 >
                   <option value="">Select violation type</option>
-                  <option value="Improper Parking">Improper Parking</option>
-                  <option value="Fire Hydrant Blocking">Fire Hydrant Blocking</option>
-                  <option value="Unregistered Vehicle">Unregistered Vehicle</option>
-                  <option value="No Parking Zone">No Parking Zone</option>
-                  <option value="Disabled Space Violation">Disabled Space Violation</option>
-                  <option value="Street Parking">Street Parking</option>
-                  <option value="Other">Other</option>
+                  {violationTypes.map(type => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
                 </select>
               </div>
 

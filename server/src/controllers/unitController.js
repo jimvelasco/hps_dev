@@ -33,7 +33,7 @@ const getUnits = async (req, res) => {
 
 
 const getUnit = async (req, res) => {
-  console.log('getting units');
+ // console.log('getting units');
   const { hoaid, unitnumber} = req.params;
   let qry = {hoaid:hoaid,unitnumber:unitnumber}
  

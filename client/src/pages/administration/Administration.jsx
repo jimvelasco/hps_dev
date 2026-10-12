@@ -336,7 +336,7 @@ export default function Administration() {
           </section> */}
 
           <section className="admin_section">
-            <h5 className="admin_section_title">AWS</h5>
+            <h5 className="admin_section_title">System (AWS)</h5>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Image Upload</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Upload images to AWS S3 bucket.
@@ -349,7 +349,7 @@ export default function Administration() {
           </section>
 
           <section className="admin_section">
-            <h5 className="admin_section_title">AWS</h5>
+            <h5 className="admin_section_title">System (AWS)</h5>()
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>PDF Upload</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Upload PDF files to AWS S3 bucket.

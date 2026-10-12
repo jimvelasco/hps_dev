@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
@@ -294,7 +296,9 @@ export default function RenterVehicles() {
               {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber}
             </label><br />
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
-              New Vehicle
+               <FontAwesomeIcon
+              icon={faPlus}
+            />  Add Vehicle
             </button>
           </div>
         </div>

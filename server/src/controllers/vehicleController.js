@@ -290,10 +290,12 @@ const updateVehicle = async (req, res) => {
     const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicleData, { new: true });
 
     // Log only if startdate or enddate changed
+   // console.log('we are updating vehicle in vehicle controller');
     if (oldVehicle.startdate !== updatedVehicle.startdate || 
         oldVehicle.enddate !== updatedVehicle.enddate) {
       // await logHPSRecord(updatedVehicle, oldVehicle.startdate, oldVehicle.enddate);
       // log the date changes and ignore the old vehicle dates
+     //  console.log('we are updated vehicle in vehicle controller', updatedVehicle);
        await logHPSRecordUpdate(vehicleId, updatedVehicle.startdate, updatedVehicle.enddate);
     }
 

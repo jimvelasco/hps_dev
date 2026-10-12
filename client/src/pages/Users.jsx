@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
@@ -6,7 +8,6 @@ import { useError } from "../context/ErrorContext";
 import DashboardNavbar from "../components/DashboardNavbar";
 import { getAWSResource } from "../utils/awsHelper";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 /*
@@ -215,12 +216,16 @@ export default function Users() {
          
             onClick={handleCreateUserClick}
           >
-            New User
+             <FontAwesomeIcon
+              icon={faPlus}
+            />  Add User
           </button>
            <button className="btns btn-primary"
             onClick={handleCreateUnitClick}
           >
-            New Unit
+             <FontAwesomeIcon
+              icon={faPlus}
+            />  Add Unit
           </button>
         </div>
         </div>
