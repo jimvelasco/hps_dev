@@ -30,6 +30,8 @@ export default function VehicleDetails() {
   
 
   const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,createdfrom,pincodeAction } = location.state || {};
+
+
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] = 
   useState(['owner', 'renter','tenant','family','friend','visitor','contractor']);
  
@@ -107,6 +109,8 @@ export default function VehicleDetails() {
  // console.log('LOCATION STATE IS  unit ', location.state.unit);
   useEffect(() => {
       console.log("VEHICLE DETAILS location state is ",location.state);
+      console.log("VEHICLE DETAILS the hoa is  ",hoa);
+
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
     //  console.log('dmode:', dmode);
@@ -114,7 +118,7 @@ export default function VehicleDetails() {
         setFormData({
           carowner_fname: "JJV",
           carowner_lname: "Velasco",
-          carownerphone: "7777777777",
+          carownerphone: "777-777-7777",
           make: "Lincoln",
           model: "Navigator",
           color: "Green",
@@ -357,7 +361,7 @@ export default function VehicleDetails() {
     let rpflag = 0;
     if (role === 'owner') {
       // rpflag = 0;
-      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit);
+      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit,createdfrom,pincodeAction);
    //   console.log('submitting oktoaddobj:', oktoaddobj);
       if (!oktoaddobj.oktoadd) {
         setModal({
@@ -376,18 +380,9 @@ export default function VehicleDetails() {
       }
     }
     if (role === 'renter') {
-      console.log('unit is', unit);
-      oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit);
+    //  console.log('unit is', unit);
+      oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit,createdfrom,pincodeAction);
       rpflag = oktoaddobj.rpflag;
-      // if (vehicles.length < renterFreeParking) {
-      //   rpflag = oktoaddobj.rpflag;;
-      // } else {
-      //   if (!vehid) {
-      //     rpflag = oktoaddobj.rpflag;
-      //   } else {
-      //     rpflag = oktoaddobj.rpflag;
-      //   }
-      // }
     }
 
     setFormSubmitting(true);
@@ -403,7 +398,7 @@ export default function VehicleDetails() {
         ownerid: oid,
         requires_payment: rpflag
       };
-  //    console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
+      console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
 
       if (isModifyMode) {
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);

@@ -29,10 +29,23 @@ const HoaSchema = new mongoose.Schema({
     type: String
   },
 
+  // this is the number of spots that are not reserved for handicapped 
+
   parking_allowed_hoa: {
     type: Number,
     default: 50
   },
+
+  // this is the number of spots  reserved for handicapped 
+  parking_handicapped_hoa: {
+    type: Number,
+    default: 0
+  },
+ 
+  // therefore the total spots at the hoa is the sum of
+  // totalspotsavailable = parking_allowed_hoa + parking_handicapped_hoa
+
+  
   /* not used */
   // parking_allowed_unit: {
   //   type: Number,

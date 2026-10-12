@@ -71,13 +71,19 @@ export const formatPhoneNumber = (phone) => {
 
 
 
-export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerOfUnit,vehicleId,unit) => {
+export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerOfUnit,vehicleId,unit,createdfrom,pincodeAction) => {
   let oktoadd = true
   let rpflag = 0;
 
   const formedate = formvehicle.enddate;
   const todayStr = new Date().toLocaleDateString("en-CA"); // "2025-12-03"
  // console.log('formedate is ', formedate, ' todayStr is ', todayStr);
+//  console.log('okToActivateOwnerVehicle formvehicle, vehiclearray, role, ownerOfUnit,vehicleId,unit,createdfrom,pincodeAction',
+//   formvehicle, vehiclearray, role, ownerOfUnit,vehicleId,unit,createdfrom,pincodeAction);
+
+   console.log('okToActivateOwnerVehicle formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction');
+  console.log(formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction);
+
 
   let activeCount = 0;
   let activeArray = [];
@@ -126,17 +132,20 @@ export const okToActivateOwnerVehicle = (formvehicle, vehiclearray, role, ownerO
 
 
 
-export const okToActivateRenterVehicle = (formvehicle, vehiclearray, role, ownerOfUnit, vehicleId,unit) => {
+export const okToActivateRenterVehicle = (formvehicle, vehiclearray, role, ownerOfUnit, vehicleId,unit,createdfrom,pincodeAction) => {
   const formedate = formvehicle.enddate;
 
   let activeArray = vehiclearray;
   let activeCount = activeArray.length;
   let filteredActive = [];
-
   // console.log('okToActivateRenterVehicle active array length is ', activeCount);
   // console.log('okToActivateRenterVehicle owner of unit ', ownerOfUnit);
   // console.log('okToActivateRenterVehicle renter free parking  ', unit.renter_free_parking);
-   console.log('okToActivateRenterVehicle parking allowed renter ', unit);
+  // console.log('okToActivateRenterVehicle parking allowed renter ', unit);
+
+  
+   console.log('okToActivateRenterVehicle formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction');
+  console.log(formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction);
 
   // console.log('okToActivateRenterVehicle called with ownerOfUnit', ownerOfUnit);
   let robj = { oktoadd: true, rpflag: 0 };

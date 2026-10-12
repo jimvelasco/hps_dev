@@ -22,6 +22,7 @@ export default function HoaSettings() {
     state: "",
     zip: "",
     parking_allowed_hoa: 50,
+    parking_handicapped_hoa: 0,
     inventory_allowed_owner: 5,
     parking_allowed_renter: 2,
     parking_allowed_owner: 2,
@@ -42,6 +43,7 @@ export default function HoaSettings() {
         state: hoa.state || "",
         zip: hoa.zip || "",
         parking_allowed_hoa: hoa.parking_allowed_hoa || 50,
+        parking_handicapped_hoa: hoa.parking_handicapped_hoa || 0,
         inventory_allowed_owner: hoa.inventory_allowed_owner || 5,
         parking_allowed_renter: hoa.parking_allowed_renter || 2,
         parking_allowed_owner: hoa.parking_allowed_owner || 2,
@@ -199,12 +201,23 @@ let backgroundImage = '';
             </div>
 
             <div>
-              <label className="input-label">Parking Allowed (HOA)</label>
+              <label className="input-label">Parking Allowed HOA (No Handicap)</label>
               <input
                 type="number"
                 className="standardinput"
                 name="parking_allowed_hoa"
                 value={formData.parking_allowed_hoa}
+                onChange={handleInputChange}
+              />
+            </div>
+
+             <div>
+              <label className="input-label">Parking Handicapped HOA </label>
+              <input
+                type="number"
+                className="standardinput"
+                name="parking_handicapped_hoa"
+                value={formData.parking_handicapped_hoa}
                 onChange={handleInputChange}
               />
             </div>

@@ -1,4 +1,6 @@
 import React, { use, useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
@@ -475,7 +477,9 @@ export default function OwnerVehicles() {
         {loggedInUser && loggedInUser.role !== "admin" && (
           <button className="navbutton2"
             onClick={() => handleCreateClick()}>
-            New
+            <FontAwesomeIcon
+                         icon={faPlus}
+                       />  Add 
           </button>
         )}
       </div>
