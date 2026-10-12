@@ -370,7 +370,7 @@ export default function UnitDetails() {
                 />
               </div>
               
-              <div style={{ marginBottom: "15px" }}>
+              {/* <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                   PIN #
                 </label>
@@ -380,7 +380,7 @@ export default function UnitDetails() {
                   value={formData.pincode}
                   onChange={handleInputChange}
                 />
-              </div>
+              </div> */}
 
               {isAdminView ? (
                  <fieldset className="input-group">
