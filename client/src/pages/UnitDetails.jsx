@@ -393,6 +393,7 @@ export default function UnitDetails() {
                       type="text"
                       value={entry.pincode ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "pincode", e.target.value)}
+                      required
                     />
                     <label className="input-label" htmlFor={`unit-pin-action-${index}`}>
                       Action
