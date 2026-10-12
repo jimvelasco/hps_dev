@@ -397,13 +397,17 @@ export default function UnitDetails() {
                     <label className="input-label" htmlFor={`unit-pin-action-${index}`}>
                       Action
                     </label>
-                    <input
+                    <select
                       id={`unit-pin-action-${index}`}
-                      className="standardinput"
-                      type="text"
+                      className="standardselect100"
                       value={entry.action ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "action", e.target.value)}
-                    />
+                      required
+                    >
+                      <option value="">--Select action--</option>
+                      <option value="standard">standard</option>
+                      <option value="special">special</option>
+                    </select>
                   </div>
                 ))}
                 <button className="btns btn-primary" type="button" onClick={handleAddPinEntry}>
@@ -429,14 +433,17 @@ export default function UnitDetails() {
                     <label className="input-label" htmlFor={`unit-pin-action-${index}`}>
                       Action
                     </label>
-                    <input
+                    <select
                       id={`unit-pin-action-${index}`}
-                      className="standardinput"
-                      type="text"
+                      className="standardselect100"
                       value={entry.action ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "action", e.target.value)}
                       disabled
-                    />
+                    >
+                      <option value="">Select action</option>
+                      <option value="standard">standard</option>
+                      <option value="special">special</option>
+                    </select>
                   </div>
                 ))}
                
