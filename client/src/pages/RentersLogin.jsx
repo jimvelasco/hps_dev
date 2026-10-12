@@ -86,15 +86,21 @@ export default function RentersLogin() {
         //  console.log("handleSubmit called in renterslogin.jsx");
         e.preventDefault();
         const nonownerTypeText = nonownerType ? e.currentTarget.elements.namedItem("nonownerType").selectedOptions[0].text : "";
-        if (!selectedUnit || !pin) {
+        const unitNumber = selectedUnit.trim();
+        if (!unitNumber || !pin) {
             setAppError("Please select a unit and enter a pin");
+            navigate(`/${hoaId}/error`);
+            return;
+        }
+        if (!units.some(unit => unit.unitnumber === unitNumber)) {
+            setAppError("Please select a valid unit number");
             navigate(`/${hoaId}/error`);
             return;
         }
         try {
             const response = await axios.post(`/users/renters/verify-pin`, {
                 hoaId,
-                unitNumber: selectedUnit,
+                unitNumber,
                 pinCode: pin
             });
 
@@ -102,8 +108,8 @@ export default function RentersLogin() {
             localStorage.setItem("token", response.data.token);
 
             // Navigate to renter vehicles
-            navigate(`/${hoaId}/rentervehicles/${selectedUnit}`, {
-                state: { nonownerType, nonownerTypeText, unitNumber: selectedUnit,pincodeAction: response.data.action }
+            navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
+                state: { nonownerType, nonownerTypeText, unitNumber, pincodeAction: response.data.action }
             });
 
         } catch (err) {
@@ -190,21 +196,20 @@ export default function RentersLogin() {
                             <label htmlFor="unit" style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>
                                 Unit Number
                             </label>
-                            <select className="standardselect100"
+                            <input className="standardinput"
                                 id="unit"
+                                type="text"
+                                list="unit-options"
                                 value={selectedUnit}
-                                // onChange={(e) => setSelectedUnit(e.target.value)}
                                 onChange={(e) => setSelectedUnit(e.target.value)}
-
+                                placeholder="Enter or select a unit"
                                 required
-                            >
-                                <option value="">-- Select a unit --</option>
+                            />
+                            <datalist id="unit-options">
                                 {units.map((unit) => (
-                                    <option key={unit.id} value={unit.unitnumber}>
-                                        {unit.unitnumber}
-                                    </option>
+                                    <option key={unit.id} value={unit.unitnumber} />
                                 ))}
-                            </select>
+                            </datalist>
                         </div>
 
                         <div style={{ marginBottom: "20px" }}>
