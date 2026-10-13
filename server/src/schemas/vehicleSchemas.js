@@ -3,7 +3,8 @@ import { z } from 'zod';
 export const createVehicleSchema = z.object({
   ownerid: z.string().nullable().optional(),
   unitnumber: z.string().min(1, 'Unit number is required'),
- carownertype: z.string().optional(),
+  carownertype: z.string().optional(),
+  createdbytype: z.string().optional(),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
   carownerphone: z.string().min(10, 'Phone number must be at least 10 digits'),
@@ -26,8 +27,9 @@ export const createVehicleSchema = z.object({
 
 export const updateVehicleSchema = z.object({
   ownerid: z.string().nullable().optional(),
- unitnumber: z.string().min(1, 'Unit number is required'),
- carownertype: z.string().optional(),
+  unitnumber: z.string().min(1, 'Unit number is required'),
+  carownertype: z.string().optional(),
+  createdbytype: z.string().optional(),
   carowner_fname: z.string().min(1, 'First name is required'),
   carowner_lname: z.string().min(1, 'Last name is required'),
   carownerphone: z.string().min(10, 'Phone number must be at least 10 digits'),
@@ -47,22 +49,22 @@ export const updateVehicleSchema = z.object({
   checkin: data.startdate ? new Date(data.startdate).toISOString() : new Date().toISOString(),
   checkout: data.enddate ? new Date(data.enddate).toISOString() : new Date().toISOString()
 }));
-  // enddate: z.string().refine((value) => {
-  //   const date = new Date(value);
-  //   if (Number.isNaN(date.getTime())) return false;
-  //   const today = new Date();
-  //   today.setHours(0, 0, 0, 0);
-  //   date.setHours(0, 0, 0, 0);
-  //   return date > today;
-  // }, {
-  //   message: "Date must be greater than today",
-  // }),
+// enddate: z.string().refine((value) => {
+//   const date = new Date(value);
+//   if (Number.isNaN(date.getTime())) return false;
+//   const today = new Date();
+//   today.setHours(0, 0, 0, 0);
+//   date.setHours(0, 0, 0, 0);
+//   return date > today;
+// }, {
+//   message: "Date must be greater than today",
+// }),
 
 
 
-  //  change_history: z.array(z.unknown()).optional(),
-  //  number_of_changes: z.number().optional(),
-  // has_read_terms: z.number().optional()
+//  change_history: z.array(z.unknown()).optional(),
+//  number_of_changes: z.number().optional(),
+// has_read_terms: z.number().optional()
 
 /*
  carowner_fname: response.data.carowner_fname || "",

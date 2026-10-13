@@ -14,6 +14,9 @@ const vehicleSchema = new mongoose.Schema(
   carownertype: {
     type: String
   },
+   createdbytype: {
+    type: String
+  },
   carownername: {
     type: String,
   },

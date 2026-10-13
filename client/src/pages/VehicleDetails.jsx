@@ -6,7 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
-import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly } from "../utils/vehicleHelpers";
+import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly, okToAddUnitVehicle } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
 //import PlateLookup from "../components/PlateLookup";
 
@@ -27,14 +27,24 @@ export default function VehicleDetails() {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const location = useLocation();
-  
-
-  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,createdfrom,pincodeAction } = location.state || {};
 
 
-  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] = 
-  useState(['owner', 'renter','tenant','family','friend','visitor','contractor']);
- 
+  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, createdfrom, pincodeAction } = location.state || {};
+
+
+  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
+    useState(['owner', 'renter', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
+
+    /*
+     <option value="">-- Select type --</option>
+                                <option value="renter">Short Term Renter</option>
+                                <option value="tenant">Tenant (Long Term Renter)</option>
+                                <option value="family">Family</option>
+                                <option value="friend">Friend</option>
+                                <option value="visitor">Visitor / Day Guest</option>
+                                <option value="contractor">Contractor / Vendor</option>
+    */
+
   /*
    state: {
           unitNumber: uid,
@@ -47,11 +57,12 @@ export default function VehicleDetails() {
         }
   */
 
-      
+
 
   const [userIdForUnit, setUserIdForUnit] = useState();
   const [unitOwner, setUnitOwner] = useState();
-   const [stateUnit, setStateUnit] = useState();
+  const [stateUnit, setStateUnit] = useState();
+  const [createdByType, setCreatedByType] = useState("owner");
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
 
@@ -84,10 +95,11 @@ export default function VehicleDetails() {
   edate.setDate(edate.getDate() + 3);
 
 
-  
+
   // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
+
   const [formData, setFormData] = useState({
     carowner_fname: "",
     carowner_lname: "",
@@ -104,16 +116,22 @@ export default function VehicleDetails() {
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
   });
-  //  console.log('vehicle details formData is ', formData);
+
   // console.log('LOCATION STATE IS  owner ', location.state.ownerOfUnit);
- // console.log('LOCATION STATE IS  unit ', location.state.unit);
+  // console.log('LOCATION STATE IS  unit ', location.state.unit);
   useEffect(() => {
-      console.log("VEHICLE DETAILS location state is ",location.state);
-      console.log("VEHICLE DETAILS the hoa is  ",hoa);
+    console.log("VEHICLE DETAILS location state is ", location.state);
+  //  console.log("VEHICLE DETAILS JUST THE VEHICLES ", location.state.vehicles);
+    //console.log("VEHICLE DETAILS the hoa is  ", hoa);
+    // console.log('VEHICLE DETAILS formData is ', formData);
+
+    if (createdfrom === "rentervehicles") {
+      setCreatedByType("other");
+    }
 
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
-    //  console.log('dmode:', dmode);
+      //  console.log('dmode:', dmode);
       if (dmode === 1) {
         setFormData({
           carowner_fname: "JJV",
@@ -209,7 +227,7 @@ export default function VehicleDetails() {
           enddate: ed,
           requires_payment: response.data.requires_payment || 0,
         });
-        // console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
+        //    console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
 
         setError(null);
       } catch (err) {
@@ -248,7 +266,7 @@ export default function VehicleDetails() {
   };
 
   const handleDeleteClick = () => {
- //   console.log('delete button clicked');
+    //   console.log('delete button clicked');
     setModal({
       isOpen: true,
       type: "confirm",
@@ -325,82 +343,108 @@ export default function VehicleDetails() {
       return;
     }
 
-    if (role === 'renter') {
-      const todayStr = new Date().toISOString().split('T')[0];
-      const edate = formData.enddate;
-      //  console.log('Renter enddate is:', edate);
-      //  console.log('todayStr is:', todayStr);
-      const startDate = new Date(todayStr).getTime();
-      const endDate = new Date(edate).getTime();
-      if (startDate > endDate) {
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: "End date must be after current date.",
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }))
-          }
-        });
-        return;
-      }
-    }
+    // if (role === 'renter') {
+    //   const todayStr = new Date().toISOString().split('T')[0];
+    //   const edate = formData.enddate;
+    //   //  console.log('Renter enddate is:', edate);
+    //   //  console.log('todayStr is:', todayStr);
+    //   const startDate = new Date(todayStr).getTime();
+    //   const endDate = new Date(edate).getTime();
+    //   if (startDate > endDate) {
+    //     setModal({
+    //       isOpen: true,
+    //       type: "alert",
+    //       title: "Validation Error",
+    //       message: "End date must be after current date.",
+    //       confirmText: "OK",
+    //       onConfirm: () => {
+    //         setModal(prev => ({ ...prev, isOpen: false }))
+    //       }
+    //     });
+    //     return;
+    //   }
+    // }
 
 
-//  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
+    //  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
 
 
     // const renterFreeParking = ownerOfUnit?.renter_free_parking || 0;
     // const ownerFreeParking = ownerOfUnit?.owner_free_parking || 0;
-   
+
     // let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
 
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
-    let oktoaddobj = { oktoadd: false, activecount: 0 };;
+    let oktoaddobj = { oktoadd: false, activecount: 0 };
+    oktoaddobj = okToAddUnitVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+    console.log('VEHICLE DETAILS oktoaddobj',oktoaddobj);
     let rpflag = 0;
-    if (role === 'owner') {
-      // rpflag = 0;
-      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit,createdfrom,pincodeAction);
-   //   console.log('submitting oktoaddobj:', oktoaddobj);
-      if (!oktoaddobj.oktoadd) {
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: "You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.",
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }))
-          }
-        });
-        return;
-      } else {
-        rpflag = oktoaddobj.rpflag; //0;
-      }
-    }
-    if (role === 'renter') {
-    //  console.log('unit is', unit);
-      oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit,createdfrom,pincodeAction);
-      rpflag = oktoaddobj.rpflag;
-    }
+    // if (role === 'owner') {
+    //   oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+    //   if (!oktoaddobj.oktoadd) {
+    //     setModal({
+    //       isOpen: true,
+    //       type: "alert",
+    //       title: "Validation Error",
+    //       message: "You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.",
+    //       confirmText: "OK",
+    //       onConfirm: () => {
+    //         setModal(prev => ({ ...prev, isOpen: false }))
+    //       }
+    //     });
+    //     return;
+    //   } else {
+    //     rpflag = oktoaddobj.rpflag; //0;
+    //   }
+    // }
+    // if (role === 'renter') {
+    //   oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+    //   rpflag = oktoaddobj.rpflag;
+    // }
+
+
+
 
     setFormSubmitting(true);
+
+    let unitcbt = "";
+
+    let cv = oktoaddobj.currentVehicle;
+    if (cv !== null) {
+      unitcbt = cv[0].createdbytype;
+
+    }
+
+  //  console.log('the cv is ',cv,unitcbt)
 
 
     try {
       // Prefer the user associated with the unit, fallback to logged in user (e.g. admin or owner creating for themselves)
       let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
+      let cot = formData['carownertype'];
+      let cbt = "other";
+      if (createdfrom === "ownervehicles") {
+        cbt = "owner";
+      } else {
+
+        if (unitcbt === "owner") {
+          cbt = "owner";
+        }
+      }
+
+
 
       const vehiclePayload = {
         ...formData,
         hoaid: hoaId,
         ownerid: oid,
-        requires_payment: rpflag
+        requires_payment: rpflag,
+        createdbytype: cbt
       };
       console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
 
       if (isModifyMode) {
+       // console.log('we are modifying a vehicle')
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
 
         if (response.status === 200) {
@@ -571,7 +615,7 @@ export default function VehicleDetails() {
                     ))}
                   </select>
                 </div>
-{/* 
+                {/* 
                 <div style={{ marginLeft: "5px", fontSize: "10pt" }}>
                   {formData.unitnumber}
                 </div> */}
@@ -582,7 +626,7 @@ export default function VehicleDetails() {
                   value={formData.unitnumber}
                 /> */}
 
-                
+
                 {/* the hidden filed will have the value for for unit number */}
 
                 {/* <div style={{ marginBottom: "0px" }}>
@@ -664,7 +708,7 @@ export default function VehicleDetails() {
                   </select>
                 </div>
 
-                 <div style={{ marginBottom: "15px" }}>
+                <div style={{ marginBottom: "15px" }}>
                   <label className="input-label">
                     Unit
                   </label>
@@ -673,7 +717,7 @@ export default function VehicleDetails() {
                     name="unitnumber"
                     value={formData.unitnumber}
                     onChange={handleFormChange}
-                   disabled
+                    disabled
                   />
                 </div>
 

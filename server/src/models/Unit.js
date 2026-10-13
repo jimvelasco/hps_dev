@@ -50,7 +50,10 @@ const unitSchema = new mongoose.Schema({
     type: Number,
     default: 2
   },
-
+  available_for_rent: {
+   type: Number,
+    default: 1
+  },
 
   company: {
     type: String,

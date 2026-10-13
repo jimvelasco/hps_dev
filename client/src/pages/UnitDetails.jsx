@@ -38,7 +38,8 @@ export default function UnitDetails() {
     parking_allowed_renter: "",
     owner_free_parking: "",
     renter_free_parking: "",
-    pincodeary: []
+    pincodeary: [],
+    available_for_rent: 1
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,7 +110,8 @@ export default function UnitDetails() {
           parking_allowed_renter: response.data.parking_allowed_renter || "",
           owner_free_parking: response.data.owner_free_parking || "",
           renter_free_parking: response.data.renter_free_parking || "",
-          pincodeary: response.data.pincodeary || []
+          pincodeary: response.data.pincodeary || [],
+          available_for_rent: response.data.available_for_rent ?? 1
         });
       } catch (err) {
         setError(err.response?.data?.message || err.message || "Failed to fetch user");
@@ -176,6 +178,7 @@ export default function UnitDetails() {
         unitnumber: formData.unitnumber,
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : 0,
         pincodeary: formData.pincodeary,
+        available_for_rent: formData.available_for_rent,
         inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,
         parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,
         parking_allowed_owner: formData.parking_allowed_owner ? parseInt(formData.parking_allowed_owner) : undefined,
@@ -457,6 +460,17 @@ export default function UnitDetails() {
 
 
 
+
+               <div style={{ marginTop: "15px",marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
+                <input
+                  id="unit-available_for_rent"
+                  type="checkbox"
+                  checked={formData.available_for_rent === 1}
+                  onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
+                />
+                <label className="input-label" htmlFor="unit-available_for_rent">Available for rent</label>
+                
+              </div>
 
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>

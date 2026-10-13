@@ -52,7 +52,7 @@ const getUnit = async (req, res) => {
 const createUnit = async (req, res) => {
   try {
     const { hoaid,
-      unitnumber, bedrooms, pincode, pincodeary, inventory_allowed_owner, parking_allowed_renter,
+      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking, company } = req.body;
 
     // const existingEmail = await User.findOne({ email, hoaid });
@@ -74,6 +74,7 @@ const createUnit = async (req, res) => {
       company,
       pincode,
       pincodeary,
+      available_for_rent,
       inventory_allowed_owner,
       parking_allowed_renter,
       parking_allowed_owner,
@@ -154,7 +155,7 @@ const updateUnit = async (req, res) => {
   try {
   //  const { id } = req.params;
     const { hoaid, unitnumber, bedrooms,  company,
-      pincode, pincodeary, inventory_allowed_owner, parking_allowed_renter,
+      pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
    //console.log("updateUnit body:", req.body);
    let qry = {hoaid:hoaid,unitnumber:unitnumber}
@@ -184,6 +185,7 @@ const updateUnit = async (req, res) => {
     if (company !== undefined) unit.company = company;
     if (pincode !== undefined) unit.pincode = pincode;
     if (pincodeary !== undefined) unit.pincodeary = pincodeary;
+    if (available_for_rent !== undefined) unit.available_for_rent = available_for_rent;
     //  if (is_verified !== undefined) user.is_verified = is_verified;
     //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
     if (inventory_allowed_owner !== undefined) unit.inventory_allowed_owner = inventory_allowed_owner;

@@ -1,0 +1,925 @@
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import axios from "../services/api";
+import { useHoa } from "../context/HoaContext";
+import { useLoggedInUser } from "../hooks/useLoggedInUser";
+
+import DashboardNavbar from "../components/DashboardNavbar";
+import ModalAlert from "../components/ModalAlert";
+import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly } from "../utils/vehicleHelpers";
+import { getAWSResource } from "../utils/awsHelper";
+//import PlateLookup from "../components/PlateLookup";
+
+import mongoose from "mongoose";
+
+
+export default function VehicleDetails() {
+  const ObjectId = mongoose.Schema.Types.ObjectId;
+  const { hoaId, which, vehicleId } = useParams();
+  // vehicleId could be either the id of the vehicle if which is modify.
+  // or it could be the unitnumber if which is create.
+  //console.log("VehicleDetails.jsx params:", { hoaId, which, vehicleId });
+  const navigate = useNavigate();
+  const isModifyMode = which === "modify";
+  const [vehicle, setVehicle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
+  const location = useLocation();
+  
+
+  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,createdfrom,pincodeAction } = location.state || {};
+
+
+  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] = 
+  useState(['owner', 'renter','tenant','family','friend','visitor','contractor']);
+ 
+  /*
+   state: {
+          unitNumber: uid,
+          role: loggedInUser.role,
+          numberOfVehicles: vehicles.length,
+          vehicles: vehicles,
+          vehid: null,
+          ownerOfUnit: loggedInUser,
+          unit: unit
+        }
+  */
+
+      
+
+  const [userIdForUnit, setUserIdForUnit] = useState();
+  const [unitOwner, setUnitOwner] = useState();
+   const [stateUnit, setStateUnit] = useState();
+  const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
+  const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
+
+  const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
+
+  // const handlePlateDetected = (data) => {
+  //   // Mapping from Plate Recognizer vehicle types to our options
+  //   console.log('handlePlateDetected jjv data:', data);
+  //   const typeMapping = {
+  //     'sedan': 'Car',
+  //     'suv': 'Car',
+  //     'van': 'Car',
+  //     'pickup': 'Truck',
+  //     'truck': 'Truck',
+  //     'bus': 'Other',
+  //     'motorcycle': 'Motorcyle',
+  //     'rv': 'RV'
+  //   };
+
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     plate: data.plate || prev.plate,
+  //     make: data.make ? (data.make.charAt(0).toUpperCase() + data.make.slice(1)) : prev.make,
+  //     model: data.model ? (data.model.charAt(0).toUpperCase() + data.model.slice(1)) : prev.model,
+  //     vehicle_type: typeMapping[data.type?.toLowerCase()] || (data.type ? 'Other' : prev.vehicle_type)
+  //   }));
+  // };
+
+  const edate = new Date();
+  edate.setDate(edate.getDate() + 3);
+
+
+  
+  // console.log('vehicle details unitNumber is ', unitNumber,role);
+
+  const [termsAcknowledged, setTermsAcknowledged] = useState(false);
+  const [formData, setFormData] = useState({
+    carowner_fname: "",
+    carowner_lname: "",
+    carownerphone: "",
+    make: "",
+    model: "",
+    color: "",
+    year: "",
+    vehicle_type: "Car",
+    plate: "",
+    plate_state: "",
+    unitnumber: unitNumber || "",
+    carownertype: isModifyMode ? carownertype || "" : (vehicleOwnerTypeAry.includes(role) ? role : ""),
+    startdate: new Date().toISOString().split('T')[0],
+    enddate: edate.toISOString().split('T')[0]
+  });
+  //  console.log('vehicle details formData is ', formData);
+  // console.log('LOCATION STATE IS  owner ', location.state.ownerOfUnit);
+ // console.log('LOCATION STATE IS  unit ', location.state.unit);
+  useEffect(() => {
+      console.log("VEHICLE DETAILS location state is ",location.state);
+      console.log("VEHICLE DETAILS the hoa is  ",hoa);
+
+    if (hoa && !isModifyMode) {
+      let dmode = hoa.use_demo_mode;
+    //  console.log('dmode:', dmode);
+      if (dmode === 1) {
+        setFormData({
+          carowner_fname: "JJV",
+          carowner_lname: "Velasco",
+          carownerphone: "777-777-7777",
+          make: "Lincoln",
+          model: "Navigator",
+          color: "Green",
+          year: "2020",
+          vehicle_type: "Car",
+          plate: "",
+          plate_state: "TX",
+          unitnumber: unitNumber,
+          carownertype: vehicleOwnerTypeAry.includes(role) ? role : "",
+          startdate: new Date().toISOString().split('T')[0],
+          enddate: edate.toISOString().split('T')[0],
+        }
+        )
+      }
+      if (dmode === 0) {
+        setFormData({
+          carowner_fname: "",
+          carowner_lname: "",
+          carownerphone: "",
+          make: "",
+          model: "",
+          color: "",
+          year: "",
+          vehicle_type: "Car",
+          plate: "",
+          plate_state: "",
+          unitnumber: unitNumber,
+          carownertype: vehicleOwnerTypeAry.includes(role) ? role : "",
+          startdate: new Date().toISOString().split('T')[0],
+          enddate: edate.toISOString().split('T')[0],
+        }
+        )
+      }
+    }
+  }, [hoaId]);
+
+
+
+
+  useEffect(() => {
+    const storedTermsAcknowledged = sessionStorage.getItem("termsAcknowledged");
+    if (storedTermsAcknowledged === "true") {
+      setTermsAcknowledged(true);
+    }
+  }, []);
+
+  useEffect(() => {
+
+    setUserIdForUnit(ownerOfUnit._id);
+    setUnitOwner(ownerOfUnit);
+    setStateUnit(unit);
+  }, [hoaId, unitNumber, formData.unitnumber, isModifyMode]);
+
+
+
+  useEffect(() => {
+    //  if (userLoading) {return}
+    const fetchVehicle = async () => {
+      try {
+        setLoading(true);
+        const qry = `/vehicles/id/${vehid}`;
+        // console.log("VehicleDetails.jsx qry:", qry);
+        const response = await axios.get(qry);
+
+        const sd = utcDateOnly(response.data.checkin);
+        const ed = utcDateOnly(response.data.checkout);
+
+
+        //  console.log("checkin date:", sd,'before local', response.data.checkin);
+        //  console.log("checkout date:", ed, 'before local',response.data.checkout);
+        //  console.log("checkout date:',ed );
+        //  let oid = loggedInUser ? loggedInUser._id : userIdForUnit;
+        setFormData({
+          // ownerid: oid || null,
+          carowner_fname: response.data.carowner_fname || "",
+          carowner_lname: response.data.carowner_lname || "",
+          carownerphone: response.data.carownerphone || "",
+          unitnumber: response.data.unitnumber || "",
+          carownertype: response.data.carownertype || carownertype || role || "owner",
+          make: response.data.make || "",
+          model: response.data.model || "",
+          color: response.data.color || "",
+          year: response.data.year || "",
+          vehicle_type: response.data.vehicle_type || "",
+          plate: response.data.plate || "",
+          plate_state: response.data.plate_state || "",
+          startdate: sd,
+          enddate: ed,
+          requires_payment: response.data.requires_payment || 0,
+        });
+        // console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
+
+        setError(null);
+      } catch (err) {
+        setError(err.message || "Failed to load vehicle details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (isModifyMode && vehid) {
+      fetchVehicle();
+    } else if (!isModifyMode) {
+      setLoading(false);
+    }
+  }, [isModifyMode, vehid]);
+
+  const handleBackClick = () => {
+    // console.log('back clicked in Vehicle Details')
+    // navigate(`/${hoaId}/ownervehicles`);
+    navigate(-1);
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value
+    }));
+  };
+
+  const handleTermsAcknowledged = (e) => {
+    const checked = e.target.checked;
+    setTermsAcknowledged(checked);
+    sessionStorage.setItem("termsAcknowledged", checked);
+  };
+
+  const handleDeleteClick = () => {
+ //   console.log('delete button clicked');
+    setModal({
+      isOpen: true,
+      type: "confirm",
+      title: "Delete Vehicle",
+      message: "Are you sure you want to delete this vehicle? This action cannot be undone.",
+      confirmText: "Delete",
+      cancelText: "Cancel",
+      onConfirm: async () => {
+        setModal(prev => ({ ...prev, isOpen: false }));
+        setFormSubmitting(true);
+        try {
+          const response = await axios.delete(`/vehicles/${vehid}`);
+
+          if (response.status === 200) {
+            setModal({
+              isOpen: true,
+              type: "alert",
+              title: "Success",
+              message: "Vehicle deleted successfully!",
+              confirmText: "OK",
+              onConfirm: () => {
+                setModal(prev => ({ ...prev, isOpen: false }));
+                navigate(-1);
+              }
+            });
+          }
+        } catch (err) {
+          setModal({
+            isOpen: true,
+            type: "alert",
+            title: "Error",
+            message: `Error deleting vehicle: ${err.response?.data?.message || err.message}`,
+            confirmText: "OK",
+            onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+          });
+        } finally {
+          setFormSubmitting(false);
+        }
+      },
+      onCancel: () => setModal(prev => ({ ...prev, isOpen: false }))
+    });
+  };
+
+
+
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const requiredFields = [
+      "carowner_fname",
+      "carowner_lname",
+      "carownerphone",
+      "carownertype",
+      "make",
+      "plate",
+      "plate_state",
+      "unitnumber"
+    ];
+
+    const missingFields = requiredFields.filter(field => !formData[field]);
+
+    if (missingFields.length > 0) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: `Please fill in the following required fields: ${missingFields.join(", ")}`,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }))
+        }
+      });
+      return;
+    }
+
+    if (role === 'renter') {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const edate = formData.enddate;
+      //  console.log('Renter enddate is:', edate);
+      //  console.log('todayStr is:', todayStr);
+      const startDate = new Date(todayStr).getTime();
+      const endDate = new Date(edate).getTime();
+      if (startDate > endDate) {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: "End date must be after current date.",
+          confirmText: "OK",
+          onConfirm: () => {
+            setModal(prev => ({ ...prev, isOpen: false }))
+          }
+        });
+        return;
+      }
+    }
+
+
+//  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
+
+
+    // const renterFreeParking = ownerOfUnit?.renter_free_parking || 0;
+    // const ownerFreeParking = ownerOfUnit?.owner_free_parking || 0;
+   
+    // let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
+
+    //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
+    let oktoaddobj = { oktoadd: false, activecount: 0 };;
+    let rpflag = 0;
+    if (role === 'owner') {
+      // rpflag = 0;
+      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit,createdfrom,pincodeAction);
+   //   console.log('submitting oktoaddobj:', oktoaddobj);
+      if (!oktoaddobj.oktoadd) {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: "You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.",
+          confirmText: "OK",
+          onConfirm: () => {
+            setModal(prev => ({ ...prev, isOpen: false }))
+          }
+        });
+        return;
+      } else {
+        rpflag = oktoaddobj.rpflag; //0;
+      }
+    }
+    if (role === 'renter') {
+    //  console.log('unit is', unit);
+      oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid,stateUnit,createdfrom,pincodeAction);
+      rpflag = oktoaddobj.rpflag;
+    }
+
+    setFormSubmitting(true);
+
+
+    try {
+      // Prefer the user associated with the unit, fallback to logged in user (e.g. admin or owner creating for themselves)
+      let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
+
+      const vehiclePayload = {
+        ...formData,
+        hoaid: hoaId,
+        ownerid: oid,
+        requires_payment: rpflag
+      };
+      console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
+
+      if (isModifyMode) {
+        const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
+
+        if (response.status === 200) {
+          setModal({
+            isOpen: true,
+            type: "alert",
+            title: "Success",
+            message: "Vehicle updated successfully!",
+            confirmText: "OK",
+            onConfirm: () => {
+              setModal(prev => ({ ...prev, isOpen: false }));
+              navigate(-1);
+            }
+          });
+        }
+      } else {
+        //  console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
+        const response = await axios.post("/vehicles", vehiclePayload);
+
+        if (response.status === 201) {
+          setModal({
+            isOpen: true,
+            type: "alert",
+            title: "Success",
+            message: "Vehicle created successfully!",
+            confirmText: "OK",
+            onConfirm: () => {
+              setModal(prev => ({ ...prev, isOpen: false }));
+              navigate(-1);
+            }
+          });
+        }
+      }
+    } catch (err) {
+      const errorMessage = err.response?.data?.errors?.[0]?.message ||
+        err.response?.data?.message ||
+        err.message;
+
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Error",
+        message: `Error ${isModifyMode ? "updating" : "creating"} vehicle: ${errorMessage}`,
+        confirmText: "OK",
+        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+      });
+    } finally {
+      // console.log('finally block reached');
+      setFormSubmitting(false);
+    }
+  };
+
+  const navButtons = [
+    {
+      label: "Back",
+      onClick: handleBackClick,
+      // color: "#2196f3",
+      // hoverColor: "#1976d2",
+      which: "goback"
+    }
+  ];
+
+  const pageTitle = isModifyMode ? "Modify Vehicle" : "Create New Vehicle";
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
+        <DashboardNavbar title={pageTitle} buttons={navButtons} />
+        <div className="ajaxloader">
+          <p style={{ color: "#666" }}>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
+        <DashboardNavbar title={pageTitle} buttons={navButtons} />
+        <div className="displayerror">
+          <p><strong>Error:</strong> {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  let backgroundImage = '';
+  if (hoa) {
+    backgroundImage = getAWSResource(hoa, 'BI');
+  }
+  return (
+    <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+      <DashboardNavbar title={pageTitle} buttons={navButtons} />
+
+      <div className="page-content">
+        <div style={{
+          backgroundColor: "white",
+          padding: "30px",
+          borderRadius: "8px",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+        }}>
+          <h2 style={{ color: "#333", marginTop: 0 }}>
+            {pageTitle}
+          </h2>
+          <form onSubmit={handleFormSubmit}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px" }}>
+              {/* Owner Information */}
+              <div >
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Owner</h3>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    First Name *
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="carowner_fname"
+                    value={formData.carowner_fname}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Last Name *
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="carowner_lname"
+                    value={formData.carowner_lname}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Phone *
+                  </label>
+                  <input className="standardinput"
+                    type="tel"
+                    name="carownerphone"
+                    value={formData.carownerphone}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
+
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Owner Type
+                  </label>
+                  <select
+                    className="standardselect100"
+                    name="carownertype"
+                    value={formData.carownertype || ""}
+                    onChange={handleFormChange}
+                    disabled={isModifyMode || createdfrom === "rentervehicles"}
+                  >
+                    <option value="" disabled>Select owner type</option>
+                    {vehicleOwnerTypeAry.map(type => (
+                      <option key={type} value={type}>
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+{/* 
+                <div style={{ marginLeft: "5px", fontSize: "10pt" }}>
+                  {formData.unitnumber}
+                </div> */}
+
+                {/* <input
+                  type="hidden"
+                  name="unitnumber"
+                  value={formData.unitnumber}
+                /> */}
+
+                
+                {/* the hidden filed will have the value for for unit number */}
+
+                {/* <div style={{ marginBottom: "0px" }}>
+                  <label className="input-label">
+                    Unit Number *
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="unitnumber"
+                    value={formData.unitnumber}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div> */}
+
+
+              </div>
+
+              <div>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Registration</h3>
+
+
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    License Plate *
+                  </label>
+
+                  <input className="standardinput"
+                    type="text"
+                    name="plate"
+                    value={formData.plate}
+                    onChange={handleFormChange}
+                    required
+                  />
+
+                </div>
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Plate State *
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    maxLength={2}
+                    name="plate_state"
+                    value={formData.plate_state}
+                    onChange={handleFormChange}
+                    placeholder="e.g., CO, CA, TX"
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Vehicle Type
+                  </label>
+                  <select className="xxxstandardinput"
+                    name="vehicle_type"
+                    value={formData.vehicle_type}
+                    onChange={handleFormChange}
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                      boxSizing: "border-box"
+                    }}
+
+                  >
+                    <option value="">Select Type</option>
+                    <option value="Car">Car</option>
+                    <option value="Truck">Truck</option>
+                    <option value="RV">RV</option>
+                    <option value="Motorcyle">Motorcyle</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                 <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Unit
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="unitnumber"
+                    value={formData.unitnumber}
+                    onChange={handleFormChange}
+                   disabled
+                  />
+                </div>
+
+
+
+
+              </div>
+
+
+
+              {/* License Plate & Status */}
+              <div>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Vehicle</h3>
+
+
+
+
+
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Make *
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="make"
+                    value={formData.make}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Model
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="model"
+                    value={formData.model}
+                    onChange={handleFormChange}
+                  />
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Color
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="color"
+                    value={formData.color}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                <div style={{ marginBottom: "0px" }}>
+                  <label className="input-label">
+                    Year
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+
+
+              </div>
+
+
+              {/* Vehicle Information */}
+              <div>
+                <h3 style={{ color: "#1976d2", margin: "10px" }}>Stay</h3>
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Check In
+                  </label>
+                  <input className="standardinput"
+                    type="date"
+                    name="startdate"
+                    // value={new Date(formData.startdate).toISOString().substring(0, 10)}
+                    value={formData.startdate}
+
+
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+
+
+                <div style={{ marginBottom: "0px" }}>
+                  <label className="input-label">
+                    Check Out
+                  </label>
+                  <input className="standardinput"
+                    type="date"
+                    name="enddate"
+                    value={formData.enddate}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+
+              </div>
+
+
+
+            </div>
+
+            <div style={{ marginTop: "20px" }}>
+              <div style={{ marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
+                <input
+                  type="checkbox"
+                  id="termsCheckbox"
+                  checked={termsAcknowledged}
+                  onChange={handleTermsAcknowledged}
+                  style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                />
+
+
+                <label htmlFor="termsCheckbox" style={{ margin: 0, cursor: "pointer", color: "#666" }}>
+                  I have read and acknowledge the{" "}
+                  {role === 'owner' ? (
+                    <a href={getAWSResource(hoa, 'OTC')} target="_blank" rel="noopener noreferrer">
+                      Terms and Conditions
+                    </a>
+                  ) : (
+                    <a href={getAWSResource(hoa, 'RTC')} target="_blank" rel="noopener noreferrer">
+                      Terms and Conditions
+                    </a>
+                  )}
+
+                </label>
+
+                {/* <a href={getAWSResource(hoa, 'OTC')} target="_blank" rel="noopener noreferrer">
+                  View Terms and Conditions directly
+                </a> */}
+
+              </div>
+
+
+              {/* <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <button className="standardsubmitbutton"
+                  type="submit"
+                  disabled={formSubmitting || !termsAcknowledged}
+                >
+                  {formSubmitting ? (isModifyMode ? "Updating..." : "Creating...") : (isModifyMode ? "Update" : "Create")}
+                </button>
+                <button className="standardcancelbutton"
+                  type="button"
+                  onClick={handleBackClick}
+                >
+                  Cancel
+                </button>
+                {isModifyMode && (
+                  <button className="standarddeletebutton"
+                    type="button"
+                    onClick={handleDeleteClick}
+                    disabled={formSubmitting || !termsAcknowledged}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div> */}
+
+              <div className="button-grid">
+                <button className="btn btn-primary"
+                  type="submit"
+                  disabled={formSubmitting || !termsAcknowledged}
+                >
+                  {formSubmitting ? (isModifyMode ? "Updating..." : "Creating...") : (isModifyMode ? "Update" : "Create")}
+                </button>
+
+                <button className="btn btn-cancel"
+                  type="button"
+                  onClick={handleBackClick}
+                >
+                  Cancel
+                </button>
+                {isModifyMode && (
+                  <button className="btn btn-danger"
+                    type="button"
+
+                    onClick={handleDeleteClick}
+                    disabled={formSubmitting || !termsAcknowledged}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+
+
+
+
+
+              {/* <div className="button-grid">
+                <button>one</button>
+                <button>two</button>
+                <button>three</button>
+              </div> */}
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <ModalAlert
+        isOpen={modal.isOpen}
+        type={modal.type}
+        title={modal.title}
+        message={modal.message}
+        confirmText={modal.confirmText}
+        cancelText={modal.cancelText}
+        onConfirm={modal.onConfirm}
+        onCancel={modal.onCancel}
+      />
+
+      {/* <PlateLookup
+        isOpen={isPlateLookupOpen}
+        onClose={() => setIsPlateLookupOpen(false)}
+        onPlateDetected={handlePlateDetected}
+      /> */}
+    </div>
+  );
+}
+
+/*
+  <button
+                    type="button"
+                    onClick={() => setIsPlateLookupOpen(true)}
+                    style={{
+                      padding: "5px 10px",
+                      fontSize: "12px",
+                      backgroundColor: "#1976d2",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      marginTop: "5px",
+
+                    }}
+                  >
+                    Lookup Plate
+                  </button>
+                  */

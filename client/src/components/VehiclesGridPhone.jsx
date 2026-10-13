@@ -37,7 +37,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           <div className="grid-item-bold">Type</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
-          <div className="grid-item-normal row-with-gap" >&nbsp;
+          <div className="grid-item-normal row-with-gap" >cbt {vehicle.createdbytype}
          
             </div>
           <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>

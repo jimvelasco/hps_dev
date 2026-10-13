@@ -164,6 +164,9 @@ function App() {
             <Route path="/:hoaId/rentervehicles/:unitNumber" element={
               <RenterVehicles />
             } />
+             <Route path="/:hoaId/allvehicles/:unitNumber" element={
+              <RenterVehicles />
+            } />
             <Route path="/:hoaId/notifications" element={
               <ProtectedRoute>
                 <Notifications />

@@ -36,7 +36,7 @@ export default function RenterVehicles() {
 
 
   useEffect(() => {
-    console.log("RV state",location.state);
+ //   console.log("RV state",location.state);
     if (hoaId && unitNumber) {
       const fetchUserForUnit = async () => {
         try {
@@ -79,7 +79,10 @@ export default function RenterVehicles() {
         try {
           setVehiclesLoading(true);
           //  const response = await axios.get(`/vehicles/${hoaId}/renter/${unitNumber}`);
-          const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
+     //     const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
+               const response = await axios.get(`/vehicles/${hoaId}/allvehicles/${unitNumber}`);
+            //   console.log('ALL VEHICLES vehs',response.data)
+
           //  console.log('unitnumber',unitNumber);
 
           const updatedVehicles = response.data.map(v => ({
@@ -87,14 +90,29 @@ export default function RenterVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          const today = new Date().toLocaleDateString("en-CA");
-          const matchingVehicles = updatedVehicles.filter(v => {
-            if (v.carownertype !== nonownerType) return false;
-            if (v.carownertype !== "renter" || !v.enddate) return true;
-            const endDate = new Date(v.enddate);
-            return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
-          });
-          setVehicles(matchingVehicles);
+           const nonOwnerVehicles = updatedVehicles.filter(v => {
+             if (v.carownertype !== "owner") return true;
+             });
+
+             const nonTypeVehicles = nonOwnerVehicles.filter(v => {
+             if (v.carownertype === nonownerType) return true;
+             });
+
+            // nonownerType
+
+
+
+          // const today = new Date().toLocaleDateString("en-CA");
+          // const matchingVehicles = updatedVehicles.filter(v => {
+          //   if (v.carownertype !== nonownerType) return false;
+          //   if (v.carownertype !== "renter" || !v.enddate) return true;
+          //   const endDate = new Date(v.enddate);
+          //   return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+          // });
+
+         // setVehicles(matchingVehicles);
+
+            setVehicles(nonTypeVehicles);
 
           // console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
@@ -293,7 +311,8 @@ export default function RenterVehicles() {
         <div className="tableview">
           <div className="standardtitlebar" style={{ width: "420px" }}>
             <label className="input-label2">
-              {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber}
+              {/* {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber} */}
+               Unit: {unitNumber}
             </label><br />
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
                <FontAwesomeIcon

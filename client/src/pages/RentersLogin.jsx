@@ -22,8 +22,8 @@ export default function RentersLogin() {
         localStorage.removeItem("token");
         // console.log("RentersLogin component mounted");
         if (hoa && hoa.use_demo_mode) {
-            setSelectedUnit('995');
-            setPin('995');
+            setSelectedUnit('888');
+            setPin('888');
 
         }
 
@@ -67,10 +67,10 @@ export default function RentersLogin() {
         setLoadingUnits(true);
         try {
             const response = await axios.get("/units", { params: { hoaid: hoaId } });
-            const unitNumbers = response.data
-                .filter(unit => unit.unitnumber)
+            const unitNumbers = response.data.filter(unit => unit.unitnumber && unit.available_for_rent)
                 .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber }));
             unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
+          //  console.log('unit numbers array',unitNumbers);
             setUnits(unitNumbers);
         } catch (err) {
             // console.error("Error fetching units:", err);

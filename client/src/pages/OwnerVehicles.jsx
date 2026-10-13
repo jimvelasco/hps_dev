@@ -128,14 +128,28 @@ export default function OwnerVehicles() {
           const response = await axios.get(qry);
           //   console.log("fetchVehicles client received:", response.data.length)
           const today = new Date().toLocaleDateString("en-CA");
-          const updatedVehicles = response.data.filter(v => {
-            if (role === "admin" || v.carownertype !== "renter" || !v.enddate) return true;
-            const endDate = new Date(v.enddate);
-            return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+
+          // const updatedVehicles = response.data.filter(v => {
+          //   if (role === "admin" || v.carownertype !== "renter" || !v.enddate) return true;
+          //   const endDate = new Date(v.enddate);
+          //   return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+          // }).map(v => ({
+          //   ...v,
+          //   calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+          // }));
+
+                         
+
+
+           const updatedVehicles = response.data.filter(v => {
+            return true;
+          //  return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
           }).map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
+
+          
 
           //  console.log("updatedVehicles client received:", updatedVehicles.length)
 
