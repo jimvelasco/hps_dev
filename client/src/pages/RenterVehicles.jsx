@@ -37,7 +37,7 @@ export default function RenterVehicles() {
 
 
   useEffect(() => {
- //   console.log("RV state",location.state);
+    //   console.log("RV state",location.state);
     if (hoaId && unitNumber) {
       const fetchUserForUnit = async () => {
         try {
@@ -59,7 +59,7 @@ export default function RenterVehicles() {
   useEffect(() => {
     setUnitForRenter(null);
     if (!hoaId || !unitNumber) return;
-//console.log('passed action is ',pincodeAction);
+    //console.log('passed action is ',pincodeAction);
     let cancelled = false;
     const fetchUnit = async () => {
       try {
@@ -80,26 +80,46 @@ export default function RenterVehicles() {
         try {
           setVehiclesLoading(true);
           //  const response = await axios.get(`/vehicles/${hoaId}/renter/${unitNumber}`);
-     //     const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
-               const response = await axios.get(`/vehicles/${hoaId}/allvehicles/${unitNumber}`);
-            //   console.log('ALL VEHICLES vehs',response.data)
+          //     const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
+          let qry = `/vehicles/${hoaId}/allvehicles/${unitNumber}`;
 
-          //  console.log('unitnumber',unitNumber);
+       //    console.log("RenterVehicles.jsx qry:", qry);
 
-          const updatedVehicles = response.data.map(v => ({
+          const response = await axios.get(qry);
+        //  console.log('ALL VEHICLES renter vehicles ', response.data)
+
+          const responseData = response.data;
+          // responseData.forEach((el, index) => {
+          //   console.log(`responseData renters Index ${index}: ${el.enddate}`);
+          // });
+
+          //console.log('all vehicles from response ',unitNumber);
+
+          const updatedVehicles = responseData.map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-           const nonOwnerVehicles = updatedVehicles.filter(v => {
-             if (v.carownertype !== "owner") return true;
-             });
+        //  console.log('updatedVehicles', updatedVehicles);
 
-             const nonTypeVehicles = nonOwnerVehicles.filter(v => {
-             if (v.carownertype === nonownerType) return true;
-             });
+          let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
+          
+          console.log('renter vehicles active vehicles length', activeVehicles.length);
 
-            // nonownerType
+
+       //   console.log('active vehicles length', activeVehicles.length);
+
+          const nonOwnerVehicles = updatedVehicles.filter(v => {
+            if (v.carownertype !== "owner") return true;
+          });
+
+          const nonTypeVehicles = nonOwnerVehicles.filter(v => {
+            if (v.carownertype === nonownerType) return true;
+          });
+
+          // nonownerType
+
+
 
 
 
@@ -111,14 +131,14 @@ export default function RenterVehicles() {
           //   return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
           // });
 
-         // setVehicles(matchingVehicles);
+          // setVehicles(matchingVehicles);
 
-            setVehicles(nonTypeVehicles);
+          setVehicles(nonTypeVehicles);
 
-            if (pincodeAction != 'standard') {
-              if (pincodeAction == 'dayuse') setPincodeActionLabel('(Day Use Only)');
-              if (pincodeAction == 'special') setPincodeActionLabel('(Special Action)');
-            }
+          if (pincodeAction != 'standard') {
+            if (pincodeAction == 'dayuse') setPincodeActionLabel('(Day Use Only)');
+            if (pincodeAction == 'special') setPincodeActionLabel('(Special Action)');
+          }
 
           // console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
@@ -187,12 +207,12 @@ export default function RenterVehicles() {
     const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
     navigate(qry, {
       state: {
-        unitNumber: uid, 
-        role: "renter", 
+        unitNumber: uid,
+        role: "renter",
         carownertype: vehicle.carownertype,
-        vehicles: vehicles, 
-        ownerOfUnit: ownerOfUnit, 
-        vehid: vid, 
+        vehicles: vehicles,
+        ownerOfUnit: ownerOfUnit,
+        vehid: vid,
         unit: unitForRenter,
         createdfrom: 'rentervehicles',
         pincodeAction: pincodeAction
@@ -249,7 +269,7 @@ export default function RenterVehicles() {
     //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
     navigate(qry, {
       state: {
-        unitNumber: unitNumber, 
+        unitNumber: unitNumber,
         role: location.state?.nonownerType || "renter",
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
@@ -318,12 +338,12 @@ export default function RenterVehicles() {
           <div className="standardtitlebar" style={{ width: "420px" }}>
             <label className="input-label2">
               {/* {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber} */}
-               Unit: {unitNumber} {pincodeActionLabel}
+              Unit: {unitNumber} {pincodeActionLabel}
             </label><br />
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
-               <FontAwesomeIcon
-              icon={faPlus}
-            />  Add Vehicle
+              <FontAwesomeIcon
+                icon={faPlus}
+              />  Add Vehicle
             </button>
           </div>
         </div>

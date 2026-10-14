@@ -16,6 +16,8 @@ export const getVehicleActiveStatusBoolean = (element) => {
   //   now.getUTCMonth(),
   //   now.getUTCDate()
   // ));
+//const mongoDate = new Date(element.enddate);
+//console.log('the mongodate is ',mongoDate);
 const mongoDate = new Date(element.checkout);
 const mongoDateStr = utcDateOnly(mongoDate);
   // console.log('returning true *******************************************************',mongoDate,today);

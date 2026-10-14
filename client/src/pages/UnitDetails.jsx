@@ -34,6 +34,7 @@ export default function UnitDetails() {
     unitnumber: numonunit || "",
     bedrooms: 2,
     inventory_allowed_owner: "",
+    parking_allowed_unit: 2,
     parking_allowed_owner: "",
     parking_allowed_renter: "",
     owner_free_parking: "",
@@ -106,6 +107,7 @@ export default function UnitDetails() {
           unitnumber: response.data.unitnumber || "",
           bedrooms: response.data.bedrooms || "",
           inventory_allowed_owner: response.data.inventory_allowed_owner || "",
+          parking_allowed_unit: response.data.parking_allowed_unit ?? 2,
           parking_allowed_owner: response.data.parking_allowed_owner || "",
           parking_allowed_renter: response.data.parking_allowed_renter || "",
           owner_free_parking: response.data.owner_free_parking || "",
@@ -154,9 +156,17 @@ export default function UnitDetails() {
     }));
   };
 
+  const handleRemovePinEntry = (index) => {
+    if (!isAdminView || index === 0) return;
+    setFormData(prev => ({
+      ...prev,
+      pincodeary: prev.pincodeary.filter((_, entryIndex) => entryIndex !== index)
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('WE ARE SUBMITTING')
+  // console.log('WE ARE SUBMITTING')
 
     if (!formData.pincodeary.some(entry => typeof entry?.pincode === "string" && entry.pincode.trim())) {
       setModal({
@@ -180,6 +190,7 @@ export default function UnitDetails() {
         pincodeary: formData.pincodeary,
         available_for_rent: formData.available_for_rent,
         inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,
+        parking_allowed_unit: formData.parking_allowed_unit !== "" ? Number(formData.parking_allowed_unit) : undefined,
         parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,
         parking_allowed_owner: formData.parking_allowed_owner ? parseInt(formData.parking_allowed_owner) : undefined,
         owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : undefined,
@@ -387,7 +398,20 @@ export default function UnitDetails() {
                 <legend>PIN Entries</legend>
                 {formData.pincodeary.map((entry, index) => (
                   <div className="input-group" key={entry._id || index}>
-                    <label className="input-label" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>
+                    <div className="page-label">
+                      <label className="input-label" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>
+                      {isAdminView && index > 0 && (
+                        <button
+                          className="btnxs btn-danger" style={{marginBottom:"10px",marginTop:"5px",width:"80px"}}
+                          type="button"
+                          onClick={() => handleRemovePinEntry(index)}
+                          disabled={isSubmitting}
+                          aria-label={`Delete PIN #${index + 1}`}
+                        >
+                          Delete 
+                        </button>
+                      )}
+                    </div>
                     <input
                       id={`unit-pin-${index}`}
                       className="standardinput"
@@ -488,6 +512,20 @@ export default function UnitDetails() {
                   onChange={handleInputChange}
                   disabled={!isAdminView}
 
+                />
+              </div>
+
+              <div className="input-group">
+                <label className="input-label" htmlFor="parking_allowed_unit">Unit Parking Allowed</label>
+                <input
+                  id="parking_allowed_unit"
+                  className="standardinput"
+                  type="number"
+                  min="0"
+                  name="parking_allowed_unit"
+                  value={formData.parking_allowed_unit}
+                  onChange={handleInputChange}
+                  disabled={!isAdminView}
                 />
               </div>
 

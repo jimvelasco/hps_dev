@@ -53,7 +53,7 @@ const getUnit = async (req, res) => {
 const createUnit = async (req, res) => {
   try {
     const { hoaid,
-      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_renter,
+      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking, company } = req.body;
 
     const currentUser = await User.findById(req.user.userId);
@@ -82,6 +82,7 @@ const createUnit = async (req, res) => {
       pincodeary,
       available_for_rent,
       inventory_allowed_owner,
+      parking_allowed_unit,
       parking_allowed_renter,
       parking_allowed_owner,
       owner_free_parking,
@@ -161,7 +162,7 @@ const updateUnit = async (req, res) => {
   try {
   //  const { id } = req.params;
     const { hoaid, unitnumber, bedrooms,  company,
-      pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_renter,
+      pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
    //console.log("updateUnit body:", req.body);
    let qry = {hoaid:hoaid,unitnumber:unitnumber}
@@ -224,6 +225,7 @@ const updateUnit = async (req, res) => {
     //  if (is_verified !== undefined) user.is_verified = is_verified;
     //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
     if (inventory_allowed_owner !== undefined) unit.inventory_allowed_owner = inventory_allowed_owner;
+    if (currentUser.role === "admin" && parking_allowed_unit !== undefined) unit.parking_allowed_unit = parking_allowed_unit;
     if (parking_allowed_renter !== undefined) unit.parking_allowed_renter = parking_allowed_renter;
     if (parking_allowed_owner !== undefined) unit.parking_allowed_owner = parking_allowed_owner;
     if (owner_free_parking !== undefined) unit.owner_free_parking = owner_free_parking;

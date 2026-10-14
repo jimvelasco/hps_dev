@@ -27,8 +27,8 @@ export default function OwnersLogin() {
     localStorage.removeItem("token");
     if (hoa && hoa.use_demo_mode) {
       setPassword("123456");
-      setEmail("jim.velasco@gmail.com");
-      // setEmail("katherinepvelasco@gmail.com");
+     // setEmail("jim.velasco@gmail.com");
+       setEmail("katherinepvelasco@gmail.com");
       if (hoaId === 'LODGE') {
         setEmail('jim.lodge@gmail.com');
       }

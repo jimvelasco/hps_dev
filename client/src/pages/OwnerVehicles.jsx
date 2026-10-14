@@ -10,6 +10,7 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
 import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
+import { doesUnitHaveDayUse } from "../utils/unitHelpers";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
 
@@ -39,24 +40,24 @@ export default function OwnerVehicles() {
   const [unitForOwner, setUnitForOwner] = useState(null);
 
   // these are vehicle types that will show up on this page
-  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] = 
-  useState(['owner', 'renter','tenant','family','friend','visitor','contractor']);
+  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
+    useState(['owner', 'renter', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
 
 
-/*
-        return matchingVehicles.filter(v => v.carownertype === "owner" ||
-         v.carownertype === "family" ||
-          v.carownertype === "family"|| 
-          v.carownertype === "contractor");
-
-          <option value="">-- Select type --</option>
-          <option value="renter">Short Term Renter</option>
-          <option value="tenant">Tenant (Long Term Renter)</option>
-          <option value="family">Family</option>
-          <option value="friend">Friend</option>
-          <option value="visitor">Visitor/Day Guest</option>
-          <option value="contractor">Contractor/Vendor</option>
-*/
+  /*
+          return matchingVehicles.filter(v => v.carownertype === "owner" ||
+           v.carownertype === "family" ||
+            v.carownertype === "family"|| 
+            v.carownertype === "contractor");
+  
+            <option value="">-- Select type --</option>
+            <option value="renter">Short Term Renter</option>
+            <option value="tenant">Tenant (Long Term Renter)</option>
+            <option value="family">Family</option>
+            <option value="friend">Friend</option>
+            <option value="visitor">Visitor/Day Guest</option>
+            <option value="contractor">Contractor/Vendor</option>
+  */
 
   useEffect(() => {
     if (userLoading) {
@@ -124,7 +125,8 @@ export default function OwnerVehicles() {
             qry = `/vehicles/adminvehicles/${hoaId}`
           }
 
-          //    console.log("OwnerVehicles.jsx qry:", qry);
+          //      console.log("OwnerVehicles.jsx qry:", qry);
+
           const response = await axios.get(qry);
           //   console.log("fetchVehicles client received:", response.data.length)
           const today = new Date().toLocaleDateString("en-CA");
@@ -138,18 +140,28 @@ export default function OwnerVehicles() {
           //   calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           // }));
 
-                         
+          const responseData = response.data;
+          // responseData.forEach((el, index) => {
+          //   console.log(`responseData owners Index ${index}: ${el.enddate}`);
+          // });
 
 
-           const updatedVehicles = response.data.filter(v => {
+
+          const updatedVehicles = responseData.filter(v => {
             return true;
-          //  return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+            //  return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
           }).map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          
+          //   console.log('updatedVehicles vehicles length', updatedVehicles.length);
+
+
+          let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
+
+          //   console.log('active ownervehicles vehicles length', activeVehicles.length);
+
 
           //  console.log("updatedVehicles client received:", updatedVehicles.length)
 
@@ -165,7 +177,7 @@ export default function OwnerVehicles() {
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");
-        //  console.error("Error fetching vehicles:", err);
+          //  console.error("Error fetching vehicles:", err);
         } finally {
           setVehiclesLoading(false);
         }
@@ -238,14 +250,14 @@ export default function OwnerVehicles() {
   const handleFilterApply = (matchingVehicles) => {
     if (filterType === "owner") {
       //return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
-     // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
+      // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
       return matchingVehicles;
     }
     if (filterType === "renter") {
       //return matchingVehicles.filter(v => v.carownertype === "renter");
       return matchingVehicles;
     }
-     if (filterType === "all") {
+    if (filterType === "all") {
       return matchingVehicles;
     }
     return matchingVehicles;
@@ -260,7 +272,7 @@ export default function OwnerVehicles() {
     try {
 
       //  console.log('ov handle details click vehicle:', vehicle.carownertype);
-// editing allowed for all
+      // editing allowed for all
       // if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
       //   setModal({
       //     isOpen: true,
@@ -288,7 +300,7 @@ export default function OwnerVehicles() {
           ownerOfUnit: loggedInUser,
           vehid: vid,
           unit: unitForOwner,
-          pincodeAction:"",
+          pincodeAction: "",
           createdfrom: "ownervehicles"
         }
       });
@@ -345,10 +357,18 @@ export default function OwnerVehicles() {
 
       setUnitForOwner(unit);
       const parkingLimit = Number(unit.inventory_allowed_owner);
-   //   console.log('parking limit in ow',parkingLimit);
+      let unitParkingLimit = Number(unit.parking_allowed_unit);
+      //   console.log('parking limit in ow',parkingLimit);
       if (unit.inventory_allowed_owner == null || !Number.isFinite(parkingLimit)) {
         throw new Error("Unit inventory limit is unavailable.");
       }
+
+      const dayuseok = doesUnitHaveDayUse(unit);
+      console.log('dayuseok', dayuseok);
+      if (dayuseok) {
+        unitParkingLimit += 1;
+      }
+
 
       if (vehicles.length >= parkingLimit) {
         setModal({
@@ -362,6 +382,20 @@ export default function OwnerVehicles() {
         return;
       }
 
+      let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
+      if (activeVehicles.length >= unitParkingLimit) {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: `Vehicle limit reached. You can only have ${unitParkingLimit} active vehicles.`,
+          confirmText: "OK",
+          onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+        });
+        return;
+      }
+
+
       navigate(`/${hoaId}/vehicledetails/create/${uid}`, {
         state: {
           unitNumber: uid,
@@ -372,7 +406,7 @@ export default function OwnerVehicles() {
           ownerOfUnit: loggedInUser,
           unit,
           createdfrom: 'ownervehicles',
-          pincodeAction:""
+          pincodeAction: ""
         }
       });
     } catch (err) {
@@ -461,7 +495,7 @@ export default function OwnerVehicles() {
             >
               <option value="owner">Owner</option>
               <option value="renter">Renter</option>
-               <option value="all">All</option>
+              <option value="all">All</option>
             </select>
           </div>
         )}
@@ -492,15 +526,15 @@ export default function OwnerVehicles() {
           <button className="navbutton2"
             onClick={() => handleCreateClick()}>
             <FontAwesomeIcon
-                         icon={faPlus}
-                       />  Add 
+              icon={faPlus}
+            />  Add
           </button>
         )}
       </div>
     </div>)
   }
 
-  
+
   const handlePlateSearch = (searchTerm) => {
     const query = searchTerm.trim().toLowerCase();
     const matchingVehicles = allVehicles.filter(vehicle =>
@@ -511,8 +545,8 @@ export default function OwnerVehicles() {
 
   const renderPlateSearch = () => {
     return (
-      <div className="standardtitlebar380" style={{width:"300px"}}>
-        <label htmlFor="plate-search" style={{marginRight:"10px"}}>Filter</label>
+      <div className="standardtitlebar380" style={{ width: "300px" }}>
+        <label htmlFor="plate-search" style={{ marginRight: "10px" }}>Filter</label>
         <input
           id="plate-search"
           className="standardinput plate-search-input"

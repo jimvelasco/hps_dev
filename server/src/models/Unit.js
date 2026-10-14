@@ -37,6 +37,11 @@ const unitSchema = new mongoose.Schema({
     default: 8
   },
 
+   parking_allowed_unit: {
+    type: Number,
+    default: 2
+  },
+
   parking_allowed_owner: {
     type: Number,
     default: 5
