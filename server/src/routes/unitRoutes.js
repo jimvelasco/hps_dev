@@ -12,9 +12,9 @@ router.get("/:hoaid/:unitnumber", getUnit);
 router.put("/batch/update-parking", authenticateToken, updateAllUnits);
 
 
-router.post("/", createUnit);
+router.post("/", authenticateToken, createUnit);
 //router.put("/updateunit", validateRequest(updateUnitDetailsSchema), updateUnit);
-router.put("/updateunit", updateUnit);
+router.put("/updateunit", authenticateToken, updateUnit);
 router.delete("/:id", deleteUnit);
 
 

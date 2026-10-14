@@ -150,7 +150,7 @@ export default function UnitDetails() {
   const handleAddPinEntry = () => {
     setFormData(prev => ({
       ...prev,
-      pincodeary: [...prev.pincodeary, { pincode: "", action: "" }]
+      pincodeary: [...prev.pincodeary, { pincode: "", action: "", uses_allowed: -1, uses_used: 0, expire_date: "" }]
     }));
   };
 
@@ -324,7 +324,7 @@ export default function UnitDetails() {
 
   // console.log(isEditMode, isEditMode);
 
-  const isAdminView = which === 'admin';
+  const isAdminView = which === 'admin' && loggedInUser?.role === 'admin';
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
@@ -383,30 +383,27 @@ export default function UnitDetails() {
                 />
               </div> */}
 
-              {isAdminView ? (
-                 <fieldset className="input-group">
+              <fieldset className="input-group">
                 <legend>PIN Entries</legend>
                 {formData.pincodeary.map((entry, index) => (
                   <div className="input-group" key={entry._id || index}>
-                    <label className="input-label" htmlFor={`unit-pin-${index}`}>
-                      PIN #{index + 1}
-                    </label>
+                    <label className="input-label" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>
                     <input
                       id={`unit-pin-${index}`}
                       className="standardinput"
                       type="text"
                       value={entry.pincode ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "pincode", e.target.value)}
+                      disabled={!isAdminView && entry.action !== "standard"}
                       required
                     />
-                    <label className="input-label" htmlFor={`unit-pin-action-${index}`}>
-                      Action
-                    </label>
+                    <label className="input-label" htmlFor={`unit-pin-action-${index}`}>Action</label>
                     <select
                       id={`unit-pin-action-${index}`}
                       className="standardselect100"
                       value={entry.action ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "action", e.target.value)}
+                      disabled={!isAdminView}
                       required
                     >
                       <option value="">--Select action--</option>
@@ -414,48 +411,41 @@ export default function UnitDetails() {
                       <option value="dayuse">Day Use</option>
                       <option value="special">Special</option>
                     </select>
-                  </div>
-                ))}
-                <button className="btns btn-primary" type="button" onClick={handleAddPinEntry}>
-                  Add PIN Entry
-                </button>
-              </fieldset>
-
-              ) : (
-                 <fieldset className="input-group">
-                <legend>PIN Entries</legend>
-                {formData.pincodeary.map((entry, index) => (
-                  <div className="input-group" key={entry._id || index}>
-                    <label className="input-label" htmlFor={`unit-pin-${index}`}>
-                      PIN #{index + 1}
-                    </label>
+                    <label className="input-label" htmlFor={`unit-pin-uses-allowed-${index}`}>Uses Allowed</label>
                     <input
-                      id={`unit-pin-${index}`}
+                      id={`unit-pin-uses-allowed-${index}`}
                       className="standardinput"
-                      type="text"
-                      value={entry.pincode ?? ""}
-                      onChange={(e) => handlePinEntryChange(index, "pincode", e.target.value)}
+                      type="number"
+                      value={entry.uses_allowed ?? 0}
+                      onChange={(e) => handlePinEntryChange(index, "uses_allowed", e.target.value === "" ? "" : Number(e.target.value))}
+                      disabled={!isAdminView}
                     />
-                    <label className="input-label" htmlFor={`unit-pin-action-${index}`}>
-                      Action
-                    </label>
-                    <select
-                      id={`unit-pin-action-${index}`}
-                      className="standardselect100"
-                      value={entry.action ?? ""}
-                      onChange={(e) => handlePinEntryChange(index, "action", e.target.value)}
-                      disabled
-                    >
-                      <option value="">Select action</option>
-                      <option value="standard">standard</option>
-                      <option value="special">special</option>
-                    </select>
+                    <label className="input-label" htmlFor={`unit-pin-uses-used-${index}`}>Uses Used</label>
+                    <input
+                      id={`unit-pin-uses-used-${index}`}
+                      className="standardinput"
+                      type="number"
+                      value={entry.uses_used ?? -1}
+                      onChange={(e) => handlePinEntryChange(index, "uses_used", e.target.value === "" ? "" : Number(e.target.value))}
+                      disabled={!isAdminView}
+                    />
+                    <label className="input-label" htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
+                    <input
+                      id={`unit-pin-expire-date-${index}`}
+                      className="standardinput"
+                      type="date"
+                      value={entry.expire_date?.slice(0, 10) ?? ""}
+                      onChange={(e) => handlePinEntryChange(index, "expire_date", e.target.value)}
+                      disabled={!isAdminView}
+                    />
                   </div>
                 ))}
-               
+                {isAdminView && (
+                  <button className="btns btn-primary" type="button" onClick={handleAddPinEntry}>
+                    Add PIN Entry
+                  </button>
+                )}
               </fieldset>
-
-              )}
 
 
              

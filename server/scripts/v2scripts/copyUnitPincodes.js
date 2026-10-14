@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import connectDB from "../../src/config/db.js";
-
+// on 10/14/2026 we made a change.  Originaly we got the pincode and put it in the array.  Now we use unitnumber for the
+// instead of pincode
 const copyUnitPincodes = async () => {
   try {
     await connectDB();
@@ -10,9 +11,9 @@ const copyUnitPincodes = async () => {
     let examined = 0;
     let updated = 0;
 
-    for await (const unit of units.find({ pincode: { $exists: true, $ne: null } }, { projection: { pincode: 1, pincodeary: 1 } })) {
+    for await (const unit of units.find({ unitnumber: { $exists: true, $ne: null } }, { projection: { unitnumber: 1, pincodeary: 1 } })) {
       examined++;
-      const pincode = String(unit.pincode);
+      const pincode = String(unit.unitnumber);
       const entries = Array.isArray(unit.pincodeary) ? unit.pincodeary : [];
       const firstEntry = entries[0] && typeof entries[0] === "object" && !Array.isArray(entries[0])
         ? entries[0]

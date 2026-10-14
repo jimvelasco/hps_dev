@@ -1,4 +1,5 @@
 import Unit from "../models/Unit.js";
+import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import sgMail from "@sendgrid/mail";
 
@@ -54,6 +55,11 @@ const createUnit = async (req, res) => {
     const { hoaid,
       unitnumber, bedrooms, pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking, company } = req.body;
+
+    const currentUser = await User.findById(req.user.userId);
+    if (!currentUser || currentUser.role !== "admin" || currentUser.hoaid !== hoaid) {
+      return res.status(403).json({ message: "Only an HOA admin can create units" });
+    }
 
     // const existingEmail = await User.findOne({ email, hoaid });
     // if (existingEmail) {
@@ -167,6 +173,35 @@ const updateUnit = async (req, res) => {
       return res.status(404).json({ message: "Unit not found" });
     }
 
+    const currentUser = await User.findById(req.user.userId);
+    if (!currentUser || currentUser.hoaid !== unit.hoaid ||
+      (currentUser.role !== "admin" && (currentUser.role !== "owner" || currentUser.unitnumber !== unit.unitnumber))) {
+      return res.status(403).json({ message: "Not authorized to update this unit" });
+    }
+
+    if (currentUser.role !== "admin" && pincodeary !== undefined) {
+      const allowedFields = ["_id", "pincode", "action", "uses_allowed", "uses_used", "expire_date"];
+      const validEntries = Array.isArray(pincodeary) && pincodeary.length === unit.pincodeary.length &&
+        pincodeary.every((entry, index) => {
+          const original = unit.pincodeary[index];
+          return entry && Object.keys(entry).every(key => allowedFields.includes(key)) &&
+            String(entry._id) === String(original._id) &&
+            entry.action === original.action &&
+            entry.uses_allowed === original.uses_allowed &&
+            entry.uses_used === original.uses_used &&
+            (entry.expire_date ?? "") === (original.expire_date ?? "") &&
+            (original.action === "standard" || entry.pincode === original.pincode);
+        });
+      if (!validEntries) {
+        return res.status(403).json({ message: "Owners can only change standard PINs" });
+      }
+      pincodeary.forEach((entry, index) => {
+        if (unit.pincodeary[index].action === "standard") {
+          unit.pincodeary[index].pincode = entry.pincode;
+        }
+      });
+    }
+
   // console.log('got to here updateUnit', unit)
 
     // if (unitnumber !== undefined && unitnumber !== user.unitnumber) {
@@ -184,7 +219,7 @@ const updateUnit = async (req, res) => {
     if (bedrooms !== undefined) unit.bedrooms = bedrooms;
     if (company !== undefined) unit.company = company;
     if (pincode !== undefined) unit.pincode = pincode;
-    if (pincodeary !== undefined) unit.pincodeary = pincodeary;
+    if (currentUser.role === "admin" && pincodeary !== undefined) unit.pincodeary = pincodeary;
     if (available_for_rent !== undefined) unit.available_for_rent = available_for_rent;
     //  if (is_verified !== undefined) user.is_verified = is_verified;
     //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
