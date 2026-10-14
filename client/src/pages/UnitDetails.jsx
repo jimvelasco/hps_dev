@@ -222,7 +222,8 @@ export default function UnitDetails() {
             confirmText: "OK",
             onConfirm: () => {
               setModal(prev => ({ ...prev, isOpen: false }))
-              navigate(`/${hoaid}/dashboard`);
+           //   navigate(`/${hoaid}/dashboard`);
+               navigate(-1);
             }
           });
         }
