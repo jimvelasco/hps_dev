@@ -33,17 +33,17 @@ export default function VehicleDetails() {
 
 
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
-    useState(['owner', 'renter', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
+    useState(['owner', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
 
-    /*
-     <option value="">-- Select type --</option>
-                                <option value="renter">Short Term Renter</option>
-                                <option value="tenant">Tenant (Long Term Renter)</option>
-                                <option value="family">Family</option>
-                                <option value="friend">Friend</option>
-                                <option value="visitor">Visitor / Day Guest</option>
-                                <option value="contractor">Contractor / Vendor</option>
-    */
+  /*
+   <option value="">-- Select type --</option>
+                              <option value="renter">Short Term Renter</option>
+                              <option value="tenant">Tenant (Long Term Renter)</option>
+                              <option value="family">Family</option>
+                              <option value="friend">Friend</option>
+                              <option value="visitor">Visitor / Day Guest</option>
+                              <option value="contractor">Contractor / Vendor</option>
+  */
 
   /*
    state: {
@@ -121,7 +121,7 @@ export default function VehicleDetails() {
   // console.log('LOCATION STATE IS  unit ', location.state.unit);
   useEffect(() => {
     console.log("VEHICLE DETAILS location state is ", location.state);
-  //  console.log("VEHICLE DETAILS JUST THE VEHICLES ", location.state.vehicles);
+    //  console.log("VEHICLE DETAILS JUST THE VEHICLES ", location.state.vehicles);
     //console.log("VEHICLE DETAILS the hoa is  ", hoa);
     // console.log('VEHICLE DETAILS formData is ', formData);
 
@@ -377,7 +377,7 @@ export default function VehicleDetails() {
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
-    console.log('VEHICLE DETAILS oktoaddobj',oktoaddobj);
+    console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     // if (role === 'owner') {
     //   oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
@@ -415,7 +415,7 @@ export default function VehicleDetails() {
 
     }
 
-  //  console.log('the cv is ',cv,unitcbt)
+    //  console.log('the cv is ',cv,unitcbt)
 
 
     try {
@@ -444,7 +444,7 @@ export default function VehicleDetails() {
       console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
 
       if (isModifyMode) {
-       // console.log('we are modifying a vehicle')
+        // console.log('we are modifying a vehicle')
         const response = await axios.put(`/vehicles/${vehid}`, vehiclePayload);
 
         if (response.status === 200) {
@@ -596,10 +596,17 @@ export default function VehicleDetails() {
 
 
 
-                <div style={{ marginBottom: "15px" }}>
+                {/* <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                     Owner Type
                   </label>
+
+                  {createdfrom === "rentervehicles" && (
+                    <div>{formData.carownertype}</div>
+                  )
+                  }
+
+
                   <select
                     className="standardselect100"
                     name="carownertype"
@@ -614,33 +621,54 @@ export default function VehicleDetails() {
                       </option>
                     ))}
                   </select>
-                </div>
-                {/* 
-                <div style={{ marginLeft: "5px", fontSize: "10pt" }}>
-                  {formData.unitnumber}
+
+
+
                 </div> */}
 
-                {/* <input
-                  type="hidden"
-                  name="unitnumber"
-                  value={formData.unitnumber}
-                /> */}
-
-
-                {/* the hidden filed will have the value for for unit number */}
-
-                {/* <div style={{ marginBottom: "0px" }}>
-                  <label className="input-label">
-                    Unit Number *
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "0px", fontWeight: "bold" }}>
+                    Owner Type
                   </label>
-                  <input className="standardinput"
-                    type="text"
-                    name="unitnumber"
-                    value={formData.unitnumber}
-                    onChange={handleFormChange}
-                    required
-                  />
-                </div> */}
+
+                  {createdfrom === "rentervehicles" && (
+                    <div style={{ fontWeight: "bold"}}>
+                     
+                      <input className="standardinput"
+                        type="text"
+                        name="carownertype"
+                        value={formData.carownertype}
+                        disabled
+                      />
+                    </div>
+                  )
+                  }
+                  {createdfrom !== "rentervehicles" && (
+                    <select
+                      className="standardselect100"
+                      name="carownertype"
+                      value={formData.carownertype || ""}
+                      onChange={handleFormChange}
+                      disabled={isModifyMode || createdfrom === "rentervehicles"}
+                    >
+                      <option value="" disabled>Select owner type</option>
+                      {vehicleOwnerTypeAry.map(type => (
+                        <option key={type} value={type}>
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </option>
+                      ))}
+                    </select>
+                  )
+                  }
+
+
+
+
+
+
+                </div>
+
+
 
 
               </div>

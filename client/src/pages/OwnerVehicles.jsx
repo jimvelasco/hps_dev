@@ -41,7 +41,7 @@ export default function OwnerVehicles() {
 
   // these are vehicle types that will show up on this page
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
-    useState(['owner', 'renter', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
+    useState(['owner', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
 
 
   /*
@@ -148,8 +148,8 @@ export default function OwnerVehicles() {
 
 
           const updatedVehicles = responseData.filter(v => {
-            return true;
-            //  return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+         //   return true;
+              return (v.carownertype !== 'renter');
           }).map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
