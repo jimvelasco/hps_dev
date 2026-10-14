@@ -409,8 +409,9 @@ export default function UnitDetails() {
                       required
                     >
                       <option value="">--Select action--</option>
-                      <option value="standard">standard</option>
-                      <option value="special">special</option>
+                      <option value="standard">Standard</option>
+                      <option value="dayuse">Day Use</option>
+                      <option value="special">Special</option>
                     </select>
                   </div>
                 ))}

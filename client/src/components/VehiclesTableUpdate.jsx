@@ -147,7 +147,8 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
               {vehicle.carowner_lname}, {vehicle.carowner_fname}
             </div>
              <div className="standard-table-cell "> {vehicle.unitnumber}</div>
-            <div className="standard-table-cell "> {vehicle.carownertype}</div>
+            <div className="standard-table-cell">{vehicle.carownertype ? vehicle.carownertype.charAt(0).toUpperCase() + vehicle.carownertype.slice(1) : ""}</div>
+
               <div style={{ marginTop: '5px' }}>
               <button className="btnxs btn-secondary"
                 onClick={() => handleDetailsClick(vehicle)}>
