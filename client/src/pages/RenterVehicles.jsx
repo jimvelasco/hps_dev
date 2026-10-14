@@ -28,6 +28,7 @@ export default function RenterVehicles() {
   const [userIdForUnit, setUserIdForUnit] = useState(null);
   const [ownerOfUnit, setOwnerOfUnit] = useState(null);
   const [unitForRenter, setUnitForRenter] = useState(null);
+  const [pincodeActionLabel, setPincodeActionLabel] = useState("");
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
   const nonownerType = location.state?.nonownerType;
@@ -113,6 +114,11 @@ export default function RenterVehicles() {
          // setVehicles(matchingVehicles);
 
             setVehicles(nonTypeVehicles);
+
+            if (pincodeAction != 'standard') {
+              if (pincodeAction == 'dayuse') setPincodeActionLabel('(Day Use Only)');
+              if (pincodeAction == 'special') setPincodeActionLabel('(Special Action)');
+            }
 
           // console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
@@ -292,7 +298,7 @@ export default function RenterVehicles() {
     return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }
 
-  const t = nonownerTypeText + ' Vehicles'
+  const t = nonownerTypeText + ' Vehicles';
 
   return (
     <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
@@ -312,7 +318,7 @@ export default function RenterVehicles() {
           <div className="standardtitlebar" style={{ width: "420px" }}>
             <label className="input-label2">
               {/* {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber} */}
-               Unit: {unitNumber}
+               Unit: {unitNumber} {pincodeActionLabel}
             </label><br />
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
                <FontAwesomeIcon
@@ -325,17 +331,17 @@ export default function RenterVehicles() {
         <div className="phoneview">
           <div className="standardtitlebar">
 
-            <label className="input-label2">
+            {/* <label className="input-label2">
               {ownerOfUnit.first_name} {ownerOfUnit.last_name}
             </label>
             <br />
             <label className="input-label2">
               {ownerOfUnit.phone}
             </label>
-            <br />
+            <br /> */}
 
             <label className="input-label2">
-              Unit: {unitNumber}
+              Unit: {unitNumber} {pincodeActionLabel}
             </label>
             <br />
 

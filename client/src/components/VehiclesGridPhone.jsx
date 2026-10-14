@@ -33,13 +33,15 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           style={{fontSize:'.7rem',marginBottom:'0px'}}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
 
           <div className="grid-item-bold">Unit</div>
-           <div className="grid-item-bold">{vehicle.carownertype ? vehicle.carownertype.charAt(0).toUpperCase() + vehicle.carownertype.slice(1) : ""}</div>
+                     {/* <div className="grid-item-bold" style={{marginTop:"15px"}}>{vehicle.carownertype ? vehicle.carownertype.charAt(0).toUpperCase() + vehicle.carownertype.slice(1) : ""}</div> */}
+
+           <div className="grid-item-bold" style={{marginTop:"0px"}}>&nbsp;</div>
+           
           <div className="grid-item-bold">Type</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
-          <div className="grid-item-normal row-with-gap" >cbt {vehicle.createdbytype}
-         
-            </div>
+          {/* <div className="grid-item-normal row-with-gap" >cbt {vehicle.createdbytype} */}
+           <div className="grid-item-normal row-with-gap" style={{marginTop:"0px"}}><b>{vehicle.carownertype ? vehicle.carownertype.toUpperCase()  : ""}</b></div>
           <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 
           <div className="grid-item-bold">Make</div>
