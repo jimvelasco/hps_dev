@@ -18,10 +18,17 @@ export const getVehicleActiveStatusBoolean = (element) => {
   // ));
 //const mongoDate = new Date(element.enddate);
 //console.log('the mongodate is ',mongoDate);
+
+
 const mongoDateIn = new Date(element.checkin);
 const mongoDateInStr = utcDateOnly(mongoDateIn);
 const mongoDate = new Date(element.checkout);
 const mongoDateStr = utcDateOnly(mongoDate);
+
+// const mongoDateIn = new Date(element.startdate);
+// const mongoDateInStr = utcDateOnly(mongoDateIn);
+// const mongoDate = new Date(element.enddate);
+// const mongoDateStr = utcDateOnly(mongoDate);
   // console.log('returning true *******************************************************',mongoDate,today);
   // console.log('PLATE IS ', element.plate, ' TODAY IS ', today.toISOString().split('T')[0],' VEHICLE CHECKOUT DATE IS ', mongoDate.toISOString().split('T')[0]);
 //console.log('plate is', element.plate,'modgodate is ', utcDateOnly(mongoDate), ' today is ', utcDateOnly(today));
@@ -31,11 +38,19 @@ const mongoDateStr = utcDateOnly(mongoDate);
   // } else {
   //   return false;
   // }
-   if (mongoDateInStr >= todayStr && mongoDateStr >= todayStr ) {
-     // console.log('getVehicleActiveStatusBoolean rvalue is true')
 
+
+   if (mongoDateInStr >= todayStr && mongoDateStr >= todayStr ) {
+    //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
+    return false;
+  } 
+  if ( mongoDateStr >= todayStr ) {
+    //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
     return true;
-  } else {
+  } 
+
+  
+  else {
      // console.log('getVehicleActiveStatusBoolean rvalue is false')
 
     return false;
