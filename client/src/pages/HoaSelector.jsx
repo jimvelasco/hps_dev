@@ -75,12 +75,12 @@ export default function HoaSelector() {
         padding: "30px",
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
       }}>
-        <h2 style={{ color: "#1976d2", textAlign: "center", marginTop: 0 }}>
+        <h2 style={{ color: "#1976d2", textAlign: "center", marginTop: 0,marginBottom:"15px"}}>
           Welcome
         </h2>
-        <p style={{ textAlign: "center", color: "#666", fontSize: "16px" }}>
-          Select your HOA to get started
-        </p>
+        {/* <p style={{ textAlign: "center", color: "#666", fontSize: "16px" }}>
+         Let's Get Started
+        </p> */}
 
         {error && (
           <div className="displayerror" style={{ marginBottom: "20px" }}>

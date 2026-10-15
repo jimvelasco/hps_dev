@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "../../services/api";
 import { useHoa } from "../../context/HoaContext";
@@ -106,13 +106,13 @@ export default function HoaSettings() {
     return <div>Loading...</div>;
   }
 
-let backgroundImage = '';
+  let backgroundImage = '';
   if (hoa) {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
 
   return (
-      <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
+    <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
       <DashboardNavbar title="HOA Settings" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
@@ -194,7 +194,7 @@ let backgroundImage = '';
             </div>
 
             <div>
-              <label className="input-label">Parking Allowed HOA (No Handicap)</label>
+              <label className="input-label">Parking Spaces Available (No Handicap)</label>
               <input
                 type="number"
                 className="standardinput"
@@ -204,8 +204,8 @@ let backgroundImage = '';
               />
             </div>
 
-             <div>
-              <label className="input-label">Parking Handicapped HOA </label>
+            <div>
+              <label className="input-label">Parking Spaces Available (Handicap) </label>
               <input
                 type="number"
                 className="standardinput"
@@ -216,7 +216,7 @@ let backgroundImage = '';
             </div>
 
             <div>
-              <label className="input-label">Inventory Allowed (Owner)</label>
+              <label className="input-label">Inventory Allowed (Unit)</label>
               <input
                 type="number"
                 className="standardinput"
@@ -226,19 +226,11 @@ let backgroundImage = '';
               />
             </div>
 
-            <div>
-              <label className="input-label">Parking Allowed (Renter)</label>
-              <input
-                type="number"
-                className="standardinput"
-                name="parking_allowed_renter"
-                value={formData.parking_allowed_renter}
-                onChange={handleInputChange}
-              />
-            </div>
+ <fieldset className="input-group">
+              <legend><b>Owner</b></legend>
 
             <div>
-              <label className="input-label">Parking Allowed (Owner)</label>
+              <label className="input-label"  style={{marginTop:"10px"}}>Parking Spaces Allowed</label>
               <input
                 type="number"
                 className="standardinput"
@@ -249,18 +241,7 @@ let backgroundImage = '';
             </div>
 
             <div>
-              <label className="input-label">Renter Free Parking Spots</label>
-              <input
-                type="number"
-                className="standardinput"
-                name="renter_free_parking_spots"
-                value={formData.renter_free_parking_spots}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            <div>
-              <label className="input-label">Owner Free Parking Spots</label>
+              <label className="input-label">Free Parking Spaces (No Charge)</label>
               <input
                 type="number"
                 className="standardinput"
@@ -269,6 +250,33 @@ let backgroundImage = '';
                 onChange={handleInputChange}
               />
             </div>
+            </fieldset>
+            <fieldset className="input-group">
+              <legend><b>Renter</b></legend>
+              <div>
+                <label className="input-label" style={{marginTop:"10px"}}>Parking Spaces Allowed</label>
+                <input
+                  type="number"
+                  className="standardinput"
+                  name="parking_allowed_renter"
+                  value={formData.parking_allowed_renter}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div>
+                <label className="input-label">Free Parking Spaces (No charge)</label>
+                <input
+                  type="number"
+                  className="standardinput"
+                  name="renter_free_parking_spots"
+                  value={formData.renter_free_parking_spots}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </fieldset>
+
+
 
             {/* <div className="hoa-settings-full-width">
               <label className="input-label">Background Image URL</label>
@@ -294,7 +302,7 @@ let backgroundImage = '';
           </div>
 
           <div className="button-grid" style={{ marginTop: "20px" }}>
-           
+
             <button
               onClick={handleSave}
               disabled={saving}

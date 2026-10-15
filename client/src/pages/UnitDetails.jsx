@@ -384,6 +384,30 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
+               <div style={{ marginTop: "15px",marginBottom: "15px", display: "flex", 
+                alignItems: "center", gap: "10px" }}>
+                <input
+                  id="unit-is_resident"
+                  type="checkbox"
+                  checked={formData.is_resident === 1}
+                  onChange={(e) => setFormData(prev => ({ ...prev, is_resident: e.target.checked ? 1 : 0 }))}
+                  disabled={!isAdminView}
+                />
+                <label className="input-label" htmlFor="unit-is_resident">Primary Residence for Owner</label>
+              </div>
+
+               <div style={{ marginTop: "15px",marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
+                <input
+                  id="unit-available_for_rent"
+                  type="checkbox"
+                  checked={formData.available_for_rent === 1}
+                  onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
+                />
+                <label className="input-label" htmlFor="unit-available_for_rent">Available for rent</label>
+              </div>
+
+
+              
               
               {/* <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
@@ -480,30 +504,7 @@ export default function UnitDetails() {
 
 
 
-               <div style={{ marginTop: "15px",marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
-                <input
-                  id="unit-available_for_rent"
-                  type="checkbox"
-                  checked={formData.available_for_rent === 1}
-                  onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
-                />
-                <label className="input-label" htmlFor="unit-available_for_rent">Available for rent</label>
-                
-              </div>
-
-
-               <div style={{ marginTop: "15px",marginBottom: "15px", display: "flex", 
-                alignItems: "center", gap: "10px" }}>
-                <input
-                  id="unit-is_resident"
-                  type="checkbox"
-                  checked={formData.is_resident === 1}
-                  onChange={(e) => setFormData(prev => ({ ...prev, is_resident: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView}
-                />
-                <label className="input-label" htmlFor="unit-is_resident">Is Resident</label>
-                
-              </div>
+              
 
               {/* <div className="input-group">
                 <label className="input-label" htmlFor="unit-is_resident">
@@ -532,7 +533,7 @@ export default function UnitDetails() {
 
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Inventory Allowed
+                  Inventory Allowed (Unit)
                 </label>
                 <input className="standardinput"
                   type="number"
@@ -557,10 +558,11 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
-
+ <fieldset className="input-group">
+              <legend><b>Owner</b></legend>
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Owner Parking Allowed
+                  Parking Spaces Allowed
                 </label>
                 <input className="standardinput"
                   type="number"
@@ -573,7 +575,7 @@ export default function UnitDetails() {
 
                <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Owner Free Parking
+                   Free Parking Spaces (No Charge)
                 </label>
                 <input className="standardinput"
                   type="number"
@@ -583,10 +585,13 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
+              </fieldset>
+               <fieldset className="input-group">
+              <legend><b>Renter</b></legend>
 
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Renter Parking Allowed
+                 Parking Spaces Allowed
                 </label>
                 <input className="standardinput"
                   type="number"
@@ -600,7 +605,7 @@ export default function UnitDetails() {
              
               <div style={{ marginBottom: "20px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Renter Free Parking
+                  Free Parking Spaces (No Charge)
                 </label>
                 <input className="standardinput"
                   type="number"
@@ -610,6 +615,7 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
+              </fieldset>
 
 
               <div className="button-grid">
