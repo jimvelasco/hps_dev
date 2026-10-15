@@ -8,7 +8,7 @@ import { useError } from "../context/ErrorContext";
 import ForgotPasswordDialog from "../components/ForgotPasswordDialog";
 import { getAWSResource } from "../utils/awsHelper";
 
-export default function OwnersLogin() {
+export default function OwnersLogin({loginType}) {
   const { hoaId } = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
@@ -22,6 +22,11 @@ export default function OwnersLogin() {
   const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [showForgotPasswordDialog, setShowForgotPasswordDialog] = useState(false);
+
+
+  useEffect(() => {
+    localStorage.setItem("logonType", loginType);
+  }, [loginType]);
 
   useEffect(() => {
     localStorage.removeItem("token");
@@ -125,6 +130,9 @@ export default function OwnersLogin() {
     // console.log('RTC',getAWSResource(hoa,'RTC'));
   }
 
+  const title = loginType === 'tenant' ? 'Tenant' : 'Owner';
+
+
   return (
     <div style={{
       backgroundImage: `url('${backgroundImage}')`,
@@ -141,7 +149,7 @@ export default function OwnersLogin() {
 
       <div className="loginboxes">
         <div style={{ marginTop: "10px", textAlign: "center" }}>
-          <h2 >Owner Login</h2>
+          <h2 >{title} Login</h2>
 
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>

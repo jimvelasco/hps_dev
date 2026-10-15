@@ -108,9 +108,14 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/:hoaId/about" element={<About />} />
             <Route path="/:hoaId" element={<AppContent />} />
+
             <Route path="/:hoaId/ownerslogin" element={
-              <OwnersLogin />
+              <OwnersLogin loginType="owner"/>
             } />
+            <Route path="/:hoaId/tenantslogin" element={
+              <OwnersLogin loginType="tenant"/>
+            } />
+
             <Route path="/:hoaId/dashboard" element={
               <ProtectedRoute>
                 <OwnersDashboard />

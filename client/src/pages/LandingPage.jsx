@@ -89,7 +89,7 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
               </button>
                <button
                 className="btnlp btn-primary"
-                onClick={() => navigate(`/${hoaId}/ownerslogin`)}
+                onClick={() => navigate(`/${hoaId}/tenantslogin`)}
               >
                 Tenants
               </button>

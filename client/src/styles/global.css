@@ -1731,7 +1731,7 @@ input.standardinput:disabled {
   width: 110px;
   /* padding: 0.25rem 0.25rem; */
   height: 40px;
-  max-width: 100px;
+  max-width: 150px;
   border-radius: 4px;
   border: 1px solid #ccc;
   background-color: #808080;

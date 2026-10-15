@@ -38,6 +38,7 @@ export default function OwnerVehicles() {
   const [showFilters, setShowFilters] = useState(false);
   const [showUnitId, setShowUnitId] = useState("");
   const [unitForOwner, setUnitForOwner] = useState(null);
+  const [logonType,setLogonType] = useState("owner");
 
   // these are vehicle types that will show up on this page
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -69,7 +70,11 @@ export default function OwnerVehicles() {
       setRole(loggedInUser.role);
       setOwnerId(loggedInUser._id);
       setShowUnitId(loggedInUser.unitnumber);
-      //  console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
+      setLogonType(localStorage.getItem('logonType'));
+
+  //    console.log('the logged on user type from button is ',localStorage.getItem('logonType'))
+
+    //  console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
       //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
     } else {
       console.log("owner vehicles loggedInUser is null")
@@ -156,6 +161,12 @@ export default function OwnerVehicles() {
           }));
 
           //   console.log('updatedVehicles vehicles length', updatedVehicles.length);
+          let updatedVehicles2 = [...updatedVehicles];
+       //   console.log('uvehicles',logonType,updatedVehicles2);
+
+          if (logonType === 'tenant') {
+            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype !== "owner");
+          }
 
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
@@ -165,15 +176,15 @@ export default function OwnerVehicles() {
 
           //  console.log("updatedVehicles client received:", updatedVehicles.length)
 
-          updatedVehicles.sort((a, b) => {
+          updatedVehicles2.sort((a, b) => {
             let valueA, valueB;
             valueA = a.calculatedActiveFlag || "";
             valueB = b.calculatedActiveFlag || "";
             return String(valueB).localeCompare(String(valueA));
           });
 
-          setVehicles(updatedVehicles);
-          setAllVehicles(updatedVehicles);
+          setVehicles(updatedVehicles2);
+          setAllVehicles(updatedVehicles2);
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");
