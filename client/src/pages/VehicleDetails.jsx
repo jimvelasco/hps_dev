@@ -134,16 +134,16 @@ export default function VehicleDetails() {
       //  console.log('dmode:', dmode);
       if (dmode === 1) {
         setFormData({
-          carowner_fname: "JJV",
-          carowner_lname: "Velasco",
-          carownerphone: "777-777-7777",
+          carowner_fname: "Mary",
+          carowner_lname: "Smith",
+          carownerphone: "707-123-5569",
           make: "Lincoln",
           model: "Navigator",
           color: "Green",
           year: "2020",
           vehicle_type: "Car",
           plate: "",
-          plate_state: "TX",
+          plate_state: "CO",
           unitnumber: unitNumber,
           carownertype: vehicleOwnerTypeAry.includes(role) ? role : "",
           startdate: new Date().toISOString().split('T')[0],

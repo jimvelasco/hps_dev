@@ -394,6 +394,8 @@ export default function OwnerVehicles() {
         return;
       }
 
+      console.log('ov vehicles',vehicles);
+
       let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
       if (activeVehicles.length >= unitParkingLimit) {
         setModal({
