@@ -284,19 +284,19 @@ export default function OwnerVehicles() {
 
       //  console.log('ov handle details click vehicle:', vehicle.carownertype);
       // editing allowed for all
-      // if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
-      //   setModal({
-      //     isOpen: true,
-      //     type: "alert",
-      //     title: "Validation Error",
-      //     message: `Owners cannot modify renter vehicles.`,
-      //     confirmText: "OK",
-      //     onConfirm: () => {
-      //       setModal(prev => ({ ...prev, isOpen: false }));
-      //     },
-      //   });
-      //   return;
-      // }
+      if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: `Owners cannot modify renter vehicles.`,
+          confirmText: "OK",
+          onConfirm: () => {
+            setModal(prev => ({ ...prev, isOpen: false }));
+          },
+        });
+        return;
+      }
 
       const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
       // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
@@ -394,7 +394,10 @@ export default function OwnerVehicles() {
         return;
       }
 
-      console.log('ov vehicles',vehicles);
+     // console.log('ov vehicles',vehicles);
+
+
+
 
       let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
       if (activeVehicles.length >= unitParkingLimit) {

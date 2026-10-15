@@ -29,6 +29,7 @@ export default function RenterVehicles() {
   const [ownerOfUnit, setOwnerOfUnit] = useState(null);
   const [unitForRenter, setUnitForRenter] = useState(null);
   const [pincodeActionLabel, setPincodeActionLabel] = useState("");
+  const [allActiveCount,setAllActiveCount] =useState(0);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
   const nonownerType = location.state?.nonownerType;
@@ -37,7 +38,7 @@ export default function RenterVehicles() {
 
 
   useEffect(() => {
-    //   console.log("RV state",location.state);
+       console.log("RV state",location.state);
     if (hoaId && unitNumber) {
       const fetchUserForUnit = async () => {
         try {
@@ -83,10 +84,10 @@ export default function RenterVehicles() {
           //     const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
           let qry = `/vehicles/${hoaId}/allvehicles/${unitNumber}`;
 
-       //    console.log("RenterVehicles.jsx qry:", qry);
+           console.log("RenterVehicles.jsx qry:", qry);
 
           const response = await axios.get(qry);
-        //  console.log('ALL VEHICLES renter vehicles ', response.data)
+          console.log('ALL VEHICLES renter vehicles ', response.data)
 
           const responseData = response.data;
           // responseData.forEach((el, index) => {
@@ -103,6 +104,7 @@ export default function RenterVehicles() {
         //  console.log('updatedVehicles', updatedVehicles);
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
+          setAllActiveCount(activeVehicles.length);
           
           console.log('renter vehicles active vehicles length', activeVehicles.length);
 
@@ -133,7 +135,9 @@ export default function RenterVehicles() {
 
           // setVehicles(matchingVehicles);
 
-          setVehicles(nonTypeVehicles);
+         // we get the entire batch of vehicles not just the other
+         //  setVehicles(nonTypeVehicles);
+           setVehicles(nonOwnerVehicles);
 
           if (pincodeAction != 'standard') {
             if (pincodeAction == 'dayuse') setPincodeActionLabel('(Day Use Only)');
@@ -241,20 +245,33 @@ export default function RenterVehicles() {
       alert("Unable to load unit information");
       return;
     }
-    const parkingLimit = unitForRenter.parking_allowed_renter || 0;
+  //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
+
+
+
+     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
+     let activeVehicleCount = activeVehicles.length;
+
+    const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
+      let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
+
+      console.log('RENTERVEHICLES limit and active count',vehicles,unitParkingLimit,activeVehicleCount);
+
+
+
     // const spotsTheyCanUse = 1 + (ownerOfUnit?.additional_parking_spots_paid || 0);
     // const nextSpotNumber = currentVehicleCount; // 1 for 2nd vehicle, 2 for 3rd
 
-    if (currentVehicleCount >= parkingLimit) {
+    if (activeVehicleCount >= unitParkingLimit) {
       // if (currentVehicleCount >= renterFreeParking) {
       // console.log("*******Parking limit reached, showing modal");
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: `Parking limit reached. Maximum renter parking spots allowed: ${parkingLimit}`,
+        message: `Parking limit reached. Maximum renter parking spots allowed: ${unitParkingLimit}`,
         //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
         confirmText: "OK",
         // cancelText: "Cancel",
@@ -367,7 +384,7 @@ export default function RenterVehicles() {
 
 
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
-              New Vehicle
+              Add Vehicle
             </button>
           </div>
 
