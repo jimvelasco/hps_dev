@@ -40,7 +40,7 @@ const mongoDateStr = utcDateOnly(mongoDate);
   // }
 
 
-   if (mongoDateInStr >= todayStr && mongoDateStr >= todayStr ) {
+   if (mongoDateInStr > todayStr && mongoDateStr >= todayStr ) {
     //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
     return false;
   } 
