@@ -448,7 +448,7 @@ export default function UnitDetails() {
                       disabled={!isAdminView && entry.action !== "standard"}
                       required
                     />
-                    <label className="input-label" htmlFor={`unit-pin-action-${index}`}>Action</label>
+                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-action-${index}` }>Action</label>
                     <select
                       id={`unit-pin-action-${index}`}
                       className="standardselect100"
@@ -460,9 +460,11 @@ export default function UnitDetails() {
                       <option value="">--Select action--</option>
                       <option value="standard">Standard</option>
                       <option value="dayuse">Day Use</option>
-                      <option value="special">Special</option>
+                      <option value="freenight">Free Night Parking</option>
+                      <option value="contractor">Contractor</option>
+                      <option value="special">Special???</option>
                     </select>
-                    <label className="input-label" htmlFor={`unit-pin-uses-allowed-${index}`}>Uses Allowed</label>
+                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
                     <input
                       id={`unit-pin-uses-allowed-${index}`}
                       className="standardinput"
@@ -471,7 +473,7 @@ export default function UnitDetails() {
                       onChange={(e) => handlePinEntryChange(index, "uses_allowed", e.target.value === "" ? "" : Number(e.target.value))}
                       disabled={!isAdminView}
                     />
-                    <label className="input-label" htmlFor={`unit-pin-uses-used-${index}`}>Uses Used</label>
+                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-uses-used-${index}`}>Number Used</label>
                     <input
                       id={`unit-pin-uses-used-${index}`}
                       className="standardinput"
@@ -480,7 +482,7 @@ export default function UnitDetails() {
                       onChange={(e) => handlePinEntryChange(index, "uses_used", e.target.value === "" ? "" : Number(e.target.value))}
                       disabled={!isAdminView}
                     />
-                    <label className="input-label" htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
+                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
                     <input
                       id={`unit-pin-expire-date-${index}`}
                       className="standardinput"
