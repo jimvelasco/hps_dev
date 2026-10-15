@@ -24,27 +24,26 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           </div>
 
           
-          
-          <div className="full-row" style={{ marginBottom: '0px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
+            <div className="full-row" style={{ marginBottom: '0px' }}>{ vehicle.carownertype.toUpperCase()}</div>
+          <div className="full-row" style={{ marginBottom: '10px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
            
           </div>
           
-          <div className="full-row" 
-          style={{fontSize:'.7rem',marginBottom:'0px'}}>{formatPhoneNumber(vehicle.carownerphone) || "N/A"}</div>
+         
 
           <div className="grid-item-bold">Unit</div>
                      {/* <div className="grid-item-bold" style={{marginTop:"15px"}}>{vehicle.carownertype ? 
                      vehicle.carownertype.charAt(0).toUpperCase() + vehicle.carownertype.slice(1) : ""}
                      </div> */}
 
-           <div className="grid-item-bold" style={{marginTop:"0px"}}>&nbsp;</div>
+           <div className="grid-item-bold" style={{marginTop:"0px"}}>Phone</div>
            
           <div className="grid-item-bold">Type</div>
 
           <div className="grid-item-normal row-with-gap">{vehicle.unitnumber || "N/A"}</div>
           {/* <div className="grid-item-normal row-with-gap" >cbt {vehicle.createdbytype} */}
            <div className="grid-item-normal row-with-gap" style={{marginTop:"0px"}}>
-            <b>{vehicle.carownertype ? vehicle.carownertype.toUpperCase()  : ""}</b>
+            {vehicle.carownerphone ? vehicle.carownerphone  : ""}
             </div>
           <div className="grid-item-normal row-with-gap">{vehicle.vehicle_type || "N/A"}</div>
 
