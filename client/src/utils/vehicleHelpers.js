@@ -18,6 +18,8 @@ export const getVehicleActiveStatusBoolean = (element) => {
   // ));
 //const mongoDate = new Date(element.enddate);
 //console.log('the mongodate is ',mongoDate);
+const mongoDateIn = new Date(element.checkin);
+const mongoDateInStr = utcDateOnly(mongoDateIn);
 const mongoDate = new Date(element.checkout);
 const mongoDateStr = utcDateOnly(mongoDate);
   // console.log('returning true *******************************************************',mongoDate,today);
@@ -29,7 +31,7 @@ const mongoDateStr = utcDateOnly(mongoDate);
   // } else {
   //   return false;
   // }
-   if (mongoDateStr >= todayStr) {
+   if (mongoDateInStr >= todayStr && mongoDateStr >= todayStr ) {
      // console.log('getVehicleActiveStatusBoolean rvalue is true')
 
     return true;

@@ -367,21 +367,22 @@ export default function OwnerVehicles() {
       }
 
       setUnitForOwner(unit);
-      const parkingLimit = Number(unit.inventory_allowed_owner);
-      let unitParkingLimit = Number(unit.parking_allowed_unit);
+      const parkingLimitInventory = 10; //Number(unit.inventory_allowed_owner);
+      let unitParkingLimit = 10; //Number(unit.parking_allowed_unit);
       //   console.log('parking limit in ow',parkingLimit);
-      if (unit.inventory_allowed_owner == null || !Number.isFinite(parkingLimit)) {
-        throw new Error("Unit inventory limit is unavailable.");
-      }
+      // if (unit.inventory_allowed_owner == null || !Number.isFinite(parkingLimit)) {
+      //   throw new Error("Unit inventory limit is unavailable.");
+      // }
 
       const dayuseok = doesUnitHaveDayUse(unit);
-      console.log('dayuseok', dayuseok);
+     // console.log('dayuseok', dayuseok);
       if (dayuseok) {
         unitParkingLimit += 1;
       }
 
+// this needs to be verified
 
-      if (vehicles.length >= parkingLimit) {
+      if (vehicles.length >= parkingLimitInventory) {
         setModal({
           isOpen: true,
           type: "alert",
@@ -405,6 +406,8 @@ export default function OwnerVehicles() {
         });
         return;
       }
+
+
 
 
       navigate(`/${hoaId}/vehicledetails/create/${uid}`, {
