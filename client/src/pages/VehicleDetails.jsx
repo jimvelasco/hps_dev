@@ -930,7 +930,7 @@ export default function VehicleDetails() {
                 >
                   Cancel
                 </button>
-                {isModifyMode && (
+                {isModifyMode && localStorage.getItem('logonType') !== 'tenant'&& (
                   <button className="btn btn-danger"
                     type="button"
 
