@@ -63,6 +63,10 @@ const unitSchema = new mongoose.Schema({
    type: Number,
     default: 1
   },
+   is_resident: {
+   type: Number,
+    default: 0
+  },
 
   company: {
     type: String,

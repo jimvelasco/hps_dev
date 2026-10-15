@@ -53,7 +53,7 @@ const getUnit = async (req, res) => {
 const createUnit = async (req, res) => {
   try {
     const { hoaid,
-      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
+      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking, company } = req.body;
 
     const currentUser = await User.findById(req.user.userId);
@@ -81,6 +81,7 @@ const createUnit = async (req, res) => {
       pincode,
       pincodeary,
       available_for_rent,
+      is_resident,
       inventory_allowed_owner,
       parking_allowed_unit,
       parking_allowed_renter,
@@ -94,6 +95,7 @@ const createUnit = async (req, res) => {
       unit: {
         _id: unit._id,
         unitnumber: unit.unitnumber,
+        is_resident: unit.is_resident,
          hoaid: unit.hoaid
       }
     });
@@ -162,7 +164,7 @@ const updateUnit = async (req, res) => {
   try {
   //  const { id } = req.params;
     const { hoaid, unitnumber, bedrooms,  company,
-      pincode, pincodeary, available_for_rent, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
+      pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
    //console.log("updateUnit body:", req.body);
    let qry = {hoaid:hoaid,unitnumber:unitnumber}
@@ -222,6 +224,7 @@ const updateUnit = async (req, res) => {
     if (pincode !== undefined) unit.pincode = pincode;
     if (currentUser.role === "admin" && pincodeary !== undefined) unit.pincodeary = pincodeary;
     if (available_for_rent !== undefined) unit.available_for_rent = available_for_rent;
+    if (is_resident !== undefined) unit.is_resident = is_resident;
     //  if (is_verified !== undefined) user.is_verified = is_verified;
     //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
     if (inventory_allowed_owner !== undefined) unit.inventory_allowed_owner = inventory_allowed_owner;
@@ -240,6 +243,7 @@ const updateUnit = async (req, res) => {
         pincode: unit.pincode,
         hoaid: unit.hoaid,
         unitnumber: unit.unitnumber,
+        is_resident: unit.is_resident,
       }
     });
   } catch (error) {

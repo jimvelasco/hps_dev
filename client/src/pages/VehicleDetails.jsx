@@ -379,24 +379,30 @@ export default function VehicleDetails() {
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
     console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
-    // if (role === 'owner') {
-    //   oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
-    //   if (!oktoaddobj.oktoadd) {
-    //     setModal({
-    //       isOpen: true,
-    //       type: "alert",
-    //       title: "Validation Error",
-    //       message: "You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.",
-    //       confirmText: "OK",
-    //       onConfirm: () => {
-    //         setModal(prev => ({ ...prev, isOpen: false }))
-    //       }
-    //     });
-    //     return;
-    //   } else {
-    //     rpflag = oktoaddobj.rpflag; //0;
+    let msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
+    Please deactivate another vehicle before activating this one.</>);
+    if (createdfrom === 'rentervehicles') {
+     msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
+     CALL THE OWNER OR ADMIN</>);
+    }
+    //   if (role === 'owner') {
+    //      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+    if (!oktoaddobj.oktoadd) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message:  msg ,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }))
+        }
+      });
+      return;
+    } else {
+      rpflag = oktoaddobj.rpflag; //0;
+    }
     //   }
-    // }
     // if (role === 'renter') {
     //   oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
     //   rpflag = oktoaddobj.rpflag;
@@ -410,8 +416,9 @@ export default function VehicleDetails() {
     let unitcbt = "";
 
     let cv = oktoaddobj.currentVehicle;
+    console.log('CURRENT VEHICLE IN VD', cv);
     if (cv !== null) {
-      unitcbt = cv[0].createdbytype;
+      //   unitcbt = cv[0].createdbytype;
 
     }
 
@@ -632,8 +639,8 @@ export default function VehicleDetails() {
                   </label>
 
                   {createdfrom === "rentervehicles" && (
-                    <div style={{ fontWeight: "bold"}}>
-                     
+                    <div style={{ fontWeight: "bold" }}>
+
                       <input className="standardinput"
                         type="text"
                         name="carownertype"
@@ -930,7 +937,7 @@ export default function VehicleDetails() {
                 >
                   Cancel
                 </button>
-                {isModifyMode && localStorage.getItem('logonType') !== 'tenant'&& (
+                {isModifyMode && localStorage.getItem('logonType') !== 'tenant' && (
                   <button className="btn btn-danger"
                     type="button"
 

@@ -13,6 +13,11 @@ db.units.updateMany(
 
 db.units.updateMany(
   {},
+  { $set: { "is_resident": 0 }}
+);
+
+db.units.updateMany(
+  {},
   { $set: { "parking_allowed_unit": 2 }}
 );
 
@@ -20,6 +25,8 @@ db.hoas.updateMany(
   {},
   { $set: { "parking_handicapped_hoa": 0 }}
 );
+
+
 
 db.vehicles.updateMany(
   {},
