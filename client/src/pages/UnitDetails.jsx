@@ -93,15 +93,15 @@ export default function UnitDetails() {
   useEffect(() => {
     if (!numonunit) return;
     //   const unum = loggedInUser.unitnumber;
-   
+
     const fetchUnit = async () => {
       try {
         setLoading(true);
-     //   console.log('submit form data is  is ', formData);
+        //   console.log('submit form data is  is ', formData);
         //  const response = await axios.get(`/units/YV/111`);
         //  const response = await axios.get(`/YV/995`);
         let qry = `/units/${encodeURIComponent(homeownersid)}/${encodeURIComponent(numonunit)}`;
-     //   console.log('qry', qry)
+        //   console.log('qry', qry)
         const response = await axios.get(qry);
         setFormData({
           hoaid: response.data.hoaid || "",
@@ -127,7 +127,7 @@ export default function UnitDetails() {
     fetchUnit();
   }, [homeownersid, numonunit]);
 
- 
+
   if (hoaError) {
     setAppError(hoaError);
     navigate(`/${hoaid}/error`);
@@ -168,7 +168,7 @@ export default function UnitDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  // console.log('WE ARE SUBMITTING')
+    // console.log('WE ARE SUBMITTING')
 
     if (!formData.pincodeary.some(entry => typeof entry?.pincode === "string" && entry.pincode.trim())) {
       setModal({
@@ -202,10 +202,10 @@ export default function UnitDetails() {
 
 
 
-   //   console.log('user detail submit data is ', submitData);
+      //   console.log('user detail submit data is ', submitData);
       let qry = `/units/updateunit/`;
 
-     // qry = `/units/updateunit/`
+      // qry = `/units/updateunit/`
 
 
       // const response = await axios.put(`/users/${userId}`, submitData);
@@ -226,7 +226,7 @@ export default function UnitDetails() {
           });
         }
       } else {
-         const response = await axios.put(qry, submitData);
+        const response = await axios.put(qry, submitData);
         if (response.status === 200) {
           setModal({
             isOpen: true,
@@ -236,8 +236,8 @@ export default function UnitDetails() {
             confirmText: "OK",
             onConfirm: () => {
               setModal(prev => ({ ...prev, isOpen: false }))
-           //   navigate(`/${hoaid}/dashboard`);
-               navigate(-1);
+              //   navigate(`/${hoaid}/dashboard`);
+              navigate(-1);
             }
           });
         }
@@ -247,7 +247,7 @@ export default function UnitDetails() {
 
     } catch (err) {
       let serverResponse = err.response.data;
-   //   console.log('server response', serverResponse);
+      //   console.log('server response', serverResponse);
       setModal({
         isOpen: true,
         type: "alert",
@@ -266,7 +266,7 @@ export default function UnitDetails() {
   // message: `Error: ${err.response?.data?.message || err.message}`,
 
   const handleBackToUsers = () => {
-   // console.log('back to dashboard', which)
+    // console.log('back to dashboard', which)
     // console.log('we are loading hoaid',hoaid)
     // console.log('we are loading unitnumber',unitnumber)
     let qry = `/${hoaid}/dashboard`;
@@ -372,7 +372,7 @@ export default function UnitDetails() {
             </h2>
 
             <form onSubmit={handleSubmit}>
-               <div style={{ marginBottom: "15px" }}>
+              <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                   Unit Number
                 </label>
@@ -384,8 +384,10 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
-               <div style={{ marginTop: "15px",marginBottom: "15px", display: "flex", 
-                alignItems: "center", gap: "10px" }}>
+              <div style={{
+                marginTop: "15px", marginBottom: "15px", display: "flex",
+                alignItems: "center", gap: "10px"
+              }}>
                 <input
                   id="unit-is_resident"
                   type="checkbox"
@@ -396,7 +398,7 @@ export default function UnitDetails() {
                 <label className="input-label" htmlFor="unit-is_resident">Primary Residence for Owner</label>
               </div>
 
-               <div style={{ marginTop: "15px",marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
+              <div style={{ marginTop: "15px", marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
                 <input
                   id="unit-available_for_rent"
                   type="checkbox"
@@ -407,8 +409,8 @@ export default function UnitDetails() {
               </div>
 
 
-              
-              
+
+
               {/* <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                   PIN #
@@ -429,13 +431,13 @@ export default function UnitDetails() {
                       <label className="input-label" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>
                       {isAdminView && index > 0 && (
                         <button
-                          className="btnxs btn-danger" style={{marginBottom:"10px",marginTop:"5px",width:"80px"}}
+                          className="btnxs btn-danger" style={{ marginBottom: "10px", marginTop: "5px", width: "80px" }}
                           type="button"
                           onClick={() => handleRemovePinEntry(index)}
                           disabled={isSubmitting}
                           aria-label={`Delete PIN #${index + 1}`}
                         >
-                          Delete 
+                          Delete
                         </button>
                       )}
                     </div>
@@ -448,7 +450,7 @@ export default function UnitDetails() {
                       disabled={!isAdminView && entry.action !== "standard"}
                       required
                     />
-                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-action-${index}` }>Action</label>
+                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-action-${index}`}>Action</label>
                     <select
                       id={`unit-pin-action-${index}`}
                       className="standardselect100"
@@ -464,7 +466,7 @@ export default function UnitDetails() {
                       <option value="contractor">Contractor</option>
                       <option value="special">Special???</option>
                     </select>
-                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
+                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
                     <input
                       id={`unit-pin-uses-allowed-${index}`}
                       className="standardinput"
@@ -473,7 +475,7 @@ export default function UnitDetails() {
                       onChange={(e) => handlePinEntryChange(index, "uses_allowed", e.target.value === "" ? "" : Number(e.target.value))}
                       disabled={!isAdminView}
                     />
-                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-uses-used-${index}`}>Number Used</label>
+                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-used-${index}`}>Number Used</label>
                     <input
                       id={`unit-pin-uses-used-${index}`}
                       className="standardinput"
@@ -482,7 +484,7 @@ export default function UnitDetails() {
                       onChange={(e) => handlePinEntryChange(index, "uses_used", e.target.value === "" ? "" : Number(e.target.value))}
                       disabled={!isAdminView}
                     />
-                    <label className="input-label" style={{marginTop:"10px"}} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
+                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
                     <input
                       id={`unit-pin-expire-date-${index}`}
                       className="standardinput"
@@ -501,12 +503,12 @@ export default function UnitDetails() {
               </fieldset>
 
 
-             
 
 
 
 
-              
+
+
 
               {/* <div className="input-group">
                 <label className="input-label" htmlFor="unit-is_resident">
@@ -560,63 +562,63 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
- <fieldset className="input-group">
-              <legend><b>Owner</b></legend>
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Parking Spaces Allowed
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="parking_allowed_owner"
-                  value={formData.parking_allowed_owner}
-                  onChange={handleInputChange}
-                  disabled={!isAdminView}
-                />
-              </div>
+              <fieldset className="input-group">
+                <legend><b>Owner</b></legend>
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Parking Spaces Allowed
+                  </label>
+                  <input className="standardinput"
+                    type="number"
+                    name="parking_allowed_owner"
+                    value={formData.parking_allowed_owner}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
 
-               <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                   Free Parking Spaces (No Charge)
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="owner_free_parking"
-                  value={formData.owner_free_parking}
-                  onChange={handleInputChange}
-                  disabled={!isAdminView}
-                />
-              </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Free Parking Spaces (No Charge)
+                  </label>
+                  <input className="standardinput"
+                    type="number"
+                    name="owner_free_parking"
+                    value={formData.owner_free_parking}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
               </fieldset>
-               <fieldset className="input-group">
-              <legend><b>Renter</b></legend>
+              <fieldset className="input-group">
+                <legend><b>Renter</b></legend>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                 Parking Spaces Allowed
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="parking_allowed_renter"
-                  value={formData.parking_allowed_renter}
-                  onChange={handleInputChange}
-                  disabled={!isAdminView}
-                />
-              </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Parking Spaces Allowed
+                  </label>
+                  <input className="standardinput"
+                    type="number"
+                    name="parking_allowed_renter"
+                    value={formData.parking_allowed_renter}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
 
-             
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Free Parking Spaces (No Charge)
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="renter_free_parking"
-                  value={formData.renter_free_parking}
-                  onChange={handleInputChange}
-                  disabled={!isAdminView}
-                />
-              </div>
+
+                <div style={{ marginBottom: "20px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Free Parking Spaces (No Charge)
+                  </label>
+                  <input className="standardinput"
+                    type="number"
+                    name="renter_free_parking"
+                    value={formData.renter_free_parking}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
               </fieldset>
 
 
