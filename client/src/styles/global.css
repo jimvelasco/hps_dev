@@ -544,7 +544,7 @@ fieldset {
 
 input[type="date"] {
   box-sizing: border-box; /* Includes padding and border in the element's total width */
-  width: 100%;
+  width: 80%;
   max-width: 100%;
   min-width: 0;
 }
@@ -597,7 +597,7 @@ input.input-date {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-  width: 100%;
+  width: 95%;
 
 
 }
