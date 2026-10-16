@@ -286,7 +286,8 @@ let irpflag = 0;
       }
       if (getVehicleActiveStatusBoolean2(formsdate,formedate)) {
         oktoadd = false;
-        // we need to check if the vehicle selected was previus inactive
+        // we need to check if the vehicle selected was previously inactive
+        // in which case it is ok to add it
         if (theCurrentVehicle.calculatedActiveFlag === false) {
           oktoadd = true;
         }
