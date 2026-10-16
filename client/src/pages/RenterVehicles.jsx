@@ -137,7 +137,7 @@ export default function RenterVehicles() {
 
          // we get the entire batch of vehicles not just the other
          //  setVehicles(nonTypeVehicles);
-           setVehicles(nonOwnerVehicles);
+           setVehicles(updatedVehicles);
 
           if (pincodeAction != 'standard') {
             if (pincodeAction == 'dayuse') setPincodeActionLabel('(Day Use Only)');
@@ -336,6 +336,9 @@ export default function RenterVehicles() {
   }
 
   const t = nonownerTypeText + ' Vehicles';
+ // const displayedVehicles = vehicles.filter(v => v.carownertype !== "owner");
+    const displayedVehicles = [...vehicles];
+
 
   return (
     <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
@@ -404,9 +407,19 @@ export default function RenterVehicles() {
           <div className="ajaxloading">
             <p className="error-text">Loading vehicles...</p>
           </div>
-        ) : vehicles && vehicles.length > 0 ? (
+     //   ) : vehicles && vehicles.length > 0 ? (
+        ) : displayedVehicles.length > 0 ? (
+
           <>
-            {/* <div className="tableview">
+            {/*
+            
+             const nonOwnerVehicles = updatedVehicles.filter(v => {
+            if (v.carownertype !== "owner") return true;
+          });
+            
+            
+            
+            <div className="tableview">
               <VehiclesGrid
                 vehicles={vehicles}
                 role={"renter"}
@@ -422,7 +435,7 @@ export default function RenterVehicles() {
 
             <div className="xphoneview">
               <VehiclesGridPhone
-                vehicles={vehicles}
+                vehicles={displayedVehicles}
                 role={"renter"}
                 sortColumn={sortColumn}
                 sortDirection={sortDirection}

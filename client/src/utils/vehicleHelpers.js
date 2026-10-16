@@ -214,14 +214,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, role, ownerOfUnit,
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
 
-   console.log('okToAddUnitVehicle formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction');
-  console.log(formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction);
+  console.log('okToAddUnitVehicle formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction');
+  console.log(formvehicle.carownertype, role, vehicleId, createdfrom, pincodeAction);
 
-  console.log('getVehicleActiveStatusBoolean2',getVehicleActiveStatusBoolean2(formsdate,formedate));
+  const todayStr = new Date().toLocaleDateString("en-CA");
 
-  //  let activeArray = vehiclearray;
-
-  const todayStr = new Date().toLocaleDateString("en-CA"); 
+  let matchingcar = vehiclearray.filter(v => v._id === vehicleId);
+  console.log('matchingcar', matchingcar);
 
   let filteredOwnerActive = [];
   let filteredNonOwnerActive = [];
@@ -248,41 +247,34 @@ let irpflag = 0;
   // console.log('okToAddUnitVehicle formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction');
   // console.log(formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction);
 
-   console.log('in vehicles helper owner ACTIVE ', filteredOwnerActive);
-   console.log('in vehicles helper owner NONACTIVE ', filteredNonOwnerActive);
+ //  console.log('in vehicles helper owner ACTIVE ', filteredOwnerActive);
+ //  console.log('in vehicles helper owner NONACTIVE ', filteredNonOwnerActive);
   // console.log('in vehicles helper other ACTIVE ', filteredOtherActive);
   // console.log('in vehicles helper other NONACTIVE ', filteredNonOtherInActive);
 
   const totalActiveCount = filteredOwnerActive.length + filteredOtherActive.length;
 
-  console.log('totalActiveCount and incoming array',totalActiveCount,vehiclearray);
+ // console.log('totalActiveCount and incoming array',totalActiveCount,vehiclearray);
 
   let ownerFreeParking = unit.owner_free_parking || 0;
 
   let robj = { oktoadd: true, rpflag: irpflag,currentVehicle: null };
 
-
- 
-
-
   if (!vehicleId) {
    // console.log("WE MUST BE A NEW VEHICLE");
   //  if (totalActiveCount < parseInt(unit.renter_free_parking)) {
-       if (totalActiveCount > 10)  {
+       if (totalActiveCount > maxactiveallowed)  {
       robj = { oktoadd: true, rpflag: irpflag,currentVehicle: null }
       return robj; //{ oktoadd: true, rpflag: 0 };
     }
   } else {
     console.log("WE MUST BE AN EDIT OF AN EXISTING");
    
-     let theCurrentVehicle = vehiclearray.filter(v => v._id === vehicleId);
-      console.log('CURRENT VEHICLE' ,theCurrentVehicle[0]);
+     let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
+     let theCurrentVehicle = theCurrentVehicleAry[0]
+   //  console.log('sd ed calf',theCurrentVehicle.startdate,theCurrentVehicle.enddate,theCurrentVehicle.calculatedActiveFlag);
+    //  console.log('CURRENT VEHICLE' ,theCurrentVehicle);
     if (totalActiveCount >= maxactiveallowed) {
-      // if (todayStr > formedate || filteredOwnerActive.length == 1) {
-      //   oktoadd = true;
-      // } else {
-      //   oktoadd = false;
-      // }
        if (getVehicleActiveStatusBoolean2(formsdate,formedate)) {
         oktoadd = false;
       } else {
@@ -294,6 +286,10 @@ let irpflag = 0;
       }
       if (getVehicleActiveStatusBoolean2(formsdate,formedate)) {
         oktoadd = false;
+        // we need to check if the vehicle selected was previus inactive
+        if (theCurrentVehicle.calculatedActiveFlag === false) {
+          oktoadd = true;
+        }
       } else {
       oktoadd = true;
       }

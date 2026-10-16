@@ -377,10 +377,11 @@ export default function OwnerVehicles() {
       const dayuseok = doesUnitHaveDayUse(unit);
      // console.log('dayuseok', dayuseok);
       if (dayuseok) {
-        unitParkingLimit += 1;
+       // unitParkingLimit += 1;
       }
 
 // this needs to be verified
+// console.log('data from ov veh.length pli',vehicles.length,parkingLimitInventory)
 
       if (vehicles.length >= parkingLimitInventory) {
         setModal({
@@ -400,6 +401,8 @@ export default function OwnerVehicles() {
 
 
       let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
+      console.log('data from ov upl',activeVehicles,'upl',unitParkingLimit);
+
       if (activeVehicles.length >= unitParkingLimit) {
         setModal({
           isOpen: true,

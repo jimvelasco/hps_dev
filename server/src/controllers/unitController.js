@@ -7,7 +7,7 @@ import sgMail from "@sendgrid/mail";
 
 
 const getUnits = async (req, res) => {
-  console.log('getting units');
+  //console.log('getting units');
   const { hoaid, hoaId, role } = req.query;
   const targetHoaId = hoaid || hoaId;
   
