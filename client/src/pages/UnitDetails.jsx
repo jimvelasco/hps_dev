@@ -487,7 +487,7 @@ export default function UnitDetails() {
                     <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
                     <input
                       id={`unit-pin-expire-date-${index}`}
-                      className="standardinput"
+                      className="input-date2"
                       type="date"
                       value={entry.expire_date?.slice(0, 10) ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "expire_date", e.target.value)}
