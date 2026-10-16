@@ -597,18 +597,25 @@ input.input-date {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-  width: 95%;
-
-
+  width: 100%;
 }
 input.input-date:disabled {
-  
   /* border: 3px solid  red; */
-
    background-color: #ccc;
   cursor: not-allowed;
-
-
+}
+input.input-date2 {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+  width: 90%;
+}
+input.input-date2:disabled {
+  /* border: 3px solid  red; */
+   background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .input-group {
