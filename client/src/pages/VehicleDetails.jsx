@@ -569,7 +569,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       First Name *
                     </label>
-                     <br />
+                    
                     <input className="standardinput"
                       type="text"
                       name="carowner_fname"
@@ -596,7 +596,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Phone *
                     </label>
-                     <br />
+                    
                     <input className="standardinput"
                       type="tel"
                       name="carownerphone"
@@ -613,7 +613,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Owner Type
                     </label>
-                     <br />
+                   
 
                     {createdfrom === "rentervehicles" && (
                       <div style={{ fontWeight: "bold" }}>
@@ -668,7 +668,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       License Plate *
                     </label>
-                     <br />
+                    
 
                     <input className="standardinput"
                       type="text"
@@ -685,7 +685,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Plate State *
                     </label>
-                     <br />
+                   
                     <input className="standardinput"
                       type="text"
                       maxLength={2}
@@ -701,7 +701,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Vehicle Type
                     </label>
-                     <br />
+                    
                     <select className="standardselect100"
                       name="vehicle_type"
                       value={formData.vehicle_type}
@@ -728,7 +728,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Unit
                     </label>
-                     <br />
+                    
                     <input className="standardinput"
                       type="text"
                       name="unitnumber"
@@ -758,7 +758,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Make *
                     </label>
-                     <br />
+                   
                     <input className="standardinput"
                       type="text"
                       name="make"
@@ -772,7 +772,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Model
                     </label>
-                     <br />
+                   
                     <input className="standardinput"
                       type="text"
                       name="model"
@@ -784,7 +784,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Color
                     </label>
-                     <br />
+                   
                     <input className="standardinput"
                       type="text"
                       name="color"
@@ -797,7 +797,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Year
                     </label>
-                     <br />
+                  
                     <input className="standardinput"
                       type="text"
                       name="year"

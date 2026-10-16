@@ -66,6 +66,12 @@ const vehicleSchema = new mongoose.Schema(
   requires_payment: {
     type: Number, default: 0
   },
+  pin_code_value: {
+    type: String
+  },
+  pin_code_action: {
+    type: String
+  },
   enddate: {
     type: String
   },
