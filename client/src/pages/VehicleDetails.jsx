@@ -822,7 +822,7 @@ export default function VehicleDetails() {
                       Check In
                     </label>
                     <br />
-                    <input className="standardinput"
+                    <input className="standardinput2"
                       type="date"
                       name="startdate"
                       // value={new Date(formData.startdate).toISOString().substring(0, 10)}
@@ -840,7 +840,7 @@ export default function VehicleDetails() {
                       Check Out
                     </label>
                     <br/>
-                    <input className="standardinput"
+                    <input className="standardinput2"
                       type="date"
                       name="enddate"
                       value={formData.enddate}
