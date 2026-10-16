@@ -551,11 +551,26 @@ input[type="date"] {
 }
 input[type="email"] {
   box-sizing: border-box; /* Includes padding and border in the element's total width */
-  width: 200px;
+  width: 100%;
   max-width: 100%;
   min-width: 0;
   background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 10px;
 }
+/*
+ style={{
+                  width: "100%",
+                  padding: "10px",
+                  border: "1px solid #ddd",
+                  borderRadius: "4px",
+                  fontSize: "14px",
+                  boxSizing: "border-box",
+                  backgroundColor: "#ffffff"
+                }}
+*/
 
 select.standardselect {
  box-sizing: border-box;

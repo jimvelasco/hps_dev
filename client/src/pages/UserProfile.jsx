@@ -311,15 +311,15 @@ export default function UserProfile() {
                 onChange={handleInputChange}
                 required
                 // disabled
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  fontSize: "14px",
-                  boxSizing: "border-box",
-                  backgroundColor: "#ffffff"
-                }}
+                // style={{
+                //   width: "100%",
+                //   padding: "10px",
+                //   border: "1px solid #ddd",
+                //   borderRadius: "4px",
+                //   fontSize: "14px",
+                //   boxSizing: "border-box",
+                //   backgroundColor: "#ffffff"
+                // }}
               />
             </div>
 
