@@ -821,7 +821,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Check In
                     </label>
-                    <br />
+                  
                     <input className="input-date2"
                       type="date"
                       name="startdate"
@@ -839,7 +839,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Check Out
                     </label>
-                    <br/>
+                  
                     <input className="input-date2"
                       type="date"
                       name="enddate"
