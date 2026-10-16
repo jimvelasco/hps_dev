@@ -153,8 +153,8 @@ export default function OwnerVehicles() {
 
 
           const updatedVehicles = responseData.filter(v => {
-            return true;
-            //  return (v.carownertype !== 'renter');
+           // return true;
+              return (v.carownertype !== 'renter');
           }).map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
