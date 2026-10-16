@@ -521,6 +521,8 @@ export default function UnitDetails() {
                   Resident
                 </label>
               </div> */}
+              <fieldset className="input-group">
+                <legend><b>Unit</b></legend>
 
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
@@ -534,6 +536,7 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
+
 
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
@@ -562,6 +565,8 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
+              </fieldset>
+
               <fieldset className="input-group">
                 <legend><b>Owner</b></legend>
                 <div style={{ marginBottom: "15px" }}>
