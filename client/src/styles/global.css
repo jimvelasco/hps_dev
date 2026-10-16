@@ -530,8 +530,10 @@ button.navbutton-goback:hover {
 
 fieldset {
   /* Ensure the fieldset has proper relative positioning and containment */
-  border: 1px solid 500;
+   box-sizing: border-box;
+  border: 1px solid 600;
   padding: 1rem;
+  width: 100%;
   min-width: 0; /* Crucial if the fieldset is inside a flex container */
 }
 
