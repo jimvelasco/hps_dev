@@ -254,14 +254,14 @@ export default function UserProfile() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
-          <h2 style={{ color: "#1976d2", marginTop: 0 }}>Edit Your Profile</h2>
+          <h2 style={{ color: "#1976d2", marginTop: 0,marginBottom: "15px" }}>Edit Your Profile</h2>
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: "15px" }}>
               <label className="input-label">
                 First Name *
               </label>
-              <br />
+          
               <input
                 className="standardinput"
                 type="text"
@@ -276,7 +276,6 @@ export default function UserProfile() {
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 Last Name *
               </label>
-               <br />
               <input
                 className="standardinput"
                 type="text"
@@ -291,7 +290,6 @@ export default function UserProfile() {
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 Phone *
               </label>
-               <br />
               <input
                 className="standardinput"
                 type="tel"
@@ -306,7 +304,6 @@ export default function UserProfile() {
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 Email *
               </label>
-               <br />
               <input
                 type="email"
                 name="email"
@@ -321,7 +318,7 @@ export default function UserProfile() {
                   borderRadius: "4px",
                   fontSize: "14px",
                   boxSizing: "border-box",
-                  backgroundColor: "#f5f5f5"
+                  backgroundColor: "#ffffff"
                 }}
               />
             </div>
@@ -349,7 +346,6 @@ export default function UserProfile() {
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                    Unit Number
                   </label>
-                   <br />
                   <input
                     className="standardinput"
                     type="text"
@@ -359,76 +355,7 @@ export default function UserProfile() {
                     disabled
                   />
                 </div>
-                  {/* <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                   Inventory Allowed
-                  </label>
-                  <input
-                    className="standardinput"
-                    type="text"
-                    name="inventory_allowed_owner"
-                    value={formData.inventory_allowed_owner}
-                    onChange={handleInputChange}
-                    disabled
-                  />
-                </div>
-
-
-                  <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Parking Allowed Owner
-                  </label>
-                  <input
-                    className="standardinput"
-                    type="text"
-                    name="parking_allowed_owner"
-                    value={formData.parking_allowed_owner}
-                    onChange={handleInputChange}
-                    disabled
-                  />
-                </div>
-
-
-                  <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                   Parking Allowed Renter
-                  </label>
-                  <input
-                    className="standardinput"
-                    type="text"
-                    name="parking_allowed_renter"
-                    value={formData.parking_allowed_renter}
-                    onChange={handleInputChange}
-                    disabled
-                  />
-                </div>
-
-                <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Owner Free Parking
-                  </label>
-                  <input
-                    className="standardinput"
-                    type="number"
-                     disabled
-                    name="owner_free_parking"
-                    value={formData.owner_free_parking}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Renter Free Parking
-                  </label>
-                  <input
-                    className="standardinput"
-                    type="number"
-                    name="renter_free_parking"
-                    value={formData.renter_free_parking}
-                    onChange={handleInputChange}
-                     disabled
-                  />
-                </div> */}
+                
               </>
 
             )

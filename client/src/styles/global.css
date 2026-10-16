@@ -549,6 +549,13 @@ input[type="date"] {
   max-width: 100%;
   min-width: 0;
 }
+input[type="email"] {
+  box-sizing: border-box; /* Includes padding and border in the element's total width */
+  width: 200px;
+  max-width: 100%;
+  min-width: 0;
+  background-color: white;
+}
 
 select.standardselect {
  box-sizing: border-box;
@@ -630,10 +637,12 @@ input.input-date2:disabled {
 .input-label {
   margin-bottom: 4px;
   font-weight: bold;
+  display:block
 }
 .input-label_normal {
   margin-bottom: 4px;
   font-weight: normal;
+   display:block
 }
 .input-label2 {
   /* margin-bottom: 4px; */
