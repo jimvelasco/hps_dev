@@ -424,11 +424,11 @@ export default function UnitDetails() {
               </div> */}
 
               <fieldset className="input-group">
-                <legend>PIN Entries</legend>
+                <legend><b>PIN Entries</b></legend>
                 {formData.pincodeary.map((entry, index) => (
                   <div className="input-group" key={entry._id || index}>
                     <div className="page-label">
-                      <label className="input-label" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>
+                      <label className="input-label_normal" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>
                       {isAdminView && index > 0 && (
                         <button
                           className="btnxs btn-danger" style={{ marginBottom: "10px", marginTop: "5px", width: "80px" }}
@@ -450,7 +450,7 @@ export default function UnitDetails() {
                       disabled={!isAdminView && entry.action !== "standard"}
                       required
                     />
-                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-action-${index}`}>Action</label>
+                    <label className="input-label_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-action-${index}`}>Action</label>
                     <select
                       id={`unit-pin-action-${index}`}
                       className="standardselect100"
@@ -466,7 +466,7 @@ export default function UnitDetails() {
                       <option value="contractor">Contractor</option>
                       <option value="special">Special???</option>
                     </select>
-                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
+                    <label className="input-label_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
                     <input
                       id={`unit-pin-uses-allowed-${index}`}
                       className="standardinput"
@@ -475,7 +475,7 @@ export default function UnitDetails() {
                       onChange={(e) => handlePinEntryChange(index, "uses_allowed", e.target.value === "" ? "" : Number(e.target.value))}
                       disabled={!isAdminView}
                     />
-                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-used-${index}`}>Number Used</label>
+                    <label className="input-labe_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-used-${index}`}>Number Used</label>
                     <input
                       id={`unit-pin-uses-used-${index}`}
                       className="standardinput"
@@ -484,7 +484,7 @@ export default function UnitDetails() {
                       onChange={(e) => handlePinEntryChange(index, "uses_used", e.target.value === "" ? "" : Number(e.target.value))}
                       disabled={!isAdminView}
                     />
-                    <label className="input-label" style={{ marginTop: "10px" }} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
+                    <label className="input-label_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
                     <input
                       id={`unit-pin-expire-date-${index}`}
                       className="input-date2"
@@ -565,7 +565,7 @@ export default function UnitDetails() {
               <fieldset className="input-group">
                 <legend><b>Owner</b></legend>
                 <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "normal" }}>
                     Parking Spaces Allowed
                   </label>
                   <input className="standardinput"
@@ -578,7 +578,7 @@ export default function UnitDetails() {
                 </div>
 
                 <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "normal" }}>
                     Free Parking Spaces (No Charge)
                   </label>
                   <input className="standardinput"
@@ -594,7 +594,7 @@ export default function UnitDetails() {
                 <legend><b>Renter</b></legend>
 
                 <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "normal" }}>
                     Parking Spaces Allowed
                   </label>
                   <input className="standardinput"
@@ -608,7 +608,7 @@ export default function UnitDetails() {
 
 
                 <div style={{ marginBottom: "20px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "normal" }}>
                     Free Parking Spaces (No Charge)
                   </label>
                   <input className="standardinput"

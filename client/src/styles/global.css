@@ -540,6 +540,7 @@ fieldset {
   padding: 1rem;
   width: 100%;
   min-width: 0; /* Crucial if the fieldset is inside a flex container */
+ 
 }
 
 input[type="date"] {
@@ -564,6 +565,7 @@ select.standardselect100 {
   border: 1px solid #ccc;
   font-size: 14px;
   width: 100%;
+  max-width: 300px;
 }
 
 input.standardinput {
@@ -573,6 +575,7 @@ input.standardinput {
   font-size: 14px;
   box-sizing: border-box;
    width: 100%; 
+   max-width: 300px;
 
 }
 
@@ -627,6 +630,10 @@ input.input-date2:disabled {
 .input-label {
   margin-bottom: 4px;
   font-weight: bold;
+}
+.input-label_normal {
+  margin-bottom: 4px;
+  font-weight: normal;
 }
 .input-label2 {
   /* margin-bottom: 4px; */
