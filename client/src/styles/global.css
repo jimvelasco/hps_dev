@@ -610,7 +610,7 @@ input.input-date2 {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-  width: 90%;
+  width: 100%;
 }
 input.input-date2:disabled {
   /* border: 3px solid  red; */
@@ -869,6 +869,18 @@ section.standardsectiondashboard {
     display: none;
   }
 
+}
+
+/* Default desktop style */
+
+
+/* Styles applied for iPhones and mobile devices input[type="date"] {*/
+@media screen and (max-width: 768px) {
+   .input-date2 {
+        width: 90%; /* Makes it span the full width of its container */
+        max-width: 90%;
+        box-sizing: border-box; /* Ensures padding doesn't push it out of bounds */
+    }
 }
 
 
