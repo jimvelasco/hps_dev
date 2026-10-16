@@ -136,8 +136,8 @@ export default function RenterVehicles() {
           // setVehicles(matchingVehicles);
 
          // we get the entire batch of vehicles not just the other
-         //  setVehicles(nonTypeVehicles);
-           setVehicles(updatedVehicles);
+           setVehicles(nonTypeVehicles);
+          // setVehicles(updatedVehicles);
 
           if (pincodeAction != 'standard') {
             if (pincodeAction == 'dayuse') setPincodeActionLabel('(Day Use Only)');
