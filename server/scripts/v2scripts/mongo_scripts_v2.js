@@ -34,6 +34,19 @@ db.vehicles.updateMany(
 );
 
 
+db.vehicles.updateMany(
+  {},
+ { $set: { "pin_code_value": "" }}
+);
+
+db.vehicles.updateMany(
+  {},
+ { $set: { "pin_code_action": "standard" }}
+);
+
+
+
+
 
 
 

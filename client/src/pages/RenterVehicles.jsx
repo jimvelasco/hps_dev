@@ -224,19 +224,7 @@ export default function RenterVehicles() {
     });
   }
 
-  /*
-   state: {
-        unitNumber: unitNumber, role: 
-        location.state?.nonownerType || "renter",
-        vehicles: vehicles,
-        ownerOfUnit: ownerOfUnit,
-        unit: unitForRenter,
-        vehid: null,
-        createdfrom: 'rentervehicles',
-        pincodeAction: pincodeAction
-
-      }
-        */
+ 
 
   // navigate(qry, { state: { unitNumber: uid, role: arole, numberOfVehicles: vehicles.length } });
 
@@ -248,6 +236,7 @@ export default function RenterVehicles() {
   //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
+    console.log('HANDLECREATE STATE RV',location.state)
 
 
 

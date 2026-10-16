@@ -124,7 +124,7 @@ export default function OwnerVehicles() {
 
           // we get all vehicles for the unit not just the ownerid
           qry = `/vehicles/${hoaId}/allvehicles/${showUnitId}`
-          // console.log("OwnerVehicles.jsx qry:", qry);
+          console.log("OwnerVehicles.jsx qry:", qry);
           if (role === "admin") {
 
             qry = `/vehicles/adminvehicles/${hoaId}`
