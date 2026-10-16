@@ -537,9 +537,8 @@ fieldset {
 
 input[type="date"] {
   box-sizing: border-box; /* Includes padding and border in the element's total width */
-  width: 100px;
-  border:3px solid black
-  /* max-width: 100%; */
+  width: 100%;
+  max-width: 100%;
 }
 
 select.standardselect {
