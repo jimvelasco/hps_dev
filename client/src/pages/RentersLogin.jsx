@@ -109,7 +109,7 @@ export default function RentersLogin() {
 
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
-                state: { nonownerType, nonownerTypeText, unitNumber, pincodeAction: response.data.action }
+                state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: response.data.action }
             });
 
         } catch (err) {

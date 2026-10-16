@@ -189,7 +189,6 @@ const getVehiclesByHoaIdUserId = async (req, res) => {
    // console.log("vehicle controller getVehiclesByHoaIdUserId qry built:", qry);
 
     const vehicles = await Vehicle.find(qry);
-     console.log("vehicle controller shold be 19  qry built:", vehicles);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -263,7 +262,6 @@ const getVehiclesForUnitNumber = async (req, res) => {
 const createVehicle = async (req, res) => {
   try {
     const vehicleData = req.validatedData;
-    console.log("server Creating vehicle with data:", vehicleData);
 
     const vehicle = await Vehicle.create(vehicleData);
 

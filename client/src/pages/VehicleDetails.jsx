@@ -29,7 +29,7 @@ export default function VehicleDetails() {
   const location = useLocation();
 
 
-  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, createdfrom, pincodeAction } = location.state || {};
+  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, createdfrom, pincodeValue, pincodeAction } = location.state || {};
 
 
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -120,7 +120,6 @@ export default function VehicleDetails() {
   // console.log('LOCATION STATE IS  owner ', location.state.ownerOfUnit);
   // console.log('LOCATION STATE IS  unit ', location.state.unit);
   useEffect(() => {
-    console.log("VEHICLE DETAILS location state is ", location.state);
     //  console.log("VEHICLE DETAILS JUST THE VEHICLES ", location.state.vehicles);
     //console.log("VEHICLE DETAILS the hoa is  ", hoa);
     // console.log('VEHICLE DETAILS formData is ', formData);
@@ -200,6 +199,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
+        setVehicle(response.data);
 
         const sd = utcDateOnly(response.data.checkin);
         const ed = utcDateOnly(response.data.checkout);
@@ -316,6 +316,18 @@ export default function VehicleDetails() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isModifyMode && createdfrom === "rentervehicles" && (!pincodeValue || typeof pincodeAction !== "string")) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: "PIN information is unavailable. Please log in again.",
+        confirmText: "OK",
+        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+      });
+      return;
+    }
+
     const requiredFields = [
       "carowner_fname",
       "carowner_lname",
@@ -416,7 +428,6 @@ export default function VehicleDetails() {
     let unitcbt = "";
 
     let cv = oktoaddobj.currentVehicle;
-    console.log('CURRENT VEHICLE IN VD', cv);
     if (cv !== null) {
       //   unitcbt = cv[0].createdbytype;
 
@@ -446,9 +457,12 @@ export default function VehicleDetails() {
         hoaid: hoaId,
         ownerid: oid,
         requires_payment: rpflag,
-        createdbytype: cbt
+        createdbytype: cbt,
+        ...(!isModifyMode && {
+          pin_code_value: createdfrom === "rentervehicles" ? pincodeValue : "",
+          pin_code_action: createdfrom === "rentervehicles" ? pincodeAction : "standard"
+        })
       };
-      console.log("Submitting vehiclePayload:", isModifyMode, vehiclePayload);
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
@@ -835,7 +849,7 @@ export default function VehicleDetails() {
 
 
 
-                  <div style={{ marginBottom: "0px" }}>
+                  <div style={{ marginBottom: "15px" }}>
                     <label className="input-label">
                       Check Out
                     </label>
@@ -845,6 +859,30 @@ export default function VehicleDetails() {
                       name="enddate"
                       value={formData.enddate}
                       onChange={handleFormChange}
+                    />
+                  </div>
+
+                  <div  style={{ marginBottom: "15px" }}>
+                    <label className="input-label" htmlFor="vehicle-pin-code">
+                      PIN Code
+                    </label>
+                    <input className="standardinput"
+                      id="vehicle-pin-code"
+                      type="text"
+                      value={isModifyMode ? vehicle?.pin_code_value ?? "" : createdfrom === "rentervehicles" ? pincodeValue ?? "" : ""}
+                      readOnly
+                    />
+                  </div>
+
+                  <div>
+                    <label className="input-label" htmlFor="vehicle-pin-action">
+                      PIN Code Action
+                    </label>
+                    <input className="standardinput"
+                      id="vehicle-pin-action"
+                      type="text"
+                      value={isModifyMode ? vehicle?.pin_code_action ?? "" : createdfrom === "rentervehicles" ? pincodeAction ?? "" : "standard"}
+                      readOnly
                     />
                   </div>
                 </fieldset>

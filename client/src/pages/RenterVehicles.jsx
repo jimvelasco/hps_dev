@@ -35,10 +35,10 @@ export default function RenterVehicles() {
   const nonownerType = location.state?.nonownerType;
   const nonownerTypeText = location.state?.nonownerTypeText;
   const pincodeAction = location.state?.pincodeAction;
+  const pincodeValue = location.state?.pincodeValue;
 
 
   useEffect(() => {
-       console.log("RV state",location.state);
     if (hoaId && unitNumber) {
       const fetchUserForUnit = async () => {
         try {
@@ -87,7 +87,6 @@ export default function RenterVehicles() {
            console.log("RenterVehicles.jsx qry:", qry);
 
           const response = await axios.get(qry);
-          console.log('ALL VEHICLES renter vehicles ', response.data)
 
           const responseData = response.data;
           // responseData.forEach((el, index) => {
@@ -236,7 +235,6 @@ export default function RenterVehicles() {
   //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
-    console.log('HANDLECREATE STATE RV',location.state)
 
 
 
@@ -246,7 +244,6 @@ export default function RenterVehicles() {
     const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
       let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
 
-      console.log('RENTERVEHICLES limit and active count',vehicles,unitParkingLimit,activeVehicleCount);
 
 
 
@@ -282,6 +279,7 @@ export default function RenterVehicles() {
         unit: unitForRenter,
         vehid: null,
         createdfrom: 'rentervehicles',
+        pincodeValue: pincodeValue,
         pincodeAction: pincodeAction
 
       }
