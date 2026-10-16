@@ -610,7 +610,7 @@ input.input-date2 {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-  width: 100%;
+  width: 90%;
 }
 input.input-date2:disabled {
   /* border: 3px solid  red; */
