@@ -528,6 +528,19 @@ button.navbutton-goback:hover {
 /* ****** BEGIN INPUTS ************************** */
 /* ********************************************** */
 
+fieldset {
+  /* Ensure the fieldset has proper relative positioning and containment */
+  border: 1px solid #ccc;
+  padding: 1rem;
+  min-width: 0; /* Crucial if the fieldset is inside a flex container */
+}
+
+input[type="date"] {
+  box-sizing: border-box; /* Includes padding and border in the element's total width */
+  width: 100%;
+  max-width: 100%;
+}
+
 select.standardselect {
   padding: 8px 12px;
   border-radius: 4px;
@@ -536,11 +549,12 @@ select.standardselect {
 }
 
 select.standardselect100 {
+  box-sizing: border-box;
   padding: 8px 12px;
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 14px;
-  width: 90%;
+  width: 100%;
 }
 
 input.standardinput {
