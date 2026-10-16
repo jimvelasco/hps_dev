@@ -316,8 +316,7 @@ export default function Users() {
 
 
               <div className="standard-table-header standard-table-extra">Role</div>
-               <div className="standard-table-header standard-table-extra">O Free</div>
-                <div className="standard-table-header standard-table-extra">R Free</div>
+               
 
 
               {users.map((user, index) => (
@@ -364,8 +363,7 @@ export default function Users() {
                       {user.role || "—"}
                     </span>
                   </div>
-                  <div className="standard-table-cell">{user.owner_free_parking}</div>
-                   <div className="standard-table-cell">{user.renter_free_parking}</div>
+                 
 
                 </React.Fragment>
               ))}
