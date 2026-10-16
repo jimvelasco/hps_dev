@@ -530,14 +530,15 @@ button.navbutton-goback:hover {
 
 fieldset {
   /* Ensure the fieldset has proper relative positioning and containment */
-  border: 1px solid #ccc;
+  border: 1px solid 500;
   padding: 1rem;
   min-width: 0; /* Crucial if the fieldset is inside a flex container */
 }
 
 input[type="date"] {
   box-sizing: border-box; /* Includes padding and border in the element's total width */
-  width: 95%;
+  width: 100px;
+  border:3px solid black
   /* max-width: 100%; */
 }
 
@@ -589,6 +590,7 @@ input.input-date {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
+  width: 100%;
 
 
 }
