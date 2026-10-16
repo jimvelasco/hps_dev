@@ -888,9 +888,9 @@ section.standardsectiondashboard {
 /* Styles applied for iPhones and mobile devices input[type="date"] {*/
 /* @media screen and (max-width: 479px) {
    .input-date2 {
-        width: 90%; /* Makes it span the full width of its container */
+        width: 90%;  Makes it span the full width of its container 
         max-width: 90%;
-        box-sizing: border-box; /* Ensures padding doesn't push it out of bounds */
+        box-sizing: border-box;  Ensures padding doesn't push it out of bounds 
     }
 } */
 
