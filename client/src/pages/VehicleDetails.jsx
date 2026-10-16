@@ -543,13 +543,12 @@ export default function VehicleDetails() {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
   return (
-    <div style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+    <div className="vehicle-details-page" style={{ minHeight: "100vh", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={pageTitle} buttons={navButtons} />
 
       <div className="page-content">
-        <div style={{
+        <div className="vehicle-details-card" style={{
           backgroundColor: "white",
-          padding: "30px",
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>

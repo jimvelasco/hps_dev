@@ -42,10 +42,28 @@ h1, h2, h3, h4, h5, h6 {
   border:0px solid yellow;
    padding-bottom:20px;
 }
+.vehicle-details-card {
+  padding: 30px;
+}
 .vehicle-details-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 20px;
+}
+.vehicle-details-grid fieldset.input-group > div {
+  min-width: 0;
+}
+.vehicle-details-grid input[type="date"] {
+  display: block;
+}
+@media (max-width: 480px) {
+  .vehicle-details-page .page-content {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .vehicle-details-card {
+    padding: 16px;
+  }
 }
 /*style={{ padding: "30px", maxWidth: "1200px", margin: "0 auto" }} */
 .flexLayout {
