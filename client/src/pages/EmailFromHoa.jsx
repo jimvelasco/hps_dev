@@ -153,7 +153,7 @@ export default function EmailFromHoa() {
   let hoaorhps = 'HOA';
 
   if (email === undefined ) {
-    hoaorhps = 'HPS'
+    hoaorhps = 'HOA'
 
   }
 

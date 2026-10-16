@@ -32,7 +32,7 @@ export default function HPSRecordReport() {
         setRecords(response.data);
       } catch (err) {
         setError(err.message || "Failed to fetch records");
-        console.error("Error fetching HPS records:", err);
+        console.error("Error fetching HOA records:", err);
       } finally {
         setLoading(false);
       }
@@ -49,7 +49,7 @@ export default function HPSRecordReport() {
       return;
     }
 
-    if (!window.confirm(`Are you sure you want to delete all HPS records created before ${deleteDate}?`)) {
+    if (!window.confirm(`Are you sure you want to delete all HOA records created before ${deleteDate}?`)) {
       return;
     }
 
@@ -62,7 +62,7 @@ export default function HPSRecordReport() {
       setRecords(refreshResponse.data);
     } catch (err) {
       setError(err.message || "Failed to delete records");
-      console.error("Error deleting HPS records:", err);
+      console.error("Error deleting HOA records:", err);
     } finally {
       setLoading(false);
     }
@@ -117,11 +117,11 @@ export default function HPSRecordReport() {
       backgroundPosition: "center", 
       backgroundAttachment: "fixed"
     }}>
-      <DashboardNavbar title="HPS Record Report" title2={hoa && hoa.name} buttons={navButtons} />
+      <DashboardNavbar title="Record Report" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
         <div className="standardtitlebar">
-          <h1 style={{ fontSize: "24px" }}>HPS Record Log</h1>
+          <h1 style={{ fontSize: "24px" }}>Record Log</h1>
         </div>
 
         <div style={{

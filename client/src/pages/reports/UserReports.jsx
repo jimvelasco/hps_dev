@@ -54,9 +54,9 @@ export default function UserReports() {
 
         <div className="grid-flex-container">
           <section className="standardsection" style={{minHeight:"176px"}}>
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>HPS Record Log</h3>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Record Log</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              View a detailed log of all HPS records and vehicle changes.
+              View a detailed log of all HOA records and vehicle changes.
             </p>
             <button 
               className="standardsubmitbutton" 

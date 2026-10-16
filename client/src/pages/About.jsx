@@ -102,7 +102,7 @@ export default function About() {
         <p style={{ marginTop: "30px", marginBottom: "30px", textAlign: "center", fontWeight: "700" }}>
           For more information about HOA Parking Solutions please email us.
           <div className="button-grid" style={{ marginTop: "10px" }}>
-            <button className="btnxs btn-primary" onClick={() => { handleEmailClick() }}>Email HPS</button>
+            <button className="btnxs btn-primary" onClick={() => { handleEmailClick() }}>Email HOA</button>
           </div>
         </p>
 

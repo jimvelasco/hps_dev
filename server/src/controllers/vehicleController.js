@@ -543,7 +543,7 @@ const deleteHPSRecords = async (req, res) => {
     });
 
     res.status(200).json({
-      message: `${result.deletedCount} HPS record(s) deleted successfully`,
+      message: `${result.deletedCount} HOA record(s) deleted successfully`,
       deletedCount: result.deletedCount
     });
   } catch (error) {
