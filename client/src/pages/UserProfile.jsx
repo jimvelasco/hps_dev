@@ -261,6 +261,7 @@ export default function UserProfile() {
               <label className="input-label">
                 First Name *
               </label>
+              <br />
               <input
                 className="standardinput"
                 type="text"
@@ -275,6 +276,7 @@ export default function UserProfile() {
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 Last Name *
               </label>
+               <br />
               <input
                 className="standardinput"
                 type="text"
@@ -289,6 +291,7 @@ export default function UserProfile() {
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 Phone *
               </label>
+               <br />
               <input
                 className="standardinput"
                 type="tel"
@@ -303,6 +306,7 @@ export default function UserProfile() {
               <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                 Email *
               </label>
+               <br />
               <input
                 type="email"
                 name="email"
@@ -345,6 +349,7 @@ export default function UserProfile() {
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                    Unit Number
                   </label>
+                   <br />
                   <input
                     className="standardinput"
                     type="text"
@@ -437,6 +442,7 @@ export default function UserProfile() {
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                   New Password
                 </label>
+                 <br />
                 <input
                   type="password"
                   name="password"
@@ -458,6 +464,7 @@ export default function UserProfile() {
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                   Confirm Password
                 </label>
+                 <br />
                 <input
                   type="password"
                   name="passwordConfirm"
