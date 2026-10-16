@@ -570,7 +570,7 @@ export default function VehicleDetails() {
                       First Name *
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="carowner_fname"
                       value={formData.carowner_fname}
@@ -583,7 +583,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Last Name *
                     </label>
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="carowner_lname"
                       value={formData.carowner_lname}
@@ -597,7 +597,7 @@ export default function VehicleDetails() {
                       Phone *
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="tel"
                       name="carownerphone"
                       value={formData.carownerphone}
@@ -618,7 +618,7 @@ export default function VehicleDetails() {
                     {createdfrom === "rentervehicles" && (
                       <div style={{ fontWeight: "bold" }}>
 
-                        <input className="standardinput2"
+                        <input className="standardinput"
                           type="text"
                           name="carownertype"
                           value={formData.carownertype}
@@ -670,7 +670,7 @@ export default function VehicleDetails() {
                     </label>
                      <br />
 
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="plate"
                       value={formData.plate}
@@ -686,7 +686,7 @@ export default function VehicleDetails() {
                       Plate State *
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       maxLength={2}
                       name="plate_state"
@@ -729,7 +729,7 @@ export default function VehicleDetails() {
                       Unit
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="unitnumber"
                       value={formData.unitnumber}
@@ -759,7 +759,7 @@ export default function VehicleDetails() {
                       Make *
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="make"
                       value={formData.make}
@@ -773,7 +773,7 @@ export default function VehicleDetails() {
                       Model
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="model"
                       value={formData.model}
@@ -785,7 +785,7 @@ export default function VehicleDetails() {
                       Color
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="color"
                       value={formData.color}
@@ -798,7 +798,7 @@ export default function VehicleDetails() {
                       Year
                     </label>
                      <br />
-                    <input className="standardinput2"
+                    <input className="standardinput"
                       type="text"
                       name="year"
                       value={formData.year}
