@@ -540,7 +540,7 @@ select.standardselect100 {
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 14px;
-  width: 100%;
+  width: 90%;
 }
 
 input.standardinput {
@@ -549,7 +549,18 @@ input.standardinput {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-  width: 100%;
+   width: 100%; 
+
+}
+
+
+input.standardinput2 {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+   width: 90%; 
 
 }
 

@@ -569,7 +569,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       First Name *
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="text"
                       name="carowner_fname"
                       value={formData.carowner_fname}
@@ -582,7 +583,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Last Name *
                     </label>
-                    <input className="standardinput"
+                    <input className="standardinput2"
                       type="text"
                       name="carowner_lname"
                       value={formData.carowner_lname}
@@ -595,7 +596,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Phone *
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="tel"
                       name="carownerphone"
                       value={formData.carownerphone}
@@ -606,45 +608,17 @@ export default function VehicleDetails() {
 
 
 
-                  {/* <div style={{ marginBottom: "15px" }}>
-                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                    Owner Type
-                  </label>
-
-                  {createdfrom === "rentervehicles" && (
-                    <div>{formData.carownertype}</div>
-                  )
-                  }
-
-
-                  <select
-                    className="standardselect100"
-                    name="carownertype"
-                    value={formData.carownertype || ""}
-                    onChange={handleFormChange}
-                    disabled={isModifyMode || createdfrom === "rentervehicles"}
-                  >
-                    <option value="" disabled>Select owner type</option>
-                    {vehicleOwnerTypeAry.map(type => (
-                      <option key={type} value={type}>
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-
-
-
-                </div> */}
-
+                
                   <div style={{ marginBottom: "15px" }}>
-                    <label style={{ display: "block", marginBottom: "0px", fontWeight: "bold" }}>
+                    <label className="input-label">
                       Owner Type
                     </label>
+                     <br />
 
                     {createdfrom === "rentervehicles" && (
                       <div style={{ fontWeight: "bold" }}>
 
-                        <input className="standardinput"
+                        <input className="standardinput2"
                           type="text"
                           name="carownertype"
                           value={formData.carownertype}
@@ -694,8 +668,9 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       License Plate *
                     </label>
+                     <br />
 
-                    <input className="standardinput"
+                    <input className="standardinput2"
                       type="text"
                       name="plate"
                       value={formData.plate}
@@ -710,7 +685,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Plate State *
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="text"
                       maxLength={2}
                       name="plate_state"
@@ -725,17 +701,18 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Vehicle Type
                     </label>
-                    <select className="xxxstandardinput"
+                     <br />
+                    <select className="standardselect100"
                       name="vehicle_type"
                       value={formData.vehicle_type}
                       onChange={handleFormChange}
-                      style={{
-                        width: "100%",
-                        padding: "10px",
-                        borderRadius: "4px",
-                        border: "1px solid #ccc",
-                        boxSizing: "border-box"
-                      }}
+                      // style={{
+                      //   width: "100%",
+                      //   padding: "10px",
+                      //   borderRadius: "4px",
+                      //   border: "1px solid #ccc",
+                      //   boxSizing: "border-box"
+                      // }}
 
                     >
                       <option value="">Select Type</option>
@@ -751,7 +728,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Unit
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="text"
                       name="unitnumber"
                       value={formData.unitnumber}
@@ -780,7 +758,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Make *
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="text"
                       name="make"
                       value={formData.make}
@@ -793,7 +772,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Model
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="text"
                       name="model"
                       value={formData.model}
@@ -804,7 +784,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Color
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="text"
                       name="color"
                       value={formData.color}
@@ -816,7 +797,8 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Year
                     </label>
-                    <input className="standardinput"
+                     <br />
+                    <input className="standardinput2"
                       type="text"
                       name="year"
                       value={formData.year}
@@ -839,6 +821,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Check In
                     </label>
+                    <br />
                     <input className="standardinput"
                       type="date"
                       name="startdate"
@@ -856,6 +839,7 @@ export default function VehicleDetails() {
                     <label className="input-label">
                       Check Out
                     </label>
+                    <br/>
                     <input className="standardinput"
                       type="date"
                       name="enddate"
