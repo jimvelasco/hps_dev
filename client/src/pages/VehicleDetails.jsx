@@ -92,8 +92,13 @@ export default function VehicleDetails() {
   //   }));
   // };
 
+  let daysplus = 3;
+  if (pincodeAction === 'dayuse') {
+    daysplus = 0;
+  }
+
   const edate = new Date();
-  edate.setDate(edate.getDate() + 3);
+  edate.setDate(edate.getDate() + daysplus);
 
 
 
