@@ -221,6 +221,8 @@ const getVehicleById = async (req, res) => {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
+ //   console.log('VEHICLE CONTROLLER VEHICLE',vehicle)
+
     res.json(vehicle);
   } catch (error) {
     res.status(500).json({ message: error.message });

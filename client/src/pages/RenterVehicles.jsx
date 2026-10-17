@@ -105,7 +105,9 @@ export default function RenterVehicles() {
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
           
-          console.log('renter vehicles active vehicles length', activeVehicles.length);
+    //      console.log('renter vehicles active vehicles length', activeVehicles.length);
+
+     //     console.log('passed in location state',location.state);
 
 
        //   console.log('active vehicles length', activeVehicles.length);
@@ -272,6 +274,7 @@ export default function RenterVehicles() {
     //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
     navigate(qry, {
       state: {
+        nonownerType: nonownerType,
         unitNumber: unitNumber,
         role: location.state?.nonownerType || "renter",
         vehicles: vehicles,

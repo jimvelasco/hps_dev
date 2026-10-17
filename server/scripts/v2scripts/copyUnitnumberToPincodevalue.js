@@ -28,4 +28,4 @@ copyUnitnumberToPincodevalue();
 
 // from server dir
 //node scripts/v2scripts/copyUnitnumberToPincodevalue.js
-//heroku run node server/scripts/copyUnitnumberToPincodevalue.js -a hoaparking-test
+//heroku run node server/scripts/v2scripts/copyUnitnumberToPincodevalue.js -a hoaparking-test

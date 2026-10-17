@@ -29,7 +29,8 @@ export default function VehicleDetails() {
   const location = useLocation();
 
 
-  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, createdfrom, pincodeValue, pincodeAction } = location.state || {};
+  const { nonownerType,unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, 
+    createdfrom, pincodeValue, pincodeAction } = location.state || {};
 
 
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -112,7 +113,9 @@ export default function VehicleDetails() {
     plate: "",
     plate_state: "",
     unitnumber: unitNumber || "",
-    carownertype: isModifyMode ? carownertype || "" : (vehicleOwnerTypeAry.includes(role) ? role : ""),
+   // carownertype: isModifyMode ? carownertype || "" : (vehicleOwnerTypeAry.includes(role) ? role : ""),
+    carownertype: carownertype, //location.state.carownertype,
+
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
   });
@@ -127,8 +130,7 @@ export default function VehicleDetails() {
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
     }
-
-    if (hoa && !isModifyMode) {
+if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
       //  console.log('dmode:', dmode);
       if (dmode === 1) {
@@ -144,7 +146,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "CO",
           unitnumber: unitNumber,
-          carownertype: vehicleOwnerTypeAry.includes(role) ? role : "",
+          carownertype: carownertype , //vehicleOwnerTypeAry.includes(role) ? role : "",
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -163,7 +165,7 @@ export default function VehicleDetails() {
           plate: "",
           plate_state: "",
           unitnumber: unitNumber,
-          carownertype: vehicleOwnerTypeAry.includes(role) ? role : "",
+          carownertype:  carownertype , //vehicleOwnerTypeAry.includes(role) ? role : "",
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -199,6 +201,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
+        console.log('about to set vehicle',response.data)
         setVehicle(response.data);
 
         const sd = utcDateOnly(response.data.checkin);
@@ -209,13 +212,15 @@ export default function VehicleDetails() {
         //  console.log("checkout date:", ed, 'before local',response.data.checkout);
         //  console.log("checkout date:',ed );
         //  let oid = loggedInUser ? loggedInUser._id : userIdForUnit;
+
+
         setFormData({
           // ownerid: oid || null,
-          carowner_fname: response.data.carowner_fname || "",
-          carowner_lname: response.data.carowner_lname || "",
-          carownerphone: response.data.carownerphone || "",
-          unitnumber: response.data.unitnumber || "",
-          carownertype: response.data.carownertype || carownertype || role || "owner",
+          carowner_fname: response.data.carowner_fname || "fname",
+          carowner_lname: response.data.carowner_lname || "lname",
+          carownerphone: response.data.carownerphone || "phone",
+          unitnumber: response.data.unitnumber || "un",
+          carownertype: response.data.carownertype || "cot",
           make: response.data.make || "",
           model: response.data.model || "",
           color: response.data.color || "",
@@ -227,7 +232,7 @@ export default function VehicleDetails() {
           enddate: ed,
           requires_payment: response.data.requires_payment || 0,
         });
-        //    console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
+            console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
 
         setError(null);
       } catch (err) {
@@ -630,14 +635,20 @@ export default function VehicleDetails() {
                    
 
                     {createdfrom === "rentervehicles" && (
-                      <div style={{ fontWeight: "bold" }}>
-
-                        <input className="standardinput"
-                          type="text"
-                          name="carownertype"
-                          value={formData.carownertype}
-                          disabled
-                        />
+                      // <div style={{ fontWeight: "bold" }}>
+                      //   <input className="standardinput"
+                      //     type="text"
+                      //     name="carownertype"
+                      //     value={formData.carownertype}
+                      //     disabled
+                      //   />
+                      // </div>
+                       <div style={{ fontWeight: "normal" }}>
+                        <div style={{marginLeft:"12px",marginTop:"15px"}}>
+                        {/* {formData.carownertype?.toUpperCase()} */}
+                        {nonownerType || "other"}
+                        </div>
+                         
                       </div>
                     )
                     }
@@ -645,7 +656,7 @@ export default function VehicleDetails() {
                       <select
                         className="standardselect100"
                         name="carownertype"
-                        value={formData.carownertype || ""}
+                        value={formData.carownertype || "owner"}
                         onChange={handleFormChange}
                         disabled={isModifyMode || createdfrom === "rentervehicles"}
                       >

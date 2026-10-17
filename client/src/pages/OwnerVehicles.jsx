@@ -400,19 +400,19 @@ export default function OwnerVehicles() {
 
 
 
-      let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
+      // let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
 
-      if (activeVehicles.length >= unitParkingLimit) {
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: `Vehicle limit reached. You can only have ${unitParkingLimit} active vehicles.`,
-          confirmText: "OK",
-          onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
-        });
-        return;
-      }
+      // if (activeVehicles.length >= unitParkingLimit) {
+      //   setModal({
+      //     isOpen: true,
+      //     type: "alert",
+      //     title: "Validation Error",
+      //     message: `Vehicle limit reached. You can only have ${unitParkingLimit} active vehicles.`,
+      //     confirmText: "OK",
+      //     onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+      //   });
+      //   return;
+      // }
 
 
 
