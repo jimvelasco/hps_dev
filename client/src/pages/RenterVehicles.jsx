@@ -29,7 +29,7 @@ export default function RenterVehicles() {
   const [ownerOfUnit, setOwnerOfUnit] = useState(null);
   const [unitForRenter, setUnitForRenter] = useState(null);
   const [pincodeActionLabel, setPincodeActionLabel] = useState("");
-  const [allActiveCount,setAllActiveCount] =useState(0);
+  const [allActiveCount, setAllActiveCount] = useState(0);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
   const nonownerType = location.state?.nonownerType;
@@ -84,7 +84,7 @@ export default function RenterVehicles() {
           //     const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
           let qry = `/vehicles/${hoaId}/allvehicles/${unitNumber}`;
 
-           console.log("RenterVehicles.jsx qry:", qry);
+        //  console.log("RenterVehicles.jsx qry:", qry);
 
           const response = await axios.get(qry);
 
@@ -100,17 +100,17 @@ export default function RenterVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-        //  console.log('updatedVehicles', updatedVehicles);
+          //  console.log('updatedVehicles', updatedVehicles);
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
-          
-    //      console.log('renter vehicles active vehicles length', activeVehicles.length);
 
-     //     console.log('passed in location state',location.state);
+          //      console.log('renter vehicles active vehicles length', activeVehicles.length);
+
+          //     console.log('passed in location state',location.state);
 
 
-       //   console.log('active vehicles length', activeVehicles.length);
+          //   console.log('active vehicles length', activeVehicles.length);
 
           const nonOwnerVehicles = updatedVehicles.filter(v => {
             if (v.carownertype !== "owner") return true;
@@ -136,8 +136,8 @@ export default function RenterVehicles() {
 
           // setVehicles(matchingVehicles);
 
-         // we get the entire batch of vehicles not just the other
-           setVehicles(nonTypeVehicles);
+          // we get the entire batch of vehicles not just the other
+          setVehicles(nonTypeVehicles);
           // setVehicles(updatedVehicles);
 
           if (pincodeAction != 'standard') {
@@ -225,7 +225,7 @@ export default function RenterVehicles() {
     });
   }
 
- 
+
 
   // navigate(qry, { state: { unitNumber: uid, role: arole, numberOfVehicles: vehicles.length } });
 
@@ -234,25 +234,31 @@ export default function RenterVehicles() {
       alert("Unable to load unit information");
       return;
     }
-  //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
+    //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
 
 
 
-     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
-     let activeVehicleCount = activeVehicles.length;
+    let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
+    let activeVehicleCount = activeVehicles.length;
 
     const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
-      let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
+    let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
+
+    // console.log('RV handlecreate allActiveCount unitParkingLimit pa pv',
+    //   allActiveCount, unitParkingLimit, pincodeAction, pincodeValue)
 
 
 
+ if (pincodeAction === 'dayuse') {
+  unitParkingLimit += 1
+ }
 
     // const spotsTheyCanUse = 1 + (ownerOfUnit?.additional_parking_spots_paid || 0);
     // const nextSpotNumber = currentVehicleCount; // 1 for 2nd vehicle, 2 for 3rd
 
-    if (activeVehicleCount >= unitParkingLimit) {
+    if (allActiveCount >= unitParkingLimit) {
       // if (currentVehicleCount >= renterFreeParking) {
       // console.log("*******Parking limit reached, showing modal");
       setModal({
@@ -326,8 +332,8 @@ export default function RenterVehicles() {
   }
 
   const t = nonownerTypeText + ' Vehicles';
- // const displayedVehicles = vehicles.filter(v => v.carownertype !== "owner");
-    const displayedVehicles = [...vehicles];
+  // const displayedVehicles = vehicles.filter(v => v.carownertype !== "owner");
+  const displayedVehicles = [...vehicles];
 
 
   return (
@@ -397,7 +403,7 @@ export default function RenterVehicles() {
           <div className="ajaxloading">
             <p className="error-text">Loading vehicles...</p>
           </div>
-     //   ) : vehicles && vehicles.length > 0 ? (
+          //   ) : vehicles && vehicles.length > 0 ? (
         ) : displayedVehicles.length > 0 ? (
 
           <>
