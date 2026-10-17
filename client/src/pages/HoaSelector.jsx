@@ -59,10 +59,9 @@ export default function HoaSelector() {
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
       minHeight: "100vh",
-      padding: "20px",
       backgroundColor: "#f5f5f5"
     }}>
-      <div className="standardtitlebar">
+      <div className="standardtitlebar_nh">
         <h3>HOA Parking Solutions</h3>
       </div>
 

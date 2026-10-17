@@ -320,7 +320,7 @@ export default function UserDetails() {
                   onChange={handleInputChange}
                   name="role"
                 >
-                   <option value="owner">Owner</option>
+                   <option value="owner">Owner/Tenant</option>
                    <option value="admin">Admin</option>
                   <option value="enforcer">Enforcer</option>
                 </select>

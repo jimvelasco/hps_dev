@@ -462,6 +462,7 @@ export default function UnitDetails() {
                       <option value="">--Select action--</option>
                       <option value="standard">Standard</option>
                       <option value="dayuse">Day Use</option>
+                       <option value="multiuse">Multi Use</option>
                       <option value="freenight">Free Night Parking</option>
                       <option value="contractor">Contractor</option>
                       <option value="special">Special???</option>

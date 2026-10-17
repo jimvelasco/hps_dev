@@ -670,12 +670,35 @@ input.input-date2:disabled {
 /* ****** BEGIN TITLE BARS ETC ****************** */
 /* ********************************************** */
 
+.standardtitlebar_nh {
+  background-color: #333;
+  color:#b9eaa1;
+  padding: 20px;
+ text-align: center;
+  width: 100%;
+  margin-top:0px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
 .standardtitlebar {
+  background-color: #333;
+  color:#b9eaa1;
+  padding: 10px;
+ text-align: center;
+  border-radius: 8px;
+  width: 95%;
+  margin: auto;
+  text-align: center;
+  opacity: .8;
+   margin-bottom: 20px;
+}
+
+
+.standardtitlebar_old {
   background-color: white;
   color: black;
   padding: 10px;
   border-radius: 8px;
-  /* width:380px; */
   width: 95%;
   margin: auto;
   text-align: center;

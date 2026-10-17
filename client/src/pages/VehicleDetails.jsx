@@ -35,6 +35,9 @@ export default function VehicleDetails() {
 
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
     useState(['owner', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
+  const selectedOwnerType = createdfrom === "rentervehicles"
+    ? nonownerType || role || ""
+    : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
 
   /*
    <option value="">-- Select type --</option>
@@ -122,8 +125,7 @@ export default function VehicleDetails() {
     plate: "",
     plate_state: "",
     unitnumber: unitNumber || "",
-   // carownertype: isModifyMode ? carownertype || "" : (vehicleOwnerTypeAry.includes(role) ? role : ""),
-    carownertype: carownertype, //location.state.carownertype,
+    carownertype: isModifyMode ? carownertype || "" : selectedOwnerType,
 
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
@@ -155,7 +157,7 @@ if (hoa && !isModifyMode) {
           plate: "",
           plate_state: "CO",
           unitnumber: unitNumber,
-          carownertype: carownertype , //vehicleOwnerTypeAry.includes(role) ? role : "",
+          carownertype: selectedOwnerType,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -174,7 +176,7 @@ if (hoa && !isModifyMode) {
           plate: "",
           plate_state: "",
           unitnumber: unitNumber,
-          carownertype:  carownertype , //vehicleOwnerTypeAry.includes(role) ? role : "",
+          carownertype: selectedOwnerType,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -639,7 +641,7 @@ if (hoa && !isModifyMode) {
                 
                   <div style={{ marginBottom: "15px" }}>
                     <label className="input-label">
-                      Owner Type
+                      Parking Type
                     </label>
                    
 
@@ -654,8 +656,7 @@ if (hoa && !isModifyMode) {
                       // </div>
                        <div style={{ fontWeight: "normal" }}>
                         <div style={{marginLeft:"12px",marginTop:"15px"}}>
-                        {/* {formData.carownertype?.toUpperCase()} */}
-                        {nonownerType || "other"}
+                        {formData.carownertype?.toUpperCase()}
                         </div>
                          
                       </div>

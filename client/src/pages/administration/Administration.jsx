@@ -230,14 +230,14 @@ export default function Administration() {
 
           <section className="admin_section">
             <h5 className="admin_section_title">Manage</h5>
-            <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA Profile</h3>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Admin Profile</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               Manage HOA Profile including password reset.
             </p>
             <button className="standardsubmitbutton"
               onClick={handleShowProfile}
               style={{ width: "200px" }}>
-              HOA Profile
+              Admin Profile
             </button>
           </section>
 

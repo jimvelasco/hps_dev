@@ -140,9 +140,8 @@ export default function OwnersLogin({loginType}) {
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
       minHeight: "100vh",
-      padding: "20px"
     }}>
-      <div className="standardtitlebar" onClick={() => navigate(`/${hoaId}`)}>
+      <div className="standardtitlebar_nh" onClick={() => navigate(`/${hoaId}`)}>
         <h3 >HOA Parking Solutions </h3>
         <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>
       </div>
