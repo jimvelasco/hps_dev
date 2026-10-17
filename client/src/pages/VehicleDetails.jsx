@@ -92,10 +92,14 @@ export default function VehicleDetails() {
   //   }));
   // };
 
+  
+
   let daysplus = 3;
   if (pincodeAction === 'dayuse') {
     daysplus = 0;
   }
+
+  console.log("IN VEHICLE DETAILS.  PIN_CODE_ACTION IS AND DAYSPLUS",pincodeAction,daysplus);
 
   const edate = new Date();
   edate.setDate(edate.getDate() + daysplus);
