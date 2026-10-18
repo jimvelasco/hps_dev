@@ -152,7 +152,7 @@ export default function OwnersLogin({loginType}) {
           <h2 >{title} Login</h2>
 
         </div>
-        <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
+        <form onSubmit={handleSubmit} style={{ marginTop: "10px",marginLeft:"8px" }}>
           <div style={{ marginBottom: "15px" }}>
             <label htmlFor="email" style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
               Email
