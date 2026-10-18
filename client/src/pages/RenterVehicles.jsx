@@ -84,7 +84,7 @@ export default function RenterVehicles() {
           //     const response = await axios.get(`/vehicles/${hoaId}/rentervehicles/${unitNumber}`);
           let qry = `/vehicles/${hoaId}/allvehicles/${unitNumber}`;
 
-        //  console.log("RenterVehicles.jsx qry:", qry);
+          //  console.log("RenterVehicles.jsx qry:", qry);
 
           const response = await axios.get(qry);
 
@@ -251,9 +251,9 @@ export default function RenterVehicles() {
 
 
 
- if (pincodeAction === 'dayuse') {
-  unitParkingLimit += 1
- }
+    if (pincodeAction === 'dayuse') {
+      unitParkingLimit += 1
+    }
 
     // const spotsTheyCanUse = 1 + (ownerOfUnit?.additional_parking_spots_paid || 0);
     // const nextSpotNumber = currentVehicleCount; // 1 for 2nd vehicle, 2 for 3rd
@@ -356,13 +356,13 @@ export default function RenterVehicles() {
               {/* {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber} */}
               Unit: {unitNumber} {pincodeActionLabel}
             </label><br />
-             <div className="button-grid">
-            <button className="btns btn-primary" style={{ maxWidth:"150px",marginTop: "5px" }} onClick={handleCreateClick}>
-              <FontAwesomeIcon
-                icon={faPlus}
-              />  Add Vehicle
-            </button>
-            
+            <div className="button-grid">
+              <button className="btns btn-primary" style={{ maxWidth: "150px", marginTop: "5px" }} onClick={handleCreateClick}>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                />  Add Vehicle
+              </button>
+
             </div>
           </div>
         </div>
@@ -374,6 +374,9 @@ export default function RenterVehicles() {
             </label>
             <br />
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
+              <FontAwesomeIcon
+                icon={faPlus}
+              />
               Add Vehicle
             </button>
           </div>
