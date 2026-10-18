@@ -376,8 +376,7 @@ export default function RenterVehicles() {
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
               <FontAwesomeIcon
                 icon={faPlus}
-              />
-              Add Vehicle
+              /> Add Vehicle
             </button>
           </div>
         </div>
