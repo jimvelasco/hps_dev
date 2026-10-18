@@ -557,7 +557,7 @@ export default function OwnerVehicles() {
               onClick={() => handleCreateClick('dayuse')}>
               <FontAwesomeIcon
                 icon={faPlus}
-              />  Add Day Passx
+              />  Add Day Pass
             </button>
           </>
         )}

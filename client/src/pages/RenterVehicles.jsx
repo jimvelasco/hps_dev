@@ -368,28 +368,15 @@ export default function RenterVehicles() {
         </div>
 
         <div className="phoneview">
-          <div className="standardtitlebar380">
-
-            {/* <label className="input-label2">
-              {ownerOfUnit.first_name} {ownerOfUnit.last_name}
-            </label>
-            <br />
-            <label className="input-label2">
-              {ownerOfUnit.phone}
-            </label>
-            <br /> */}
-
+          <div className="standardtitlebar320">
             <label className="input-label2">
               Unit: {unitNumber} {pincodeActionLabel}
             </label>
             <br />
-
-
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
               Add Vehicle
             </button>
           </div>
-
         </div>
 
         {vehiclesError && (
