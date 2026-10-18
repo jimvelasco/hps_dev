@@ -481,7 +481,7 @@ button.navbutton3 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: normal;
-  min-width:50px;
+  min-width:130px;
   /* height: 24px;
   margin: 2px; */
   margin:5px;
@@ -728,6 +728,21 @@ input.input-date2:disabled {
   text-align: center;
   opacity: .8;
   margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+
+.standardtitlebar320 {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 8px;
+  width:320px;
+  margin: auto;
+  text-align: center;
+  opacity: .8;
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 
@@ -2004,7 +2019,7 @@ button.navbutton2 {
 }
 
 
-button.navbutton3 {
+button.navbutton4 {
   padding:6px;
   font-size: 14px;
   background-color: #2563EB;

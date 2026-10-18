@@ -9,8 +9,8 @@ import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
-import { getVehicleActiveStatusBoolean, utcDateOnly,daypassVehicleCount } from "../utils/vehicleHelpers";
-import { doesUnitHaveDayUse} from "../utils/unitHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount } from "../utils/vehicleHelpers";
+import { doesUnitHaveDayUse } from "../utils/unitHelpers";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
 
@@ -38,7 +38,7 @@ export default function OwnerVehicles() {
   const [showFilters, setShowFilters] = useState(false);
   const [showUnitId, setShowUnitId] = useState("");
   const [unitForOwner, setUnitForOwner] = useState(null);
-  const [logonType,setLogonType] = useState("owner");
+  const [logonType, setLogonType] = useState("owner");
 
   // these are vehicle types that will show up on this page
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -72,7 +72,7 @@ export default function OwnerVehicles() {
       setShowUnitId(loggedInUser.unitnumber);
       setLogonType(localStorage.getItem('logonType'));
 
-  //    console.log('the logged on user type from button is ',localStorage.getItem('logonType'))
+      //    console.log('the logged on user type from button is ',localStorage.getItem('logonType'))
 
       console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
       //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
@@ -153,9 +153,9 @@ export default function OwnerVehicles() {
 
 
           const updatedVehicles = responseData.filter(v => {
-           // return true;
-           //   return v.carownertype !== 'renter' && (v.carownertype !== 'tenant' || role === 'tenant');
-                         return v.carownertype !== 'renter' ;
+            // return true;
+            //   return v.carownertype !== 'renter' && (v.carownertype !== 'tenant' || role === 'tenant');
+            return v.carownertype !== 'renter';
 
           }).map(v => ({
             ...v,
@@ -166,9 +166,9 @@ export default function OwnerVehicles() {
 
           //   console.log('updatedVehicles vehicles length', updatedVehicles.length);
           let updatedVehicles2 = [...updatedVehicles];
-       //   console.log('uvehicles',logonType,updatedVehicles2);
+          //   console.log('uvehicles',logonType,updatedVehicles2);
 
-     //  console.log('role is',role)
+          //  console.log('role is',role)
 
           if (role === 'tenant') {
             updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant");
@@ -382,19 +382,19 @@ export default function OwnerVehicles() {
       //   throw new Error("Unit inventory limit is unavailable.");
       // }
 
-     // const dayuseok = doesUnitHaveDayUse(unit);
+      // const dayuseok = doesUnitHaveDayUse(unit);
       const daypassCount = daypassVehicleCount(allVehicles);
-      console.log('create daypass count is ',daypassCount);
-     // console.log('dayuseok', dayuseok);
+      console.log('create daypass count is ', daypassCount);
+      // console.log('dayuseok', dayuseok);
       if (pin_code_action === 'dayuse') {
         parkingLimitInventory += 1;
-      // unitParkingLimit += 1;
+        // unitParkingLimit += 1;
       }
 
 
 
-// this needs to be verified
-// console.log('data from ov veh.length pli',vehicles.length,parkingLimitInventory)
+      // this needs to be verified
+      // console.log('data from ov veh.length pli',vehicles.length,parkingLimitInventory)
 
       if (vehicles.length >= parkingLimitInventory) {
         setModal({
@@ -408,10 +408,10 @@ export default function OwnerVehicles() {
         return;
       }
 
-     // console.log('ov vehicles',vehicles);
-     const ownerdplimit = 1;  // this should come from hoa config
+      // console.log('ov vehicles',vehicles);
+      const ownerdplimit = 1;  // this should come from hoa config
 
- if (daypassCount >= 1) {
+      if (daypassCount >= 1) {
         setModal({
           isOpen: true,
           type: "alert",
@@ -545,6 +545,23 @@ export default function OwnerVehicles() {
           </div>
         )}
 
+         {loggedInUser && loggedInUser.role !== "admin" && (
+          <>
+            <button className="navbutton3"
+              onClick={() => handleCreateClick('standard')}>
+              <FontAwesomeIcon
+                icon={faPlus}
+              />  Add Vehicle
+            </button>
+            <button className="navbutton3"
+              onClick={() => handleCreateClick('dayuse')}>
+              <FontAwesomeIcon
+                icon={faPlus}
+              />  Add Day Passx
+            </button>
+          </>
+        )}
+
         <button className="navbutton3"
           onClick={handleShowFilterClick}>
           {showFilters ?
@@ -564,22 +581,7 @@ export default function OwnerVehicles() {
           </button>
         </div>
 
-        {loggedInUser && loggedInUser.role !== "admin" && (
-          <>
-          <button className="navbutton3"
-            onClick={() => handleCreateClick('standard')}>
-            <FontAwesomeIcon
-              icon={faPlus}
-            />  Add Vehicle
-          </button>
-          <button className="navbutton3"
-            onClick={() => handleCreateClick('dayuse')}>
-            <FontAwesomeIcon
-              icon={faPlus}
-            />  Add Day Pass
-          </button>
-          </>
-        )}
+       
       </div>
     </div>)
   }
@@ -600,9 +602,28 @@ export default function OwnerVehicles() {
             </select>
           </div>
         )}
-</div>
-         <div className="button-grid">
+      </div>
 
+        {loggedInUser && loggedInUser.role !== "admin" && (
+        <div className="button-grid">
+
+          <button className="navbutton3"
+            onClick={() => handleCreateClick()}>
+            <FontAwesomeIcon
+              icon={faPlus}
+            />  Add Vehicle
+          </button>
+          <button className="navbutton3"
+            onClick={() => handleCreateClick()}>
+            <FontAwesomeIcon
+              icon={faPlus}
+            />  Add Day Pass
+          </button>
+        </div>
+      )}
+
+
+      <div className="button-grid">
         <button className="navbutton3"
           onClick={handleShowFilterClick}>
           {showFilters ?
@@ -621,26 +642,12 @@ export default function OwnerVehicles() {
             }
           </button>
         </div>
-        </div>
-
-        {loggedInUser && loggedInUser.role !== "admin" && (
-          <div className="button-grid">
-          
-          <button className="navbutton3"
-            onClick={() => handleCreateClick()}>
-            <FontAwesomeIcon
-              icon={faPlus}
-            />  Add Vehicle
-          </button>
-          <button className="navbutton3"
-            onClick={() => handleCreateClick()}>
-            <FontAwesomeIcon
-              icon={faPlus}
-            />  Add Day Pass
-          </button>
-          </div>
-        )}
       </div>
+
+
+
+    
+    </div>
     )
   }
 
@@ -685,10 +692,22 @@ export default function OwnerVehicles() {
           </div>
         </div>
         <div className="phoneview">
-          <div className="standardtitlebar380" style={{ border: "0px solid yellow " }}>
+          <div className="standardtitlebar320" style={{ border: "0px solid yellow " }}>
             {renderTitleBarPhone()}
           </div>
         </div>
+
+
+        {/* for testing <div className="phoneview">
+          <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
+            {renderTitleBarTable()}
+          </div>
+        </div>
+        <div className="tableview">
+          <div className="standardtitlebar320" style={{ border: "0px solid yellow " }}>
+            {renderTitleBarPhone()}
+          </div>
+        </div> */}
 
 
         <div style={{ display: isVisible ? "block" : "block" }}>
