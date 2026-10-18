@@ -12,3 +12,14 @@ export const doesUnitHaveDayUse = (unit) => {
  return rval;
 }
 
+export const daypassVehicleCount = (vehicles) => {
+  console.log('daypassVehicleCount unit',vehicles);
+  let cnt = 0;
+  vehicles.forEach((el) => {
+    if (el.pin_code_action === "dayuse") {
+      cnt += 1
+    }
+  });
+ return cnt;
+}
+

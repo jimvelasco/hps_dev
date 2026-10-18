@@ -351,21 +351,24 @@ export default function RenterVehicles() {
 
 
         <div className="tableview">
-          <div className="standardtitlebar" style={{ width: "420px" }}>
+          <div className="standardtitlebar380" >
             <label className="input-label2">
               {/* {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber} */}
               Unit: {unitNumber} {pincodeActionLabel}
             </label><br />
-            <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
+             <div className="button-grid">
+            <button className="btns btn-primary" style={{ maxWidth:"150px",marginTop: "5px" }} onClick={handleCreateClick}>
               <FontAwesomeIcon
                 icon={faPlus}
               />  Add Vehicle
             </button>
+            
+            </div>
           </div>
         </div>
 
         <div className="phoneview">
-          <div className="standardtitlebar">
+          <div className="standardtitlebar380">
 
             {/* <label className="input-label2">
               {ownerOfUnit.first_name} {ownerOfUnit.last_name}

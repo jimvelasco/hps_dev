@@ -718,6 +718,19 @@ input.input-date2:disabled {
   margin-bottom: 20px;
 }
 
+
+.standardtitlebar800 {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 8px;
+  width:700px;
+  margin: auto;
+  text-align: center;
+  opacity: .8;
+  margin-bottom: 20px;
+}
+
 .standardtitlebar2 {
   background-color: white;
   color: black;
@@ -1194,6 +1207,10 @@ section.standardsectiondashboard {
   padding:0px;
 
   /* border:1px solid black */
+}
+
+.vehicle-pin-action-row {
+  min-height: 1lh;
 }
 
 .grid-item-normal {
@@ -1970,6 +1987,21 @@ button.navbutton2 {
   cursor: pointer;
   font-weight: normal;
   min-width:100px;
+  margin: 4px;
+
+}
+
+
+button.navbutton3 {
+  padding:6px;
+  font-size: 14px;
+  background-color: #2563EB;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: normal;
+  min-width:150px;
   margin: 4px;
 
 }

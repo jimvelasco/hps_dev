@@ -83,6 +83,7 @@ export default function OwnersLogin({loginType}) {
          const unum = user.unitnumber;
          localStorage.setItem('unitNumber',unum)
         const flag = user.role; 
+        console.log('owner login role',flag)
         let nav = `/${hoaId}/ownervehicles/${flag}`;
         if (flag === 'admin') {
           //  nav = `/${hoaId}/onsite`;

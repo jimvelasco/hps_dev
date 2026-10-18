@@ -10,7 +10,7 @@ import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
 import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
-import { doesUnitHaveDayUse } from "../utils/unitHelpers";
+import { doesUnitHaveDayUse,daypassVehicleCount} from "../utils/unitHelpers";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
 
@@ -74,7 +74,7 @@ export default function OwnerVehicles() {
 
   //    console.log('the logged on user type from button is ',localStorage.getItem('logonType'))
 
-    //  console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
+      console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
       //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
     } else {
       console.log("owner vehicles loggedInUser is null")
@@ -154,26 +154,29 @@ export default function OwnerVehicles() {
 
           const updatedVehicles = responseData.filter(v => {
            // return true;
-              return (v.carownertype !== 'renter');
+           //   return v.carownertype !== 'renter' && (v.carownertype !== 'tenant' || role === 'tenant');
+                         return v.carownertype !== 'renter' ;
+
           }).map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
+          setAllVehicles(updatedVehicles);
+
           //   console.log('updatedVehicles vehicles length', updatedVehicles.length);
           let updatedVehicles2 = [...updatedVehicles];
        //   console.log('uvehicles',logonType,updatedVehicles2);
 
-          if (logonType === 'tenant') {
-            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype !== "owner");
-          }
+     //  console.log('role is',role)
 
+          if (role === 'tenant') {
+            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant");
+          }
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
 
           //   console.log('active ownervehicles vehicles length', activeVehicles.length);
-
-
           //  console.log("updatedVehicles client received:", updatedVehicles.length)
 
           updatedVehicles2.sort((a, b) => {
@@ -200,9 +203,9 @@ export default function OwnerVehicles() {
 
 
 
-  useEffect(() => {
-    handlePlateSearch(plateSearch);
-  }, [allVehicles, filterType, plateSearch]);
+  // useEffect(() => {
+  //   handlePlateSearch(plateSearch);
+  // }, [allVehicles, filterType, plateSearch]);
 
 
   if (loading) {
@@ -329,7 +332,12 @@ export default function OwnerVehicles() {
     //navigate(qry);
   };
 
-  const handleCreateClick = async () => {
+
+
+
+
+
+  const handleCreateClick = async (pin_code_action) => {
     const uid = loggedInUser?.unitnumber;
     if (!hoaId || !uid) {
       setModal({
@@ -367,18 +375,23 @@ export default function OwnerVehicles() {
       }
 
       setUnitForOwner(unit);
-      const parkingLimitInventory = Number(unit.inventory_allowed_owner);
+      let parkingLimitInventory = Number(unit.inventory_allowed_owner);
       let unitParkingLimit = Number(unit.parking_allowed_unit);
       //   console.log('parking limit in ow',parkingLimit);
       // if (unit.inventory_allowed_owner == null || !Number.isFinite(parkingLimit)) {
       //   throw new Error("Unit inventory limit is unavailable.");
       // }
 
-      const dayuseok = doesUnitHaveDayUse(unit);
+     // const dayuseok = doesUnitHaveDayUse(unit);
+      const daypassCount = daypassVehicleCount(allVehicles);
+      console.log('create daypass count is ',daypassCount);
      // console.log('dayuseok', dayuseok);
-      if (dayuseok) {
-       // unitParkingLimit += 1;
+      if (pin_code_action === 'dayuse') {
+        parkingLimitInventory += 1;
+      // unitParkingLimit += 1;
       }
+
+
 
 // this needs to be verified
 // console.log('data from ov veh.length pli',vehicles.length,parkingLimitInventory)
@@ -396,8 +409,19 @@ export default function OwnerVehicles() {
       }
 
      // console.log('ov vehicles',vehicles);
+     const ownerdplimit = 1;  // this should come from hoa config
 
-
+ if (daypassCount >= 1) {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: `Daypass Limit Reached.  You can only have  ${ownerdplimit} daypass vehicles.`,
+          confirmText: "OK",
+          onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+        });
+        return;
+      }
 
 
       // let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
@@ -427,7 +451,7 @@ export default function OwnerVehicles() {
           ownerOfUnit: loggedInUser,
           unit,
           createdfrom: 'ownervehicles',
-          pincodeAction: ""
+          pincodeAction: pin_code_action
         }
       });
     } catch (err) {
@@ -505,7 +529,7 @@ export default function OwnerVehicles() {
   }
 
 
-  const renderTitleBar = () => {
+  const renderTitleBarTable = () => {
     return (<div>
       <div className="button-grid">
         {loggedInUser && loggedInUser.role === "admin" && (
@@ -520,9 +544,9 @@ export default function OwnerVehicles() {
             </select>
           </div>
         )}
-        <button className="navbutton2"
+
+        <button className="navbutton3"
           onClick={handleShowFilterClick}>
-          {/* {!showFilters ? "Sort" : "Hide"} */}
           {showFilters ?
             (<span className="strike">
               Sort</span>)
@@ -530,55 +554,124 @@ export default function OwnerVehicles() {
           }
         </button>
         <div>
-          <button className="navbutton2"
+          <button className="navbutton3"
             onClick={handleShowTable}>
-            {/* {showTable ? "Hide Table" : "Show Table"} */}
-
             {showTable ?
               (<span className="strike">
                 Table</span>)
               : (<span>Table</span>)
             }
-
           </button>
         </div>
 
         {loggedInUser && loggedInUser.role !== "admin" && (
-          <button className="navbutton2"
-            onClick={() => handleCreateClick()}>
+          <>
+          <button className="navbutton3"
+            onClick={() => handleCreateClick('standard')}>
             <FontAwesomeIcon
               icon={faPlus}
-            />  Add
+            />  Add Vehicle
           </button>
+          <button className="navbutton3"
+            onClick={() => handleCreateClick('dayuse')}>
+            <FontAwesomeIcon
+              icon={faPlus}
+            />  Add Day Pass
+          </button>
+          </>
         )}
       </div>
     </div>)
   }
 
 
-  const handlePlateSearch = (searchTerm) => {
-    const query = searchTerm.trim().toLowerCase();
-    const matchingVehicles = allVehicles.filter(vehicle =>
-      (vehicle.plate || "").toLowerCase().includes(query)
-    );
-    setVehicles(handleFilterApply(matchingVehicles));
-  };
+  const renderTitleBarPhone = () => {
+    return (<div>
+      <div className="button-grid">
+        {loggedInUser && loggedInUser.role === "admin" && (
+          <div >
+            <select className="standardselect"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <option value="owner">Owner</option>
+              <option value="renter">Renter</option>
+              <option value="all">All</option>
+            </select>
+          </div>
+        )}
+</div>
+         <div className="button-grid">
 
-  const renderPlateSearch = () => {
-    return (
-      <div className="standardtitlebar380" style={{ width: "300px" }}>
-        <label htmlFor="plate-search" style={{ marginRight: "10px" }}>Filter</label>
-        <input
-          id="plate-search"
-          className="standardinput plate-search-input"
-          type="search"
-          value={plateSearch}
-          onChange={(event) => setPlateSearch(event.target.value)}
-          placeholder="Enter license plate"
-        />
+        <button className="navbutton3"
+          onClick={handleShowFilterClick}>
+          {showFilters ?
+            (<span className="strike">
+              Sort</span>)
+            : (<span>Sort</span>)
+          }
+        </button>
+        <div>
+          <button className="navbutton3"
+            onClick={handleShowTable}>
+            {showTable ?
+              (<span className="strike">
+                Table</span>)
+              : (<span>Table</span>)
+            }
+          </button>
+        </div>
+        </div>
+
+        {loggedInUser && loggedInUser.role !== "admin" && (
+          <div className="button-grid">
+          
+          <button className="navbutton3"
+            onClick={() => handleCreateClick()}>
+            <FontAwesomeIcon
+              icon={faPlus}
+            />  Add Vehicle
+          </button>
+          <button className="navbutton3"
+            onClick={() => handleCreateClick()}>
+            <FontAwesomeIcon
+              icon={faPlus}
+            />  Add Day Pass
+          </button>
+          </div>
+        )}
       </div>
-    );
-  };
+    )
+  }
+
+
+
+
+
+
+  // const handlePlateSearch = (searchTerm) => {
+  //   const query = searchTerm.trim().toLowerCase();
+  //   const matchingVehicles = allVehicles.filter(vehicle =>
+  //     (vehicle.plate || "").toLowerCase().includes(query)
+  //   );
+  //   setVehicles(handleFilterApply(matchingVehicles));
+  // };
+
+  // const renderPlateSearch = () => {
+  //   return (
+  //     <div className="standardtitlebar380" style={{ width: "300px" }}>
+  //       <label htmlFor="plate-search" style={{ marginRight: "10px" }}>Filter</label>
+  //       <input
+  //         id="plate-search"
+  //         className="standardinput plate-search-input"
+  //         type="search"
+  //         value={plateSearch}
+  //         onChange={(event) => setPlateSearch(event.target.value)}
+  //         placeholder="Enter license plate"
+  //       />
+  //     </div>
+  //   );
+  // };
 
 
   return (
@@ -586,14 +679,14 @@ export default function OwnerVehicles() {
       <DashboardNavbar title={titlestr} title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="phoneview">
-          <div className="standardtitlebar" style={{ border: "0px solid yellow " }}>
-            {renderTitleBar()}
+        <div className="tableview">
+          <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
+            {renderTitleBarTable()}
           </div>
         </div>
-        <div className="tableview">
+        <div className="phoneview">
           <div className="standardtitlebar380" style={{ border: "0px solid yellow " }}>
-            {renderTitleBar()}
+            {renderTitleBarPhone()}
           </div>
         </div>
 
@@ -640,7 +733,7 @@ export default function OwnerVehicles() {
           
         </div> */}
 
-        {renderPlateSearch()}
+        {/* {renderPlateSearch()} */}
 
 
 

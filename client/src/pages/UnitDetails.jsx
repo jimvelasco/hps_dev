@@ -426,6 +426,7 @@ export default function UnitDetails() {
               <fieldset className="input-group">
                 <legend><b>PIN Entries</b></legend>
                 {formData.pincodeary.map((entry, index) => (
+                 
                   <div className="input-group" key={entry._id || index}>
                     <div className="page-label">
                       <label className="input-label_normal" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>

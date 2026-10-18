@@ -45,18 +45,14 @@ export default function LandingPage({ backgroundImage, hoaId, hoaError }) {
       <div className="tableview">
         <div className="standardtitlebar_nh" onClick={() => navigate("/")}>
           <h3 >HOA Parking Solutions </h3>
-          <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>        </div>
+          <h3 style={{ marginTop: "5px",color:"#ffffff" }}>{hoa && hoa.name}</h3>        </div>
       </div>
       <div className="phoneview">
         <div className="standardtitlebar_nh"  onClick={() => navigate("/")}>
           <h3>HOA Parking Solutions </h3>
-          <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>        </div>
+          <h3 style={{ marginTop: "5px",color:"#ffffff" }}>{hoa && hoa.name}</h3>        </div>
       </div>
-      {/* <div className="phoneview">
-        <div className="standardtitlebar">
-          <h2 onClick={() => navigate("/")}>HOA<br />Parking<br />Solutions</h2>
-        </div>
-      </div> */}
+     
 
       {hoaError ? (
         <div className="displayerror">

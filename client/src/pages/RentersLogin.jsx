@@ -154,7 +154,7 @@ export default function RentersLogin() {
         }}>
             <div className="standardtitlebar_nh">
                 <h3 onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions</h3>
-                <h3 style={{ marginTop: "5px" }}>{hoa && hoa.name}</h3>
+                <h3 style={{ marginTop: "8px",color:"#ffffff" }}>{hoa && hoa.name}</h3>
             </div>
 
             {/* navigate(`/${hoaId}`); */}

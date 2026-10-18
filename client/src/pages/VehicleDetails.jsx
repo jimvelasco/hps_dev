@@ -34,32 +34,15 @@ export default function VehicleDetails() {
 
 
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
-    useState(['owner', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
+    useState(['owner',  'family', 'friend', 'visitor', 'contractor']);
+
+   // console.log('VD LOCATION STATE',location.state);
+
+   
+
   const selectedOwnerType = createdfrom === "rentervehicles"
     ? nonownerType || role || ""
     : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
-
-  /*
-   <option value="">-- Select type --</option>
-                              <option value="renter">Short Term Renter</option>
-                              <option value="tenant">Tenant (Long Term Renter)</option>
-                              <option value="family">Family</option>
-                              <option value="friend">Friend</option>
-                              <option value="visitor">Visitor / Day Guest</option>
-                              <option value="contractor">Contractor / Vendor</option>
-  */
-
-  /*
-   state: {
-          unitNumber: uid,
-          role: loggedInUser.role,
-          numberOfVehicles: vehicles.length,
-          vehicles: vehicles,
-          vehid: null,
-          ownerOfUnit: loggedInUser,
-          unit: unit
-        }
-  */
 
 
 
@@ -95,14 +78,15 @@ export default function VehicleDetails() {
   //   }));
   // };
 
-  
+  let disableDates = false;
 
   let daysplus = 3;
   if (pincodeAction === 'dayuse') {
     daysplus = 0;
+    disableDates = true;
   }
 
-  console.log("IN VEHICLE DETAILS.  PIN_CODE_ACTION IS AND DAYSPLUS",pincodeAction,daysplus);
+ 
 
   const edate = new Date();
   edate.setDate(edate.getDate() + daysplus);
@@ -126,6 +110,9 @@ export default function VehicleDetails() {
     plate_state: "",
     unitnumber: unitNumber || "",
     carownertype: isModifyMode ? carownertype || "" : selectedOwnerType,
+    pin_code_value: pincodeValue,
+    pin_code_action: pincodeAction,
+
 
     startdate: new Date().toISOString().split('T')[0],
     enddate: edate.toISOString().split('T')[0]
@@ -158,8 +145,11 @@ if (hoa && !isModifyMode) {
           plate_state: "CO",
           unitnumber: unitNumber,
           carownertype: selectedOwnerType,
+           pin_code_value: pincodeValue,
+          pin_code_action: pincodeAction,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
+         
         }
         )
       }
@@ -177,6 +167,8 @@ if (hoa && !isModifyMode) {
           plate_state: "",
           unitnumber: unitNumber,
           carownertype: selectedOwnerType,
+           pin_code_value: pincodeValue,
+          pin_code_action: pincodeAction,
           startdate: new Date().toISOString().split('T')[0],
           enddate: edate.toISOString().split('T')[0],
         }
@@ -212,7 +204,7 @@ if (hoa && !isModifyMode) {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-        console.log('about to set vehicle',response.data)
+      //  console.log('about to set vehicle',response.data)
         setVehicle(response.data);
 
         const sd = utcDateOnly(response.data.checkin);
@@ -242,6 +234,8 @@ if (hoa && !isModifyMode) {
           startdate: sd,
           enddate: ed,
           requires_payment: response.data.requires_payment || 0,
+           pin_code_value: pincodeValue,
+          pin_code_action: pincodeAction,
         });
             console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
 
@@ -473,12 +467,14 @@ if (hoa && !isModifyMode) {
         hoaid: hoaId,
         ownerid: oid,
         requires_payment: rpflag,
-        createdbytype: cbt,
-        ...(!isModifyMode && {
-          pin_code_value: createdfrom === "rentervehicles" ? pincodeValue : "",
-          pin_code_action: createdfrom === "rentervehicles" ? pincodeAction : "standard"
-        })
+        createdbytype: cbt
+        // ...(!isModifyMode && {
+        //   pin_code_value: createdfrom === "rentervehicles" ? pincodeValue : "",
+        //   pin_code_action: createdfrom === "rentervehicles" ? pincodeAction : "standard"
+        // })
       };
+
+      console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
@@ -862,9 +858,8 @@ if (hoa && !isModifyMode) {
                       name="startdate"
                       // value={new Date(formData.startdate).toISOString().substring(0, 10)}
                       value={formData.startdate}
-
-
                       onChange={handleFormChange}
+                      disabled={disableDates}
                     />
                   </div>
 
@@ -874,12 +869,12 @@ if (hoa && !isModifyMode) {
                     <label className="input-label">
                       Check Out
                     </label>
-                  
                     <input className="input-date2"
                       type="date"
                       name="enddate"
                       value={formData.enddate}
                       onChange={handleFormChange}
+                       disabled={disableDates}
                     />
                   </div>
 
