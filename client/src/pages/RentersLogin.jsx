@@ -168,7 +168,7 @@ export default function RentersLogin() {
                 {loadingUnits ? (
                     <p>Loading units...</p>
                 ) : (
-                    <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
+                    <form onSubmit={handleSubmit} style={{ marginTop: "10px",marginLeft:"15px"}}>
 
                         <div style={{ marginBottom: "15px", marginTop: "10px" }}>
                             <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
@@ -240,21 +240,7 @@ export default function RentersLogin() {
                             </button>
                         </div>
 
-                        {/* <div style={{ display: 'flex', justifyContent: "space-between" }}>
-
-                            <button className="standardsubmitbutton"
-                                type="submit"
-                            >
-                                Submit
-                            </button>
-                            <button className="standardcancelbutton"
-                                type="button"
-                                // onClick={() => navigate(-1)}
-                                onClick={handleCancelClick}
-                            >
-                                Cancel
-                            </button>
-                        </div> */}
+                       
                     </form>
                 )}
             </div>
