@@ -351,7 +351,7 @@ export default function RenterVehicles() {
 
 
         <div className="tableview">
-          <div className="standardtitlebar380" >
+          <div className="standardtitlebar320" >
             <label className="input-label2">
               {/* {ownerOfUnit.first_name} {ownerOfUnit.last_name} {ownerOfUnit.phone}  Unit: {unitNumber} */}
               Unit: {unitNumber} {pincodeActionLabel}
