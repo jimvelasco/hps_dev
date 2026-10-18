@@ -384,7 +384,7 @@ export default function OwnerVehicles() {
 
       // const dayuseok = doesUnitHaveDayUse(unit);
       const daypassCount = daypassVehicleCount(allVehicles);
-      console.log('create daypass count is ', daypassCount);
+      console.log('create daypass count is ', daypassCount,pin_code_action);
       // console.log('dayuseok', dayuseok);
       if (pin_code_action === 'dayuse') {
         parkingLimitInventory += 1;
@@ -409,9 +409,15 @@ export default function OwnerVehicles() {
       }
 
       // console.log('ov vehicles',vehicles);
-      const ownerdplimit = 1;  // this should come from hoa config
+      let ownerdplimit = unit.daypasses_allowed_owner; //1;  // this should come from hoa config
+     
+      if (loggedInUser.role === 'tenant') {
+         ownerdplimit = unit.daypasses_allowed_tenant;
+      }
 
-      if (daypassCount >= 1) {
+       console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
+
+      if (daypassCount >= ownerdplimit && pin_code_action === 'dayuse') {
         setModal({
           isOpen: true,
           type: "alert",
