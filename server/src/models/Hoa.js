@@ -41,6 +41,30 @@ const HoaSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+
+
+  daypasses_allowed_owner: {
+    type: Number,
+    default: 1
+  },
+  parking_allowed_tenant: {
+    type: Number,
+    default: 2
+  },
+  tenant_free_parking_spots: {
+    type: Number,
+    default: 2
+  },
+  daypasses_allowed_tenant: {
+    type: Number,
+    default: 0
+  },
+  daypasses_allowed_renter: {
+    type: Number,
+    default: 0
+  },
+
+
  
   // therefore the total spots at the hoa is the sum of
   // totalspotsavailable = parking_allowed_hoa + parking_handicapped_hoa

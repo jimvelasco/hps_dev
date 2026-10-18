@@ -27,9 +27,14 @@ export default function HoaSettings() {
     inventory_allowed_owner: 5,
     parking_allowed_renter: 2,
     parking_allowed_owner: 2,
-    renter_free_parking_spots: 1,
+    renter_free_parking_spots: 2,
     owner_free_parking_spots: 5,
-    parking_information_url: ""
+    parking_information_url: "",
+    daypasses_allowed_owner: 1,
+    parking_allowed_tenant: 2,
+    tenant_free_parking_spots: 2,
+    daypasses_allowed_tenant: 0,
+    daypasses_allowed_renter: 0
   });
 
   useEffect(() => {
@@ -50,7 +55,14 @@ export default function HoaSettings() {
         parking_allowed_owner: hoa.parking_allowed_owner || 2,
         renter_free_parking_spots: hoa.renter_free_parking_spots || 1,
         owner_free_parking_spots: hoa.owner_free_parking_spots || 5,
-        parking_information_url: hoa.parking_information_url || ""
+        parking_information_url: hoa.parking_information_url || "",
+
+
+        daypasses_allowed_owner: hoa.daypasses_allowed_owner || 1,
+        parking_allowed_tenant: hoa.parking_allowed_tenant || 2,
+        tenant_free_parking_spots: hoa.tenant_free_parking_spots || 2,
+        daypasses_allowed_tenant: hoa.daypasses_allowed_tenant || 0,
+        daypasses_allowed_renter: hoa.daypasses_allowed_renter || 0
       });
     }
   }, [hoaId, hoa, fetchHoaById]);
@@ -63,7 +75,13 @@ export default function HoaSettings() {
       "parking_allowed_renter",
       "parking_allowed_owner",
       "renter_free_parking_spots",
-      "owner_free_parking_spots"
+      "owner_free_parking_spots",
+
+      "daypasses_allowed_owner",
+      "parking_allowed_tenant",
+      "tenant_free_parking_spots",
+      "daypasses_allowed_tenant",
+      "daypasses_allowed_renter"
     ];
 
     setFormData(prev => ({
@@ -84,7 +102,7 @@ export default function HoaSettings() {
       }
     } catch (err) {
       setError(err.response?.data?.message || "Failed to save HOA settings");
-      console.error("Error saving HOA settings:", err);
+    //  console.error("Error saving HOA settings:", err);
     } finally {
       setSaving(false);
     }
@@ -116,7 +134,7 @@ export default function HoaSettings() {
       <DashboardNavbar title="HOA Settings" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
-        <div className="standardtitlebar">
+        <div className="standardtitlebar_blackonwhite">
           <h2>HOA Settings</h2>
         </div>
 
@@ -215,7 +233,7 @@ export default function HoaSettings() {
               />
             </div>
 
-            <div>
+            <div style={{ marginBottom: "15px" }}>
               <label className="input-label">Inventory Allowed (Unit)</label>
               <input
                 type="number"
@@ -229,8 +247,8 @@ export default function HoaSettings() {
             <fieldset className="input-group">
               <legend><b>Owner</b></legend>
 
-              <div>
-                <label className="input-label" style={{ marginTop: "10px" }}>Parking Spaces Allowed</label>
+              <div  style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Parking Spaces Allowed</label>
                 <input
                   type="number"
                   className="standardinput"
@@ -240,10 +258,10 @@ export default function HoaSettings() {
                 />
               </div>
 
-              
 
-              <div>
-                <label className="input-label">Free Parking Spaces (No Charge)</label>
+
+              <div  style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Free Parking Spaces (No Charge)</label>
                 <input
                   type="number"
                   className="standardinput"
@@ -252,56 +270,63 @@ export default function HoaSettings() {
                   onChange={handleInputChange}
                 />
               </div>
-               <div>
-                <label className="input-label" style={{ marginTop: "10px" }}>Day Passes Allowed</label>
+              <div  style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Day Passes Allowed</label>
                 <input
                   type="number"
                   className="standardinput"
-                  name="parking_allowed_owner"
-                  value={1}
+                  name="daypasses_allowed_owner"
+                  value={formData.daypasses_allowed_owner}
                   onChange={handleInputChange}
                 />
               </div>
             </fieldset>
-             <fieldset className="input-group">
+
+
+
+            <fieldset className="input-group">
               <legend><b>Tenant (Long Term Renter)</b></legend>
 
-              <div>
-                <label className="input-label" style={{ marginTop: "10px" }}>Parking Spaces Allowed</label>
+              <div style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Parking Spaces Allowed</label>
                 <input
                   type="number"
                   className="standardinput"
-                  name="parking_allowed_owner"
-                  value={formData.parking_allowed_owner}
+                  name="parking_allowed_tenant"
+                  value={formData.parking_allowed_tenant}
                   onChange={handleInputChange}
                 />
               </div>
 
-              <div>
-                <label className="input-label">Free Parking Spaces (No Charge)</label>
+              <div  style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Free Parking Spaces (No Charge)</label>
                 <input
                   type="number"
                   className="standardinput"
-                  name="owner_free_parking_spots"
-                  value={formData.owner_free_parking_spots}
+                  name="tenant_free_parking_spots"
+                  value={formData.tenant_free_parking_spots}
                   onChange={handleInputChange}
                 />
               </div>
-               <div>
-                <label className="input-label" style={{ marginTop: "10px" }}>Day Passes Allowed</label>
+              <div  style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Day Passes Allowed</label>
                 <input
                   type="number"
                   className="standardinput"
-                  name="parking_allowed_owner"
-                  value={0}
+                  name="daypasses_allowed_tenant"
+                  value={formData.daypasses_allowed_tenant}
                   onChange={handleInputChange}
                 />
               </div>
             </fieldset>
+
+
+
+
             <fieldset className="input-group">
               <legend><b>Short Term Renter</b></legend>
-              <div>
-                <label className="input-label" style={{ marginTop: "10px" }}>Parking Spaces Allowed</label>
+              <div  style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Parking Spaces Allowed</label>
                 <input
                   type="number"
                   className="standardinput"
@@ -311,7 +336,7 @@ export default function HoaSettings() {
                 />
               </div>
 
-              <div>
+              <div  style={{ marginBottom: "15px" }}>
                 <label className="input-label">Free Parking Spaces (No charge)</label>
                 <input
                   type="number"
@@ -321,14 +346,14 @@ export default function HoaSettings() {
                   onChange={handleInputChange}
                 />
               </div>
-               <div>
-                <label className="input-label" style={{ marginTop: "10px" }}>Day Passes Allowed</label>
+              <div  style={{ marginBottom: "15px" }}>
+                <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Day Passes Allowed</label>
                 <input
                   type="number"
                   className="standardinput"
-                  name="parking_allowed_owner"
-                  value={0}
-                  onChange={handleInputChange}
+                  name="daypasses_allowed_renter"
+                  value={formData.daypasses_allowed_renter}
+                   onChange={handleInputChange}
                 />
               </div>
             </fieldset>
@@ -347,7 +372,7 @@ export default function HoaSettings() {
             </div> */}
 
             <div className="hoa-settings-full-width">
-              <label className="input-label">Parking Information URL</label>
+              <label className="input-label" style={{  marginBottom: "5px", fontWeight: "normal" }}>Parking Information URL</label>
               <input
                 type="text"
                 className="standardinput"

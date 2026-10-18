@@ -41,10 +41,19 @@ export default function UnitDetails() {
     renter_free_parking: "",
     pincodeary: [],
     available_for_rent: 1,
-    is_resident: 0
+    is_resident: 0,
+
+    daypasses_allowed_owner: 1,
+    parking_allowed_tenant: 2,
+    tenant_free_parking_spots: 2,
+    daypasses_allowed_tenant: 0,
+    daypasses_allowed_renter: 0
+
+
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   useEffect(() => {
     if (!numonunit && hoaid && hoa?.hoaid !== hoaid) {
@@ -52,9 +61,9 @@ export default function UnitDetails() {
     }
   }, [numonunit, hoaid, hoa?.hoaid, fetchHoaById]);
 
+  // this loads the defaults from the hoa settings
   useEffect(() => {
     if (numonunit || !hoa || hoa.hoaid !== hoaid) return;
-
     setFormData(prev => ({
       ...prev,
       hoaid,
@@ -62,33 +71,22 @@ export default function UnitDetails() {
       parking_allowed_owner: prev.parking_allowed_owner === "" ? hoa.parking_allowed_owner ?? "" : prev.parking_allowed_owner,
       parking_allowed_renter: prev.parking_allowed_renter === "" ? hoa.parking_allowed_renter ?? "" : prev.parking_allowed_renter,
       owner_free_parking: prev.owner_free_parking === "" ? hoa.owner_free_parking_spots ?? "" : prev.owner_free_parking,
-      renter_free_parking: prev.renter_free_parking === "" ? hoa.renter_free_parking_spots ?? "" : prev.renter_free_parking
+      renter_free_parking: prev.renter_free_parking === "" ? hoa.renter_free_parking_spots ?? "" : prev.renter_free_parking,
+
+      daypasses_allowed_owner: prev.daypasses_allowed_owner === "" ? hoa.daypasses_allowed_owner ?? "" : prev.daypasses_allowed_owner,
+      parking_allowed_tenant: prev.parking_allowed_tenant === "" ? hoa.parking_allowed_tenant ?? "" : prev.parking_allowed_tenant,
+      tenant_free_parking_spots: prev.tenant_free_parking_spots === "" ? hoa.tenant_free_parking_spots ?? "" : prev.tenant_free_parking_spots,
+      daypasses_allowed_tenant: prev.daypasses_allowed_tenant === "" ? hoa.daypasses_allowed_tenant ?? "" : prev.daypasses_allowed_tenant,
+      daypasses_allowed_renter: prev.daypasses_allowed_renter === "" ? hoa.daypasses_allowed_renter ?? "" : prev.daypasses_allowed_renter,
+
+    
+
     }));
   }, [numonunit, hoaid, hoa]);
 
   // console.log('formdata is ', formData)
   // console.log('location state is ', location.state)
 
-
-
-
-  /*
-
-  const { role } = location.state || {};
-
-  this is how we send stuff
-
-    const qry = `/${hoaId}/vehicledetails/create/${userIdForUnit}`;
-    //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
-    navigate(qry, {
-      state: {
-        unitNumber: unitNumber, role: "renter",
-        vehicles: vehicles,
-        ownerOfUnit: ownerOfUnit,
-        vehid: null
-      }
-    });
-  */
 
   useEffect(() => {
     if (!numonunit) return;
@@ -115,7 +113,22 @@ export default function UnitDetails() {
           renter_free_parking: response.data.renter_free_parking || "",
           pincodeary: response.data.pincodeary || [],
           available_for_rent: response.data.available_for_rent ?? 1,
-          is_resident: response.data.is_resident ?? 0
+          is_resident: response.data.is_resident ?? 0,
+
+
+          daypasses_allowed_owner: response.data.daypasses_allowed_owner || 0,
+          parking_allowed_tenant: response.data.parking_allowed_tenant || 0,
+          tenant_free_parking_spots: response.data.tenant_free_parking_spots || 0,
+          daypasses_allowed_tenant: response.data.daypasses_allowed_tenant || 0,
+          daypasses_allowed_renter: response.data.daypasses_allowed_renter || 0
+
+          // daypasses_allowed_owner: 1,
+          // parking_allowed_tenant: 2,
+          // tenant_free_parking_spots: 2,
+          // daypasses_allowed_tenant: 0,
+          // daypasses_allowed_tenant: 0
+
+
         });
       } catch (err) {
         setError(err.response?.data?.message || err.message || "Failed to fetch user");
@@ -197,8 +210,16 @@ export default function UnitDetails() {
         parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,
         parking_allowed_owner: formData.parking_allowed_owner ? parseInt(formData.parking_allowed_owner) : undefined,
         owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : undefined,
-        renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : undefined
+        renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : undefined,
+
+        daypasses_allowed_owner: formData.daypasses_allowed_owner ? parseInt(formData.daypasses_allowed_owner) : undefined,
+        parking_allowed_tenant: formData.parking_allowed_tenant ? parseInt(formData.parking_allowed_tenant) : undefined,
+        tenant_free_parking_spots: formData.tenant_free_parking_spots ? parseInt(formData.tenant_free_parking_spots) : undefined,
+        daypasses_allowed_tenant: formData.daypasses_allowed_tenant ? parseInt(formData.daypasses_allowed_tenant) : undefined,
+        daypasses_allowed_renter: formData.daypasses_allowed_renter ? parseInt(formData.daypasses_allowed_renter) : undefined
       };
+
+      console.log('UNIT DETAILS SUBMIT DATA', submitData)
 
 
 
@@ -426,7 +447,7 @@ export default function UnitDetails() {
               <fieldset className="input-group">
                 <legend><b>PIN Entries</b></legend>
                 {formData.pincodeary.map((entry, index) => (
-                 
+
                   <div className="input-group" key={entry._id || index}>
                     <div className="page-label">
                       <label className="input-label_normal" htmlFor={`unit-pin-${index}`}>PIN #{index + 1}</label>
@@ -463,7 +484,7 @@ export default function UnitDetails() {
                       <option value="">--Select action--</option>
                       <option value="standard">Standard</option>
                       <option value="dayuse">Day Use</option>
-                       <option value="multiuse">Multi Use</option>
+                      <option value="multiuse">Multi Use</option>
                       <option value="freenight">Free Night Parking</option>
                       <option value="contractor">Contractor</option>
                       <option value="special">Special???</option>
@@ -526,47 +547,47 @@ export default function UnitDetails() {
               <fieldset className="input-group">
                 <legend><b>Unit</b></legend>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Bedrooms
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="bedrooms"
-                  value={formData.bedrooms}
-                  onChange={handleInputChange}
-                  disabled={!isAdminView}
-                />
-              </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Bedrooms
+                  </label>
+                  <input className="standardinput"
+                    type="number"
+                    name="bedrooms"
+                    value={formData.bedrooms}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
 
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  Inventory Allowed (Unit)
-                </label>
-                <input className="standardinput"
-                  type="number"
-                  name="inventory_allowed_owner"
-                  value={formData.inventory_allowed_owner}
-                  onChange={handleInputChange}
-                  disabled={!isAdminView}
+                <div style={{ marginBottom: "15px" }}>
+                  <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                    Inventory Allowed (Unit)
+                  </label>
+                  <input className="standardinput"
+                    type="number"
+                    name="inventory_allowed_owner"
+                    value={formData.inventory_allowed_owner}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
 
-                />
-              </div>
+                  />
+                </div>
 
-              <div className="input-group">
-                <label className="input-label" htmlFor="parking_allowed_unit">Unit Parking Allowed</label>
-                <input
-                  id="parking_allowed_unit"
-                  className="standardinput"
-                  type="number"
-                  min="0"
-                  name="parking_allowed_unit"
-                  value={formData.parking_allowed_unit}
-                  onChange={handleInputChange}
-                  disabled={!isAdminView}
-                />
-              </div>
+                <div className="input-group">
+                  <label className="input-label" htmlFor="parking_allowed_unit">Unit Parking Allowed</label>
+                  <input
+                    id="parking_allowed_unit"
+                    className="standardinput"
+                    type="number"
+                    min="0"
+                    name="parking_allowed_unit"
+                    value={formData.parking_allowed_unit}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
               </fieldset>
 
               <fieldset className="input-group">
@@ -596,7 +617,68 @@ export default function UnitDetails() {
                     disabled={!isAdminView}
                   />
                 </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label" style={{ marginBottom: "5px", fontWeight: "normal" }}>Day Passes Allowed</label>
+                  <input
+                    type="number"
+                    className="standardinput"
+                    name="daypasses_allowed_owner"
+                    value={formData.daypasses_allowed_owner}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
               </fieldset>
+
+
+
+              <fieldset className="input-group">
+                <legend><b>Tenant (Long Term Renter)</b></legend>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label" style={{ marginBottom: "5px", fontWeight: "normal" }}>Parking Spaces Allowed</label>
+                  <input
+                    type="number"
+                    className="standardinput"
+                    name="parking_allowed_tenant"
+                    value={formData.parking_allowed_tenant}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label" style={{ marginBottom: "5px", fontWeight: "normal" }}>Free Parking Spaces (No Charge)</label>
+                  <input
+                    type="number"
+                    className="standardinput"
+                    name="tenant_free_parking_spots"
+                    value={formData.tenant_free_parking_spots}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label" style={{ marginBottom: "5px", fontWeight: "normal" }} >Day Passes Allowed</label>
+                  <input
+                    type="number"
+                    className="standardinput"
+                    name="daypasses_allowed_tenant"
+                    value={formData.daypasses_allowed_tenant}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
+              </fieldset>
+
+
+
+
+
+
+
+
               <fieldset className="input-group">
                 <legend><b>Renter</b></legend>
 
@@ -613,8 +695,7 @@ export default function UnitDetails() {
                   />
                 </div>
 
-
-                <div style={{ marginBottom: "20px" }}>
+                <div style={{ marginBottom: "15px" }}>
                   <label style={{ display: "block", marginBottom: "5px", fontWeight: "normal" }}>
                     Free Parking Spaces (No Charge)
                   </label>
@@ -626,6 +707,23 @@ export default function UnitDetails() {
                     disabled={!isAdminView}
                   />
                 </div>
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label" style={{ marginBottom: "5px", fontWeight: "normal" }}>Day Passes Allowed</label>
+                  <input
+                    type="number"
+                    className="standardinput"
+                    name="daypasses_allowed_renter"
+                    value={formData.daypasses_allowed_renter}
+                    onChange={handleInputChange}
+                    disabled={!isAdminView}
+                  />
+                </div>
+
+
+
+
               </fieldset>
 
 

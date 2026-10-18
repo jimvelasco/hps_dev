@@ -9,8 +9,8 @@ import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
-import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
-import { doesUnitHaveDayUse,daypassVehicleCount} from "../utils/unitHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly,daypassVehicleCount } from "../utils/vehicleHelpers";
+import { doesUnitHaveDayUse} from "../utils/unitHelpers";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
 

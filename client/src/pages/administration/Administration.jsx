@@ -218,7 +218,7 @@ export default function Administration() {
       <DashboardNavbar title="Administration" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
-        <div className="standardtitlebar">
+        <div className="standardtitlebar_blackonwhite">
           <h1 style={{ fontSize: "24px" }}>Administration Panel</h1>
           <div style={{ marginTop: '5px' }}>
           </div>

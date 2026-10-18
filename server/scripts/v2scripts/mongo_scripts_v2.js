@@ -21,10 +21,67 @@ db.units.updateMany(
   { $set: { "parking_allowed_unit": 2 }}
 );
 
+// units need these
+
+db.units.updateMany(
+  {},
+  { $set: { "daypasses_allowed_owner": 1 }}
+);
+db.units.updateMany(
+  {},
+  { $set: { "parking_allowed_tenant": 2 }}
+);
+db.units.updateMany(
+  {},
+  { $set: { "tenant_free_parking_spots": 2 }}
+);
+db.units.updateMany(
+  {},
+  { $set: { "daypasses_allowed_tenant": 0 }}
+);
+db.units.updateMany(
+  {},
+  { $set: { "daypasses_allowed_renter": 0 }}
+);
+
+
+db.hoas.updateMany(
+  {},
+  { $set: { "daypasses_allowed_owner": 1 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "parking_allowed_tenant": 2 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "tenant_free_parking_spots": 2 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "daypasses_allowed_tenant": 0 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "daypasses_allowed_renter": 0 }}
+);
+
+//  daypasses_allowed_owner: 1,
+//         parking_allowed_tenant: 2,
+//         tenant_free_parking_spots: 2,
+//         daypasses_allowed_tenant: 0,
+//         daypasses_allowed_renter: 0
+
+// end
+
+
 db.hoas.updateMany(
   {},
   { $set: { "parking_handicapped_hoa": 0 }}
 );
+
+
+
 
 
 

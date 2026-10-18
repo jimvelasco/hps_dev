@@ -15,16 +15,16 @@ const unitSchema = new mongoose.Schema({
   //   type: String,
   //   default: ""
   // },
-  
 
-   pincodeary: [
+
+  pincodeary: [
     {
       pincode: { type: String },
       action: { type: String },
-      expire_date: {type: String},
-      uses_allowed: {type: Number, default: 0},
-      uses_used: {type: Number, default: -1},
-      expire_date: {type: String}
+      expire_date: { type: String },
+      uses_allowed: { type: Number, default: 0 },
+      uses_used: { type: Number, default: -1 },
+      expire_date: { type: String }
     }
   ],
   bedrooms: {
@@ -37,7 +37,7 @@ const unitSchema = new mongoose.Schema({
     default: 8
   },
 
-   parking_allowed_unit: {
+  parking_allowed_unit: {
     type: Number,
     default: 2
   },
@@ -59,12 +59,50 @@ const unitSchema = new mongoose.Schema({
     type: Number,
     default: 2
   },
-  available_for_rent: {
-   type: Number,
+
+
+  // daypasses_allowed_owner: 1,
+  //       parking_allowed_tenant: 2,
+  //       tenant_free_parking_spots: 2,
+  //       daypasses_allowed_tenant: 0,
+  //       daypasses_allowed_renter: 0
+
+
+  daypasses_allowed_owner: {
+    type: Number,
     default: 1
   },
-   is_resident: {
-   type: Number,
+  parking_allowed_tenant: {
+    type: Number,
+    default: 2
+  },
+  tenant_free_parking_spots: {
+    type: Number,
+    default: 2
+  },
+  daypasses_allowed_tenant: {
+    type: Number,
+    default: 0
+  },
+  daypasses_allowed_renter: {
+    type: Number,
+    default: 0
+  },
+
+
+
+
+
+
+
+
+
+  available_for_rent: {
+    type: Number,
+    default: 1
+  },
+  is_resident: {
+    type: Number,
     default: 0
   },
 

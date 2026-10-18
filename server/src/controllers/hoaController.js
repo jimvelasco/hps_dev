@@ -54,7 +54,7 @@ const updateHoaById = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
-  //  console.log("Update HOA data received:", id,updateData);
+    console.log("Update HOA data received:", id,updateData);
     
     if (updateData.payment_ranges) {
       updateData.payment_ranges = updateData.payment_ranges.map(range => ({

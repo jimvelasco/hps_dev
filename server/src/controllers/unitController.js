@@ -10,12 +10,12 @@ const getUnits = async (req, res) => {
   //console.log('getting units');
   const { hoaid, hoaId, role } = req.query;
   const targetHoaId = hoaid || hoaId;
-  
+
   const filter = {};
   if (targetHoaId) {
     filter.hoaid = targetHoaId;
   }
-  
+
   if (role) {
     filter.role = role;
   } else if (targetHoaId && !req.query.all) {
@@ -34,10 +34,10 @@ const getUnits = async (req, res) => {
 
 
 const getUnit = async (req, res) => {
- // console.log('getting units');
-  const { hoaid, unitnumber} = req.params;
-  let qry = {hoaid:hoaid,unitnumber:unitnumber}
- 
+  // console.log('getting units');
+  const { hoaid, unitnumber } = req.params;
+  let qry = { hoaid: hoaid, unitnumber: unitnumber }
+
 
   const unit = await Unit.findOne(qry);
   res.json(unit);
@@ -54,7 +54,12 @@ const createUnit = async (req, res) => {
   try {
     const { hoaid,
       unitnumber, bedrooms, pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
-      parking_allowed_owner, owner_free_parking, renter_free_parking, company } = req.body;
+      parking_allowed_owner, owner_free_parking, renter_free_parking, company,
+      daypasses_allowed_owner,
+      parking_allowed_tenant,
+      tenant_free_parking_spots,
+      daypasses_allowed_tenant,
+      daypasses_allowed_renter } = req.body;
 
     const currentUser = await User.findById(req.user.userId);
     if (!currentUser || currentUser.role !== "admin" || currentUser.hoaid !== hoaid) {
@@ -87,7 +92,14 @@ const createUnit = async (req, res) => {
       parking_allowed_renter,
       parking_allowed_owner,
       owner_free_parking,
-      renter_free_parking
+      renter_free_parking,
+
+
+      daypasses_allowed_owner,
+      parking_allowed_tenant,
+      tenant_free_parking_spots,
+      daypasses_allowed_tenant,
+      daypasses_allowed_renter
     });
 
     res.status(201).json({
@@ -96,7 +108,7 @@ const createUnit = async (req, res) => {
         _id: unit._id,
         unitnumber: unit.unitnumber,
         is_resident: unit.is_resident,
-         hoaid: unit.hoaid
+        hoaid: unit.hoaid
       }
     });
   } catch (error) {
@@ -162,14 +174,19 @@ const createUnit = async (req, res) => {
 
 const updateUnit = async (req, res) => {
   try {
-  //  const { id } = req.params;
-    const { hoaid, unitnumber, bedrooms,  company,
+    //  const { id } = req.params;
+    const { hoaid, unitnumber, bedrooms, company,
       pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
-      parking_allowed_owner, owner_free_parking, renter_free_parking } = req.body;
-   //console.log("updateUnit body:", req.body);
-   let qry = {hoaid:hoaid,unitnumber:unitnumber}
-  //console.log('update unit query is ',qry)
- 
+      parking_allowed_owner, owner_free_parking, renter_free_parking,
+      daypasses_allowed_owner,
+      parking_allowed_tenant,
+      tenant_free_parking_spots,
+      daypasses_allowed_tenant,
+      daypasses_allowed_renter } = req.body;
+    console.log("UNIT CONTROLLER updateUnit body:", req.body);
+    let qry = { hoaid: hoaid, unitnumber: unitnumber }
+    //console.log('update unit query is ',qry)
+
 
     const unit = await Unit.findOne(qry);
     if (!unit) {
@@ -205,7 +222,7 @@ const updateUnit = async (req, res) => {
       });
     }
 
-  // console.log('got to here updateUnit', unit)
+    // console.log('got to here updateUnit', unit)
 
     // if (unitnumber !== undefined && unitnumber !== user.unitnumber) {
     //   const existingUnit = await User.findOne({ unitnumber, hoaid: user.hoaid, _id: { $ne: id } });
@@ -234,7 +251,20 @@ const updateUnit = async (req, res) => {
     if (owner_free_parking !== undefined) unit.owner_free_parking = owner_free_parking;
     if (renter_free_parking !== undefined) unit.renter_free_parking = renter_free_parking;
 
-    await unit.save(); 
+    if (daypasses_allowed_owner !== undefined) unit.daypasses_allowed_owner = daypasses_allowed_owner;
+    if (parking_allowed_tenant !== undefined) unit.parking_allowed_tenant = parking_allowed_tenant;
+    if (tenant_free_parking_spots !== undefined) unit.tenant_free_parking_spots = tenant_free_parking_spots;
+    if (daypasses_allowed_tenant !== undefined) unit.daypasses_allowed_tenant = daypasses_allowed_tenant;
+    if (daypasses_allowed_renter !== undefined) unit.daypasses_allowed_renter = daypasses_allowed_renter;
+
+    // unit.parking_allowed_tenant: 2,
+    // unit.tenant_free_parking_spots: 2,
+    // unit.daypasses_allowed_tenant: 0,
+    // unit.daypasses_allowed_renter: 0
+
+    console.log('UNIT CONTROLLER UNIT MODIFIED DATA',unit)
+
+    await unit.save();
 
     res.json({
       message: "Unit has been updated successfully",
@@ -281,7 +311,8 @@ const deleteUnit = async (req, res) => {
 
 const updateAllUnits = async (req, res) => {
   try {
-    const { owner_free_parking, renter_free_parking, inventory_allowed_owner, parking_allowed_renter, parking_allowed_owner, hoaid,unitnumber } = req.body;
+    const { owner_free_parking, renter_free_parking, inventory_allowed_owner, parking_allowed_renter, 
+      parking_allowed_owner, hoaid, unitnumber } = req.body;
 
     if (!hoaid) {
       return res.status(400).json({ message: "HOA ID is required" });
@@ -308,7 +339,7 @@ const updateAllUnits = async (req, res) => {
       return res.status(400).json({ message: "No fields to update" });
     }
 
-  //  console.log('updateFields',updateFields);
+    //  console.log('updateFields',updateFields);
 
     const result = await Unit.updateMany({ hoaid }, { $set: updateFields });
 
@@ -324,5 +355,5 @@ const updateAllUnits = async (req, res) => {
 
 
 export {
-  getUnits,  createUnit, deleteUnit,updateUnit,getUnit,updateAllUnits
+  getUnits, createUnit, deleteUnit, updateUnit, getUnit, updateAllUnits
 }
