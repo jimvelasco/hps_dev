@@ -29,6 +29,7 @@ import ContactInformation from "./pages/administration/ContactInformation";
 import HoaSettings from "./pages/administration/HoaSettings";
 import ImageUpload from "./pages/administration/ImageUpload";
 import PDFUpload from "./pages/administration/PDFUpload";
+import ImportCSV from "./pages/administration/ImportCSV";
 import UserReports from "./pages/reports/UserReports";
 import HPSRecordReport from "./pages/reports/HPSRecordReport";
 import OwnerList from "./pages/reports/OwnerList";
@@ -212,6 +213,11 @@ function App() {
                 <PDFUpload />
               </ProtectedRoute>
             } />
+            <Route path="/:hoaId/import-csv" element={
+              <ProtectedRoute>
+                <ImportCSV />
+              </ProtectedRoute>
+            } />
             <Route path="/:hoaId/hoa-settings" element={
               <ProtectedRoute>
                 <HoaSettings />
@@ -290,4 +296,5 @@ export default App;
 
 /*
 rsync -avr  .  /Users/jamesvelasco/Documents/react_apps_ai/archives/hps_dev_100826  --exclude node_modules --exclude client/node_modules --exclude .git
+timberrun@retreatia.com
 */

@@ -15,20 +15,16 @@ const userSchema = new mongoose.Schema({
     type: String
   },
   first_name: {
-    type: String,
-    required: true
+    type: String
   },
   last_name: {
-    type: String,
-    required: true
+    type: String
   },
   phone: {
-    type: String,
-    required: true
+    type: String
   },
   email: {
-    type: String,
-    required: true
+    type: String
   },
   password: {
     type: String,
@@ -42,37 +38,37 @@ const userSchema = new mongoose.Schema({
     default: false
   },
 
-  pincode: {
-    type: String,
-    default: ""
-  },
+  // pincode: {
+  //   type: String,
+  //   default: ""
+  // },
 
   // these will be moved to unit model
 
-  bedrooms: {
-    type: Number,
-    default: 0
-  },
-  inventory_allowed_owner: {
-    type: Number,
-    default: 5
-  },
-  parking_allowed_renter: {
-    type: Number,
-    default: 2
-  },
-  parking_allowed_owner: {
-    type: Number,
-    default: 2
-  },
-  owner_free_parking: {
-    type: Number,
-    default: 5
-  },
-  renter_free_parking: {
-    type: Number,
-    default: 1
-  },
+  // bedrooms: {
+  //   type: Number,
+  //   default: 0
+  // },
+  // inventory_allowed_owner: {
+  //   type: Number,
+  //   default: 5
+  // },
+  // parking_allowed_renter: {
+  //   type: Number,
+  //   default: 2
+  // },
+  // parking_allowed_owner: {
+  //   type: Number,
+  //   default: 2
+  // },
+  // owner_free_parking: {
+  //   type: Number,
+  //   default: 5
+  // },
+  // renter_free_parking: {
+  //   type: Number,
+  //   default: 1
+  // },
 
   company: {
     type: String,

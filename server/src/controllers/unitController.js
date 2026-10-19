@@ -53,7 +53,8 @@ const getUnit = async (req, res) => {
 const createUnit = async (req, res) => {
   try {
     const { hoaid,
-      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
+      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner,
+       parking_allowed_unit, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking, company,
       daypasses_allowed_owner,
       parking_allowed_tenant,

@@ -21,6 +21,7 @@ const unitSchema = new mongoose.Schema({
     {
       pincode: { type: String },
       action: { type: String },
+      description: { type: String },
       expire_date: { type: String },
       uses_allowed: { type: Number, default: 0 },
       uses_used: { type: Number, default: -1 },
@@ -29,14 +30,14 @@ const unitSchema = new mongoose.Schema({
   ],
   bedrooms: {
     type: Number,
-    default: 1
+    default: 2
   },
 
   inventory_allowed_owner: {
     type: Number,
     default: 8
   },
-
+/* not used anywhere but left in for legacy records */
   parking_allowed_unit: {
     type: Number,
     default: 2

@@ -71,10 +71,12 @@ const HoaSchema = new mongoose.Schema({
 
   
   /* not used */
-  // parking_allowed_unit: {
-  //   type: Number,
-  //   default: 3
-  // },
+
+  
+  parking_allowed_unit: {
+    type: Number,
+    default: 3
+  },
   inventory_allowed_owner: {
     type: Number,
     default: 5

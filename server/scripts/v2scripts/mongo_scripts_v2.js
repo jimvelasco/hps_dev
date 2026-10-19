@@ -3,7 +3,7 @@ db.units.updateMany({}, { $unset: { pincodeary: "" } })
 
 db.units.updateMany(
   {},
-  { $set: { "pincodeary": [{"pincode":"","action":"standard","expire_date": null, "uses_allowed":-1,"uses_used":0}] }}
+  { $set: { "pincodeary": [{"pincode":"","action":"standard","description": "","expire_date": null, "uses_allowed":-1,"uses_used":0}] }}
 );
 
 db.units.updateMany(

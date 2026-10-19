@@ -140,6 +140,10 @@ export default function Administration() {
     navigate(`/${hoaId}/pdf-upload`);
   };
 
+  const handleImportCSV = () => {
+    navigate(`/${hoaId}/import-csv`);
+  };
+
   const handleShowProfile = () => {
     navigate(`/${hoaId}/profile`);
   };
@@ -334,6 +338,17 @@ export default function Administration() {
               Create Folder
             </button>
           </section> */}
+
+          <section className="admin_section">
+            <h5 className="admin_section_title">Operations</h5>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>HOA User Import</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>Select a CSV file of HOA users to import.</p>
+            <button className="standardsubmitbutton" 
+            onClick={handleImportCSV}
+            style={{ width: "200px" }}>
+              Import CSV
+            </button>
+          </section>
 
           <section className="admin_section">
             <h5 className="admin_section_title">System (AWS)</h5>

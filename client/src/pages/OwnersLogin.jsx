@@ -72,6 +72,7 @@ export default function OwnersLogin({loginType}) {
     setIsLoggingIn(true);
     try {
       const response = await axios.post("/users/login", {
+        hoaid: hoaId,
         email,
         password
       });

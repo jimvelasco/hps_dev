@@ -321,7 +321,7 @@ export default function UserDetails() {
                   name="role"
                 >
                    <option value="owner">Owner</option>
-                  <option value="tenant">Tenant</option>
+                  <option value="tenant">Owner</option>
                    <option value="admin">Admin</option>
                   <option value="enforcer">Enforcer</option>
                 </select>
@@ -339,6 +339,7 @@ export default function UserDetails() {
                   value={formData.unitnumber}
                   onChange={handleInputChange}
                    disabled={disablefield}
+                   required
                 />
               </div>
               <div style={{ marginBottom: "15px" }}>

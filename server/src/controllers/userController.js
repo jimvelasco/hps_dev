@@ -216,14 +216,16 @@ const updateUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { hoaid, email, password } = req.body;
     //  console.log("loginUser called with email:", req.body);
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+    if (!hoaid || !email || !password) {
+      return res.status(400).json({ message: "HOA ID, email, and password are required" });
     }
 
-    const user = await User.findOne({ email });
+    console.log('loginUser logging in the data is',hoaid,email)
+
+    const user = await User.findOne({ hoaid, email });
 
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
