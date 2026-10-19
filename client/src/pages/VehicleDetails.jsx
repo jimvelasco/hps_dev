@@ -887,6 +887,7 @@ if (hoa && !isModifyMode) {
                       type="text"
                       value={isModifyMode ? vehicle?.pin_code_value ?? "" : createdfrom === "rentervehicles" ? pincodeValue ?? "" : ""}
                       readOnly
+                      disabled
                     />
                   </div>
 
@@ -899,6 +900,7 @@ if (hoa && !isModifyMode) {
                       type="text"
                       value={isModifyMode ? vehicle?.pin_code_action ?? "" : createdfrom === "rentervehicles" ? pincodeAction ?? "" : "standard"}
                       readOnly
+                      disabled
                     />
                   </div>
                 </fieldset>
