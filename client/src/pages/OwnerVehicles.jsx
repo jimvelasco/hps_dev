@@ -74,7 +74,7 @@ export default function OwnerVehicles() {
 
       //    console.log('the logged on user type from button is ',localStorage.getItem('logonType'))
 
-      console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
+   //   console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
       //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
     } else {
       console.log("owner vehicles loggedInUser is null")
@@ -124,7 +124,7 @@ export default function OwnerVehicles() {
 
           // we get all vehicles for the unit not just the ownerid
           qry = `/vehicles/${hoaId}/allvehicles/${showUnitId}`
-          console.log("OwnerVehicles.jsx qry:", qry);
+       //   console.log("OwnerVehicles.jsx qry:", qry);
           if (role === "admin") {
 
             qry = `/vehicles/adminvehicles/${hoaId}`
@@ -384,7 +384,7 @@ export default function OwnerVehicles() {
 
       // const dayuseok = doesUnitHaveDayUse(unit);
       const daypassCount = daypassVehicleCount(allVehicles);
-      console.log('create daypass count is ', daypassCount,pin_code_action);
+  //    console.log('create daypass count is ', daypassCount,pin_code_action);
       // console.log('dayuseok', dayuseok);
       if (pin_code_action === 'dayuse') {
         parkingLimitInventory += 1;
@@ -415,7 +415,7 @@ export default function OwnerVehicles() {
          ownerdplimit = unit.daypasses_allowed_tenant;
       }
 
-       console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
+   //    console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
 
       if (daypassCount >= ownerdplimit && pin_code_action === 'dayuse') {
         setModal({

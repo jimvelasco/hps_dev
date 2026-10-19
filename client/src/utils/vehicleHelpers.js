@@ -329,7 +329,7 @@ let irpflag = 0;
 }
 
 export const daypassVehicleCount = (vehicles) => {
-  console.log('daypassVehicleCount unit',vehicles);
+ // console.log('daypassVehicleCount unit',vehicles);
   let cnt = 0;
   vehicles.forEach((el) => {
     if (el.pin_code_action === "dayuse") {

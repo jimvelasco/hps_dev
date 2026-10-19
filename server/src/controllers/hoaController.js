@@ -471,7 +471,7 @@ const importHOAUserCSV = async (req, res) => {
     const [lastName = "", firstName = ""] = (output.Name || "").split(",", 2);
     output.last_name = lastName.trim();
     output.first_name = firstName.trim();
-    console.log(output);
+   // console.log(output);
     oary.push(output)
   }
   console.log('oary size', oary.length)
@@ -508,19 +508,19 @@ const importHOAUserCSV = async (req, res) => {
   let renter_free_parking_spots = hoa['renter_free_parking_spots'];
   let daypasses_allowed_renter = hoa['daypasses_allowed_renter'];
 
-  console.log('parking_allowed_unit', parking_allowed_unit);
+  // console.log('parking_allowed_unit', parking_allowed_unit);
 
-  console.log('parking_allowed_owner', parking_allowed_owner);
-  console.log('owner_free_parking_spots', owner_free_parking_spots);
-  console.log('daypasses_allowed_owner', daypasses_allowed_owner);
+  // console.log('parking_allowed_owner', parking_allowed_owner);
+  // console.log('owner_free_parking_spots', owner_free_parking_spots);
+  // console.log('daypasses_allowed_owner', daypasses_allowed_owner);
 
-  console.log('parking_allowed_tenant', parking_allowed_tenant);
-  console.log('tenant_free_parking_spots', tenant_free_parking_spots);
-  console.log('daypasses_allowed_tenant', daypasses_allowed_tenant);
+  // console.log('parking_allowed_tenant', parking_allowed_tenant);
+  // console.log('tenant_free_parking_spots', tenant_free_parking_spots);
+  // console.log('daypasses_allowed_tenant', daypasses_allowed_tenant);
 
-  console.log('parking_allowed_renter', parking_allowed_renter);
-  console.log('renter_free_parking_spots', renter_free_parking_spots);
-  console.log('daypasses_allowed_renter', daypasses_allowed_renter);
+  // console.log('parking_allowed_renter', parking_allowed_renter);
+  // console.log('renter_free_parking_spots', renter_free_parking_spots);
+  // console.log('daypasses_allowed_renter', daypasses_allowed_renter);
 
   const unitIndex = headers.findIndex((header) => header.trim().toLowerCase() === "unit");
   if (unitIndex === -1 || !records.length) {
