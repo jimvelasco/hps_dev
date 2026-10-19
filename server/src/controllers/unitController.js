@@ -201,13 +201,14 @@ const updateUnit = async (req, res) => {
     }
 
     if (currentUser.role !== "admin" && pincodeary !== undefined) {
-      const allowedFields = ["_id", "pincode", "action", "uses_allowed", "uses_used", "expire_date"];
+      const allowedFields = ["_id", "pincode", "action", "description", "uses_allowed", "uses_used", "expire_date"];
       const validEntries = Array.isArray(pincodeary) && pincodeary.length === unit.pincodeary.length &&
         pincodeary.every((entry, index) => {
           const original = unit.pincodeary[index];
           return entry && Object.keys(entry).every(key => allowedFields.includes(key)) &&
             String(entry._id) === String(original._id) &&
             entry.action === original.action &&
+            (original.action === "standard" || (entry.description ?? "") === (original.description ?? "")) &&
             entry.uses_allowed === original.uses_allowed &&
             entry.uses_used === original.uses_used &&
             (entry.expire_date ?? "") === (original.expire_date ?? "") &&
@@ -219,6 +220,7 @@ const updateUnit = async (req, res) => {
       pincodeary.forEach((entry, index) => {
         if (unit.pincodeary[index].action === "standard") {
           unit.pincodeary[index].pincode = entry.pincode;
+          unit.pincodeary[index].description = entry.description ?? "";
         }
       });
     }

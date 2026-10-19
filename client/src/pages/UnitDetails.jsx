@@ -167,7 +167,7 @@ export default function UnitDetails() {
   const handleAddPinEntry = () => {
     setFormData(prev => ({
       ...prev,
-      pincodeary: [...prev.pincodeary, { pincode: "", action: "", uses_allowed: -1, uses_used: 0, expire_date: "" }]
+      pincodeary: [...prev.pincodeary, { pincode: "", action: "", description: "", uses_allowed: -1, uses_used: 0, expire_date: "" }]
     }));
   };
 
@@ -219,7 +219,7 @@ export default function UnitDetails() {
         daypasses_allowed_renter: formData.daypasses_allowed_renter ? parseInt(formData.daypasses_allowed_renter) : undefined
       };
 
-      console.log('UNIT DETAILS SUBMIT DATA', submitData)
+     // console.log('UNIT DETAILS SUBMIT DATA', submitData)
 
 
 
@@ -489,6 +489,15 @@ export default function UnitDetails() {
                       <option value="contractor">Contractor</option>
                       <option value="special">Special???</option>
                     </select>
+                    <label className="input-label_normal" htmlFor={`unit-pin-description-${index}`}>Description</label>
+                    <input
+                      id={`unit-pin-description-${index}`}
+                      className="standardinput"
+                      type="text"
+                      value={entry.description ?? ""}
+                      onChange={(e) => handlePinEntryChange(index, "description", e.target.value)}
+                      disabled={false}
+                    />
                     <label className="input-label_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
                     <input
                       id={`unit-pin-uses-allowed-${index}`}
