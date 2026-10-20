@@ -397,6 +397,7 @@ if (hoa && !isModifyMode) {
     // let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
 
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
+    
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
     console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);

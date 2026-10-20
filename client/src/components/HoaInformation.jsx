@@ -1,5 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ParkingSpacesOverview from "./ParkingSpacesOverview";
+
 
 export default function HoaInformation({ hoa }) {
   const { hoaId } = useParams();
@@ -32,11 +34,7 @@ export default function HoaInformation({ hoa }) {
   };
 
   return (
-    <>
-    {/* <div className="standardtitlebar2" style={{width:"300px",opacity: "1.0"}}>
-          <span style={{color:"#1976d2"}}><b>Home Owners Assocation</b></span>
-          
-        </div> */}
+   
     <div style={{
       display: 'flex',
       flexWrap: 'wrap',
@@ -45,9 +43,9 @@ export default function HoaInformation({ hoa }) {
 
     }}>
       <section className="standardsectiondashboard">
-        <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"center"}}>Contact Information</h3>
+        <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"left",marginLeft:"15px"}}>Contact Information</h3>
         {hoa?.contact_information && hoa.contact_information.length > 0 && (
-          <div className="hoainformation"  style={{ textAlign:"center",marginTop:"15px"}}>
+          <div className="hoainformation"  style={{ textAlign:"left",marginTop:"15px",marginLeft:"15px"}}>
             {hoa.contact_information.map((contact, index) => (
               <div style={{marginTop:"15px"}} key={index}>
                 <strong>{contact.phone_description || "Contact"}:</strong><br />
@@ -79,26 +77,45 @@ export default function HoaInformation({ hoa }) {
       <section className="standardsectiondashboard">
         <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"center" }}>HOA Address</h3>
         {hoa && (
-          <div className="hoainformation"  style={{ textAlign:"center",marginTop:"15px"}}>
-            <div><strong>Name:</strong> {hoa.name}</div>
-            <div><strong>Address:</strong> {hoa.address}</div>
-            <div><strong>City:</strong> {hoa.city}</div>
-            <div><strong>State:</strong> {hoa.state}</div>
-            <div><strong>Zip:</strong> {hoa.zip}</div>
-            <div><strong>Id:</strong> {hoa.hoaid}</div>
-            {/* <br />
-            <h3 style={{ color: "#1976d2", marginTop: 0 }}>Parking Settings</h3>
-            <div><strong>HOA Parking Allowed:</strong> {hoa.parking_allowed_hoa}</div>
-            <div><strong>Owner Inventory Allowed:</strong> {hoa.inventory_allowed_owner}</div>
-            <div><strong>Owner Parking Allowed:</strong> {hoa.parking_allowed_owner}</div>
-            <div><strong>Renter Parking Allowed</strong> {hoa.parking_allowed_renter}</div>
-            <div><strong>Owner Free Spots:</strong> {hoa.owner_free_parking_spots}</div>
+          <>
+          <div className="hoainformation2col"  style={{ textAlign:"left",marginTop:"15px",marginLeft:"15px"}}>
+            <div><strong>Name:</strong></div><div> {hoa.name}</div>
+            <div><strong>Address:</strong></div><div> {hoa.address}</div>
+            <div><strong>City:</strong></div><div> {hoa.city}</div>
+            <div><strong>State:</strong></div><div>{hoa.state}</div>
+            <div><strong>Zip:</strong></div><div>{hoa.zip}</div>
+            <div><strong>Id:</strong></div><div> {hoa.hoaid}</div>
+            </div>
+           
+
+           
+            <h3 style={{ color: "#1976d2", marginTop:"15px",marginBottom: "15px",textAlign:"center" }}>Parking Settings</h3>
+             <div className="hoainformation2colr"  style={{ textAlign:"left",marginTop:"15px",marginLeft:"15px"}}>
+            <div><strong>Total Parking Places:</strong> </div><div>{hoa.parking_allowed_hoa}</div>
+            <div><strong>Handicapped Places:</strong> </div><div>{hoa.parking_handicapped_hoa}</div>
+            <div><strong>Owner Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_owner}</div>
+            <div><strong>Tenant Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_tenant}</div>
+
+            <div><strong>Renter Parking Allowed</strong> </div><div>{hoa.parking_allowed_renter}</div>
+            {/* <div><strong>Owner Free Spots:</strong> {hoa.owner_free_parking_spots}</div>
             <div><strong>Renter Free Spots:</strong> {hoa.renter_free_parking_spots}</div> */}
-          </div>
+            </div>
+          </>
         )}
       </section>
-    </div>
-        </>
 
-  );
+        <section className="standardsectiondashboard">
+        <h3 style={{ color: "#1976d2", marginTop: 0 ,textAlign:"center" }}>Parking Spaces</h3>
+
+        {/* {hoa && <ParkingSpacesOverview />} */}
+         <div className="hoainformation2colr"  style={{ textAlign:"left",marginTop:"15px",marginLeft:"15px"}}>
+          <div><strong>Day Passes Allowed:</strong> </div><div>{8}</div>
+            <div><strong>Day Passes Used:</strong> </div><div>{4}</div>
+            <div><strong>Handicapped Places:</strong> </div><div>{7}</div>
+            <div><strong>Handicapped Used:</strong> </div><div>{2}</div>
+            </div>
+      </section>
+    </div>
+
+  )
 }

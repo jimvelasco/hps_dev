@@ -210,7 +210,7 @@ export const okToActivateRenterVehicle = (formvehicle, vehiclearray, role, owner
 }
 
 
-export const okToAddUnitVehicle = (formvehicle, vehiclearray, role, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction) => {
+export const okToAddUnitVehicle_spare = (formvehicle, vehiclearray, role, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction) => {
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
 
@@ -219,8 +219,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, role, ownerOfUnit,
 
   const todayStr = new Date().toLocaleDateString("en-CA");
 
-  let matchingcar = vehiclearray.filter(v => v._id === vehicleId);
-  console.log('matchingcar', matchingcar);
+  //let matchingcar = vehiclearray.filter(v => v._id === vehicleId);
+ // console.log('matchingcar', matchingcar);
 
   let filteredOwnerActive = [];
   let filteredNonOwnerActive = [];
@@ -300,7 +300,95 @@ let irpflag = 0;
    //  console.log('HELPER THE RETURNED OBJECT IS ',robj);
 
   }
+return robj;
+}
 
+
+export const okToAddUnitVehicle = (formvehicle, vehiclearray, role, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction) => {
+  const formsdate = formvehicle.startdate;
+  const formedate = formvehicle.enddate;
+
+  console.log('okToAddUnitVehicle formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction');
+  console.log(formvehicle.carownertype, role, vehicleId, createdfrom, pincodeAction);
+
+  const todayStr = new Date().toLocaleDateString("en-CA");
+
+  let filteredOwnerActive = [];
+  let filteredNonOwnerActive = [];
+  let filteredOtherActive = [];
+  let filteredNonOtherInActive = [];
+
+  let maxactiveallowed = unit.parking_allowed_owner;
+  console.log('maxactiveallowed',maxactiveallowed);
+
+
+  //let theVehicle = vehiclearray.filter(v => v._id !== vehicleId);
+
+  filteredOwnerActive = vehiclearray.filter(v => v.calculatedActiveFlag === true && v.createdbytype === "owner");
+  filteredNonOwnerActive = vehiclearray.filter(v => v.calculatedActiveFlag === false && v.createdbytype === "owner");
+  filteredOtherActive = vehiclearray.filter(v => v.calculatedActiveFlag === true && v.createdbytype === "other");
+  filteredNonOtherInActive = vehiclearray.filter(v => v.calculatedActiveFlag === false && v.createdbytype === "other");
+
+ 
+  let totalActiveCount = filteredOwnerActive.length + filteredOtherActive.length;
+  // daypass vehicles don't count
+
+  let dayUseCount = daypassVehicleCount(vehiclearray);
+
+  let totalActiveMinusDayUseCount  = totalActiveCount - dayUseCount;
+
+  console.log('totalActiveCount and incoming array',totalActiveCount,dayUseCount,vehiclearray);
+
+  let ownerFreeParking = unit.owner_free_parking || 0;
+
+
+  let oktoadd = null;
+  let irpflag = 0;
+
+  let robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null };
+
+  if (!vehicleId) {
+   // console.log("WE MUST BE A NEW VEHICLE");
+  //  if (totalActiveCount < parseInt(unit.renter_free_parking)) {
+    if (totalActiveMinusDayUseCount >= maxactiveallowed)  {
+      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null }
+      return robj; //{ oktoadd: true, rpflag: 0 };
+    }
+  } else {
+    console.log("WE MUST BE AN EDIT OF AN EXISTING");
+   
+     let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
+     let theCurrentVehicle = theCurrentVehicleAry[0];
+   //  console.log('sd ed calf',theCurrentVehicle.startdate,theCurrentVehicle.enddate,theCurrentVehicle.calculatedActiveFlag);
+    //  console.log('CURRENT VEHICLE' ,theCurrentVehicle);
+    if (totalActiveMinusDayUseCount >= maxactiveallowed) {
+       if (getVehicleActiveStatusBoolean2(formsdate,formedate)) {
+        oktoadd = false;
+      } else {
+        oktoadd = true;
+      }
+    } else {
+      if (filteredOwnerActive.length == ownerFreeParking) {
+       //rpflag = 1;
+      }
+      if (getVehicleActiveStatusBoolean2(formsdate,formedate)) {
+        oktoadd = false;
+        // we need to check if the vehicle selected was previously inactive
+        // in which case it is ok to add it
+        if (theCurrentVehicle.calculatedActiveFlag === false) {
+          oktoadd = true;
+        }
+      } else {
+      oktoadd = true;
+      }
+    }
+
+     robj = { oktoadd: oktoadd, rpflag: irpflag,currentVehicle: theCurrentVehicle[0] }
+   //  console.log('HELPER THE RETURNED OBJECT IS ',robj);
+
+  }
+return robj;
+}
 
 
 
@@ -325,8 +413,7 @@ let irpflag = 0;
   //   robj = { oktoadd: true, rpflag: rp }
   //   return robj; //{ oktoadd: true, rpflag: rp };
   // }
-   return robj;
-}
+   
 
 export const daypassVehicleCount = (vehicles) => {
  // console.log('daypassVehicleCount unit',vehicles);

@@ -184,7 +184,7 @@ const updateUnit = async (req, res) => {
       tenant_free_parking_spots,
       daypasses_allowed_tenant,
       daypasses_allowed_renter } = req.body;
-    console.log("UNIT CONTROLLER updateUnit body:", req.body);
+ //   console.log("UNIT CONTROLLER updateUnit body:", req.body);
     let qry = { hoaid: hoaid, unitnumber: unitnumber }
     //console.log('update unit query is ',qry)
 

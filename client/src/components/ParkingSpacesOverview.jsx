@@ -52,20 +52,15 @@ export default function ParkingSpacesOverview() {
         </div>
       ) : (
         <>
-          <div className="parking-metric parking-metric-total">
-            <div className="parking-metric-label">Total Spaces</div>
-            <div className="parking-metric-value">{totalSpaces}</div>
-          </div>
+          <div className="hoainformation2colr"  style={{ textAlign:"left",marginTop:"15px",marginLeft:"15px"}}>
+           
 
-          <div className="parking-metric parking-metric-occupied">
-            <div className="parking-metric-label">Occupied Spaces</div>
-            <div className="parking-metric-value">{occupiedSpaces}</div>
-          </div>
+            <div><strong>Day Passes Used</strong></div>
+            <div>{occupiedSpaces}</div>
 
-          <div className="parking-metric parking-metric-remaining">
-            <div className="parking-metric-label">Remaining Spaces</div>
-            <div className="parking-metric-value">{remainingSpaces}</div>
-          </div>
+            <div><strong>Remaining Passes</strong></div>
+            <div>{1}</div>
+            </div>
         </>
       )}
     </div>

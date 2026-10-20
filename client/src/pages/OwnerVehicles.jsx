@@ -39,30 +39,17 @@ export default function OwnerVehicles() {
   const [showUnitId, setShowUnitId] = useState("");
   const [unitForOwner, setUnitForOwner] = useState(null);
   const [logonType, setLogonType] = useState("owner");
+   const [activeVehicles, setActiveVehicles] = useState(0);
 
   // these are vehicle types that will show up on this page
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
     useState(['owner', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
 
 
-  /*
-          return matchingVehicles.filter(v => v.carownertype === "owner" ||
-           v.carownertype === "family" ||
-            v.carownertype === "family"|| 
-            v.carownertype === "contractor");
-  
-            <option value="">-- Select type --</option>
-            <option value="renter">Short Term Renter</option>
-            <option value="tenant">Tenant (Long Term Renter)</option>
-            <option value="family">Family</option>
-            <option value="friend">Friend</option>
-            <option value="visitor">Visitor/Day Guest</option>
-            <option value="contractor">Contractor/Vendor</option>
-  */
+
 
   useEffect(() => {
     if (userLoading) {
-      // console.log("OwnerVehicles.jsx userLoading is true")
       return; // Still loading, wait
     }
     // console.log("Token:", localStorage.getItem("token"));
@@ -72,10 +59,7 @@ export default function OwnerVehicles() {
       setShowUnitId(loggedInUser.unitnumber);
       setLogonType(localStorage.getItem('logonType'));
 
-      //    console.log('the logged on user type from button is ',localStorage.getItem('logonType'))
-
-   //   console.log("OwnerVehicles.jsx loggedInUser:", loggedInUser);
-      //  console.log("OwnerVehicles.jsx loggedInUser unit:", loggedInUser.unitnumber);
+    
     } else {
       console.log("owner vehicles loggedInUser is null")
     }
@@ -86,14 +70,12 @@ export default function OwnerVehicles() {
       setUnitForOwner(null);
       return;
     }
-    // console.log("WE ARE GETTING THE UNIT");
 
     let cancelled = false;
     const fetchUnit = async () => {
       try {
         const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(loggedInUser.unitnumber)}`);
         if (!cancelled) {
-          //  console.log('the unit is ',response.data);
           setUnitForOwner(response.data);
         }
       } catch (err) {
@@ -109,10 +91,7 @@ export default function OwnerVehicles() {
   }, [hoaId, userLoading, loggedInUser?.unitnumber]);
 
   useEffect(() => {
-    //   console.log("Vehicles.jsx role:", role);
-    //   console.log("Vehicles.jsx ownerId:", ownerId);
     if (userLoading) {
-      //console.log("2nd effect OwnerVehicles.jsx userLoading is true")
       return; // Still loading, wait
     }
     let qry = "";
@@ -120,40 +99,19 @@ export default function OwnerVehicles() {
       const fetchVehicles = async () => {
         try {
           setVehiclesLoading(true);
-          //  qry = `/vehicles/${hoaId}/allvehicles/${ownerId}`
 
           // we get all vehicles for the unit not just the ownerid
           qry = `/vehicles/${hoaId}/allvehicles/${showUnitId}`
        //   console.log("OwnerVehicles.jsx qry:", qry);
           if (role === "admin") {
-
             qry = `/vehicles/adminvehicles/${hoaId}`
           }
 
-          //      console.log("OwnerVehicles.jsx qry:", qry);
-
           const response = await axios.get(qry);
-          //   console.log("fetchVehicles client received:", response.data.length)
           const today = new Date().toLocaleDateString("en-CA");
-
-          // const updatedVehicles = response.data.filter(v => {
-          //   if (role === "admin" || v.carownertype !== "renter" || !v.enddate) return true;
-          //   const endDate = new Date(v.enddate);
-          //   return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
-          // }).map(v => ({
-          //   ...v,
-          //   calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
-          // }));
-
           const responseData = response.data;
-          // responseData.forEach((el, index) => {
-          //   console.log(`responseData owners Index ${index}: ${el.enddate}`);
-          // });
-
-
-
+        
           const updatedVehicles = responseData.filter(v => {
-            // return true;
             //   return v.carownertype !== 'renter' && (v.carownertype !== 'tenant' || role === 'tenant');
             return v.carownertype !== 'renter';
 
@@ -163,21 +121,14 @@ export default function OwnerVehicles() {
           }));
 
           setAllVehicles(updatedVehicles);
-
           //   console.log('updatedVehicles vehicles length', updatedVehicles.length);
           let updatedVehicles2 = [...updatedVehicles];
-          //   console.log('uvehicles',logonType,updatedVehicles2);
-
-          //  console.log('role is',role)
 
           if (role === 'tenant') {
             updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant");
           }
 
-          let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
-
-          //   console.log('active ownervehicles vehicles length', activeVehicles.length);
-          //  console.log("updatedVehicles client received:", updatedVehicles.length)
+          setActiveVehicles(updatedVehicles.filter(v => v.calculatedActiveFlag === true));
 
           updatedVehicles2.sort((a, b) => {
             let valueA, valueB;
@@ -377,10 +328,7 @@ export default function OwnerVehicles() {
       setUnitForOwner(unit);
       let parkingLimitInventory = Number(unit.inventory_allowed_owner);
       let unitParkingLimit = Number(unit.parking_allowed_unit);
-      //   console.log('parking limit in ow',parkingLimit);
-      // if (unit.inventory_allowed_owner == null || !Number.isFinite(parkingLimit)) {
-      //   throw new Error("Unit inventory limit is unavailable.");
-      // }
+     
 
       // const dayuseok = doesUnitHaveDayUse(unit);
       const daypassCount = daypassVehicleCount(allVehicles);
@@ -414,8 +362,28 @@ export default function OwnerVehicles() {
       if (loggedInUser.role === 'tenant') {
          ownerdplimit = unit.daypasses_allowed_tenant;
       }
+   //   console.log('IN OV IN ADD METHOD.  THE ACTIVE VEHICLES NEEDS A NUMBER',allVehicles.length);
 
    //    console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
+   let activevehiclelimit = unit.parking_allowed_owner;
+   
+   let ac = daypassVehicleCount(allVehicles);
+   console.log('ACTIVE COUNT',ac,pin_code_action);
+   if (pin_code_action === 'dayuse') {
+    activevehiclelimit += 1;
+   }
+
+    // if (activeVehicles.length >= activevehiclelimit ) {
+    //     setModal({
+    //       isOpen: true,
+    //       type: "alert",
+    //       title: "Validation Error",
+    //       message: `Active Vehicle Limit Reached.  You can only have  ${activevehiclelimit} active vehicles.`,
+    //       confirmText: "OK",
+    //       onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+    //     });
+    //     return;
+    //   }
 
       if (daypassCount >= ownerdplimit && pin_code_action === 'dayuse') {
         setModal({
