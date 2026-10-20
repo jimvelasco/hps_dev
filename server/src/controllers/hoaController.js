@@ -389,6 +389,35 @@ const importHOAUserCSV_full = async (req, res) => {
 
 }
 
+const checkCsvFileFormatOk = (csvfile) => {
+  let value = "";
+  let quoted = false;
+   for (let index = 0; index < csvfile.length; index += 1) {
+    const character = csvfile[index];
+    if (character === '"') {
+      if (quoted && csvfile[index + 1] === '"') {
+        value += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (character === "," && !quoted) {
+      row.push(value);
+      value = "";
+    } else if ((character === "\n" || character === "\r") && !quoted) {
+      row.push(value);
+      if (row.some((field) => field.trim())) rows.push(row);
+      row = [];
+      value = "";
+      if (character === "\r" && csv[index + 1] === "\n") index += 1;
+    } else {
+      value += character;
+    }
+  }
+  return quoted;
+
+}
+
 const importHOAUserCSV = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "Please select a CSV file" });
@@ -413,6 +442,7 @@ const importHOAUserCSV = async (req, res) => {
   let value = "";
   let quoted = false;
   const csv = req.file.buffer.toString("utf8").replace(/^\uFEFF/, "");
+ // quoted = checkCsvFileFormatOk(csv);
 
   for (let index = 0; index < csv.length; index += 1) {
     const character = csv[index];
@@ -471,7 +501,7 @@ const importHOAUserCSV = async (req, res) => {
     const [lastName = "", firstName = ""] = (output.Name || "").split(",", 2);
     output.last_name = lastName.trim();
     output.first_name = firstName.trim();
-   // console.log(output);
+    console.log(output);
     oary.push(output)
   }
   console.log('oary size', oary.length)
