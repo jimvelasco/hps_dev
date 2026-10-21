@@ -369,6 +369,24 @@ if (hoa && !isModifyMode) {
       return;
     }
 
+    const datemsg = <>Check In: {formData.startdate}<br />is after <br />Check Out: {formData.enddate}</>;
+
+    console.log('VD form data is ',formData);
+
+     if (formData.enddate < formData.startdate ) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message:datemsg,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }))
+        }
+      });
+      return;
+    }
+
     // if (role === 'renter') {
     //   const todayStr = new Date().toISOString().split('T')[0];
     //   const edate = formData.enddate;
