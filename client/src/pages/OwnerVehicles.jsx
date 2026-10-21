@@ -121,7 +121,7 @@ export default function OwnerVehicles() {
           }));
 
           setAllVehicles(updatedVehicles);
-          //   console.log('updatedVehicles vehicles length', updatedVehicles.length);
+           console.log('updatedVehicles vehicles', updatedVehicles);
           let updatedVehicles2 = [...updatedVehicles];
 
           if (role === 'tenant') {
@@ -129,13 +129,13 @@ export default function OwnerVehicles() {
           }
 
           setActiveVehicles(updatedVehicles.filter(v => v.calculatedActiveFlag === true));
-
-          updatedVehicles2.sort((a, b) => {
-            let valueA, valueB;
-            valueA = a.calculatedActiveFlag || "";
-            valueB = b.calculatedActiveFlag || "";
-            return String(valueB).localeCompare(String(valueA));
-          });
+          // keep vehicles in order
+          // updatedVehicles2.sort((a, b) => {
+          //   let valueA, valueB;
+          //   valueA = a.calculatedActiveFlag || "";
+          //   valueB = b.calculatedActiveFlag || "";
+          //   return String(valueB).localeCompare(String(valueA));
+          // });
 
           setVehicles(updatedVehicles2);
           setAllVehicles(updatedVehicles2);
@@ -366,9 +366,9 @@ export default function OwnerVehicles() {
 
    //    console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
    let activevehiclelimit = unit.parking_allowed_owner;
-   
+
    let ac = daypassVehicleCount(allVehicles);
-   console.log('ACTIVE COUNT',ac,pin_code_action);
+   //console.log('ACTIVE COUNT',ac,pin_code_action);
    if (pin_code_action === 'dayuse') {
     activevehiclelimit += 1;
    }
@@ -412,11 +412,31 @@ export default function OwnerVehicles() {
       //   return;
       // }
 
+//  renter vehicles 
+//  const qry = `/${hoaId}/vehicledetails/create/${userIdForUnit}`;
+// navigate(qry, {
+//       state: {
+//         nonownerType: nonownerType,
+//         unitNumber: unitNumber,
+//         role: location.state?.nonownerType || "renter",
+//         vehicles: vehicles,
+//         ownerOfUnit: ownerOfUnit,
+//         unit: unitForRenter,
+//         vehid: null,
+//         createdfrom: 'rentervehicles',
+//         pincodeValue: pincodeValue,
+//         pincodeAction: pincodeAction
 
+//       }
+//     });
+
+// vd const { nonownerType,unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, 
+  // createdfrom, pincodeValue, pincodeAction } = location.state || {};
 
 
       navigate(`/${hoaId}/vehicledetails/create/${uid}`, {
         state: {
+          nonownerType: 'owner',
           unitNumber: uid,
           role: loggedInUser.role,
           numberOfVehicles: vehicles.length,
@@ -425,6 +445,7 @@ export default function OwnerVehicles() {
           ownerOfUnit: loggedInUser,
           unit,
           createdfrom: 'ownervehicles',
+          pincodeValue: '',
           pincodeAction: pin_code_action
         }
       });

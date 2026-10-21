@@ -6,12 +6,13 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
-import { okToActivateOwnerVehicle, okToActivateRenterVehicle, utcDateOnly, okToAddUnitVehicle } from "../utils/vehicleHelpers";
+import {  utcDateOnly, okToAddUnitVehicle } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
 //import PlateLookup from "../components/PlateLookup";
 
 import mongoose from "mongoose";
 
+const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
 export default function VehicleDetails() {
   const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -89,6 +90,7 @@ export default function VehicleDetails() {
  
 
   const edate = new Date();
+ // console.log('vd date is ',edate,'getdate',edate.getDate())
   edate.setDate(edate.getDate() + daysplus);
 
 
@@ -114,9 +116,11 @@ export default function VehicleDetails() {
     pin_code_action: pincodeAction,
 
 
-    startdate: new Date().toISOString().split('T')[0],
-    enddate: edate.toISOString().split('T')[0]
+    startdate: formatLocalDate(new Date()),
+    enddate: formatLocalDate(edate)
   });
+
+ //console.log('form data is',formData);
 
   // console.log('LOCATION STATE IS  owner ', location.state.ownerOfUnit);
   // console.log('LOCATION STATE IS  unit ', location.state.unit);
@@ -147,8 +151,8 @@ if (hoa && !isModifyMode) {
           carownertype: selectedOwnerType,
            pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
-          startdate: new Date().toISOString().split('T')[0],
-          enddate: edate.toISOString().split('T')[0],
+          startdate: formatLocalDate(new Date()),
+          enddate: formatLocalDate(edate),
          
         }
         )
@@ -169,8 +173,8 @@ if (hoa && !isModifyMode) {
           carownertype: selectedOwnerType,
            pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
-          startdate: new Date().toISOString().split('T')[0],
-          enddate: edate.toISOString().split('T')[0],
+          startdate: formatLocalDate(new Date()),
+          enddate: formatLocalDate(edate),
         }
         )
       }
@@ -237,7 +241,7 @@ if (hoa && !isModifyMode) {
            pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
         });
-            console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
+         //   console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
 
         setError(null);
       } catch (err) {
@@ -397,7 +401,7 @@ if (hoa && !isModifyMode) {
     // let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
 
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
-    
+
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
     console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
