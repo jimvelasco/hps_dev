@@ -93,7 +93,11 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
               } 
             </div>
           {/* <div><b>{vehicle.carownertype}</b></div> */}
-           <div className="full-row vehicle-pin-action-row">{vehicle.pin_code_action === "standard" ? "" : vehicle.pin_code_action.toUpperCase()}</div>
+           <div className="full-row vehicle-pin-action-row">
+            
+             {/* JJVFIX {vehicle.pin_code_action === "standard" ? "" : vehicle.pin_code_action?.toUpperCase()} */}
+             {(vehicle.pin_code_action === "contractor" || vehicle.pin_code_action === "visitor"  || vehicle.pin_code_action === "dayuse") && "(Day Use Only)"}
+           </div>
         </div>
       ))}
     </div>

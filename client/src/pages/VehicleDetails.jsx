@@ -41,9 +41,16 @@ export default function VehicleDetails() {
 
    
 
+  // JJVFIX const selectedOwnerType = createdfrom === "rentervehicles"
+  //   ? nonownerType || role || ""
+  //   : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
+
+
   const selectedOwnerType = createdfrom === "rentervehicles"
-    ? nonownerType || role || ""
-    : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
+    ? nonownerType 
+    : carownertype || "owner";
+
+    //console.log('VD selectedOwnerType',selectedOwnerType)
 
 
 
@@ -421,7 +428,7 @@ if (hoa && !isModifyMode) {
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
-    oktoaddobj = okToAddUnitVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+    oktoaddobj = okToAddUnitVehicle(formData, vehicles,  unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
     console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
@@ -462,17 +469,16 @@ if (hoa && !isModifyMode) {
 
     let cv = oktoaddobj.currentVehicle;
     if (cv !== null) {
-      //   unitcbt = cv[0].createdbytype;
+         unitcbt = cv.createdbytype;
 
     }
 
-    //  console.log('the cv is ',cv,unitcbt)
+      console.log('the cv is ',cv,unitcbt)
 
 
     try {
       // Prefer the user associated with the unit, fallback to logged in user (e.g. admin or owner creating for themselves)
       let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
-      let cot = formData['carownertype'];
       let cbt = "other";
       if (createdfrom === "ownervehicles") {
         cbt = "owner";

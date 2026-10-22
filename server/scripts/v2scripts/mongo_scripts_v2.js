@@ -1,4 +1,10 @@
 //mongosh "mongodb://localhost:27017"
+
+db.vehicles.updateMany(
+  {},
+  { $set: { "day_use_only": 0 }}
+);
+
 db.units.updateMany({}, { $unset: { pincodeary: "" } })
 
 db.units.updateMany(
@@ -42,6 +48,11 @@ db.units.updateMany(
 db.units.updateMany(
   {},
   { $set: { "daypasses_allowed_renter": 0 }}
+);
+
+db.units.updateMany(
+  {},
+  { $set: { "day_use_only": 0 }}
 );
 
 

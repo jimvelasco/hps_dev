@@ -107,6 +107,9 @@ export default function RentersLogin() {
             // Store the token
             localStorage.setItem("token", response.data.token);
 
+
+          //  console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
+
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
                 state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: response.data.action }

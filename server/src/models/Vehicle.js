@@ -72,6 +72,9 @@ const vehicleSchema = new mongoose.Schema(
   pin_code_action: {
     type: String
   },
+  day_use_only: {
+     type: Number, default: 0
+  },
   enddate: {
     type: String
   },

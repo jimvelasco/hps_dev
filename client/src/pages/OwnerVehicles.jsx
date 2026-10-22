@@ -121,7 +121,7 @@ export default function OwnerVehicles() {
           }));
 
           setAllVehicles(updatedVehicles);
-           console.log('updatedVehicles vehicles', updatedVehicles);
+          // console.log('updatedVehicles vehicles', updatedVehicles);
           let updatedVehicles2 = [...updatedVehicles];
 
           if (role === 'tenant') {
@@ -368,7 +368,7 @@ export default function OwnerVehicles() {
    let activevehiclelimit = unit.parking_allowed_owner;
 
    let ac = daypassVehicleCount(allVehicles);
-   //console.log('ACTIVE COUNT',ac,pin_code_action);
+   //console.log('ACTIVE COUNT for dayuse',ac,pin_code_action);
    if (pin_code_action === 'dayuse') {
     activevehiclelimit += 1;
    }
@@ -439,11 +439,14 @@ export default function OwnerVehicles() {
           nonownerType: 'owner',
           unitNumber: uid,
           role: loggedInUser.role,
-          numberOfVehicles: vehicles.length,
           vehicles: vehicles,
-          vehid: null,
           ownerOfUnit: loggedInUser,
-          unit,
+          unit:unit,
+          vehid: null,
+         
+          // numberOfVehicles: vehicles.length,
+          
+          
           createdfrom: 'ownervehicles',
           pincodeValue: '',
           pincodeAction: pin_code_action

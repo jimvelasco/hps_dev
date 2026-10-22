@@ -101,12 +101,12 @@ export const formatPhoneNumber = (phone) => {
 
 
 
-export const okToAddUnitVehicle = (formvehicle, vehiclearray, role, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction) => {
+export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction) => {
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
 
-  console.log('okToAddUnitVehicle formvehicle.carownertype,role, vehicleId,createdfrom,pincodeAction');
-  console.log(formvehicle.carownertype, role, vehicleId, createdfrom, pincodeAction);
+  console.log('okToAddUnitVehicle formvehicle.carownertype, vehicleId,createdfrom,pincodeAction');
+  console.log(formvehicle.carownertype,  vehicleId, createdfrom, pincodeAction);
 
   const todayStr = new Date().toLocaleDateString("en-CA");
   let maxactiveallowed = unit.parking_allowed_unit;

@@ -37,6 +37,11 @@ export default function RenterVehicles() {
   const pincodeAction = location.state?.pincodeAction;
   const pincodeValue = location.state?.pincodeValue;
 
+  // from renterlogin the state passed is
+  //  navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
+  //               state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: response.data.action }
+  //           });
+
 
   useEffect(() => {
     if (hoaId && unitNumber) {
@@ -116,25 +121,33 @@ export default function RenterVehicles() {
             if (v.carownertype !== "owner") return true;
           });
 
-          const nonTypeVehicles = nonOwnerVehicles.filter(v => {
-            if (v.carownertype === nonownerType) return true;
-          });
 
-          // nonownerType
+          // this is what brings over the template created by the owner for example a visitor   
 
-
-
-
-
-          // const today = new Date().toLocaleDateString("en-CA");
-          // const matchingVehicles = updatedVehicles.filter(v => {
-          //   if (v.carownertype !== nonownerType) return false;
-          //   if (v.carownertype !== "renter" || !v.enddate) return true;
-          //   const endDate = new Date(v.enddate);
-          //   return Number.isNaN(endDate.getTime()) || utcDateOnly(endDate) >= today;
+          // const nonTypeVehicles = nonOwnerVehicles.filter(v => {
+          //   if (v.carownertype === nonownerType) return true;
           // });
 
-          // setVehicles(matchingVehicles);
+       //   console.log('NON OWNER VEHICLES', nonOwnerVehicles);
+       //   console.log('PIN CODE ACTION', pincodeAction);
+
+          let nonTypeVehicles = [];
+          if (pincodeAction === 'contractor') {
+            nonTypeVehicles = nonOwnerVehicles.filter(v => {
+              if (v.carownertype === pincodeAction) return true;
+            });
+          } 
+
+          // JJVFIX this should bring in the visitor from owner inventory. for demo only
+          if (pincodeAction === 'standard' && nonownerType === 'visitor') {
+            nonTypeVehicles = nonOwnerVehicles.filter(v => {
+              if (v.carownertype === nonownerType) return true;
+            });
+          } 
+          
+         
+
+          // nonownerType
 
           // we get the entire batch of vehicles not just the other
           setVehicles(nonTypeVehicles);

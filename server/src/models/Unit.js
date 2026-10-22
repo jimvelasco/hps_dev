@@ -89,13 +89,9 @@ const unitSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-
-
-
-
-
-
-
+  day_use_only: {
+     type: Number, default: 0
+  },
 
 
   available_for_rent: {
