@@ -34,10 +34,11 @@ export default function VehicleDetails() {
     createdfrom, pincodeValue, pincodeAction } = location.state || {};
 
 
-  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
-    useState(['owner',  'family', 'friend', 'visitor', 'contractor']);
+  const vehicleOwnerTypeAry = unit?.day_use_only === 1
+    ? ['visitor', 'contractor']
+    : ['owner', 'family', 'friend', 'visitor', 'contractor'];
 
-    console.log('VD LOCATION STATE',location.state);
+   // console.log('VD LOCATION STATE',location.state);
 
    
 
@@ -48,7 +49,7 @@ export default function VehicleDetails() {
 
   const selectedOwnerType = createdfrom === "rentervehicles"
     ? nonownerType 
-    : carownertype || "owner";
+    : carownertype || vehicleOwnerTypeAry[0];
 
     //console.log('VD selectedOwnerType',selectedOwnerType)
 
@@ -108,6 +109,8 @@ export default function VehicleDetails() {
   const defaultDayUseOnly = createdfrom === 'rentervehicles'
     ? unit?.day_use_only ?? 0
     : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
+
+
 
   // const roomLevelDayUseOnly = unit.day_use_only;
   // console.log('roomLevelDayUseOnly',roomLevelDayUseOnly)
@@ -703,7 +706,7 @@ if (hoa && !isModifyMode) {
                       <select
                         className="standardselect100"
                         name="carownertype"
-                        value={formData.carownertype || "owner"}
+                        value={formData.carownertype || vehicleOwnerTypeAry[0]}
                         onChange={handleFormChange}
                         disabled={isModifyMode || createdfrom === "rentervehicles"}
                       >
