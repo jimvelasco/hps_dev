@@ -193,12 +193,26 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
 
 
+// export const daypassVehicleCountxx = (vehicles) => {
+//   // console.log('daypassVehicleCount unit',vehicles);
+//   let cnt = 0;
+//   vehicles.forEach((el) => {
+//     if (el.pin_code_action === "dayuse") {
+//       if (getVehicleActiveStatusBoolean(el)) {
+//       cnt += 1
+//       }
+//     }
+//   });
+//   return cnt;
+// }
+
 export const daypassVehicleCount = (vehicles) => {
-  // console.log('daypassVehicleCount unit',vehicles);
   let cnt = 0;
   vehicles.forEach((el) => {
-    if (el.pin_code_action === "dayuse") {
+    if (el.day_use_only === 1) {
+      if (getVehicleActiveStatusBoolean(el)) {
       cnt += 1
+      }
     }
   });
   return cnt;

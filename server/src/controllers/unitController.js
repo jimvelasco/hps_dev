@@ -53,7 +53,7 @@ const getUnit = async (req, res) => {
 const createUnit = async (req, res) => {
   try {
     const { hoaid,
-      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner,
+      unitnumber, bedrooms, pincode, pincodeary, available_for_rent, day_use_only, is_resident, inventory_allowed_owner,
        parking_allowed_unit, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking, company,
       daypasses_allowed_owner,
@@ -87,6 +87,7 @@ const createUnit = async (req, res) => {
       pincode,
       pincodeary,
       available_for_rent,
+      day_use_only,
       is_resident,
       inventory_allowed_owner,
       parking_allowed_unit,
@@ -109,6 +110,7 @@ const createUnit = async (req, res) => {
         _id: unit._id,
         unitnumber: unit.unitnumber,
         is_resident: unit.is_resident,
+        day_use_only: unit.day_use_only,
         hoaid: unit.hoaid
       }
     });
@@ -177,7 +179,7 @@ const updateUnit = async (req, res) => {
   try {
     //  const { id } = req.params;
     const { hoaid, unitnumber, bedrooms, company,
-      pincode, pincodeary, available_for_rent, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
+      pincode, pincodeary, available_for_rent, day_use_only, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking,
       daypasses_allowed_owner,
       parking_allowed_tenant,
@@ -198,6 +200,10 @@ const updateUnit = async (req, res) => {
     if (!currentUser || currentUser.hoaid !== unit.hoaid ||
       (currentUser.role !== "admin" && (currentUser.role !== "owner" || currentUser.unitnumber !== unit.unitnumber))) {
       return res.status(403).json({ message: "Not authorized to update this unit" });
+    }
+
+    if (currentUser.role !== "admin" && day_use_only !== undefined) {
+      return res.status(403).json({ message: "Only an HOA admin can change day use only" });
     }
 
     if (currentUser.role !== "admin" && pincodeary !== undefined) {
@@ -244,6 +250,7 @@ const updateUnit = async (req, res) => {
     if (pincode !== undefined) unit.pincode = pincode;
     if (currentUser.role === "admin" && pincodeary !== undefined) unit.pincodeary = pincodeary;
     if (available_for_rent !== undefined) unit.available_for_rent = available_for_rent;
+    if (currentUser.role === "admin" && day_use_only !== undefined) unit.day_use_only = day_use_only;
     if (is_resident !== undefined) unit.is_resident = is_resident;
     //  if (is_verified !== undefined) user.is_verified = is_verified;
     //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
@@ -277,6 +284,7 @@ const updateUnit = async (req, res) => {
         hoaid: unit.hoaid,
         unitnumber: unit.unitnumber,
         is_resident: unit.is_resident,
+        day_use_only: unit.day_use_only,
       }
     });
   } catch (error) {

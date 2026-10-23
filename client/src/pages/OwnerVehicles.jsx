@@ -110,6 +110,8 @@ export default function OwnerVehicles() {
           const response = await axios.get(qry);
           const today = new Date().toLocaleDateString("en-CA");
           const responseData = response.data;
+
+          console.log('ALL VEHICLES IN UNIT',responseData);
         
           const updatedVehicles = responseData.filter(v => {
             //   return v.carownertype !== 'renter' && (v.carownertype !== 'tenant' || role === 'tenant');
@@ -332,11 +334,14 @@ export default function OwnerVehicles() {
 
       // const dayuseok = doesUnitHaveDayUse(unit);
       const daypassCount = daypassVehicleCount(allVehicles);
-  //    console.log('create daypass count is ', daypassCount,pin_code_action);
-      // console.log('dayuseok', dayuseok);
-      if (pin_code_action === 'dayuse') {
+
+      console.log('ov daypass count is ', daypassCount);
+ 
+
+      //JJVFIX
+
+      if (daypassCount > 0 ) {
         parkingLimitInventory += 1;
-        // unitParkingLimit += 1;
       }
 
 
@@ -368,10 +373,10 @@ export default function OwnerVehicles() {
    let activevehiclelimit = unit.parking_allowed_owner;
 
    let ac = daypassVehicleCount(allVehicles);
-   //console.log('ACTIVE COUNT for dayuse',ac,pin_code_action);
-   if (pin_code_action === 'dayuse') {
-    activevehiclelimit += 1;
-   }
+   
+   if (daypassCount > 0 ) {
+        activevehiclelimit += 1;
+      }
 
     // if (activeVehicles.length >= activevehiclelimit ) {
     //     setModal({
@@ -384,8 +389,8 @@ export default function OwnerVehicles() {
     //     });
     //     return;
     //   }
-
-      if (daypassCount >= ownerdplimit && pin_code_action === 'dayuse') {
+// JJVFIX
+      if (daypassCount >= ownerdplimit && pin_code_action === 'daypass') {
         setModal({
           isOpen: true,
           type: "alert",
@@ -445,8 +450,6 @@ export default function OwnerVehicles() {
           vehid: null,
          
           // numberOfVehicles: vehicles.length,
-          
-          
           createdfrom: 'ownervehicles',
           pincodeValue: '',
           pincodeAction: pin_code_action
@@ -552,7 +555,7 @@ export default function OwnerVehicles() {
               />  Add Vehicle
             </button>
             <button className="navbutton3"
-              onClick={() => handleCreateClick('dayuse')}>
+              onClick={() => handleCreateClick('daypass')}>
               <FontAwesomeIcon
                 icon={faPlus}
               />  Add Day Pass
@@ -606,13 +609,13 @@ export default function OwnerVehicles() {
         <div className="button-grid">
 
           <button className="navbutton3"
-            onClick={() => handleCreateClick()}>
+             onClick={() => handleCreateClick('standard')}>
             <FontAwesomeIcon
               icon={faPlus}
             />  Add Vehicle
           </button>
           <button className="navbutton3"
-            onClick={() => handleCreateClick()}>
+            onClick={() => handleCreateClick('daypass')}>
             <FontAwesomeIcon
               icon={faPlus}
             />  Add Day Pass

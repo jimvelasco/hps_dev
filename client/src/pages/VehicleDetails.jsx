@@ -37,7 +37,7 @@ export default function VehicleDetails() {
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
     useState(['owner',  'family', 'friend', 'visitor', 'contractor']);
 
-   // console.log('VD LOCATION STATE',location.state);
+    console.log('VD LOCATION STATE',location.state);
 
    
 
@@ -89,9 +89,9 @@ export default function VehicleDetails() {
   let disableDates = false;
 
   let daysplus = 3;
-  if (pincodeAction === 'dayuse') {
+  if (createdfrom === 'ownervehicles' && pincodeAction === 'daypass') {
     daysplus = 0;
-    disableDates = true;
+   // JJVFIX disableDates = true;
   }
 
  
@@ -105,6 +105,7 @@ export default function VehicleDetails() {
   // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
+  const defaultDayUseOnly = createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
 
   const [formData, setFormData] = useState({
     carowner_fname: "",
@@ -121,6 +122,8 @@ export default function VehicleDetails() {
     carownertype: isModifyMode ? carownertype || "" : selectedOwnerType,
     pin_code_value: pincodeValue,
     pin_code_action: pincodeAction,
+    day_use_only: defaultDayUseOnly,
+
 
 
     startdate: formatLocalDate(new Date()),
@@ -158,6 +161,7 @@ if (hoa && !isModifyMode) {
           carownertype: selectedOwnerType,
            pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
+          day_use_only: defaultDayUseOnly,
           startdate: formatLocalDate(new Date()),
           enddate: formatLocalDate(edate),
          
@@ -180,6 +184,7 @@ if (hoa && !isModifyMode) {
           carownertype: selectedOwnerType,
            pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
+          day_use_only: defaultDayUseOnly,
           startdate: formatLocalDate(new Date()),
           enddate: formatLocalDate(edate),
         }
@@ -245,10 +250,11 @@ if (hoa && !isModifyMode) {
           startdate: sd,
           enddate: ed,
           requires_payment: response.data.requires_payment || 0,
+          day_use_only: response.data.day_use_only ?? 0,
            pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
         });
-         //   console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
+        //    console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
 
         setError(null);
       } catch (err) {
@@ -378,7 +384,7 @@ if (hoa && !isModifyMode) {
 
     const datemsg = <>Check In: {formData.startdate}<br />is after <br />Check Out: {formData.enddate}</>;
 
-    console.log('VD form data is ',formData);
+ //   console.log('VD form data is ',formData);
 
      if (formData.enddate < formData.startdate ) {
       setModal({
@@ -429,7 +435,7 @@ if (hoa && !isModifyMode) {
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles,  unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
-    console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
+   // console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
       Please deactivate another vehicle before activating this one.</>);
@@ -473,7 +479,7 @@ if (hoa && !isModifyMode) {
 
     }
 
-      console.log('the cv is ',cv,unitcbt)
+   //   console.log('the cv is ',cv,unitcbt)
 
 
     try {
@@ -497,13 +503,14 @@ if (hoa && !isModifyMode) {
         ownerid: oid,
         requires_payment: rpflag,
         createdbytype: cbt
+
         // ...(!isModifyMode && {
         //   pin_code_value: createdfrom === "rentervehicles" ? pincodeValue : "",
         //   pin_code_action: createdfrom === "rentervehicles" ? pincodeAction : "standard"
         // })
       };
 
-      console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
+    //  console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
@@ -941,6 +948,17 @@ if (hoa && !isModifyMode) {
             </div>
 
             <div style={{ marginTop: "20px" }}>
+              <div className="unit-checkbox-row">
+                <input
+                  type="checkbox"
+                  id="vehicle-day-use-only"
+                  name="day_use_only"
+                  checked={formData.day_use_only === 1}
+                  onChange={handleFormChange}
+                  style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                />
+                <label className="input-label" htmlFor="vehicle-day-use-only">Day use only</label>
+              </div>
               <div style={{ marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
                 <input
                   type="checkbox"
