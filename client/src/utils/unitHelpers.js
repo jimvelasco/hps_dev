@@ -1,6 +1,6 @@
 
 
-export const doesUnitHaveDayUse = (unit) => {
+export const doesUnitHaveDayUsexxx = (unit) => {
   console.log('doesUnitHaveDayUse unit is',unit);
   let rval = false;
   let pary = unit.pincodeary;
@@ -11,5 +11,15 @@ export const doesUnitHaveDayUse = (unit) => {
   });
  return rval;
 }
+
+
+export const doesUnitHaveDayUse = (unit) => {
+   let rval = false;
+    if (unit.day_use_only === 1) {
+      rval = true;
+    }
+  return rval;
+}
+
 
 

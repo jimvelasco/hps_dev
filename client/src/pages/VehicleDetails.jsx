@@ -105,7 +105,12 @@ export default function VehicleDetails() {
   // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
-  const defaultDayUseOnly = createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
+  const defaultDayUseOnly = createdfrom === 'rentervehicles'
+    ? unit?.day_use_only ?? 0
+    : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
+
+  // const roomLevelDayUseOnly = unit.day_use_only;
+  // console.log('roomLevelDayUseOnly',roomLevelDayUseOnly)
 
   const [formData, setFormData] = useState({
     carowner_fname: "",

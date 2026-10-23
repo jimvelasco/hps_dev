@@ -1,11 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "../services/api";
 import ParkingSpacesOverview from "./ParkingSpacesOverview";
+import {  daypassVehicleCount } from "../utils/vehicleHelpers";
+
 
 
 export default function HoaInformation({ hoa }) {
   const { hoaId } = useParams();
   const navigate = useNavigate();
+  const [vehicles, setVehicles] = useState([]);
+  const [dayUseCount, setDayUseCount] = useState(0);
+
+  useEffect(() => {
+    if (!hoaId) return;
+
+    let active = true;
+    setVehicles([]);
+
+    axios.get(`/vehicles/allhoaid/${encodeURIComponent(hoaId)}`)
+      .then(response => {
+        if (active) {
+          setVehicles(response.data);
+     //     console.log("HOA vehicles:", response.data);
+          const cnt = daypassVehicleCount(response.data);
+      //    console.log('HOA INFO DAYPASS COUNT',cnt);
+          setDayUseCount(cnt);
+
+        }
+      })
+      .catch(error => {
+        if (active) console.error("Error fetching HOA vehicles:", error);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [hoaId]);
 
   /*
    const handleDetailsClick = (vehicle) => {
@@ -100,7 +131,7 @@ export default function HoaInformation({ hoa }) {
               <div><strong>Renter Parking Allowed</strong> </div><div>{hoa.parking_allowed_renter}</div>
 
               <div><strong>Day Passes Allowed:</strong> </div><div>{8}</div>
-              <div><strong>Day Passes Used:</strong> </div><div>{4}</div>
+              <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
          
          
 
@@ -119,7 +150,7 @@ export default function HoaInformation({ hoa }) {
         {/* {hoa && <ParkingSpacesOverview />} */}
         <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
           <div><strong>Day Passes Allowed:</strong> </div><div>{8}</div>
-          <div><strong>Day Passes Used:</strong> </div><div>{4}</div>
+          <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
           <div><strong>Handicapped Places:</strong> </div><div>{7}</div>
           <div><strong>Handicapped Used:</strong> </div><div>{2}</div>
         </div>

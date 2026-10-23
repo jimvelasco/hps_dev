@@ -207,8 +207,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 // }
 
 export const daypassVehicleCount = (vehicles) => {
+  //console.log('CALLING DAYPASSVEHICLECOUNT')
   let cnt = 0;
   vehicles.forEach((el) => {
+  //  console.log('daypassVehicleCount el day_use_only',el.day_use_only);
     if (el.day_use_only === 1) {
       if (getVehicleActiveStatusBoolean(el)) {
       cnt += 1
