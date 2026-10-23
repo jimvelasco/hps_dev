@@ -492,7 +492,7 @@ export default function UnitDetails() {
                       <option value="freenight">Free Night Parking</option>
                       <option value="contractor">Contractor</option>
                       <option value="special">Special???</option> */}
-                      <option value="standard">Short Term Renter</option>
+                      <option value="renter">Short Term Renter</option>
                       <option value="visitor">Visitor / Day Guest</option>
                       <option value="contractor">Contractor / Vendor</option>
                      

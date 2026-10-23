@@ -46,7 +46,7 @@ export default function VehicleDetails() {
   //   ? nonownerType || role || ""
   //   : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
 
-
+// 
   const selectedOwnerType = createdfrom === "rentervehicles"
     ? nonownerType 
     : carownertype || vehicleOwnerTypeAry[0];
@@ -106,9 +106,17 @@ export default function VehicleDetails() {
   // console.log('vehicle details unitNumber is ', unitNumber,role);
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
+
+  // const defaultDayUseOnlyxx = createdfrom === 'rentervehicles'
+  //   ? unit?.day_use_only ?? 0
+  //   : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
+  //   // this value comes from selecting the Add Vehicle or Add Daypass buttons
+
+     
   const defaultDayUseOnly = createdfrom === 'rentervehicles'
-    ? unit?.day_use_only ?? 0
+    ? nonownerType === ('contractor' || nonownerType === 'visitor') ? 1 : 0
     : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
+    // this value comes from selecting the Add Vehicle or Add Daypass buttons
 
 
 
@@ -150,6 +158,13 @@ export default function VehicleDetails() {
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
     }
+
+    // JJVFIX
+  //  console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state,unit.day_use_only);
+    // location.state.nonownerType will be either be owner or renter or visitor or contractor
+    // we can make the date defaults accordingly
+    // we can also use unit.day_use_only
+
 if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
       //  console.log('dmode:', dmode);

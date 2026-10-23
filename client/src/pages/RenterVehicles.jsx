@@ -129,21 +129,29 @@ export default function RenterVehicles() {
           // });
 
        //   console.log('NON OWNER VEHICLES', nonOwnerVehicles);
-       //   console.log('PIN CODE ACTION', pincodeAction);
+        // JJVFIX this should bring in the visitor from owner inventory. for demo only
+        // look at logic here
+          console.log('PIN CODE ACTION', pincodeAction);
 
           let nonTypeVehicles = [];
-          if (pincodeAction === 'contractor') {
+          if (pincodeAction === 'renter') {
+             nonTypeVehicles = nonOwnerVehicles.filter(v => {
+              if (v.carownertype === pincodeAction) return true;
+            });
+           } else if (pincodeAction === 'contractor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === pincodeAction) return true;
             });
-          } 
-
-          // JJVFIX this should bring in the visitor from owner inventory. for demo only
-          if (pincodeAction === 'standard' && nonownerType === 'visitor') {
+             } else if (pincodeAction  === 'visitor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === nonownerType) return true;
+              if (v.carownertype === 'visitor') return true;
             });
           } 
+          // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
+          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
+          //     if (v.carownertype === nonownerType) return true;
+          //   });
+          // } 
           
          
 
@@ -154,8 +162,9 @@ export default function RenterVehicles() {
           // setVehicles(updatedVehicles);
 
           if (pincodeAction != 'standard') {
-            if (pincodeAction == 'dayuse') setPincodeActionLabel('(Day Use Only)');
-            if (pincodeAction == 'special') setPincodeActionLabel('(Special Action)');
+            if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
+            if (pincodeAction == 'contractor') setPincodeActionLabel('(Contractor)');
+            if (pincodeAction == 'visitor') setPincodeActionLabel('(Visitor)');
           }
 
           // console.log('updatedVehicles',updatedVehicles)

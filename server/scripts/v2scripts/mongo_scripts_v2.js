@@ -1,15 +1,11 @@
 //mongosh "mongodb://localhost:27017"
 
-db.vehicles.updateMany(
-  {},
-  { $set: { "day_use_only": 0 }}
-);
 
 db.units.updateMany({}, { $unset: { pincodeary: "" } })
 
 db.units.updateMany(
   {},
-  { $set: { "pincodeary": [{"pincode":"","action":"standard","description": "","expire_date": null, "uses_allowed":-1,"uses_used":0}] }}
+  { $set: { "pincodeary": [{"pincode":"","action":"renter","description": "","expire_date": null, "uses_allowed":-1,"uses_used":0}] }}
 );
 
 db.units.updateMany(
@@ -77,23 +73,16 @@ db.hoas.updateMany(
   { $set: { "daypasses_allowed_renter": 0 }}
 );
 
-//  daypasses_allowed_owner: 1,
-//         parking_allowed_tenant: 2,
-//         tenant_free_parking_spots: 2,
-//         daypasses_allowed_tenant: 0,
-//         daypasses_allowed_renter: 0
-
-// end
-
 
 db.hoas.updateMany(
   {},
   { $set: { "parking_handicapped_hoa": 0 }}
 );
 
-
-
-
+db.vehicles.updateMany(
+  {},
+  { $set: { "day_use_only": 0 }}
+);
 
 
 db.vehicles.updateMany(
@@ -109,7 +98,7 @@ db.vehicles.updateMany(
 
 db.vehicles.updateMany(
   {},
- { $set: { "pin_code_action": "standard" }}
+ { $set: { "pin_code_action": "renter" }}
 );
 
 

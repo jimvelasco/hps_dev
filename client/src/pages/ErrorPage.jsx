@@ -20,7 +20,8 @@ export default function ErrorPage() {
     clearError();
     //hoaId = "YV"
     // console.log("handle go home Navigating to home for hoaId:", hoaId);
-    navigate(hoaId ? `/${hoaId}` : "/");
+    // navigate(hoaId ? `/${hoaId}` : "/");
+     navigate(-1);
   };
 
   let backgroundImage = '';
@@ -40,19 +41,17 @@ export default function ErrorPage() {
         backgroundPosition: "center", backgroundAttachment: "fixed"
       }}>
 
-        <div className="page-content">
+        <div className="page-content error-page-content">
       <div style={{
-          backgroundColor: "#f0f0f0",
-         
-          margin: "40px auto",
+          backgroundColor: "#ffffff",
+          margin: "auto",
           padding: "20px",
-          maxWidth: "400px",
-          // boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+          maxWidth: "340px",
           textAlign: "center",
            borderRadius: "8px",
             opacity: "0.9"
         }}>
-          <h1 style={{ color: "#d32f2f", marginBottom: "20px",marginTop: "0" }}>
+          <h1 style={{ color: "#d32f2f", marginBottom: "20px",marginTop: "0px" }}>
             ⚠️ Error
           </h1>
 
@@ -62,8 +61,7 @@ export default function ErrorPage() {
             borderRadius: "4px",
             padding: "20px",
             marginBottom: "30px",
-            textAlign: "left",
-           
+            textAlign: "left",           
           }}>
             <p 
             style={{
@@ -79,26 +77,15 @@ export default function ErrorPage() {
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "10px", justifyContent: "center"}}>
-            <button className="standardsubmitbutton"
+          {/* <div style={{ display: "flex", gap: "10px", justifyContent: "center"}}> */}
+          <div className="button-grid">
+            <button className="btn btn-primary"
               onClick={handleGoBack}
-              // style={{
-              //   padding: "10px 20px",
-              //   fontSize: "16px",
-              //   backgroundColor: "#1976d2",
-              //   color: "white",
-              //   border: "none",
-              //   borderRadius: "4px",
-              //   cursor: "pointer",
-              //   transition: "background-color 0.3s"
-              // }}
-              // onMouseOver={(e) => e.target.style.backgroundColor = "#1565c0"}
-              // onMouseOut={(e) => e.target.style.backgroundColor = "#1976d2"}
             >
-              Go Back
+              Back
             </button>
 
-            <button className="standardcancelbutton"
+            <button className="btn btn-primary"
               onClick={handleGoHome}
              
             >

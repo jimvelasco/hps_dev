@@ -93,6 +93,7 @@ export default function RentersLogin() {
             return;
         }
         if (!units.some(unit => unit.unitnumber === unitNumber)) {
+            console.log('RL UNIT')
             setAppError("Please select a valid unit number");
             navigate(`/${hoaId}/error`);
             return;
@@ -110,7 +111,17 @@ export default function RentersLogin() {
             localStorage.setItem("token", response.data.token);
 
 
-          //  console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
+            // console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
+            // console.log('NON OWNER TYPE IS ', nonownerType);
+
+            // JJVFIX
+
+            if (response.data.action !== nonownerType ) {
+
+                alert('Type from selection and action from pincode do not match');
+                return;
+
+            }
 
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
