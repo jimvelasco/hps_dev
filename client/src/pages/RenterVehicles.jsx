@@ -41,6 +41,7 @@ export default function RenterVehicles() {
   //  navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
   //               state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: response.data.action }
   //           });
+const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
 
   useEffect(() => {
@@ -131,12 +132,18 @@ export default function RenterVehicles() {
        //   console.log('NON OWNER VEHICLES', nonOwnerVehicles);
         // JJVFIX this should bring in the visitor from owner inventory. for demo only
         // look at logic here
-          console.log('PIN CODE ACTION', pincodeAction);
+         const todayUTC = new Date(); // "2025-12-03"
+          const todayStr = formatLocalDate(todayUTC); 
+
+          // JJVFIX
+
+        //  console.log('PIN CODE ACTION', pincodeAction,todayStr);
 
           let nonTypeVehicles = [];
           if (pincodeAction === 'renter') {
              nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === pincodeAction) return true;
+               if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
+              //  if (v.carownertype === pincodeAction ) return true;
             });
            } else if (pincodeAction === 'contractor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
@@ -152,7 +159,13 @@ export default function RenterVehicles() {
           //     if (v.carownertype === nonownerType) return true;
           //   });
           // } 
-          
+
+          // nonTypeVehicles.forEach((el) => {
+          //   console.log('EL IS',todayStr,el.plate,el.startdate,el.enddate)
+          //   if (el.enddate >= todayStr) {
+          //     console.log('we have a winner');
+          //   }
+          // });
          
 
           // nonownerType
@@ -273,12 +286,19 @@ export default function RenterVehicles() {
 
 
 
-    if (pincodeAction === 'dayuse') {
-      unitParkingLimit += 1
-    }
+    // if (pincodeAction === 'dayuse') {
+    //   unitParkingLimit += 1
+    // }
 
     // const spotsTheyCanUse = 1 + (ownerOfUnit?.additional_parking_spots_paid || 0);
     // const nextSpotNumber = currentVehicleCount; // 1 for 2nd vehicle, 2 for 3rd
+
+
+     let msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
+        CALL THE OWNER OR ADMIN</>);
+
+    //  msg = (<>You are not allowed to have more active vehicles than your parking allowance. {unitParkingLimit} <br />
+    //   Please deactivate another vehicle before activating this one.</>);
 
     if (allActiveCount >= unitParkingLimit) {
       // if (currentVehicleCount >= renterFreeParking) {
@@ -287,7 +307,7 @@ export default function RenterVehicles() {
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: `Parking limit reached. Maximum renter parking spots allowed: ${unitParkingLimit}`,
+        message: msg,
         //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
         confirmText: "OK",
         // cancelText: "Cancel",

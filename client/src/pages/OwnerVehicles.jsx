@@ -111,7 +111,7 @@ export default function OwnerVehicles() {
           const today = new Date().toLocaleDateString("en-CA");
           const responseData = response.data;
 
-          console.log('ALL VEHICLES IN UNIT',responseData);
+     //     console.log('ALL VEHICLES IN UNIT',responseData);
         
           const updatedVehicles = responseData.filter(v => {
             //   return v.carownertype !== 'renter' && (v.carownertype !== 'tenant' || role === 'tenant');

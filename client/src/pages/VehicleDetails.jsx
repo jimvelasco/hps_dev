@@ -100,6 +100,9 @@ export default function VehicleDetails() {
   const edate = new Date();
  // console.log('vd date is ',edate,'getdate',edate.getDate())
   edate.setDate(edate.getDate() + daysplus);
+ // console.log('edate is',edate,formatLocalDate(new Date()),formatLocalDate(edate));
+
+  
 
 
 
@@ -246,8 +249,14 @@ if (hoa && !isModifyMode) {
       //  console.log('about to set vehicle',response.data)
         setVehicle(response.data);
 
-        const sd = utcDateOnly(response.data.checkin);
-        const ed = utcDateOnly(response.data.checkout);
+        // const sd = utcDateOnly(response.data.checkin);
+        // const ed = utcDateOnly(response.data.checkout);
+
+        // const sd = utcDateOnly(new Date(response.data.startdate));
+        // const ed = utcDateOnly(new Date(response.data.enddate));
+
+        const sd = response.data.startdate;
+        const ed = response.data.enddate;
 
 
         //  console.log("checkin date:", sd,'before local', response.data.checkin);
@@ -365,6 +374,8 @@ if (hoa && !isModifyMode) {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+      const todayUTC = new Date(); // "2025-12-03"
+      const todayStr = formatLocalDate(todayUTC); 
 
     if (!isModifyMode && createdfrom === "rentervehicles" && (!pincodeValue || typeof pincodeAction !== "string")) {
       setModal({
@@ -423,6 +434,28 @@ if (hoa && !isModifyMode) {
       return;
     }
 
+        const templatemsg = <>Check Out: {formData.enddate}<br />must be before <br />Today: {todayStr}</>;
+
+    if (createdfrom === 'ownervehicles' && (formData.carownertype === 'contractor' || formData.carownertype === 'visitor')) {
+      if (formData.enddate > todayStr) {
+
+        setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message:templatemsg,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }))
+        }
+      });
+      return;
+
+      }
+
+
+    }
+
     // if (role === 'renter') {
     //   const todayStr = new Date().toISOString().split('T')[0];
     //   const edate = formData.enddate;
@@ -458,10 +491,13 @@ if (hoa && !isModifyMode) {
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles,  unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
-   // console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
+    console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
-    let msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
+    let msg = "";
+     if (createdfrom === 'ownervehicles') {
+      msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
       Please deactivate another vehicle before activating this one.</>);
+     }
     if (createdfrom === 'rentervehicles') {
       msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
         CALL THE OWNER OR ADMIN</>);

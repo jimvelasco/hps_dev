@@ -6,6 +6,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useHoa } from "../context/HoaContext";
 import { useError } from "../context/ErrorContext";
 import { getAWSResource } from "../utils/awsHelper";
+import ModalAlert from "../components/ModalAlert";
 
 export default function RentersLogin() {
     const { hoaId } = useParams();
@@ -17,6 +18,7 @@ export default function RentersLogin() {
     const [pin, setPin] = useState("");
     const [nonownerType, setOtherType] = useState("renter");
     const [loadingUnits, setLoadingUnits] = useState(false);
+    const [showTypeMismatch, setShowTypeMismatch] = useState(false);
 
     useEffect(() => {
         localStorage.removeItem("token");
@@ -107,21 +109,17 @@ export default function RentersLogin() {
                 pinCode: pin
             });
 
-            // Store the token
-            localStorage.setItem("token", response.data.token);
-
-
             // console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
             // console.log('NON OWNER TYPE IS ', nonownerType);
 
             // JJVFIX
 
             if (response.data.action !== nonownerType ) {
-
-                alert('Type from selection and action from pincode do not match');
+                setShowTypeMismatch(true);
                 return;
-
             }
+
+            localStorage.setItem("token", response.data.token);
 
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
@@ -260,11 +258,12 @@ export default function RentersLogin() {
                     </form>
                 )}
             </div>
-
-
-
-
-
+            <ModalAlert
+                isOpen={showTypeMismatch}
+                title="Validation Error"
+                message="Type from selection and action from pincode do not match"
+                onConfirm={() => setShowTypeMismatch(false)}
+            />
         </div>
     );
 }

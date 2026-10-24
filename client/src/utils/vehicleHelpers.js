@@ -88,10 +88,11 @@ export const getVehicleIsActiveTodayBoolean = (element) => {
   }
 }
 
-
+// JJVFIX on 10242026 I decided that the utcDateOnly should return a date based on local year etc
 export const utcDateOnly = (isoStr) => {
   const d = new Date(isoStr);
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+ // return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 export const formatPhoneNumber = (phone) => {
@@ -128,9 +129,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let oktoadd = null;
   let irpflag = 0;
 
-  let robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null };
-
   let dates_span_today = getVehicleActiveStatusBoolean2(formsdate, formedate);
+
+  let msgType = 0;
+
+  let robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null , msgType:0};
 
 
   // THIS SECTION IS FOR ADDING A VEHICLE FROM THE OWNERS OR OTHER
@@ -139,15 +142,15 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     // it is ok to add a vehicle whos date is not active if you are a owner and adding to inventory
     if (!dates_span_today) {
       console.log("form dates are NOT active, vehicle is null");
-      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null };
+      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType:0 };
       return robj;
     }
     if (dates_span_today) {
       console.log("form dates ARE active, vehicle is null")
       if (filteredActiveArrayCount >= maxactiveallowed) {
-        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null };
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType:1};
       } else {
-        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null };
+        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType:0 };
       }
       return robj;
     }
@@ -165,26 +168,26 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   if (is_vehicle_active && dates_span_today) {
     console.log("form dates are active, vehicle is active");
-    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle };
+    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
     return robj;
   }
   if (is_vehicle_active && !dates_span_today) {
     console.log("form dates are not active, vehicle is active")
-    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle };
+    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
     return robj;
   }
   if (!is_vehicle_active && dates_span_today) {
     console.log("form dates active, vehicle is not active")
     if (filteredActiveArrayCount >= maxactiveallowed) {
-      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle };
+      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle , msgType:1};
     } else {
-      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle };
+      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle , msgType:0};
     }
     return robj;
   }
   if (!is_vehicle_active && !dates_span_today) {
     console.log("form dates are not active, vehicle is not active");
-    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle };
+    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
     return robj;
   }
 }

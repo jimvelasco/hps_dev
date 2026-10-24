@@ -499,11 +499,17 @@ const deleteRenterVehicles = async (req, res) => {
 
     console.log('date to delete is ',date,hoaId);
 
-     const countBefore = await Vehicle.countDocuments({ 
+    //  const countBefore = await Vehicle.countDocuments({ 
+    //   hoaid: hoaId, 
+    //   carownertype: "renter", 
+    //   enddate: { $lt: date } 
+    // });
+      const countBefore = await Vehicle.countDocuments({ 
       hoaid: hoaId, 
-      carownertype: "renter", 
+      createdbytype: "other", 
       enddate: { $lt: date } 
     });
+
     console.log('Matching records found:', countBefore);
     
 
@@ -511,9 +517,14 @@ const deleteRenterVehicles = async (req, res) => {
       return res.status(400).json({ message: "Date is required" });
     }
 
-    const result = await Vehicle.deleteMany({
+    // const result = await Vehicle.deleteMany({
+    //   hoaid: hoaId,
+    //   carownertype: "renter",
+    //   enddate: { $lt: date }
+    // });
+     const result = await Vehicle.deleteMany({
       hoaid: hoaId,
-      carownertype: "renter",
+      createdbytype: "other", 
       enddate: { $lt: date }
     });
 
