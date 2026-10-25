@@ -32,7 +32,7 @@ export default function VehicleDetails() {
 
 
   const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
-    createdfrom, pincodeValue, pincodeAction ,allActiveVehiclesCount} = location.state || {};
+    createdfrom, pincodeValue, pincodeAction, allActiveVehiclesCount } = location.state || {};
 
 
   const vehicleOwnerTypeAry = unit?.day_use_only === 1
@@ -59,6 +59,7 @@ export default function VehicleDetails() {
   const [userIdForUnit, setUserIdForUnit] = useState();
   const [unitOwner, setUnitOwner] = useState();
   const [stateUnit, setStateUnit] = useState();
+  const [disableDateFields, setDisableDateFields] = useState(false)
   const [createdByType, setCreatedByType] = useState("owner");
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
@@ -89,30 +90,26 @@ export default function VehicleDetails() {
   // };
 
   const defaultDayUseOnly = createdfrom === 'rentervehicles'
-    ? nonownerType === ('contractor' || nonownerType === 'visitor') ? 1 : 0
-    : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
+    ? unit?.day_use_only === 1 || nonownerType === 'contractor' || nonownerType === 'visitor' ? 1 : 0
+    : createdfrom === 'ownervehicles' && (unit?.day_use_only === 1 || pincodeAction === 'daypass') ? 1 : 0;
+
+    
   // this value comes from selecting the Add Vehicle or Add Daypass buttons
 
   // console.log('defaultDayUseOnly',nonownerType,createdfrom,defaultDayUseOnly)
 
-  let disableDates = false;
 
   let daysplus = 3;
 
 
-  // if (defaultDayUseOnly === 1) {
-  //    daysplus = 0;
-  //  //  disableDates = true;
 
   // }
   if (createdfrom === 'ownervehicles' && pincodeAction === 'daypass') {
     daysplus = 0;
-    // JJVFIX disableDates = true;
   }
   if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
     daysplus = 0;
-  //  disableDates = true;
-   // console.log('WE HAVE A HIT ON RENTER VEHICLES')
+    // console.log('WE HAVE A HIT ON RENTER VEHICLES')
   }
 
 
@@ -177,13 +174,13 @@ export default function VehicleDetails() {
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
-      console.log('FROM RENTER VEHICLES STATE', location.state);
+      //  console.log('FROM RENTER VEHICLES STATE', location.state);
     }
 
-   
+
 
     // JJVFIX
-      console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+    console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
     // location.state.nonownerType will be either be owner or renter or visitor or contractor
     // we can make the date defaults accordingly
     // we can also use unit.day_use_only
@@ -266,7 +263,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-        //  console.log('about to set vehicle',response.data)
+          console.log('about to set vehicle',response.data)
         setVehicle(response.data);
 
         // const sd = utcDateOnly(response.data.checkin);
@@ -278,13 +275,11 @@ export default function VehicleDetails() {
         let sd = response.data.startdate;
         let ed = response.data.enddate;
 
-        if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
-       
-        sd = formatLocalDate(new Date());
-        ed = formatLocalDate(new Date());
-        // console.log('a new data formatted is ',sd)
-        //   daysplus = 0;
-      //  disableDates = true;
+        // if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
+        if (createdfrom === 'rentervehicles' && (carownertype === 'visitor')) {
+          sd = formatLocalDate(new Date());
+          ed = formatLocalDate(new Date());
+          setDisableDateFields(true)
         }
 
 
@@ -294,6 +289,8 @@ export default function VehicleDetails() {
         //  console.log("checkout date:", ed, 'before local',response.data.checkout);
         //  console.log("checkout date:',ed );
         //  let oid = loggedInUser ? loggedInUser._id : userIdForUnit;
+      //  let duo = stateUnit.day_use_only;
+     //   console.log('day use only from unit is',duo)
 
 
         setFormData({
@@ -468,40 +465,14 @@ export default function VehicleDetails() {
     const templatemsg = <>Check Out: {formData.enddate}<br />must be before <br />Today: {todayStr}</>;
 
     // if (createdfrom === 'ownervehicles' && (formData.carownertype === 'contractor' || formData.carownertype === 'visitor')) {
-      if (createdfrom === 'ownervehicles' && ( formData.carownertype === 'visitor')) {
-
-      if (formData.enddate > todayStr) {
-
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: templatemsg,
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }))
-          }
-        });
-        return;
-
-      }
-
-
-    }
-
-    // if (role === 'renter') {
-    //   const todayStr = new Date().toISOString().split('T')[0];
-    //   const edate = formData.enddate;
-    //   //  console.log('Renter enddate is:', edate);
-    //   //  console.log('todayStr is:', todayStr);
-    //   const startDate = new Date(todayStr).getTime();
-    //   const endDate = new Date(edate).getTime();
-    //   if (startDate > endDate) {
+    //JJVFIX. do we need this
+    // if (createdfrom === 'ownervehicles' && (formData.carownertype === 'visitor')) {
+    //   if (formData.enddate > todayStr) {
     //     setModal({
     //       isOpen: true,
     //       type: "alert",
     //       title: "Validation Error",
-    //       message: "End date must be after current date.",
+    //       message: templatemsg,
     //       confirmText: "OK",
     //       onConfirm: () => {
     //         setModal(prev => ({ ...prev, isOpen: false }))
@@ -510,6 +481,8 @@ export default function VehicleDetails() {
     //     return;
     //   }
     // }
+
+
 
 
     //  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
@@ -523,7 +496,7 @@ export default function VehicleDetails() {
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
-    oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction,allActiveVehiclesCount);
+    oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction, allActiveVehiclesCount);
     //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
@@ -575,7 +548,7 @@ export default function VehicleDetails() {
     // JJVFIX
     try {
       // Prefer the user associated with the unit, fallback to logged in user (e.g. admin or owner creating for themselves)
-       let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
+      let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
       let cbt = "other";
       if (createdfrom === "ownervehicles") {
         cbt = "owner";
@@ -985,7 +958,7 @@ export default function VehicleDetails() {
                     // value={new Date(formData.startdate).toISOString().substring(0, 10)}
                     value={formData.startdate}
                     onChange={handleFormChange}
-                    disabled={disableDates}
+                    disabled={disableDateFields}
                   />
                 </div>
 
@@ -1000,11 +973,11 @@ export default function VehicleDetails() {
                     name="enddate"
                     value={formData.enddate}
                     onChange={handleFormChange}
-                    disabled={disableDates}
+                    disabled={disableDateFields}
                   />
                 </div>
 
-                <div style={{ marginBottom: "15px", display:"invisible"}}>
+                <div style={{ marginBottom: "15px", display: "invisible" }}>
                   <label className="input-label" htmlFor="vehicle-pin-code">
                     PIN Code
                   </label>

@@ -153,11 +153,13 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
               if (v.carownertype === pincodeAction) return true;
             });
             setDisableAddVehicle(true);
+            if (unitForRenter.day_use_only === 1) setDisableAddVehicle(false);
              } else if (pincodeAction  === 'visitor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'visitor') return true;
             });
             setDisableAddVehicle(true);
+            if (unitForRenter.day_use_only === 1) setDisableAddVehicle(false);
           } 
           // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
           //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
@@ -197,7 +199,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
 
       fetchVehicles();
     }
-  }, [hoaId, unitNumber, nonownerType]);
+  }, [hoaId, unitNumber, nonownerType,unitForRenter]);
 
   if (loading) {
     return <div style={{ padding: "20px" }}>Loading HOA data...</div>;
@@ -379,7 +381,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
     return (<div style={{ padding: "20px" }}>Loading unit information...</div>);
   }
 
-  const t = nonownerTypeText + ' Vehicles';
+  const t = nonownerTypeText + ' Vehicles'; // +   localStorage.getItem('unitNumber');
   // const displayedVehicles = vehicles.filter(v => v.carownertype !== "owner");
   const displayedVehicles = [...vehicles];
 
