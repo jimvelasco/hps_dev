@@ -150,27 +150,36 @@ export const formatPhoneNumber = (phone) => {
 
 
 
-export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction) => {
+export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction,allActiveVehiclesCount) => {
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
 
-  console.log('okToAddUnitVehicle formvehicle.carownertype, vehicleId,createdfrom,pincodeAction');
-  console.log(formvehicle.carownertype,  vehicleId, createdfrom, pincodeAction);
+  console.log('OKTOADD incoming array is ',vehiclearray);
+  console.log('OKTOADD formvehicle.carownertype',formvehicle.carownertype);
+  console.log('OKTOADD vehicleId', vehicleId);
+  console.log('OKTOADD createdfrom',createdfrom);
+  console.log('OKTOADD pincodeAction',pincodeAction);
+  console.log('OKTOADD formsdate',formsdate);
+  console.log('OKTOADD formedate',formedate);
+  console.log('OKTOADD allActiveVehiclesCount',allActiveVehiclesCount);
+
+
+
 
   const todayStr = new Date().toLocaleDateString("en-CA");
   let maxactiveallowed = unit.parking_allowed_unit;
-  //  console.log('maxactiveallowed', maxactiveallowed);
+    console.log('UNIT maxactiveallowed', maxactiveallowed);
 
   let filteredActiveArray = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   let filteredActiveArrayCount = filteredActiveArray.length
   let dayUseCount = daypassVehicleCount(vehiclearray);
   let totalActiveMinusDayUseCount = filteredActiveArrayCount - dayUseCount;
 
-  if (pincodeAction === 'dayuse') {
+  if (pincodeAction === 'daypass') {
     maxactiveallowed += 1
   }
 
-  // console.log('totalActiveCount and incoming array', filteredActiveArrayCount, dayUseCount, vehiclearray);
+   console.log('totalActiveCount and incoming array', filteredActiveArrayCount, dayUseCount, vehiclearray);
 
   let ownerFreeParking = unit.owner_free_parking || 0;
 
@@ -189,13 +198,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
  //   console.log("WE MUST NEW VEHICLE");
     // it is ok to add a vehicle whos date is not active if you are a owner and adding to inventory
     if (!dates_span_today) {
-      console.log("form dates are NOT active, vehicle is null");
+    //  console.log("form dates are NOT active, vehicle is null");
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType:0 };
       return robj;
     }
     if (dates_span_today) {
-      console.log("form dates ARE active, vehicle is null")
-      if (filteredActiveArrayCount >= maxactiveallowed) {
+    //  console.log("form dates ARE active, vehicle is null")
+      if (allActiveVehiclesCount >= maxactiveallowed) {
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType:1};
       } else {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType:0 };
@@ -226,7 +235,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   }
   if (!is_vehicle_active && dates_span_today) {
    // console.log("form dates active, vehicle is not active")
-    if (filteredActiveArrayCount >= maxactiveallowed) {
+    if (allActiveVehiclesCount >= maxactiveallowed) {
       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle , msgType:1};
     } else {
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle , msgType:0};

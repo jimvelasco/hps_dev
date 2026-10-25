@@ -2245,6 +2245,13 @@ Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destruct
   cursor: not-allowed;
 }
 
+.btns:disabled {
+  background-color: lightgray;
+  border-color: #ddd;
+  color: #555;
+  cursor: not-allowed;
+}
+
 .btn:disabled:active {
   transform: none;
 }

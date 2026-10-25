@@ -29,6 +29,7 @@ export default function RenterVehicles() {
   const [ownerOfUnit, setOwnerOfUnit] = useState(null);
   const [unitForRenter, setUnitForRenter] = useState(null);
   const [pincodeActionLabel, setPincodeActionLabel] = useState("");
+  const [disableAddVehicle, setDisableAddVehicle] = useState(false)
   const [allActiveCount, setAllActiveCount] = useState(0);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
@@ -54,6 +55,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             // console.log('we found a user for unit:', unitNumber, user);
             setUserIdForUnit(user._id);
             setOwnerOfUnit(user);
+            console.log('RV NON OWNER TYPE',nonownerType);
           }
         } catch (err) {
           console.error("Error fetching user for unit:", err);
@@ -106,7 +108,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          //  console.log('updatedVehicles', updatedVehicles);
+          console.log('updatedVehicles', updatedVehicles.length,updatedVehicles);
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
@@ -145,14 +147,17 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
                if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
               //  if (v.carownertype === pincodeAction ) return true;
             });
+            setDisableAddVehicle(false);
            } else if (pincodeAction === 'contractor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === pincodeAction) return true;
             });
+            setDisableAddVehicle(true);
              } else if (pincodeAction  === 'visitor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'visitor') return true;
             });
+            setDisableAddVehicle(true);
           } 
           // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
           //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
@@ -255,7 +260,8 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
         vehid: vid,
         unit: unitForRenter,
         createdfrom: 'rentervehicles',
-        pincodeAction: pincodeAction
+        pincodeAction: pincodeAction,
+        allActiveVehiclesCount: allActiveCount
       }
     });
   }
@@ -399,10 +405,15 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
               Unit: {unitNumber} {pincodeActionLabel}
             </label><br />
             <div className="button-grid">
-              <button className="btns btn-primary" style={{ maxWidth: "150px", marginTop: "5px" }} onClick={handleCreateClick}>
+              <button className="btns btn-primary" style={{ maxWidth: "150px", marginTop: "5px" }} onClick={handleCreateClick}
+               disabled = {disableAddVehicle}
+              >
                 <FontAwesomeIcon
                   icon={faPlus}
                 />  Add Vehicle
+               
+                
+
               </button>
 
             </div>

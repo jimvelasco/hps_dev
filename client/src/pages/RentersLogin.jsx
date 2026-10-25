@@ -72,7 +72,7 @@ export default function RentersLogin() {
             const unitNumbers = response.data.filter(unit => unit.unitnumber && unit.available_for_rent)
                 .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber }));
             unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
-          //  console.log('unit numbers array',unitNumbers);
+            //  console.log('unit numbers array',unitNumbers);
             setUnits(unitNumbers);
         } catch (err) {
             // console.error("Error fetching units:", err);
@@ -95,13 +95,12 @@ export default function RentersLogin() {
             return;
         }
         if (!units.some(unit => unit.unitnumber === unitNumber)) {
-            console.log('RL UNIT')
             setAppError("Please select a valid unit number");
             navigate(`/${hoaId}/error`);
             return;
         }
 
-         localStorage.setItem('unitNumber',unitNumber);
+        localStorage.setItem('unitNumber', unitNumber);
         try {
             const response = await axios.post(`/users/renters/verify-pin`, {
                 hoaId,
@@ -109,21 +108,42 @@ export default function RentersLogin() {
                 pinCode: pin
             });
 
-            // console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
-            // console.log('NON OWNER TYPE IS ', nonownerType);
+            console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
+            console.log('RENTERS LOGIN PIN INDEX IS ', response.data.pinIndex)
+            console.log('RENTERS LOGIN PINCODEARY LENGTH IS ', response.data.pinCodeArrayLength);
+            console.log('RENTERS LOGIN NON OWNER TYPE IS ', nonownerType);
+
+            console.log('');
+
+            let pincodeaction = response.data.action;
+            let pincodeindex = response.data.pinIndex;
+            let pincodearylength = response.data.pinCodeArrayLength;
 
             // JJVFIX
 
-            if (response.data.action !== nonownerType ) {
-                setShowTypeMismatch(true);
-                return;
+            // if (response.data.action !== nonownerType ) {
+            //     setShowTypeMismatch(true);
+            //     return;
+            // }
+
+            //  pincodearylength > 1 means the user has more than the default pin.  
+            // the pin itself know which type of person it is for (contractor or visitor)
+
+            if (pincodearylength === 1) {
+                pincodeaction = nonownerType;
+            }
+            if (pincodearylength > 1) {
+                if (pincodeaction !== nonownerType) {
+                    setShowTypeMismatch(true);
+                    return;
+                }
             }
 
             localStorage.setItem("token", response.data.token);
 
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
-                state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: response.data.action }
+                state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: pincodeaction }
             });
 
         } catch (err) {
@@ -168,7 +188,7 @@ export default function RentersLogin() {
         }}>
             <div className="standardtitlebar_nh">
                 <h3 onClick={() => navigate(`/${hoaId}`)}>HOA Parking Solutions</h3>
-                <h3 style={{ marginTop: "8px",color:"#ffffff" }}>{hoa && hoa.name}</h3>
+                <h3 style={{ marginTop: "8px", color: "#ffffff" }}>{hoa && hoa.name}</h3>
             </div>
 
             {/* navigate(`/${hoaId}`); */}
@@ -182,7 +202,7 @@ export default function RentersLogin() {
                 {loadingUnits ? (
                     <p>Loading units...</p>
                 ) : (
-                    <form onSubmit={handleSubmit} style={{ marginTop: "10px",marginLeft:"15px"}}>
+                    <form onSubmit={handleSubmit} style={{ marginTop: "10px", marginLeft: "15px" }}>
 
                         <div style={{ marginBottom: "15px", marginTop: "10px" }}>
                             <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
@@ -193,7 +213,7 @@ export default function RentersLogin() {
                                 name="nonownerType"
                                 value={nonownerType}
                                 onChange={(e) => setOtherType(e.target.value)}
-                                   required
+                                required
                             >
                                 <option value="">-- Select type --</option>
                                 <option value="renter">Short Term Renter</option>
@@ -254,7 +274,7 @@ export default function RentersLogin() {
                             </button>
                         </div>
 
-                       
+
                     </form>
                 )}
             </div>

@@ -33,6 +33,8 @@ export default function OwnerVehicles() {
   const [unitSearch, setUnitSearch] = useState("");
   const [filterDate, setFilterDate] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
+  const [allActiveCount, setAllActiveCount] = useState(0);
+  
   const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const [showTable, setShowTable] = useState(false);
@@ -114,16 +116,31 @@ export default function OwnerVehicles() {
 
           //     console.log('ALL VEHICLES IN UNIT',responseData);
 
-          const updatedVehicles = responseData.filter(v => {
-            //   return v.carownertype !== 'renter' && (v.carownertype !== 'tenant' || role === 'tenant');
-            return v.carownertype !== 'renter';
+          // const updatedVehicles = responseData.filter(v => {
+          //   return v.carownertype !== 'renter';
+          // }).map(v => ({
+          //   ...v,
+          //   calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+          // }));
 
+          const rawvehicles = responseData.filter(v => {
+            return true; //v.carownertype !== 'renter';
           }).map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
+          let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
+          setAllActiveCount(activeVehicles.length);
+
+          const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
+
+
+
           setAllVehicles(updatedVehicles);
+           
+         
+
           // console.log('updatedVehicles vehicles', updatedVehicles);
           let updatedVehicles2 = [...updatedVehicles];
 
@@ -276,7 +293,8 @@ export default function OwnerVehicles() {
           vehid: vid,
           unit: unitForOwner,
           pincodeAction: "",
-          createdfrom: "ownervehicles"
+          createdfrom: "ownervehicles",
+          allActiveVehiclesCount: allActiveCount
         }
       });
     } catch (err) {
@@ -460,7 +478,8 @@ export default function OwnerVehicles() {
           // numberOfVehicles: vehicles.length,
           createdfrom: 'ownervehicles',
           pincodeValue: '',
-          pincodeAction: pin_code_action
+          pincodeAction: pin_code_action,
+          allActiveVehiclesCount: allActiveCount
         }
       });
     } catch (err) {

@@ -32,7 +32,7 @@ export default function VehicleDetails() {
 
 
   const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
-    createdfrom, pincodeValue, pincodeAction } = location.state || {};
+    createdfrom, pincodeValue, pincodeAction ,allActiveVehiclesCount} = location.state || {};
 
 
   const vehicleOwnerTypeAry = unit?.day_use_only === 1
@@ -183,7 +183,7 @@ export default function VehicleDetails() {
    
 
     // JJVFIX
-    //  console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state,unit.day_use_only);
+      console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
     // location.state.nonownerType will be either be owner or renter or visitor or contractor
     // we can make the date defaults accordingly
     // we can also use unit.day_use_only
@@ -279,18 +279,12 @@ export default function VehicleDetails() {
         let ed = response.data.enddate;
 
         if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
-       //   sd = formatLocalDate(new Date(todayString));
-       //   ed = formatLocalDate(new Date(todayString));
-        // let todayUTCa = new Date(); // "2025-12-03"
-        // let todayStra = formatLocalDate(todayUTCa);
-       // console.log('a new data is ',new Date().toString())
+       
         sd = formatLocalDate(new Date());
         ed = formatLocalDate(new Date());
         // console.log('a new data formatted is ',sd)
-
         //   daysplus = 0;
-           disableDates = true;
-        //   console.log('WE HAVE A HIT ON RENTER VEHICLES')
+      //  disableDates = true;
         }
 
 
@@ -473,7 +467,9 @@ export default function VehicleDetails() {
 
     const templatemsg = <>Check Out: {formData.enddate}<br />must be before <br />Today: {todayStr}</>;
 
-    if (createdfrom === 'ownervehicles' && (formData.carownertype === 'contractor' || formData.carownertype === 'visitor')) {
+    // if (createdfrom === 'ownervehicles' && (formData.carownertype === 'contractor' || formData.carownertype === 'visitor')) {
+      if (createdfrom === 'ownervehicles' && ( formData.carownertype === 'visitor')) {
+
       if (formData.enddate > todayStr) {
 
         setModal({
@@ -527,7 +523,7 @@ export default function VehicleDetails() {
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
-    oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+    oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction,allActiveVehiclesCount);
     //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
