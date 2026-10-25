@@ -62,8 +62,12 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
         
 
           
-          <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkin)}</div>
+          {/* <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkin)}</div>
           <div className="grid-item-normal row-with-gap">{utcDateOnly(vehicle.checkout)}</div>
+           <div className="grid-item-normal row-with-gap">{vehicle.color}</div> */}
+
+            <div className="grid-item-normal row-with-gap">{vehicle.startdate}</div>
+          <div className="grid-item-normal row-with-gap">{vehicle.enddate}</div>
            <div className="grid-item-normal row-with-gap">{vehicle.color}</div>
         
 

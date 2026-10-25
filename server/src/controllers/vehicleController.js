@@ -285,8 +285,11 @@ const updateVehicle = async (req, res) => {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
+   // console.log('UPDATE VEHICLE VEHICLE DATA',vehicleData);
+
     const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicleData, { new: true });
 
+// console.log('UPDATE VEHICLE uodated data',updatedVehicle);
     // Log only if startdate or enddate changed
    // console.log('we are updating vehicle in vehicle controller');
     if (oldVehicle.startdate !== updatedVehicle.startdate || 
@@ -298,6 +301,7 @@ const updateVehicle = async (req, res) => {
     }
 
     //const logHPSRecordUpdate = async (vehicleId, newStartDate, newEndDate) => {
+
 
 
     res.status(200).json(updatedVehicle);

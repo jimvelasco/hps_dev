@@ -1,9 +1,12 @@
 
 
-export const getVehicleActiveStatusBoolean = (element) => {
-  const todayUTC = new Date(); // "2025-12-03"
+export const getVehicleActiveStatusBoolean_checkin = (element) => {
+  //const todayUTC = new Date(); // "2025-12-03"
   //const todayStr = todayUTC.toISOString().split('T')[0]; 
-  const todayStr = todayUTC.toLocaleDateString("en-CA");
+  //const todayStr = todayUTC.toLocaleDateString("en-CA");
+
+   const todayUTC = new Date(); // "2025-12-03"
+   const todayStr = formatLocalDate(todayUTC);
   // const today = new Date(Date.UTC(
   //   now.getUTCFullYear(),
   //   now.getUTCMonth(),
@@ -42,6 +45,38 @@ export const getVehicleActiveStatusBoolean = (element) => {
   }
 }
 
+export const getVehicleActiveStatusBoolean = (element) => {
+  //const todayUTC = new Date(); // "2025-12-03"
+  //const todayStr = todayUTC.toISOString().split('T')[0]; 
+  //const todayStr = todayUTC.toLocaleDateString("en-CA");
+
+   const todayUTC = new Date(); // "2025-12-03"
+   const todayStr = formatLocalDate(todayUTC);
+  
+   
+
+  //const mongoDateIn = new Date(element.checkin);
+  const mongoDateInStr = element.startdate;
+ // const mongoDate = new Date(element.checkout);
+  const mongoDateStr = element.enddate;
+
+  if (mongoDateInStr > todayStr && mongoDateStr >= todayStr) {
+    //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
+    return false;
+  }
+  if (mongoDateStr >= todayStr) {
+    //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
+    return true;
+  }
+
+
+  else {
+    // console.log('getVehicleActiveStatusBoolean rvalue is false')
+
+    return false;
+  }
+}
+
 const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
 
@@ -51,9 +86,9 @@ const getVehicleActiveStatusBoolean2 = (sdate, edate) => {
   const todayStr = formatLocalDate(todayUTC);
 
   //const mongoDateIn = new Date(sdate);
-  const mongoDateInStr = formatLocalDate(new Date(sdate)); //utcDateOnly(mongoDateIn);
+  const mongoDateInStr = sdate; //formatLocalDate(new Date(sdate)); //utcDateOnly(mongoDateIn);
   //const mongoDate = new Date(edate);
-  const mongoDateStr = formatLocalDate(new Date(edate));
+  const mongoDateStr = edate; //formatLocalDate(new Date(edate));
 
   //console.log('vhelper use formatLocalDate',mongoDateInStr,mongoDateStr);
 
@@ -68,7 +103,7 @@ const getVehicleActiveStatusBoolean2 = (sdate, edate) => {
   }
 }
 
-export const getVehicleIsActiveTodayBoolean = (element) => {
+export const getVehicleIsActiveTodayBoolean_checkin = (element) => {
   // const now = new Date();
   // const today = new Date(Date.UTC(
   //   now.getUTCFullYear(),
@@ -81,6 +116,19 @@ export const getVehicleIsActiveTodayBoolean = (element) => {
   const todayStr = todayUTC.toLocaleDateString("en-CA");
   const mongoDate = new Date(element.checkout);
   const mongoDateStr = utcDateOnly(mongoDate);
+  if (mongoDateStr == todayStr) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+export const getVehicleIsActiveTodayBoolean = (element) => {
+  
+  const todayUTC = new Date();
+  const todayStr = formatLocalDate(todayUTC);
+  const mongoDateStr = element.enddate;
   if (mongoDateStr == todayStr) {
     return true;
   } else {
@@ -138,7 +186,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   // THIS SECTION IS FOR ADDING A VEHICLE FROM THE OWNERS OR OTHER
   if (!vehicleId) {
-    console.log("WE MUST NEW VEHICLE");
+ //   console.log("WE MUST NEW VEHICLE");
     // it is ok to add a vehicle whos date is not active if you are a owner and adding to inventory
     if (!dates_span_today) {
       console.log("form dates are NOT active, vehicle is null");
@@ -158,7 +206,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   // THIS SECTION IS WHEN A VEHICLE HAS BEEN SELECTED BY OWNER OR OTHER
 
-  console.log("WE MUST BE AN EDIT OF AN EXISTING VEHICLE");
+ // console.log("WE MUST BE AN EDIT OF AN EXISTING VEHICLE");
 
   let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
   let theCurrentVehicle = theCurrentVehicleAry[0];
@@ -167,17 +215,17 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
 
   if (is_vehicle_active && dates_span_today) {
-    console.log("form dates are active, vehicle is active");
+  //  console.log("form dates are active, vehicle is active");
     robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
     return robj;
   }
   if (is_vehicle_active && !dates_span_today) {
-    console.log("form dates are not active, vehicle is active")
+  //  console.log("form dates are not active, vehicle is active")
     robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
     return robj;
   }
   if (!is_vehicle_active && dates_span_today) {
-    console.log("form dates active, vehicle is not active")
+   // console.log("form dates active, vehicle is not active")
     if (filteredActiveArrayCount >= maxactiveallowed) {
       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle , msgType:1};
     } else {
@@ -186,7 +234,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     return robj;
   }
   if (!is_vehicle_active && !dates_span_today) {
-    console.log("form dates are not active, vehicle is not active");
+  //  console.log("form dates are not active, vehicle is not active");
     robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
     return robj;
   }

@@ -6,7 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
-import {  utcDateOnly, okToAddUnitVehicle } from "../utils/vehicleHelpers";
+import { utcDateOnly, okToAddUnitVehicle } from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
 //import PlateLookup from "../components/PlateLookup";
 
@@ -27,10 +27,11 @@ export default function VehicleDetails() {
   const [error, setError] = useState(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
+  const [todayString, setTodayString] = useState("")
   const location = useLocation();
 
 
-  const { nonownerType,unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, 
+  const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
     createdfrom, pincodeValue, pincodeAction } = location.state || {};
 
 
@@ -38,20 +39,20 @@ export default function VehicleDetails() {
     ? ['visitor', 'contractor']
     : ['owner', 'family', 'friend', 'visitor', 'contractor'];
 
-   // console.log('VD LOCATION STATE',location.state);
+  // console.log('VD LOCATION STATE',location.state);
 
-   
+
 
   // JJVFIX const selectedOwnerType = createdfrom === "rentervehicles"
   //   ? nonownerType || role || ""
   //   : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
 
-// 
+  // 
   const selectedOwnerType = createdfrom === "rentervehicles"
-    ? nonownerType 
+    ? nonownerType
     : carownertype || vehicleOwnerTypeAry[0];
 
-    //console.log('VD selectedOwnerType',selectedOwnerType)
+  //console.log('VD selectedOwnerType',selectedOwnerType)
 
 
 
@@ -87,22 +88,43 @@ export default function VehicleDetails() {
   //   }));
   // };
 
+  const defaultDayUseOnly = createdfrom === 'rentervehicles'
+    ? nonownerType === ('contractor' || nonownerType === 'visitor') ? 1 : 0
+    : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
+  // this value comes from selecting the Add Vehicle or Add Daypass buttons
+
+  // console.log('defaultDayUseOnly',nonownerType,createdfrom,defaultDayUseOnly)
+
   let disableDates = false;
 
   let daysplus = 3;
+
+
+  // if (defaultDayUseOnly === 1) {
+  //    daysplus = 0;
+  //  //  disableDates = true;
+
+  // }
   if (createdfrom === 'ownervehicles' && pincodeAction === 'daypass') {
     daysplus = 0;
-   // JJVFIX disableDates = true;
+    // JJVFIX disableDates = true;
+  }
+  if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
+    daysplus = 0;
+  //  disableDates = true;
+   // console.log('WE HAVE A HIT ON RENTER VEHICLES')
   }
 
- 
+
+
+
 
   const edate = new Date();
- // console.log('vd date is ',edate,'getdate',edate.getDate())
+  // console.log('vd date is ',edate,'getdate',edate.getDate())
   edate.setDate(edate.getDate() + daysplus);
- // console.log('edate is',edate,formatLocalDate(new Date()),formatLocalDate(edate));
+  // console.log('edate is',edate,formatLocalDate(new Date()),formatLocalDate(edate));
 
-  
+
 
 
 
@@ -115,11 +137,8 @@ export default function VehicleDetails() {
   //   : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
   //   // this value comes from selecting the Add Vehicle or Add Daypass buttons
 
-     
-  const defaultDayUseOnly = createdfrom === 'rentervehicles'
-    ? nonownerType === ('contractor' || nonownerType === 'visitor') ? 1 : 0
-    : createdfrom === 'ownervehicles' && pincodeAction === 'daypass' ? 1 : 0;
-    // this value comes from selecting the Add Vehicle or Add Daypass buttons
+
+
 
 
 
@@ -143,13 +162,11 @@ export default function VehicleDetails() {
     pin_code_action: pincodeAction,
     day_use_only: defaultDayUseOnly,
 
-
-
     startdate: formatLocalDate(new Date()),
     enddate: formatLocalDate(edate)
   });
 
- //console.log('form data is',formData);
+  //console.log('form data is',formData);
 
   // console.log('LOCATION STATE IS  owner ', location.state.ownerOfUnit);
   // console.log('LOCATION STATE IS  unit ', location.state.unit);
@@ -160,15 +177,18 @@ export default function VehicleDetails() {
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
+      console.log('FROM RENTER VEHICLES STATE', location.state);
     }
 
+   
+
     // JJVFIX
-  //  console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state,unit.day_use_only);
+    //  console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state,unit.day_use_only);
     // location.state.nonownerType will be either be owner or renter or visitor or contractor
     // we can make the date defaults accordingly
     // we can also use unit.day_use_only
 
-if (hoa && !isModifyMode) {
+    if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
       //  console.log('dmode:', dmode);
       if (dmode === 1) {
@@ -185,12 +205,12 @@ if (hoa && !isModifyMode) {
           plate_state: "CO",
           unitnumber: unitNumber,
           carownertype: selectedOwnerType,
-           pin_code_value: pincodeValue,
+          pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
           day_use_only: defaultDayUseOnly,
           startdate: formatLocalDate(new Date()),
           enddate: formatLocalDate(edate),
-         
+
         }
         )
       }
@@ -208,7 +228,7 @@ if (hoa && !isModifyMode) {
           plate_state: "",
           unitnumber: unitNumber,
           carownertype: selectedOwnerType,
-           pin_code_value: pincodeValue,
+          pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
           day_use_only: defaultDayUseOnly,
           startdate: formatLocalDate(new Date()),
@@ -246,7 +266,7 @@ if (hoa && !isModifyMode) {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-      //  console.log('about to set vehicle',response.data)
+        //  console.log('about to set vehicle',response.data)
         setVehicle(response.data);
 
         // const sd = utcDateOnly(response.data.checkin);
@@ -255,8 +275,25 @@ if (hoa && !isModifyMode) {
         // const sd = utcDateOnly(new Date(response.data.startdate));
         // const ed = utcDateOnly(new Date(response.data.enddate));
 
-        const sd = response.data.startdate;
-        const ed = response.data.enddate;
+        let sd = response.data.startdate;
+        let ed = response.data.enddate;
+
+        if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
+       //   sd = formatLocalDate(new Date(todayString));
+       //   ed = formatLocalDate(new Date(todayString));
+        // let todayUTCa = new Date(); // "2025-12-03"
+        // let todayStra = formatLocalDate(todayUTCa);
+       // console.log('a new data is ',new Date().toString())
+        sd = formatLocalDate(new Date());
+        ed = formatLocalDate(new Date());
+        // console.log('a new data formatted is ',sd)
+
+        //   daysplus = 0;
+           disableDates = true;
+        //   console.log('WE HAVE A HIT ON RENTER VEHICLES')
+        }
+
+
 
 
         //  console.log("checkin date:", sd,'before local', response.data.checkin);
@@ -283,7 +320,7 @@ if (hoa && !isModifyMode) {
           enddate: ed,
           requires_payment: response.data.requires_payment || 0,
           day_use_only: response.data.day_use_only ?? 0,
-           pin_code_value: pincodeValue,
+          pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
         });
         //    console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
@@ -374,8 +411,8 @@ if (hoa && !isModifyMode) {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-      const todayUTC = new Date(); // "2025-12-03"
-      const todayStr = formatLocalDate(todayUTC); 
+    const todayUTC = new Date(); // "2025-12-03"
+    const todayStr = formatLocalDate(todayUTC);
 
     if (!isModifyMode && createdfrom === "rentervehicles" && (!pincodeValue || typeof pincodeAction !== "string")) {
       setModal({
@@ -418,14 +455,14 @@ if (hoa && !isModifyMode) {
 
     const datemsg = <>Check In: {formData.startdate}<br />is after <br />Check Out: {formData.enddate}</>;
 
- //   console.log('VD form data is ',formData);
+    //   console.log('VD form data is ',formData);
 
-     if (formData.enddate < formData.startdate ) {
+    if (formData.enddate < formData.startdate) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message:datemsg,
+        message: datemsg,
         confirmText: "OK",
         onConfirm: () => {
           setModal(prev => ({ ...prev, isOpen: false }))
@@ -434,22 +471,22 @@ if (hoa && !isModifyMode) {
       return;
     }
 
-        const templatemsg = <>Check Out: {formData.enddate}<br />must be before <br />Today: {todayStr}</>;
+    const templatemsg = <>Check Out: {formData.enddate}<br />must be before <br />Today: {todayStr}</>;
 
     if (createdfrom === 'ownervehicles' && (formData.carownertype === 'contractor' || formData.carownertype === 'visitor')) {
       if (formData.enddate > todayStr) {
 
         setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Validation Error",
-        message:templatemsg,
-        confirmText: "OK",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }))
-        }
-      });
-      return;
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: templatemsg,
+          confirmText: "OK",
+          onConfirm: () => {
+            setModal(prev => ({ ...prev, isOpen: false }))
+          }
+        });
+        return;
 
       }
 
@@ -490,14 +527,14 @@ if (hoa && !isModifyMode) {
     //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
-    oktoaddobj = okToAddUnitVehicle(formData, vehicles,  unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
-    console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
+    oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+    //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
-     if (createdfrom === 'ownervehicles') {
+    if (createdfrom === 'ownervehicles') {
       msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
-      Please deactivate another vehicle before activating this one.</>);
-     }
+        Please deactivate another vehicle before activating this one.</>);
+    }
     if (createdfrom === 'rentervehicles') {
       msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
         CALL THE OWNER OR ADMIN</>);
@@ -530,26 +567,24 @@ if (hoa && !isModifyMode) {
 
     setFormSubmitting(true);
 
-    let unitcbt = "";
+    let vehcbt = "";
 
     let cv = oktoaddobj.currentVehicle;
     if (cv !== null) {
-         unitcbt = cv.createdbytype;
-
+      vehcbt = cv.createdbytype;
     }
 
-   //   console.log('the cv is ',cv,unitcbt)
+    //   console.log('the cv is ',cv,unitcbt)
 
-
+    // JJVFIX
     try {
       // Prefer the user associated with the unit, fallback to logged in user (e.g. admin or owner creating for themselves)
-      let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
+       let oid = userIdForUnit || (loggedInUser ? loggedInUser._id : null);
       let cbt = "other";
       if (createdfrom === "ownervehicles") {
         cbt = "owner";
       } else {
-
-        if (unitcbt === "owner") {
+        if (vehcbt === "owner") {
           cbt = "owner";
         }
       }
@@ -569,7 +604,7 @@ if (hoa && !isModifyMode) {
         // })
       };
 
-    //  console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
+      //  console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
@@ -674,7 +709,7 @@ if (hoa && !isModifyMode) {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
-          <h2 style={{ color: "#333", marginTop: 0,marginBottom:"10px" }}>
+          <h2 style={{ color: "#333", marginTop: 0, marginBottom: "10px" }}>
             {pageTitle}
           </h2>
           <form onSubmit={handleFormSubmit}>
@@ -682,323 +717,323 @@ if (hoa && !isModifyMode) {
               {/* Owner Information */}
 
 
-                {/* <h3 style={{ color: "#1976d2", margin: "10px" }}>Owner</h3> */}
-                <fieldset className="input-group">
-                  <legend style={{ color: "#1976d2", marginBottom:"5px"}}><b>Owner</b></legend>
+              {/* <h3 style={{ color: "#1976d2", margin: "10px" }}>Owner</h3> */}
+              <fieldset className="input-group">
+                <legend style={{ color: "#1976d2", marginBottom: "5px" }}><b>Owner</b></legend>
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      First Name *
-                    </label>
-                    
-                    <input className="standardinput"
-                      type="text"
-                      name="carowner_fname"
-                      value={formData.carowner_fname}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    First Name *
+                  </label>
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Last Name *
-                    </label>
-                    <input className="standardinput"
-                      type="text"
-                      name="carowner_lname"
-                      value={formData.carowner_lname}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
+                  <input className="standardinput"
+                    type="text"
+                    name="carowner_fname"
+                    value={formData.carowner_fname}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Phone *
-                    </label>
-                    
-                    <input className="standardinput"
-                      type="tel"
-                      name="carownerphone"
-                      value={formData.carownerphone}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Last Name *
+                  </label>
+                  <input className="standardinput"
+                    type="text"
+                    name="carowner_lname"
+                    value={formData.carowner_lname}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Phone *
+                  </label>
+
+                  <input className="standardinput"
+                    type="tel"
+                    name="carownerphone"
+                    value={formData.carownerphone}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
 
 
 
-                
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Parking Type
-                    </label>
-                   
 
-                    {createdfrom === "rentervehicles" && (
-                      // <div style={{ fontWeight: "bold" }}>
-                      //   <input className="standardinput"
-                      //     type="text"
-                      //     name="carownertype"
-                      //     value={formData.carownertype}
-                      //     disabled
-                      //   />
-                      // </div>
-                       <div style={{ fontWeight: "normal" }}>
-                        <div style={{marginLeft:"12px",marginTop:"15px"}}>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Parking Type
+                  </label>
+
+
+                  {createdfrom === "rentervehicles" && (
+                    // <div style={{ fontWeight: "bold" }}>
+                    //   <input className="standardinput"
+                    //     type="text"
+                    //     name="carownertype"
+                    //     value={formData.carownertype}
+                    //     disabled
+                    //   />
+                    // </div>
+                    <div style={{ fontWeight: "normal" }}>
+                      <div style={{ marginLeft: "12px", marginTop: "15px" }}>
                         {formData.carownertype?.toUpperCase()}
-                        </div>
-                         
                       </div>
-                    )
-                    }
-                    {createdfrom !== "rentervehicles" && (
-                      <select
-                        className="standardselect100"
-                        name="carownertype"
-                        value={formData.carownertype || vehicleOwnerTypeAry[0]}
-                        onChange={handleFormChange}
-                        disabled={isModifyMode || createdfrom === "rentervehicles"}
-                      >
-                        <option value="" disabled>Select owner type</option>
-                        {vehicleOwnerTypeAry.map(type => (
-                          <option key={type} value={type}>
-                            {type.charAt(0).toUpperCase() + type.slice(1)}
-                          </option>
-                        ))}
-                      </select>
-                    )
-                    }
 
-
-
-
-
-
-                  </div>
-
-
-                </fieldset>
-
-
-
-                {/* <h3 style={{ color: "#1976d2", margin: "10px" }}>Registration</h3> */}
-                <fieldset className="input-group">
-                  <legend style={{ color: "#1976d2", marginBottom:"5px"}}><b>Registration</b></legend>
-
-
-
-
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      License Plate *
-                    </label>
-                    
-
-                    <input className="standardinput"
-                      type="text"
-                      name="plate"
-                      value={formData.plate}
+                    </div>
+                  )
+                  }
+                  {createdfrom !== "rentervehicles" && (
+                    <select
+                      className="standardselect100"
+                      name="carownertype"
+                      value={formData.carownertype || vehicleOwnerTypeAry[0]}
                       onChange={handleFormChange}
-                      required
-                    />
-
-                  </div>
-
-
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Plate State *
-                    </label>
-                   
-                    <input className="standardinput"
-                      type="text"
-                      maxLength={2}
-                      name="plate_state"
-                      value={formData.plate_state}
-                      onChange={handleFormChange}
-                      placeholder="e.g., CO, CA, TX"
-                      required
-                    />
-                  </div>
-
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Vehicle Type
-                    </label>
-                    
-                    <select className="standardselect100"
-                      name="vehicle_type"
-                      value={formData.vehicle_type}
-                      onChange={handleFormChange}
-                      // style={{
-                      //   width: "100%",
-                      //   padding: "10px",
-                      //   borderRadius: "4px",
-                      //   border: "1px solid #ccc",
-                      //   boxSizing: "border-box"
-                      // }}
-
+                      disabled={isModifyMode || createdfrom === "rentervehicles"}
                     >
-                      <option value="">Select Type</option>
-                      <option value="Car">Car</option>
-                      <option value="Truck">Truck</option>
-                      <option value="RV">RV</option>
-                      <option value="Motorcyle">Motorcyle</option>
-                      <option value="Other">Other</option>
+                      <option value="" disabled>Select owner type</option>
+                      {vehicleOwnerTypeAry.map(type => (
+                        <option key={type} value={type}>
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </option>
+                      ))}
                     </select>
-                  </div>
+                  )
+                  }
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Unit
-                    </label>
-                    
-                    <input className="standardinput"
-                      type="text"
-                      name="unitnumber"
-                      value={formData.unitnumber}
-                      onChange={handleFormChange}
-                      disabled
-                    />
-                  </div>
 
-                </fieldset>
+
+
+
+
+                </div>
+
+
+              </fieldset>
+
+
+
+              {/* <h3 style={{ color: "#1976d2", margin: "10px" }}>Registration</h3> */}
+              <fieldset className="input-group">
+                <legend style={{ color: "#1976d2", marginBottom: "5px" }}><b>Registration</b></legend>
+
+
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    License Plate *
+                  </label>
+
+
+                  <input className="standardinput"
+                    type="text"
+                    name="plate"
+                    value={formData.plate}
+                    onChange={handleFormChange}
+                    required
+                  />
+
+                </div>
+
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Plate State *
+                  </label>
+
+                  <input className="standardinput"
+                    type="text"
+                    maxLength={2}
+                    name="plate_state"
+                    value={formData.plate_state}
+                    onChange={handleFormChange}
+                    placeholder="e.g., CO, CA, TX"
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Vehicle Type
+                  </label>
+
+                  <select className="standardselect100"
+                    name="vehicle_type"
+                    value={formData.vehicle_type}
+                    onChange={handleFormChange}
+                  // style={{
+                  //   width: "100%",
+                  //   padding: "10px",
+                  //   borderRadius: "4px",
+                  //   border: "1px solid #ccc",
+                  //   boxSizing: "border-box"
+                  // }}
+
+                  >
+                    <option value="">Select Type</option>
+                    <option value="Car">Car</option>
+                    <option value="Truck">Truck</option>
+                    <option value="RV">RV</option>
+                    <option value="Motorcyle">Motorcyle</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Unit
+                  </label>
+
+                  <input className="standardinput"
+                    type="text"
+                    name="unitnumber"
+                    value={formData.unitnumber}
+                    onChange={handleFormChange}
+                    disabled
+                  />
+                </div>
+
+              </fieldset>
 
 
 
 
 
               {/* License Plate & Status */}
-                {/* <h3 style={{ color: "#1976d2", margin: "10px" }}>Vehicle</h3> */}
+              {/* <h3 style={{ color: "#1976d2", margin: "10px" }}>Vehicle</h3> */}
 
 
-                <fieldset className="input-group">
-                  <legend style={{ color: "#1976d2", marginBottom:"5px"}}><b>Vehicle</b></legend>
+              <fieldset className="input-group">
+                <legend style={{ color: "#1976d2", marginBottom: "5px" }}><b>Vehicle</b></legend>
 
 
 
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Make *
-                    </label>
-                   
-                    <input className="standardinput"
-                      type="text"
-                      name="make"
-                      value={formData.make}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Make *
+                  </label>
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Model
-                    </label>
-                   
-                    <input className="standardinput"
-                      type="text"
-                      name="model"
-                      value={formData.model}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Color
-                    </label>
-                   
-                    <input className="standardinput"
-                      type="text"
-                      name="color"
-                      value={formData.color}
-                      onChange={handleFormChange}
-                    />
-                  </div>
+                  <input className="standardinput"
+                    type="text"
+                    name="make"
+                    value={formData.make}
+                    onChange={handleFormChange}
+                    required
+                  />
+                </div>
 
-                  <div style={{ marginBottom: "0px" }}>
-                    <label className="input-label">
-                      Year
-                    </label>
-                  
-                    <input className="standardinput"
-                      type="text"
-                      name="year"
-                      value={formData.year}
-                      onChange={handleFormChange}
-                    />
-                  </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Model
+                  </label>
 
-                </fieldset>
+                  <input className="standardinput"
+                    type="text"
+                    name="model"
+                    value={formData.model}
+                    onChange={handleFormChange}
+                  />
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Color
+                  </label>
+
+                  <input className="standardinput"
+                    type="text"
+                    name="color"
+                    value={formData.color}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                <div style={{ marginBottom: "0px" }}>
+                  <label className="input-label">
+                    Year
+                  </label>
+
+                  <input className="standardinput"
+                    type="text"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+              </fieldset>
 
 
 
               {/* Vehicle Information */}
 
-                <fieldset className="input-group">
-                  <legend  style={{ color: "#1976d2" ,marginBottom:"5px"}}><b>Stay</b></legend>
+              <fieldset className="input-group">
+                <legend style={{ color: "#1976d2", marginBottom: "5px" }}><b>Stay</b></legend>
 
 
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Check In
-                    </label>
-                  
-                    <input className="input-date2"
-                      type="date"
-                      name="startdate"
-                      // value={new Date(formData.startdate).toISOString().substring(0, 10)}
-                      value={formData.startdate}
-                      onChange={handleFormChange}
-                      disabled={disableDates}
-                    />
-                  </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Check In
+                  </label>
+
+                  <input className="input-date2"
+                    type="date"
+                    name="startdate"
+                    // value={new Date(formData.startdate).toISOString().substring(0, 10)}
+                    value={formData.startdate}
+                    onChange={handleFormChange}
+                    disabled={disableDates}
+                  />
+                </div>
 
 
 
-                  <div style={{ marginBottom: "15px" }}>
-                    <label className="input-label">
-                      Check Out
-                    </label>
-                    <input className="input-date2"
-                      type="date"
-                      name="enddate"
-                      value={formData.enddate}
-                      onChange={handleFormChange}
-                       disabled={disableDates}
-                    />
-                  </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Check Out
+                  </label>
+                  <input className="input-date2"
+                    type="date"
+                    name="enddate"
+                    value={formData.enddate}
+                    onChange={handleFormChange}
+                    disabled={disableDates}
+                  />
+                </div>
 
-                  <div  style={{ marginBottom: "15px" }}>
-                    <label className="input-label" htmlFor="vehicle-pin-code">
-                      PIN Code
-                    </label>
-                    <input className="standardinput"
-                      id="vehicle-pin-code"
-                      type="text"
-                      value={isModifyMode ? vehicle?.pin_code_value ?? "" : createdfrom === "rentervehicles" ? pincodeValue ?? "" : ""}
-                      readOnly
-                      disabled
-                    />
-                  </div>
+                <div style={{ marginBottom: "15px", display:"invisible"}}>
+                  <label className="input-label" htmlFor="vehicle-pin-code">
+                    PIN Code
+                  </label>
+                  <input className="standardinput"
+                    id="vehicle-pin-code"
+                    type="text"
+                    value={isModifyMode ? vehicle?.pin_code_value ?? "" : createdfrom === "rentervehicles" ? pincodeValue ?? "" : ""}
+                    readOnly
+                    disabled
+                  />
+                </div>
 
-                  <div>
-                    <label className="input-label" htmlFor="vehicle-pin-action">
-                      PIN Code Action
-                    </label>
-                    <input className="standardinput"
-                      id="vehicle-pin-action"
-                      type="text"
-                      value={isModifyMode ? vehicle?.pin_code_action ?? "" : createdfrom === "rentervehicles" ? pincodeAction ?? "" : "standard"}
-                      readOnly
-                      disabled
-                    />
-                  </div>
-                </fieldset>
+                <div>
+                  <label className="input-label" htmlFor="vehicle-pin-action">
+                    PIN Code Action
+                  </label>
+                  <input className="standardinput"
+                    id="vehicle-pin-action"
+                    type="text"
+                    value={isModifyMode ? vehicle?.pin_code_action ?? "" : createdfrom === "rentervehicles" ? pincodeAction ?? "" : "standard"}
+                    readOnly
+                    disabled
+                  />
+                </div>
+              </fieldset>
 
 
 
