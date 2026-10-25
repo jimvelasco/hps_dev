@@ -705,18 +705,7 @@ export default function OwnerVehicles() {
       <DashboardNavbar title={titlestr} title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
-        <div className="tableview">
-          <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
-            {renderTitleBarTable()}
-          </div>
-        </div>
-        <div className="phoneview">
-          <div className="standardtitlebar320" style={{ border: "0px solid yellow " }}>
-            {renderTitleBarPhone()}
-          </div>
-        </div>
-
-        {loggedInUser?.role === "admin" && (
+  {loggedInUser?.role === "admin" && (
           <>
             <div className="standardtitlebar380" style={{ width: "300px" }}>
               <label className="search-label" htmlFor="unit-search" style={{ marginRight: "10px" }}>Unit</label>
@@ -729,7 +718,6 @@ export default function OwnerVehicles() {
                 placeholder="Enter unit number"
               />
             </div>
-            {/* {renderPlateSearch()} */}
             <div className="standardtitlebar380" style={{ width: "300px" }}>
               <label className="search-label" htmlFor="plate-search" style={{ marginRight: "10px" }}>Plate</label>
               <input
@@ -744,6 +732,21 @@ export default function OwnerVehicles() {
           </>
         )}
 
+
+
+        <div className="tableview">
+          <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
+            {renderTitleBarTable()}
+          </div>
+        </div>
+        <div className="phoneview">
+          <div className="standardtitlebar320" style={{ border: "0px solid yellow " }}>
+            {renderTitleBarPhone()}
+          </div>
+        </div>
+
+
+      
         {/* for testing <div className="phoneview">
           <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
             {renderTitleBarTable()}
