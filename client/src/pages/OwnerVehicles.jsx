@@ -625,8 +625,9 @@ export default function OwnerVehicles() {
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
-              <option value="owner">Owner</option>
-              <option value="renter">Renter</option>
+               <option value="owner">Owner</option>
+              <option value="other">Non-Owner</option>
+               <option value="dayuse">Day Use</option>
               <option value="all">All</option>
             </select>
           </div>
