@@ -108,16 +108,18 @@ export default function RentersLogin() {
                 pinCode: pin
             });
 
-            console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
-            console.log('RENTERS LOGIN PIN INDEX IS ', response.data.pinIndex)
-            console.log('RENTERS LOGIN PINCODEARY LENGTH IS ', response.data.pinCodeArrayLength);
-            console.log('RENTERS LOGIN NON OWNER TYPE IS ', nonownerType);
+            // console.log('RENTERS LOGIN PIN ACTION IS ', response.data.action)
+            // console.log('RENTERS LOGIN PIN INDEX IS ', response.data.pinIndex)
+            // console.log('RENTERS LOGIN PINCODEARY LENGTH IS ', response.data.pinCodeArrayLength);
+            // console.log('RENTERS LOGIN PINCODEACTIONARY IS ', response.data.pinActionAry);
+            // console.log('RENTERS LOGIN NON OWNER TYPE IS ', nonownerType);
 
-            console.log('');
+          //  console.log('');
 
             let pincodeaction = response.data.action;
             let pincodeindex = response.data.pinIndex;
             let pincodearylength = response.data.pinCodeArrayLength;
+            let pinactionary = response.data.pinActionAry;
 
             // JJVFIX
 
@@ -133,11 +135,26 @@ export default function RentersLogin() {
                 pincodeaction = nonownerType;
             }
             if (pincodearylength > 1) {
-                if (pincodeaction !== nonownerType) {
-                    setShowTypeMismatch(true);
-                    return;
+                if (pinactionary.includes(nonownerType)) {
+                  //  console.log('pin is in pinary')
+                    if (pincodeaction !== nonownerType) {
+                        setShowTypeMismatch(true);
+                        return;
+                    } else {
+                        pincodeaction = nonownerType;
+                    }
+                } else {
+                   // console.log('pin is NOT in pinary')
+                    pincodeaction = nonownerType;
                 }
             }
+            // if (pincodearylength > 1) {
+            //     console.log('pinactionary',pinactionary)
+            //     if (pincodeaction !== nonownerType) {
+            //         setShowTypeMismatch(true);
+            //         return;
+            //     }
+            // }
 
             localStorage.setItem("token", response.data.token);
 

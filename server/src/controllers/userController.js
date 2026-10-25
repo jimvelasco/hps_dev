@@ -398,6 +398,10 @@ const verifyRenterPin = async (req, res) => {
 
     const pinIndex = unit.pincodeary.findIndex(entry => entry?.pincode === pinCode);
     const matchedPin = unit.pincodeary[pinIndex];
+    let pinActionAry = [];
+    unit.pincodeary.forEach((el) => {
+      pinActionAry.push(el.action);
+    });
 
     const token = jwt.sign(
       { unitId: unit._id, role: "renter", hoaId: unit.hoaid },
@@ -405,7 +409,7 @@ const verifyRenterPin = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.json({ token, action: matchedPin?.action ?? "", pinIndex,pinCodeArrayLength:unit.pincodeary.length});
+    res.json({ token, action: matchedPin?.action ?? "", pinIndex,pinCodeArrayLength:unit.pincodeary.length,pinActionAry});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

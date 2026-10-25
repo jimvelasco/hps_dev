@@ -37,7 +37,7 @@ export default function RenterVehicles() {
   const nonownerTypeText = location.state?.nonownerTypeText;
   const pincodeAction = location.state?.pincodeAction;
   const pincodeValue = location.state?.pincodeValue;
-
+ 
   // from renterlogin the state passed is
   //  navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
   //               state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: response.data.action }
@@ -108,7 +108,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          console.log('updatedVehicles', updatedVehicles.length,updatedVehicles);
+        //  console.log('updatedVehicles', updatedVehicles.length,updatedVehicles);
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
