@@ -153,13 +153,18 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
               if (v.carownertype === pincodeAction) return true;
             });
             setDisableAddVehicle(true);
-            if (unitForRenter.day_use_only === 1) setDisableAddVehicle(false);
+            if (unitForRenter.day_use_only === 1  || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
              } else if (pincodeAction  === 'visitor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'visitor') return true;
             });
             setDisableAddVehicle(true);
-            if (unitForRenter.day_use_only === 1) setDisableAddVehicle(false);
+       //     console.log('(nonOwnerVehicles.length',nonOwnerVehicles.length,'nonTypeVehicles.length',nonTypeVehicles.length);
+            if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
+            // if (nonTypeVehicles.length === 0) {
+            //   console.log('no visitors found')
+            //   setDisableAddVehicle(false);
+            // }
           } 
           // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
           //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
@@ -428,7 +433,9 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
               Unit: {unitNumber} {pincodeActionLabel}
             </label>
             <br />
-            <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}>
+            <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}
+             disabled = {disableAddVehicle}
+            >
               <FontAwesomeIcon
                 icon={faPlus}
               /> Add Vehicle
