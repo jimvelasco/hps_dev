@@ -34,7 +34,7 @@ export default function OwnerVehicles() {
   const [filterDate, setFilterDate] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
   const [allActiveCount, setAllActiveCount] = useState(0);
-  
+
   const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const [showTable, setShowTable] = useState(false);
@@ -130,25 +130,31 @@ export default function OwnerVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
+          console.log('rawvehicles', rawvehicles);
+
           let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
 
           const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
 
-
+       //   console.log('updatedVehicles', updatedVehicles);
 
           setAllVehicles(updatedVehicles);
-           
-         
+
+
 
           // console.log('updatedVehicles vehicles', updatedVehicles);
           let updatedVehicles2 = [...updatedVehicles];
+
+      //    console.log('updatedVehicles2', role, updatedVehicles2);
 
           if (role === 'tenant') {
             updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant");
           }
 
-          setActiveVehicles(updatedVehicles.filter(v => v.calculatedActiveFlag === true));
+          let updatedVehicles3 = [...updatedVehicles2]
+
+          setActiveVehicles(updatedVehicles3.filter(v => v.calculatedActiveFlag === true));
           // keep vehicles in order
           // updatedVehicles2.sort((a, b) => {
           //   let valueA, valueB;
@@ -157,8 +163,10 @@ export default function OwnerVehicles() {
           //   return String(valueB).localeCompare(String(valueA));
           // });
 
-          setVehicles(updatedVehicles2);
-          setAllVehicles(updatedVehicles2);
+        //  console.log('updatedVehicles3', updatedVehicles3);
+
+          setVehicles(updatedVehicles3);
+          setAllVehicles(updatedVehicles3);
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");
@@ -177,9 +185,13 @@ export default function OwnerVehicles() {
     ? vehicles.filter(vehicle => String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery))
     : vehicles;
 
+ // console.log('filtered vehicles', filteredVehicles)
+
   useEffect(() => {
     handlePlateSearch(plateSearch);
   }, [allVehicles, filterType, plateSearch]);
+
+
 
 
   if (loading) {
@@ -236,23 +248,26 @@ export default function OwnerVehicles() {
   };
 
   const handleFilterApply = (matchingVehicles) => {
+    console.log('WE CALLED FILTER APPLY')
     if (filterType === "owner") {
       //return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
       // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
-      return matchingVehicles.filter(v => v.createdbytype === 'owner');
+      // JJVFIX did not have the 'other' in there
+      // return matchingVehicles.filter(v => v.createdbytype === 'owner');
+      return matchingVehicles.filter(v => v.createdbytype === 'owner' || v.createdbytype === 'other');
     }
     if (filterType === "other") {
       //return matchingVehicles.filter(v => v.carownertype === "renter");
-     return matchingVehicles.filter(v => v.createdbytype === 'other');
+      return matchingVehicles.filter(v => v.createdbytype === 'other');
     }
-     if (filterType === "dayuse") {
+    if (filterType === "dayuse") {
       //return matchingVehicles.filter(v => v.carownertype === "renter");
-     return matchingVehicles.filter(v => v.day_use_only === 1);
+      return matchingVehicles.filter(v => v.day_use_only === 1);
     }
     if (filterType === "all") {
       return matchingVehicles;
     }
-  // return matchingVehicles;
+    // return matchingVehicles;
   };
 
 
@@ -568,7 +583,7 @@ export default function OwnerVehicles() {
             >
               <option value="owner">Owner</option>
               <option value="other">Non-Owner</option>
-               <option value="dayuse">Day Use</option>
+              <option value="dayuse">Day Use</option>
               <option value="all">All</option>
             </select>
           </div>
@@ -625,9 +640,9 @@ export default function OwnerVehicles() {
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
-               <option value="owner">Owner</option>
+              <option value="owner">Owner</option>
               <option value="other">Non-Owner</option>
-               <option value="dayuse">Day Use</option>
+              <option value="dayuse">Day Use</option>
               <option value="all">All</option>
             </select>
           </div>
@@ -692,6 +707,7 @@ export default function OwnerVehicles() {
       (vehicle.plate || "").toLowerCase().includes(query)
     );
     setVehicles(handleFilterApply(matchingVehicles));
+
   };
 
   // const renderPlateSearch = () => {
@@ -706,7 +722,7 @@ export default function OwnerVehicles() {
       <DashboardNavbar title={titlestr} title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
-  {loggedInUser?.role === "admin" && (
+        {loggedInUser?.role === "admin" && (
           <>
             <div className="standardtitlebar380" style={{ width: "300px" }}>
               <label className="search-label" htmlFor="unit-search" style={{ marginRight: "10px" }}>Unit</label>
@@ -747,7 +763,7 @@ export default function OwnerVehicles() {
         </div>
 
 
-      
+
         {/* for testing <div className="phoneview">
           <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
             {renderTitleBarTable()}
