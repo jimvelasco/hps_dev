@@ -473,7 +473,8 @@ export default function UnitDetails() {
                       type="text"
                       value={entry.pincode ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "pincode", e.target.value)}
-                      disabled={!isAdminView && entry.action !== "standard"}
+                      // disabled={!isAdminView && entry.action !== "standard"}
+                      // disabled={false}
                       required
                     />
                     <label className="input-label_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-action-${index}`}>Action</label>
