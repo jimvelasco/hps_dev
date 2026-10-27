@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import ParkingSpacesOverview from "./ParkingSpacesOverview";
-import {  daypassVehicleCount } from "../utils/vehicleHelpers";
+import { daypassVehicleCount } from "../utils/vehicleHelpers";
 
 
 
@@ -22,9 +22,9 @@ export default function HoaInformation({ hoa }) {
       .then(response => {
         if (active) {
           setVehicles(response.data);
-     //     console.log("HOA vehicles:", response.data);
+          //     console.log("HOA vehicles:", response.data);
           const cnt = daypassVehicleCount(response.data);
-      //    console.log('HOA INFO DAYPASS COUNT',cnt);
+          //    console.log('HOA INFO DAYPASS COUNT',cnt);
           setDayUseCount(cnt);
 
         }
@@ -118,33 +118,36 @@ export default function HoaInformation({ hoa }) {
               <div><strong>Id:</strong></div><div> {hoa.hoaid}</div>
             </div>
 
-
-
-            <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>Parking Settings</h3>
-            <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
-              <div><strong>Total Parking Places:</strong> </div><div>{hoa.parking_allowed_hoa}</div>
+             <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>HOA Parking</h3>
+             <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
+             <div><strong>Total Parking Places:</strong> </div><div>{hoa.parking_allowed_hoa}</div>
               <div><strong>Handicapped Places:</strong> </div><div>{hoa.parking_handicapped_hoa}</div>
               <div><strong>Handicapped Used:</strong> </div><div>{0}</div>
+             
+              <div><strong>Day Passes Allowed:</strong> </div><div>{8}</div>
+              <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
+
+            </div>
+
+
+
+            <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>Unit Parking</h3>
+            <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
+              
               <div><strong>Owner Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_owner}</div>
               <div><strong>Tenant Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_tenant}</div>
+
               <div><strong>Unit Parking Allowed</strong> </div><div>{hoa.parking_allowed_unit}</div>
               <div><strong>Renter Parking Allowed</strong> </div><div>{hoa.parking_allowed_renter}</div>
 
-              <div><strong>Day Passes Allowed:</strong> </div><div>{8}</div>
-              <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
-         
-         
-
-
-
-              {/* <div><strong>Owner Free Spots:</strong> {hoa.owner_free_parking_spots}</div>
-            <div><strong>Renter Free Spots:</strong> {hoa.renter_free_parking_spots}</div> */}
             </div>
+
+           
           </>
         )}
       </section>
 
-      <section className="standardsectiondashboard" style={{display:"none"}}>
+      <section className="standardsectiondashboard" style={{ display: "none" }}>
         <h3 style={{ color: "#1976d2", marginTop: 0, textAlign: "center" }}>Parking Spaces</h3>
 
         {/* {hoa && <ParkingSpacesOverview />} */}
