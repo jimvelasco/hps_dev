@@ -168,7 +168,7 @@ export default function OwnerVehicles() {
           //   return String(valueB).localeCompare(String(valueA));
           // });
 
-        //  console.log('updatedVehicles3', updatedVehicles3);
+         // console.log('updatedVehicles3', updatedVehicles3);
 
           setAllVehicles(updatedVehicles3);
           setVehiclesError(null);
@@ -184,7 +184,6 @@ export default function OwnerVehicles() {
     }
   }, [hoaId, ownerId, role]);
 
-  //const handleFilterApply = (matchingVehicles) => {
      const handleFilterApply = () => {
     console.log('WE CALLED FILTER APPLY')
     let matchingVehicles = [...allVehicles];
