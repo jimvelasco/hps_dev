@@ -379,7 +379,7 @@ export default function OwnerVehicles() {
       // const dayuseok = doesUnitHaveDayUse(unit);
       const daypassCount = daypassVehicleCount(allVehicles);
 
-      console.log('ov daypass count is ', daypassCount);
+      //console.log('ov daypass count is ', daypassCount);
 
 
       //JJVFIX
@@ -393,12 +393,15 @@ export default function OwnerVehicles() {
       // this needs to be verified
       // console.log('data from ov veh.length pli',vehicles.length,parkingLimitInventory)
 
+      let msg = (<>Vehicle limit reached. <br /> You may only have <br />{parkingLimitInventory} vehicles in your inventory.</>);
+      
+
       if (vehicles.length >= parkingLimitInventory) {
         setModal({
           isOpen: true,
           type: "alert",
           title: "Validation Error",
-          message: `Vehicle limit reached. You can only have ${parkingLimitInventory} vehicles in your inventory.`,
+          message: msg,
           confirmText: "OK",
           onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
         });
@@ -434,12 +437,15 @@ export default function OwnerVehicles() {
       //     return;
       //   }
       // JJVFIX
+
+       msg = (<>Daypass Limit Reached. <br /> You may only have <br /> {ownerdplimit} daypass vehicle.</>);
+
       if (daypassCount >= ownerdplimit && pin_code_action === 'daypass') {
         setModal({
           isOpen: true,
           type: "alert",
           title: "Validation Error",
-          message: `Daypass Limit Reached.  You can only have  ${ownerdplimit} daypass vehicles.`,
+          message: msg,
           confirmText: "OK",
           onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
         });
