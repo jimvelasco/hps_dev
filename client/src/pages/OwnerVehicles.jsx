@@ -419,7 +419,7 @@ export default function OwnerVehicles() {
       //    console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
       let activevehiclelimit = unit.parking_allowed_owner;
 
-      let ac = daypassVehicleCount(allVehicles);
+     // let ac = daypassVehicleCount(allVehicles);
 
       if (daypassCount > 0) {
         activevehiclelimit += 1;
@@ -606,12 +606,12 @@ export default function OwnerVehicles() {
                 icon={faPlus}
               />  Add Vehicle
             </button>
-            <button className="navbutton3"
+            {/* <button className="navbutton3"
               onClick={() => handleCreateClick('daypass')}>
               <FontAwesomeIcon
                 icon={faPlus}
               />  Add Day Pass
-            </button>
+            </button> */}
           </>
         )}
 
@@ -667,12 +667,12 @@ export default function OwnerVehicles() {
               icon={faPlus}
             />  Add Vehicle
           </button>
-          <button className="navbutton3"
+          {/* <button className="navbutton3"
             onClick={() => handleCreateClick('daypass')}>
             <FontAwesomeIcon
               icon={faPlus}
             />  Add Day Pass
-          </button>
+          </button> */}
         </div>
       )}
 

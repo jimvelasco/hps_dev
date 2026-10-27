@@ -7,7 +7,7 @@ import { useError } from "../context/ErrorContext";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
-import { getVehicleActiveStatusBoolean, utcDateOnly } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly,daypassVehicleCount } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 import HoaInformation from "../components/HoaInformation";
 import { getAWSResource } from "../utils/awsHelper";
@@ -31,6 +31,8 @@ export default function RenterVehicles() {
   const [pincodeActionLabel, setPincodeActionLabel] = useState("");
   const [disableAddVehicle, setDisableAddVehicle] = useState(false)
   const [allActiveCount, setAllActiveCount] = useState(0);
+  const [daypassCount, setDaypassCount] = useState(0);
+
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
   const nonownerType = location.state?.nonownerType;
@@ -108,10 +110,19 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
+          // const dayusecount  = daypassVehicleCount(updatedVehicles);
+          setDaypassCount( daypassVehicleCount(updatedVehicles));
+         
+         
+          
+
         //  console.log('updatedVehicles', updatedVehicles.length,updatedVehicles);
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
+
+
+
 
           //      console.log('renter vehicles active vehicles length', activeVehicles.length);
 
@@ -293,6 +304,32 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
 
     const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
     let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
+
+     const daypassesallowed = unitForRenter.daypasses_allowed_owner;
+     if (daypassCount >= daypassesallowed) {
+       setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: (<>Daypass limit reached.<br />You are allowed <br /> {daypassesallowed}  day pass vehicle(s).</>),
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
+      return;
+     }
+
+     if (allActiveCount >= unitParkingLimit) {
+      // if (currentVehicleCount >= renterFreeParking) {
+      // console.log("*******Parking limit reached, showing modal");
+     
+      return;
+    }
+
+
+
+         
 
     // console.log('RV handlecreate allActiveCount unitParkingLimit pa pv',
     //   allActiveCount, unitParkingLimit, pincodeAction, pincodeValue)

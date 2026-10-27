@@ -41,7 +41,9 @@ export default function VehicleDetails() {
 
      const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
     ? ['visitor', 'contractor']
-    : ['owner', 'family', 'friend'];
+    : ['owner', 'family', 'friend','visitor', 'contractor'];
+
+
 
    console.log('VD LOCATION STATE',location.state);
 

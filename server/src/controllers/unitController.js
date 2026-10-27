@@ -214,20 +214,16 @@ const updateUnit = async (req, res) => {
           return entry && Object.keys(entry).every(key => allowedFields.includes(key)) &&
             String(entry._id) === String(original._id) &&
             entry.action === original.action &&
-            (original.action === "standard" || (entry.description ?? "") === (original.description ?? "")) &&
             entry.uses_allowed === original.uses_allowed &&
             entry.uses_used === original.uses_used &&
-            (entry.expire_date ?? "") === (original.expire_date ?? "") &&
-            (original.action === "standard" || entry.pincode === original.pincode);
+            (entry.expire_date ?? "") === (original.expire_date ?? "");
         });
       if (!validEntries) {
-        return res.status(403).json({ message: "Owners can only change standard PINs" });
+        return res.status(403).json({ message: "Owners can only change PIN values and descriptions" });
       }
       pincodeary.forEach((entry, index) => {
-        if (unit.pincodeary[index].action === "standard") {
-          unit.pincodeary[index].pincode = entry.pincode;
-          unit.pincodeary[index].description = entry.description ?? "";
-        }
+        unit.pincodeary[index].pincode = entry.pincode;
+        unit.pincodeary[index].description = entry.description ?? "";
       });
     }
 
