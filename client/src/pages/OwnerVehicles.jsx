@@ -168,7 +168,6 @@ export default function OwnerVehicles() {
 
         //  console.log('updatedVehicles3', updatedVehicles3);
 
-          setVehicles(updatedVehicles3);
           setAllVehicles(updatedVehicles3);
           setVehiclesError(null);
         } catch (err) {
@@ -183,16 +182,43 @@ export default function OwnerVehicles() {
     }
   }, [hoaId, ownerId, role]);
 
+  const handleFilterApply = (matchingVehicles) => {
+    console.log('WE CALLED FILTER APPLY')
+    if (filterType === "owner") {
+      //return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
+      // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
+      // JJVFIX did not have the 'other' in there
+       return matchingVehicles.filter(v => v.createdbytype === 'owner');
+      // return matchingVehicles.filter(v => v.createdbytype === 'owner' || v.createdbytype === 'other');
+    }
+    if (filterType === "other") {
+      //return matchingVehicles.filter(v => v.carownertype === "renter");
+      return matchingVehicles.filter(v => v.createdbytype === 'other');
+    }
+    if (filterType === "dayuse") {
+      //return matchingVehicles.filter(v => v.carownertype === "renter");
+      return matchingVehicles.filter(v => v.day_use_only === 1);
+    }
+    if (filterType === "all") {
+      return matchingVehicles;
+    }
+    // return matchingVehicles;
+  };
+
   const unitQuery = unitSearch.trim().toLowerCase();
+  const plateQuery = plateSearch.trim().toLowerCase();
   const filteredVehicles = loggedInUser?.role === "admin"
-    ? vehicles.filter(vehicle => String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery))
+    ? vehicles.filter(vehicle =>
+        String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
+        String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
+      )
     : vehicles;
 
  // console.log('filtered vehicles', filteredVehicles)
 
   useEffect(() => {
-    handlePlateSearch(plateSearch);
-  }, [allVehicles, filterType, plateSearch]);
+    setVehicles(handleFilterApply(allVehicles));
+  }, [allVehicles, filterType]);
 
 
 
@@ -250,30 +276,6 @@ export default function OwnerVehicles() {
     setVehicles(sorted);
   };
 
-  const handleFilterApply = (matchingVehicles) => {
-    console.log('WE CALLED FILTER APPLY')
-    if (filterType === "owner") {
-      //return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
-      // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
-      // JJVFIX did not have the 'other' in there
-      // return matchingVehicles.filter(v => v.createdbytype === 'owner');
-      return matchingVehicles.filter(v => v.createdbytype === 'owner' || v.createdbytype === 'other');
-    }
-    if (filterType === "other") {
-      //return matchingVehicles.filter(v => v.carownertype === "renter");
-      return matchingVehicles.filter(v => v.createdbytype === 'other');
-    }
-    if (filterType === "dayuse") {
-      //return matchingVehicles.filter(v => v.carownertype === "renter");
-      return matchingVehicles.filter(v => v.day_use_only === 1);
-    }
-    if (filterType === "all") {
-      return matchingVehicles;
-    }
-    // return matchingVehicles;
-  };
-
-
   const handleDetailsClick = async (vehicle) => {
 
     const vid = vehicle._id;
@@ -301,15 +303,22 @@ export default function OwnerVehicles() {
       // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
       let unitNumber = uid; //loggedInUser ? loggedInUser.unitnumber : "999999999999";
       let arole = "owner";
+
+      /* VD expects
+ const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
+    createdfrom, pincodeValue, pincodeAction, allActiveVehiclesCount } = location.state || {};
+    */
       navigate(qry, {
         state: {
+          nonownerType: vehicle.carownertype,
           unitNumber: unitNumber,
           role: arole,
-          carownertype: vehicle.carownertype,
+         
           vehicles: vehicles,
           ownerOfUnit: loggedInUser,
           vehid: vid,
           unit: unitForOwner,
+          carownertype: vehicle.carownertype,
           pincodeAction: "",
           createdfrom: "ownervehicles",
           allActiveVehiclesCount: allActiveCount
@@ -419,23 +428,11 @@ export default function OwnerVehicles() {
       //    console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
       let activevehiclelimit = unit.parking_allowed_owner;
 
-     // let ac = daypassVehicleCount(allVehicles);
-
       if (daypassCount > 0) {
         activevehiclelimit += 1;
       }
 
-      // if (activeVehicles.length >= activevehiclelimit ) {
-      //     setModal({
-      //       isOpen: true,
-      //       type: "alert",
-      //       title: "Validation Error",
-      //       message: `Active Vehicle Limit Reached.  You can only have  ${activevehiclelimit} active vehicles.`,
-      //       confirmText: "OK",
-      //       onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
-      //     });
-      //     return;
-      //   }
+      
       // JJVFIX
 
        msg = (<>Daypass Limit Reached. <br /> You may only have <br /> {ownerdplimit} daypass vehicle.</>);
@@ -452,42 +449,11 @@ export default function OwnerVehicles() {
         return;
       }
 
-
-      // let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
-
-      // if (activeVehicles.length >= unitParkingLimit) {
-      //   setModal({
-      //     isOpen: true,
-      //     type: "alert",
-      //     title: "Validation Error",
-      //     message: `Vehicle limit reached. You can only have ${unitParkingLimit} active vehicles.`,
-      //     confirmText: "OK",
-      //     onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
-      //   });
-      //   return;
-      // }
-
-      //  renter vehicles 
-      //  const qry = `/${hoaId}/vehicledetails/create/${userIdForUnit}`;
-      // navigate(qry, {
-      //       state: {
-      //         nonownerType: nonownerType,
-      //         unitNumber: unitNumber,
-      //         role: location.state?.nonownerType || "renter",
-      //         vehicles: vehicles,
-      //         ownerOfUnit: ownerOfUnit,
-      //         unit: unitForRenter,
-      //         vehid: null,
-      //         createdfrom: 'rentervehicles',
-      //         pincodeValue: pincodeValue,
-      //         pincodeAction: pincodeAction
-
-      //       }
-      //     });
-
-      // vd const { nonownerType,unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype, 
-      // createdfrom, pincodeValue, pincodeAction } = location.state || {};
-
+// VD
+/*
+ const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
+    createdfrom, pincodeValue, pincodeAction, allActiveVehiclesCount } = location.state || {};
+    */
 
       navigate(`/${hoaId}/vehicledetails/create/${uid}`, {
         state: {
@@ -496,8 +462,9 @@ export default function OwnerVehicles() {
           role: loggedInUser.role,
           vehicles: vehicles,
           ownerOfUnit: loggedInUser,
-          unit: unit,
           vehid: null,
+          unit: unit,
+          carownertype: '123',
 
           // numberOfVehicles: vehicles.length,
           createdfrom: 'ownervehicles',
@@ -547,9 +514,9 @@ export default function OwnerVehicles() {
   const handleShowFilterClick = () => {
     setShowFilters(!showFilters)
   }
-  const handleShowTableClick = () => {
-    setShowVisible(!isVisible)
-  }
+  // const handleShowTableClick = () => {
+  //   setShowVisible(!isVisible)
+  // }
 
   const handleShowTable = () => {
     if (showTable) {
@@ -633,8 +600,6 @@ export default function OwnerVehicles() {
             }
           </button>
         </div>
-
-
       </div>
     </div>)
   }
@@ -705,20 +670,6 @@ export default function OwnerVehicles() {
     )
   }
 
-
-
-
-
-
-  const handlePlateSearch = (searchTerm) => {
-    const query = searchTerm.trim().toLowerCase();
-    const matchingVehicles = allVehicles.filter(vehicle =>
-      (vehicle.plate || "").toLowerCase().includes(query)
-    );
-    setVehicles(handleFilterApply(matchingVehicles));
-
-  };
-
   // const renderPlateSearch = () => {
   //   return (
 
@@ -731,7 +682,21 @@ export default function OwnerVehicles() {
       <DashboardNavbar title={titlestr} title2={ttitle2} buttons={navButtons} />
       <div className="page-content">
 
-        {loggedInUser?.role === "admin" && (
+      
+
+
+        <div className="tableview">
+          <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
+            {renderTitleBarTable()}
+          </div>
+        </div>
+        <div className="phoneview">
+          <div className="standardtitlebar320" style={{ border: "0px solid yellow " }}>
+            {renderTitleBarPhone()}
+          </div>
+        </div>
+
+          {loggedInUser?.role === "admin" && (
           <>
             <div className="standardtitlebar380" style={{ width: "300px" }}>
               <label className="search-label" htmlFor="unit-search" style={{ marginRight: "10px" }}>Unit</label>
@@ -758,18 +723,6 @@ export default function OwnerVehicles() {
           </>
         )}
 
-
-
-        <div className="tableview">
-          <div className="standardtitlebar800" style={{ border: "0px solid yellow " }}>
-            {renderTitleBarTable()}
-          </div>
-        </div>
-        <div className="phoneview">
-          <div className="standardtitlebar320" style={{ border: "0px solid yellow " }}>
-            {renderTitleBarPhone()}
-          </div>
-        </div>
 
 
 
