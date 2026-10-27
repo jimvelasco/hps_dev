@@ -317,7 +317,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
     let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
 
      const daypassesallowed = unitForRenter.daypasses_allowed_owner;
-     if (daypassCount >= daypassesallowed) {
+     if ((daypassCount >= daypassesallowed) && nonownerType !== 'renter' ) {
        setModal({
         isOpen: true,
         type: "alert",
