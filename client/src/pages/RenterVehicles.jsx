@@ -57,7 +57,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             // console.log('we found a user for unit:', unitNumber, user);
             setUserIdForUnit(user._id);
             setOwnerOfUnit(user);
-            console.log('RV NON OWNER TYPE',nonownerType);
+           // console.log('RV NON OWNER TYPE',nonownerType);
           }
         } catch (err) {
           console.error("Error fetching user for unit:", err);
@@ -197,11 +197,11 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           setVehicles(nonTypeVehicles);
           // setVehicles(updatedVehicles);
 
-          if (pincodeAction != 'standard') {
+        //  if (pincodeAction != 'standard') {
             if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
             if (pincodeAction == 'contractor') setPincodeActionLabel('(Contractor)');
             if (pincodeAction == 'visitor') setPincodeActionLabel('(Visitor)');
-          }
+        //  }
 
           // console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
@@ -272,11 +272,11 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
       state: {
         unitNumber: uid,
         role: "renter",
-        carownertype: vehicle.carownertype,
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
         vehid: vid,
         unit: unitForRenter,
+        carownertype: nonownerType,
         createdfrom: 'rentervehicles',
         pincodeAction: pincodeAction,
         allActiveVehiclesCount: allActiveCount
@@ -379,6 +379,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
         ownerOfUnit: ownerOfUnit,
         unit: unitForRenter,
         vehid: null,
+        carownertype: nonownerType,
         createdfrom: 'rentervehicles',
         pincodeValue: pincodeValue,
         pincodeAction: pincodeAction
