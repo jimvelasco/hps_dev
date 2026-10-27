@@ -45,7 +45,7 @@ export default function VehicleDetails() {
 
 
 
-   console.log('VD LOCATION STATE',location.state);
+   //console.log('VD LOCATION STATE',location.state);
 
 
 
