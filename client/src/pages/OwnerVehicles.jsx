@@ -130,7 +130,7 @@ export default function OwnerVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          console.log('rawvehicles', rawvehicles);
+        // console.log('rawvehicles', rawvehicles);
 
           let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
@@ -140,9 +140,9 @@ export default function OwnerVehicles() {
          // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter" && v.carownertype !== "tenant" );
           const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter" );
 
-       //   console.log('updatedVehicles', updatedVehicles);
+        //  console.log('OV 143 updatedVehicles', updatedVehicles);
 
-          setAllVehicles(updatedVehicles);
+       //   setAllVehicles(updatedVehicles);
 
 
 
@@ -156,6 +156,8 @@ export default function OwnerVehicles() {
           }
 
           let updatedVehicles3 = [...updatedVehicles2]
+
+        //   console.log('OV 160 updatedVehicles', updatedVehicles3);
 
           setActiveVehicles(updatedVehicles3.filter(v => v.calculatedActiveFlag === true));
           // keep vehicles in order
@@ -182,8 +184,10 @@ export default function OwnerVehicles() {
     }
   }, [hoaId, ownerId, role]);
 
-  const handleFilterApply = (matchingVehicles) => {
+  //const handleFilterApply = (matchingVehicles) => {
+     const handleFilterApply = () => {
     console.log('WE CALLED FILTER APPLY')
+    let matchingVehicles = [...allVehicles];
     if (filterType === "owner") {
       //return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
       // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
@@ -216,9 +220,13 @@ export default function OwnerVehicles() {
 
  // console.log('filtered vehicles', filteredVehicles)
 
-  useEffect(() => {
-    setVehicles(handleFilterApply(allVehicles));
-  }, [allVehicles, filterType]);
+  // useEffect(() => {
+  //   setVehicles(handleFilterApply(allVehicles));
+  // }, [allVehicles, filterType]);
+
+   useEffect(() => {
+    setVehicles(allVehicles);
+  }, [allVehicles]);
 
 
 
@@ -308,6 +316,7 @@ export default function OwnerVehicles() {
  const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
     createdfrom, pincodeValue, pincodeAction, allActiveVehiclesCount } = location.state || {};
     */
+ 
       navigate(qry, {
         state: {
           nonownerType: vehicle.carownertype,
@@ -464,7 +473,7 @@ export default function OwnerVehicles() {
           ownerOfUnit: loggedInUser,
           vehid: null,
           unit: unit,
-          carownertype: '123',
+          carownertype: null,
 
           // numberOfVehicles: vehicles.length,
           createdfrom: 'ownervehicles',
@@ -552,6 +561,7 @@ export default function OwnerVehicles() {
     return (<div>
       <div className="button-grid">
         {loggedInUser && loggedInUser.role === "admin" && (
+          <>
           <div>
             <select className="standardselect"
               value={filterType}
@@ -562,7 +572,17 @@ export default function OwnerVehicles() {
               <option value="dayuse">Day Use</option>
               <option value="all">All</option>
             </select>
+             
           </div>
+          <div>
+            <button className="navbutton3"
+              onClick={() => setVehicles(handleFilterApply())}>
+               Filter
+            </button>
+
+          </div>
+          </>
+         
         )}
 
         {loggedInUser && loggedInUser.role !== "admin" && (
@@ -609,6 +629,7 @@ export default function OwnerVehicles() {
     return (<div>
       <div className="button-grid">
         {loggedInUser && loggedInUser.role === "admin" && (
+          <>
           <div >
             <select className="standardselect"
               value={filterType}
@@ -619,7 +640,16 @@ export default function OwnerVehicles() {
               <option value="dayuse">Day Use</option>
               <option value="all">All</option>
             </select>
+            
           </div>
+          <div>
+            <button className="navbutton3"
+              onClick={() => setVehicles(handleFilterApply())}>
+              Filter
+            </button>
+
+          </div>
+          </>
         )}
       </div>
 

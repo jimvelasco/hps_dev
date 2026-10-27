@@ -39,13 +39,13 @@ export default function VehicleDetails() {
   //   ? ['visitor', 'contractor']
   //   : ['owner', 'family', 'friend', 'visitor', 'contractor'];
 
-     const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+  const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
     ? ['visitor', 'contractor']
-    : ['owner', 'family', 'friend','tenant','visitor', 'contractor'];
+    : ['owner', 'family', 'friend', 'tenant', 'visitor', 'contractor'];
 
 
 
-   //console.log('VD LOCATION STATE',location.state);
+  //console.log('VD LOCATION STATE',location.state);
 
 
 
@@ -100,7 +100,7 @@ export default function VehicleDetails() {
     ? unit?.day_use_only === 1 || nonownerType === 'contractor' || nonownerType === 'visitor' ? 1 : 0
     : createdfrom === 'ownervehicles' && (unit?.day_use_only === 1 || pincodeAction === 'daypass') ? 1 : 0;
 
-    
+
   // this value comes from selecting the Add Vehicle or Add Daypass buttons
 
   // console.log('defaultDayUseOnly',nonownerType,createdfrom,defaultDayUseOnly)
@@ -114,11 +114,11 @@ export default function VehicleDetails() {
   if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
     daysplus = 0;
   }
-   if (createdfrom === 'rentervehicles' &&  carownertype === 'contractor') {
+  if (createdfrom === 'rentervehicles' && carownertype === 'contractor') {
     daysplus = 0;
   }
-  
-//console.log('setting days plus carownertype' ,createdfrom,carownertype);
+
+  //console.log('setting days plus carownertype' ,createdfrom,carownertype);
 
 
 
@@ -128,7 +128,7 @@ export default function VehicleDetails() {
   const edate = new Date();
   edate.setDate(edate.getDate() + daysplus);
 
-   //console.log('edate is',formatLocalDate(new Date()),formatLocalDate(edate));
+  //console.log('edate is',formatLocalDate(new Date()),formatLocalDate(edate));
 
 
 
@@ -186,25 +186,25 @@ export default function VehicleDetails() {
       //  console.log('FROM RENTER VEHICLES STATE', location.state);
     }
 
-if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
-    daysplus = 0;
-    setDisableInDateField(true);
-    setDisableOutDateField(true)
-  }
-   if (createdfrom === 'rentervehicles' &&  carownertype === 'contractor') {
-    daysplus = 0;
-    setDisableInDateField(true);
-    setDisableOutDateField(false)
-  }
-   if (createdfrom === 'ownervehicles' ) {
-    setDisableInDateField(false);
-    setDisableOutDateField(false)
-  }
+    if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
+      daysplus = 0;
+      setDisableInDateField(true);
+      setDisableOutDateField(true)
+    }
+    if (createdfrom === 'rentervehicles' && carownertype === 'contractor') {
+      daysplus = 0;
+      setDisableInDateField(true);
+      setDisableOutDateField(false)
+    }
+    if (createdfrom === 'ownervehicles') {
+      setDisableInDateField(false);
+      setDisableOutDateField(false)
+    }
 
 
 
     // JJVFIX
-  //  console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+    console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
     // location.state.nonownerType will be either be owner or renter or visitor or contractor
     // we can make the date defaults accordingly
     // we can also use unit.day_use_only
@@ -275,6 +275,20 @@ if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
     setUserIdForUnit(ownerOfUnit._id);
     setUnitOwner(ownerOfUnit);
     setStateUnit(unit);
+    //   if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
+    //   daysplus = 0;
+    //   setDisableInDateField(true);
+    //   setDisableOutDateField(true)
+    // }
+    //  if (createdfrom === 'rentervehicles' &&  carownertype === 'contractor') {
+    //   daysplus = 0;
+    //   setDisableInDateField(true);
+    //   setDisableOutDateField(false)
+    // }
+    //  if (createdfrom === 'ownervehicles' ) {
+    //   setDisableInDateField(false);
+    //   setDisableOutDateField(false)
+    // }
   }, [hoaId, unitNumber, formData.unitnumber, isModifyMode]);
 
 
@@ -287,7 +301,7 @@ if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-          console.log('about to set vehicle',response.data)
+       // console.log('about to set vehicle', response.data)
         setVehicle(response.data);
 
         // const sd = utcDateOnly(response.data.checkin);
@@ -313,8 +327,8 @@ if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
         //  console.log("checkout date:", ed, 'before local',response.data.checkout);
         //  console.log("checkout date:',ed );
         //  let oid = loggedInUser ? loggedInUser._id : userIdForUnit;
-      //  let duo = stateUnit.day_use_only;
-     //   console.log('day use only from unit is',duo)
+        //  let duo = stateUnit.day_use_only;
+        //   console.log('day use only from unit is',duo)
 
 
         setFormData({

@@ -75,9 +75,20 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
     const fetchUnit = async () => {
       try {
         const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(unitNumber)}`);
-        if (!cancelled) setUnitForRenter(response.data);
+        if (!cancelled) {
+          if (response.data) {
+            setUnitForRenter(response.data);
+          } else {
+            setVehiclesError("Unit not found");
+            setVehiclesLoading(false);
+          }
+        }
       } catch (err) {
-        if (!cancelled) console.error("Error fetching unit:", err);
+        if (!cancelled) {
+          setVehiclesError(err.message || "Failed to load unit");
+          setVehiclesLoading(false);
+          console.error("Error fetching unit:", err);
+        }
       }
     };
 
@@ -86,7 +97,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
   }, [hoaId, unitNumber]);
 
   useEffect(() => {
-    if (hoaId && unitNumber) {
+    if (hoaId && unitNumber && unitForRenter?.hoaid === hoaId && unitForRenter?.unitnumber === unitNumber) {
       const fetchVehicles = async () => {
         try {
           setVehiclesLoading(true);
