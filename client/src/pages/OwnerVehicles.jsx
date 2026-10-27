@@ -135,7 +135,10 @@ export default function OwnerVehicles() {
           let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
 
-          const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
+          //JJVFIX. do not show tenants
+
+         // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter" && v.carownertype !== "tenant" );
+          const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter" );
 
        //   console.log('updatedVehicles', updatedVehicles);
 

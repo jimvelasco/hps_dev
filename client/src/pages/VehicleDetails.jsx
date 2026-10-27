@@ -35,11 +35,15 @@ export default function VehicleDetails() {
     createdfrom, pincodeValue, pincodeAction, allActiveVehiclesCount } = location.state || {};
 
 
-  const vehicleOwnerTypeAry = unit?.day_use_only === 1
-    ? ['visitor', 'contractor']
-    : ['owner', 'family', 'friend', 'visitor', 'contractor'];
+  // const vehicleOwnerTypeAry = unit?.day_use_only === 1
+  //   ? ['visitor', 'contractor']
+  //   : ['owner', 'family', 'friend', 'visitor', 'contractor'];
 
-  // console.log('VD LOCATION STATE',location.state);
+     const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+    ? ['visitor', 'contractor']
+    : ['owner', 'family', 'friend'];
+
+   console.log('VD LOCATION STATE',location.state);
 
 
 
