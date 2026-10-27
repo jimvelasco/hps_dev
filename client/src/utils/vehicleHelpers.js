@@ -154,14 +154,14 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
 
-  console.log('OKTOADD incoming array is ',vehiclearray);
-  console.log('OKTOADD formvehicle.carownertype',formvehicle.carownertype);
-  console.log('OKTOADD vehicleId', vehicleId);
-  console.log('OKTOADD createdfrom',createdfrom);
-  console.log('OKTOADD pincodeAction',pincodeAction);
-  console.log('OKTOADD formsdate',formsdate);
-  console.log('OKTOADD formedate',formedate);
-  console.log('OKTOADD allActiveVehiclesCount',allActiveVehiclesCount);
+  // console.log('OKTOADD incoming array is ',vehiclearray);
+  // console.log('OKTOADD formvehicle.carownertype',formvehicle.carownertype);
+  // console.log('OKTOADD vehicleId', vehicleId);
+  // console.log('OKTOADD createdfrom',createdfrom);
+  // console.log('OKTOADD pincodeAction',pincodeAction);
+  // console.log('OKTOADD formsdate',formsdate);
+  // console.log('OKTOADD formedate',formedate);
+  // console.log('OKTOADD allActiveVehiclesCount',allActiveVehiclesCount);
 
 
 
