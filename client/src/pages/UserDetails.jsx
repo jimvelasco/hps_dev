@@ -277,6 +277,8 @@ export default function UserDetails() {
     disablefield = true;
   }
 
+  // JJVFIX should there be a role === tenant?  
+
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <DashboardNavbar title={isEditMode ? "Edit User" : "Create User"} buttons={navButtons} />
@@ -321,7 +323,7 @@ export default function UserDetails() {
                   name="role"
                 >
                    <option value="owner">Owner</option>
-                  <option value="tenant">Owner</option>
+                    <option value="owner">Tenant</option>
                    <option value="admin">Admin</option>
                   <option value="enforcer">Enforcer</option>
                 </select>
