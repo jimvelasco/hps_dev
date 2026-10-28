@@ -75,7 +75,9 @@ export default function TermsAndConditions() {
 
 
       {/* <embed src="https://hoaparking.s3.us-east-1.amazonaws.com/YV/YV-Terms_and_Conditions.pdf" 
-       type="application/pdf" width="100%" height="600px" /> */}
+       type="application/pdf" width="100%" height="600px" /> 
+       JJVFIX added userRole === 'tenant' line 89
+       */}
 
       <div className="page-content">
         <div style={{
@@ -84,7 +86,7 @@ export default function TermsAndConditions() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
-          {userRole === "owner" ? (
+          {userRole === "owner" || userRole === 'tenant' ? (
             // <embed src={`${getAWSResource(hoa, 'OTC')}`} type="application/pdf" width="100%" height="600px" />
             <>
               <iframe
