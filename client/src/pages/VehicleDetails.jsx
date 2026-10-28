@@ -1000,8 +1000,12 @@ export default function VehicleDetails() {
 
             </div>
 
+            {/* JJVFIX  opacity and margin*/}
+
             <div style={{ marginTop: "20px" }}>
-              <div className="unit-checkbox-row">
+             
+
+              <div className="unit-checkbox-row" style={{opacity: 0}}>
                 <input
                   type="checkbox"
                   id="vehicle-day-use-only"
@@ -1009,10 +1013,12 @@ export default function VehicleDetails() {
                   checked={formData.day_use_only === 1}
                   onChange={handleFormChange}
                   style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                  
                 />
                 <label className="input-label" htmlFor="vehicle-day-use-only">Day use only</label>
               </div>
-              <div style={{ marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
+
+              <div style={{ marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" ,marginTop:"-30px"}}>
                 <input
                   type="checkbox"
                   id="termsCheckbox"

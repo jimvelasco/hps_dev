@@ -219,7 +219,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
   let theCurrentVehicle = theCurrentVehicleAry[0];
-  //  console.log('CURRENT VEHICLE', theCurrentVehicle);
+    console.log('CURRENT VEHICLE', theCurrentVehicle);
 
   let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
 
