@@ -116,7 +116,7 @@ export default function VehicleDetails() {
   // const edate = new Date();
   // edate.setDate(edate.getDate() + daysplus);
 
- 
+
 
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
 
@@ -144,13 +144,13 @@ export default function VehicleDetails() {
   useEffect(() => {
 
     let daysplus = 0;
-    
+
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
     }
     if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
       daysplus = 0;
-     
+
       setDisableInDateField(true);
       setDisableOutDateField(true)
     }
@@ -165,15 +165,15 @@ export default function VehicleDetails() {
       setDisableOutDateField(false)
     }
 
-     const edate = new Date();
-     edate.setDate(edate.getDate() + daysplus);
+    const edate = new Date();
+    edate.setDate(edate.getDate() + daysplus);
 
 
     // JJVFIX
     console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
 
 
-   
+
 
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
@@ -254,7 +254,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-       // console.log('about to set vehicle', response.data)
+        // console.log('about to set vehicle', response.data)
         setVehicle(response.data);
 
 
@@ -269,7 +269,7 @@ export default function VehicleDetails() {
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
-         if (createdfrom === 'rentervehicles' && (carownertype === 'contractor')) {
+        if (createdfrom === 'rentervehicles' && (carownertype === 'contractor')) {
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
           setDisableInDateField(true)
@@ -309,7 +309,7 @@ export default function VehicleDetails() {
     };
 
     if (isModifyMode && vehid) {
-   //   console.log('we are fetching vehicle')
+      //   console.log('we are fetching vehicle')
       fetchVehicle();
     } else if (!isModifyMode) {
       setLoading(false);
@@ -487,16 +487,26 @@ export default function VehicleDetails() {
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction, allActiveVehiclesCount);
-    //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
+    console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
+
     if (createdfrom === 'ownervehicles') {
       msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
         Please deactivate another vehicle before activating this one.</>);
+      if (oktoaddobj.msgType === 2) {
+        msg = (<>Daypass limit reached. <br />
+          You are allowed 1 Day Pass.</>);
+      }
+
     }
     if (createdfrom === 'rentervehicles') {
       msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
         CALL THE OWNER OR ADMIN</>);
+      if (oktoaddobj.msgType === 2) {
+        msg = (<>Daypass limit reached. <br />
+          You are allowed 1 Day Pass.</>);
+      }
     }
     //   if (role === 'owner') {
     //      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
@@ -1003,7 +1013,7 @@ export default function VehicleDetails() {
             {/* JJVFIX  check box disabled*/}
 
             <div style={{ marginTop: "20px" }}>
-             
+
 
               <div className="unit-checkbox-row">
                 <input
@@ -1013,8 +1023,8 @@ export default function VehicleDetails() {
                   checked={formData.day_use_only === 1}
                   onChange={handleFormChange}
                   style={{ width: "18px", height: "18px", cursor: "pointer" }}
-                  disabled = {true}
-                  
+                  disabled={true}
+
                 />
                 <label className="input-label" htmlFor="vehicle-day-use-only">Day use only</label>
               </div>

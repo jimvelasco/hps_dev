@@ -442,7 +442,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             </label><br />
             <div className="button-grid">
               <button className="btns btn-primary" style={{ maxWidth: "150px", marginTop: "5px" }} onClick={handleCreateClick}
-               disabled = {disableAddVehicle}
+                disabled = {disableAddVehicle}
               >
                 <FontAwesomeIcon
                   icon={faPlus}

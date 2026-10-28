@@ -5,8 +5,8 @@ export const getVehicleActiveStatusBoolean_checkin = (element) => {
   //const todayStr = todayUTC.toISOString().split('T')[0]; 
   //const todayStr = todayUTC.toLocaleDateString("en-CA");
 
-   const todayUTC = new Date(); // "2025-12-03"
-   const todayStr = formatLocalDate(todayUTC);
+  const todayUTC = new Date(); // "2025-12-03"
+  const todayStr = formatLocalDate(todayUTC);
   // const today = new Date(Date.UTC(
   //   now.getUTCFullYear(),
   //   now.getUTCMonth(),
@@ -50,14 +50,14 @@ export const getVehicleActiveStatusBoolean = (element) => {
   //const todayStr = todayUTC.toISOString().split('T')[0]; 
   //const todayStr = todayUTC.toLocaleDateString("en-CA");
 
-   const todayUTC = new Date(); // "2025-12-03"
-   const todayStr = formatLocalDate(todayUTC);
-  
-   
+  const todayUTC = new Date(); // "2025-12-03"
+  const todayStr = formatLocalDate(todayUTC);
+
+
 
   //const mongoDateIn = new Date(element.checkin);
   const mongoDateInStr = element.startdate;
- // const mongoDate = new Date(element.checkout);
+  // const mongoDate = new Date(element.checkout);
   const mongoDateStr = element.enddate;
 
   if (mongoDateInStr > todayStr && mongoDateStr >= todayStr) {
@@ -125,7 +125,7 @@ export const getVehicleIsActiveTodayBoolean_checkin = (element) => {
 
 
 export const getVehicleIsActiveTodayBoolean = (element) => {
-  
+
   const todayUTC = new Date();
   const todayStr = formatLocalDate(todayUTC);
   const mongoDateStr = element.enddate;
@@ -139,8 +139,8 @@ export const getVehicleIsActiveTodayBoolean = (element) => {
 // JJVFIX on 10242026 I decided that the utcDateOnly should return a date based on local year etc
 export const utcDateOnly = (isoStr) => {
   const d = new Date(isoStr);
- // return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
-   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  // return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 export const formatPhoneNumber = (phone) => {
@@ -150,7 +150,7 @@ export const formatPhoneNumber = (phone) => {
 
 
 
-export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction,allActiveVehiclesCount) => {
+export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction, allActiveVehiclesCount) => {
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
 
@@ -168,7 +168,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   const todayStr = new Date().toLocaleDateString("en-CA");
   let maxactiveallowed = unit.parking_allowed_unit;
-    console.log('UNIT maxactiveallowed', maxactiveallowed);
+  console.log('UNIT maxactiveallowed', maxactiveallowed);
+  let maxdayuse = unit.daypasses_allowed_owner;
 
   let filteredActiveArray = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   let filteredActiveArrayCount = filteredActiveArray.length
@@ -179,7 +180,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     maxactiveallowed += 1
   }
 
-   console.log('totalActiveCount and incoming array', filteredActiveArrayCount, dayUseCount, vehiclearray);
+  console.log('totalActiveCount ', filteredActiveArrayCount, 'dayUseCount ', dayUseCount, 'vehiclearray ', vehiclearray);
 
   let ownerFreeParking = unit.owner_free_parking || 0;
 
@@ -190,24 +191,32 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   let msgType = 0;
 
-  let robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null , msgType:0};
+  let robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 0 };
+
+
 
 
   // THIS SECTION IS FOR ADDING A VEHICLE FROM THE OWNERS OR OTHER
   if (!vehicleId) {
- //   console.log("WE MUST NEW VEHICLE");
+    console.log("WE MUST NEW VEHICLE check day use count");
+    if (dayUseCount >= maxdayuse) {
+      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+      return robj;
+    }
+
+
     // it is ok to add a vehicle whos date is not active if you are a owner and adding to inventory
     if (!dates_span_today) {
-    //  console.log("form dates are NOT active, vehicle is null");
-      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType:0 };
+      //  console.log("form dates are NOT active, vehicle is null");
+      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
       return robj;
     }
     if (dates_span_today) {
-    //  console.log("form dates ARE active, vehicle is null")
+      //  console.log("form dates ARE active, vehicle is null")
       if (allActiveVehiclesCount >= maxactiveallowed) {
-        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType:1};
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
       } else {
-        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType:0 };
+        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
       }
       return robj;
     }
@@ -215,36 +224,36 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   // THIS SECTION IS WHEN A VEHICLE HAS BEEN SELECTED BY OWNER OR OTHER
 
- // console.log("WE MUST BE AN EDIT OF AN EXISTING VEHICLE");
+  // console.log("WE MUST BE AN EDIT OF AN EXISTING VEHICLE");
 
   let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
   let theCurrentVehicle = theCurrentVehicleAry[0];
-    console.log('CURRENT VEHICLE', theCurrentVehicle);
+  console.log('CURRENT VEHICLE', theCurrentVehicle);
 
   let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
 
   if (is_vehicle_active && dates_span_today) {
-  //  console.log("form dates are active, vehicle is active");
-    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
+    //  console.log("form dates are active, vehicle is active");
+    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
     return robj;
   }
   if (is_vehicle_active && !dates_span_today) {
-  //  console.log("form dates are not active, vehicle is active")
-    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
+    //  console.log("form dates are not active, vehicle is active")
+    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
     return robj;
   }
   if (!is_vehicle_active && dates_span_today) {
-   // console.log("form dates active, vehicle is not active")
+    // console.log("form dates active, vehicle is not active")
     if (allActiveVehiclesCount >= maxactiveallowed) {
-      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle , msgType:1};
+      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 1 };
     } else {
-      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle , msgType:0};
+      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
     }
     return robj;
   }
   if (!is_vehicle_active && !dates_span_today) {
-  //  console.log("form dates are not active, vehicle is not active");
-    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType:0 };
+    //  console.log("form dates are not active, vehicle is not active");
+    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
     return robj;
   }
 }
@@ -270,10 +279,10 @@ export const daypassVehicleCount = (vehicles) => {
   //console.log('CALLING DAYPASSVEHICLECOUNT')
   let cnt = 0;
   vehicles.forEach((el) => {
-  //  console.log('daypassVehicleCount el day_use_only',el.day_use_only);
+    //  console.log('daypassVehicleCount el day_use_only',el.day_use_only);
     if (el.day_use_only === 1) {
       if (getVehicleActiveStatusBoolean(el)) {
-      cnt += 1
+        cnt += 1
       }
     }
   });
