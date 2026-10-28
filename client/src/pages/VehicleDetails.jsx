@@ -331,7 +331,8 @@ export default function VehicleDetails() {
     // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? (checked ? 1 : 0) : value
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
+      ...(name === "carownertype" && { day_use_only: value === "visitor" || value === "contractor" ? 1 : 0 })
     }));
   };
 
