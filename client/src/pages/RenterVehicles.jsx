@@ -308,8 +308,6 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
 
-
-
     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
     let activeVehicleCount = activeVehicles.length;
 
@@ -331,28 +329,10 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
       return;
      }
 
-     if (allActiveCount >= unitParkingLimit) {
-      // if (currentVehicleCount >= renterFreeParking) {
-      // console.log("*******Parking limit reached, showing modal");
-     
-      return;
-    }
-
-
-
-         
 
     // console.log('RV handlecreate allActiveCount unitParkingLimit pa pv',
     //   allActiveCount, unitParkingLimit, pincodeAction, pincodeValue)
 
-
-
-    // if (pincodeAction === 'dayuse') {
-    //   unitParkingLimit += 1
-    // }
-
-    // const spotsTheyCanUse = 1 + (ownerOfUnit?.additional_parking_spots_paid || 0);
-    // const nextSpotNumber = currentVehicleCount; // 1 for 2nd vehicle, 2 for 3rd
 
 
      let msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
