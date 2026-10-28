@@ -39,9 +39,14 @@ export default function VehicleDetails() {
   //   ? ['visitor', 'contractor']
   //   : ['owner', 'family', 'friend', 'visitor', 'contractor'];
 
-  const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
-    ? ['visitor', 'contractor']
-    : ['owner', 'family', 'friend', 'tenant', 'visitor', 'contractor'];
+  // const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+  //   ? ['visitor', 'contractor','dayuseonly']
+  //   : ['owner', 'family', 'friend', 'tenant', 'visitor', 'contractor','dayuseonly','multiday'];
+
+     const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+    ? ['visitor', 'contractor','dayuseonly']
+    : ['owner', 'family', 'friend', 'tenant','dayuseonly','multiday'];
+
 
 
 
@@ -58,7 +63,7 @@ export default function VehicleDetails() {
     ? nonownerType
     : carownertype || vehicleOwnerTypeAry[0];
 
-  //console.log('VD selectedOwnerType',selectedOwnerType)
+ // console.log('VD selectedOwnerType',selectedOwnerType)
 
 
 
@@ -97,7 +102,7 @@ export default function VehicleDetails() {
   // };
 
   const defaultDayUseOnly = createdfrom === 'rentervehicles'
-    ? unit?.day_use_only === 1 || nonownerType === 'contractor' || nonownerType === 'visitor' ? 1 : 0
+    ? unit?.day_use_only === 1 || nonownerType === 'contractor' || nonownerType === 'visitor' || nonownerType === 'dayuseonly' ? 1 : 0
     : createdfrom === 'ownervehicles' && (unit?.day_use_only === 1 || pincodeAction === 'daypass') ? 1 : 0;
 
 
@@ -158,6 +163,11 @@ export default function VehicleDetails() {
       daysplus = 0;
       setDisableInDateField(true);
       setDisableOutDateField(false)
+    }
+    if (createdfrom === 'rentervehicles' && carownertype === 'dayuseonly') {
+      daysplus = 0;
+      setDisableInDateField(true);
+      setDisableOutDateField(true)
     }
     if (createdfrom === 'ownervehicles') {
       daysplus = 3;
@@ -273,7 +283,13 @@ export default function VehicleDetails() {
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
           setDisableInDateField(true)
-          // setDisableOutDateField(true)
+          setDisableOutDateField(true)
+        }
+        if (createdfrom === 'rentervehicles' && (carownertype === 'dayuseonly')) {
+          sd = formatLocalDate(new Date());
+          ed = formatLocalDate(new Date());
+          setDisableInDateField(true)
+          setDisableOutDateField(true)
         }
 
 
@@ -332,7 +348,7 @@ export default function VehicleDetails() {
     setFormData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
-      ...(name === "carownertype" && { day_use_only: value === "visitor" || value === "contractor" ? 1 : 0 })
+      ...(name === "carownertype" && { day_use_only: value === "visitor" || value === "contractor" || value === "dayuseonly" || value === "multiday" ? 1 : 0 })
     }));
   };
 
@@ -496,7 +512,7 @@ export default function VehicleDetails() {
         Please deactivate another vehicle before activating this one.</>);
       if (oktoaddobj.msgType === 2) {
         msg = (<>Daypass limit reached. <br />
-          You are allowed 1 Day Pass.</>);
+          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.</>);
       }
 
     }
@@ -505,7 +521,7 @@ export default function VehicleDetails() {
         CALL THE OWNER OR ADMIN</>);
       if (oktoaddobj.msgType === 2) {
         msg = (<>Daypass limit reached. <br />
-          You are allowed 1 Day Pass.</>);
+          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.</>);
       }
     }
     //   if (role === 'owner') {

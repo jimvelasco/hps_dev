@@ -199,7 +199,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   // THIS SECTION IS FOR ADDING A VEHICLE FROM THE OWNERS OR OTHER
   if (!vehicleId) {
     console.log("WE MUST NEW VEHICLE check day use count");
-    if (dayUseCount >= maxdayuse) {
+
+    if (dayUseCount >= maxdayuse && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
       return robj;
     }

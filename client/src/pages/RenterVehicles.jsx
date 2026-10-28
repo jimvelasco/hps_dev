@@ -167,26 +167,26 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           if (pincodeAction === 'renter') {
              nonTypeVehicles = nonOwnerVehicles.filter(v => {
                if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
-              //  if (v.carownertype === pincodeAction ) return true;
             });
             setDisableAddVehicle(false);
+
            } else if (pincodeAction === 'contractor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === pincodeAction) return true;
             });
-            setDisableAddVehicle(true);
-            if (unitForRenter.day_use_only === 1  || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
+            // 
              } else if (pincodeAction  === 'visitor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'visitor') return true;
             });
-            setDisableAddVehicle(true);
-       //     console.log('(nonOwnerVehicles.length',nonOwnerVehicles.length,'nonTypeVehicles.length',nonTypeVehicles.length);
-            if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
-            // if (nonTypeVehicles.length === 0) {
-            //   console.log('no visitors found')
-            //   setDisableAddVehicle(false);
-            // }
+            // setDisableAddVehicle(true);
+            // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
+          } else if (pincodeAction  === 'dayuseonly') {
+            nonTypeVehicles = nonOwnerVehicles.filter(v => {
+              if (v.carownertype === 'dayuseonly') return true;
+            });
+            // setDisableAddVehicle(true);
+            // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
           } 
           // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
           //   nonTypeVehicles = nonOwnerVehicles.filter(v => {

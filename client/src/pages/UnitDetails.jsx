@@ -486,16 +486,18 @@ export default function UnitDetails() {
                       disabled={!isAdminView}
                       required
                     >
-                      <option value="">--Select action--</option>
+                     
                       {/* <option value="standard">Standard</option>
                       <option value="dayuse">Day Use</option>
                       <option value="multiuse">Multi Use</option>
                       <option value="freenight">Free Night Parking</option>
                       <option value="contractor">Contractor</option>
                       <option value="special">Special???</option> */}
+                      <option value="">--Select action--</option>
                       <option value="renter">Short Term Renter</option>
                       <option value="visitor">Visitor / Day Guest</option>
                       <option value="contractor">Contractor / Vendor</option>
+                       <option value="dayuseonly">Day Use</option>
                      
                     </select>
                     <label className="input-label_normal" htmlFor={`unit-pin-description-${index}`}>Description</label>
