@@ -298,7 +298,7 @@ export default function RentersLogin() {
             <ModalAlert
                 isOpen={showTypeMismatch}
                 title="Validation Error"
-                message="Type from selection and action from pincode do not match"
+                message="Invalid Pin Code"
                 onConfirm={() => setShowTypeMismatch(false)}
             />
         </div>
