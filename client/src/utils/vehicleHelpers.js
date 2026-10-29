@@ -174,11 +174,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let dayUseCount = daypassVehicleCount(vehiclearray);
   let totalActiveMinusDayUseCount = filteredActiveArrayCount - dayUseCount;
 
-  if (pincodeAction === 'daypass') {
+  if (dayUseCount === 1) {
     maxactiveallowed += 1
   }
 
-  console.log('totalActiveCount ', filteredActiveArrayCount, 'dayUseCount ', dayUseCount, 'vehiclearray ', vehiclearray);
+  console.log('totalActiveCount ', filteredActiveArrayCount, 'dayUseCount ', dayUseCount, 'dayUseCount ', dayUseCount);
 
   let ownerFreeParking = unit.owner_free_parking || 0;
 
@@ -200,10 +200,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   if (!vehicleId) {
     console.log("WE MUST NEW VEHICLE check day use count");
 
-    if (dayUseCount >= maxdayuse && dates_span_today && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
-      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
-      return robj;
-    }
+    // if (dayUseCount >= maxdayuse && dates_span_today && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
+    //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+    //   return robj;
+    // }
 
 
     // it is ok to add a vehicle whos date is not active if you are a owner and adding to inventory
@@ -218,7 +218,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
       } else {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
+        if (dayUseCount >= maxdayuse && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+        }
       }
+
       return robj;
     }
   }
@@ -251,10 +255,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 1 };
     } else {
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+      if (dayUseCount >= maxdayuse) {
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
+      }
     }
-    if (dayUseCount >= maxdayuse) {
-      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
-    }
+
     return robj;
   }
   if (!is_vehicle_active && !dates_span_today) {
