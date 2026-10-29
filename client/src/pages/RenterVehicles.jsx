@@ -110,6 +110,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           const response = await axios.get(qry);
 
           const responseData = response.data;
+          console.log('choices from rentervehicles',responseData,pincodeAction)
           // responseData.forEach((el, index) => {
           //   console.log(`responseData renters Index ${index}: ${el.enddate}`);
           // });
@@ -183,7 +184,13 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
           } else if (pincodeAction  === 'dayuseonly') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === 'dayuseonly') return true;
+              if (v.carownertype === 'dayuseonly' || v.carownertype === 'multiday') return true;
+            });
+            // setDisableAddVehicle(true);
+            // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
+          }  else if (pincodeAction  === 'multiday') {
+            nonTypeVehicles = nonOwnerVehicles.filter(v => {
+              if (v.carownertype === 'multiday') return true;
             });
             // setDisableAddVehicle(true);
             // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
