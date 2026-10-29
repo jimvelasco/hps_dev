@@ -5,8 +5,10 @@ const removeUserParkingFields = async () => {
   try {
     await connectDB();
 
-    const db = mongoose.connection.useDb("hps_dev");
-    const result = await db.db.collection("users").updateMany(
+   // const db = mongoose.connection.useDb("hps_dev");
+   // const result = await db.db.collection("users").updateMany(
+       const result = await mongoose.connection.db.collection("users").updateMany(
+   
       {},
       {
         $unset: {

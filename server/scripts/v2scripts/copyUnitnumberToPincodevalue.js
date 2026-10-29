@@ -5,8 +5,8 @@ const copyUnitnumberToPincodevalue = async () => {
   try {
     await connectDB();
 
-    const db = mongoose.connection.useDb("hps_dev");
-    const result = await db.db.collection("vehicles").updateMany(
+ //   const db = mongoose.connection.useDb("hps_dev");
+    const result = await mongoose.connection.db.collection("vehicles").updateMany(
       {
         carownertype: { $in: ["renter", "visitor"] },
         unitnumber: { $type: "string" },

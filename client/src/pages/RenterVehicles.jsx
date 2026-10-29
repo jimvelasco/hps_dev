@@ -188,6 +188,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             });
             // setDisableAddVehicle(true);
             // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
+            // pincode action comes from the select list so this will never happen.  its always multiday
           }  else if (pincodeAction  === 'multiday') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'multiday') return true;

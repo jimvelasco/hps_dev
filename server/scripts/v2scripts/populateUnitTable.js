@@ -7,7 +7,7 @@ const populateUnitTable = async () => {
   try {
     await connectDB();
 
-    const connection = mongoose.connection.useDb("hps_dev");
+    const connection = mongoose.connection;
     const SourceUser = connection.model("UnitTableSourceUser", User.schema, User.collection.name);
     const units = connection.model("units", Unit.schema, "units");
     const fields = Object.keys(Unit.schema.paths).filter(

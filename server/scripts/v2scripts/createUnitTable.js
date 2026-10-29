@@ -6,15 +6,15 @@ const createUnitTable = async () => {
   try {
     await connectDB();
 
-    const db = mongoose.connection.useDb("hps_dev");
+    const db = mongoose.connection;
     const units = db.model("units", Unit.schema, "units");
     const exists = await db.db.listCollections({ name: "units" }).hasNext();
 
     if (!exists) {
       await units.createCollection();
-      console.log("Created units in hps_dev");
+      console.log(`Created units in ${db.name}`);
     } else {
-      console.log("units already exists in hps_dev");
+      console.log(`units already exists in ${db.name}`);
     }
   } catch (error) {
     console.error("Error creating units:", error);

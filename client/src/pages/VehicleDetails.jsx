@@ -82,11 +82,9 @@ export default function VehicleDetails() {
   //   : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
 
   // 
-  const selectedOwnerType = createdfrom === "rentervehicles"
-    ? nonownerType
-    : carownertype || vehicleOwnerTypeAry[0].value;
+  const selectedOwnerType =  carownertype;
 
- // console.log('VD selectedOwnerType',selectedOwnerType)
+  console.log('VD selectedOwnerType',selectedOwnerType)
 
 
 
@@ -160,7 +158,7 @@ export default function VehicleDetails() {
     plate: "",
     plate_state: "",
     unitnumber: unitNumber || "",
-    carownertype: isModifyMode ? carownertype || "" : selectedOwnerType,
+    carownertype: carownertype,
     pin_code_value: pincodeValue,
     pin_code_action: pincodeAction,
     day_use_only: defaultDayUseOnly,
@@ -172,6 +170,8 @@ export default function VehicleDetails() {
   useEffect(() => {
 
     let daysplus = 0;
+
+     console.log('WE GOT HERE' ,carownertype)
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
@@ -191,6 +191,12 @@ export default function VehicleDetails() {
       daysplus = 0;
       setDisableInDateField(true);
       setDisableOutDateField(true)
+    }
+    if (createdfrom === 'rentervehicles' && carownertype === 'multiday') {
+     
+      daysplus = 0;
+      setDisableInDateField(true);
+      setDisableOutDateField(false)
     }
     if (createdfrom === 'ownervehicles') {
       daysplus = 3;
@@ -287,7 +293,8 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-        // console.log('about to set vehicle', response.data)
+         console.log('about to set vehicle', response.data)
+         const theVehicle = response.data;
         setVehicle(response.data);
 
 
@@ -296,23 +303,29 @@ export default function VehicleDetails() {
 
         // if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
 
-        if (createdfrom === 'rentervehicles' && (carownertype === 'visitor')) {
+        // if (createdfrom === 'rentervehicles' && (carownertype === 'visitor')) {
+        //   sd = formatLocalDate(new Date());
+        //   ed = formatLocalDate(new Date());
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(true)
+        // }
+        // if (createdfrom === 'rentervehicles' && (carownertype === 'contractor')) {
+        //   sd = formatLocalDate(new Date());
+        //   ed = formatLocalDate(new Date());
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(true)
+        // }
+        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
-        if (createdfrom === 'rentervehicles' && (carownertype === 'contractor')) {
+         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
           sd = formatLocalDate(new Date());
-          ed = formatLocalDate(new Date());
+          ed = theVehicle.enddate;
           setDisableInDateField(true)
-          setDisableOutDateField(true)
-        }
-        if (createdfrom === 'rentervehicles' && (carownertype === 'dayuseonly')) {
-          sd = formatLocalDate(new Date());
-          ed = formatLocalDate(new Date());
-          setDisableInDateField(true)
-          setDisableOutDateField(true)
+          setDisableOutDateField(false)
         }
 
 

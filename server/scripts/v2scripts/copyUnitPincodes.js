@@ -6,7 +6,7 @@ const copyUnitPincodes = async () => {
   try {
     await connectDB();
 
-    const connection = mongoose.connection.useDb("hps_dev");
+    const connection = mongoose.connection;
     const units = connection.db.collection("units");
     let examined = 0;
     let updated = 0;
