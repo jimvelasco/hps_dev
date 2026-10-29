@@ -5,3 +5,4 @@ server/.env
 .DS_Store
 .zencoder
 mongo_scripts.js
+server/scripts/v2scripts/nogit/
