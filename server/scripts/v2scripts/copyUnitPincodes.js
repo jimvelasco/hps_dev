@@ -19,9 +19,22 @@ const copyUnitPincodes = async () => {
         ? entries[0]
         : {};
 
-      if (firstEntry.pincode === pincode) continue;
+      const updatedFirstEntry = {
+        ...firstEntry,
+        pincode,
+        action: firstEntry.action || "renter",
+        expire_date: firstEntry.expire_date ?? null,
+        uses_allowed: firstEntry.uses_allowed ?? -1,
+        uses_used: firstEntry.uses_used ?? 0
+      };
 
-      const pincodeary = [{ ...firstEntry, pincode }, ...entries.slice(1)];
+      if (firstEntry.pincode === updatedFirstEntry.pincode &&
+        firstEntry.action === updatedFirstEntry.action &&
+        firstEntry.expire_date === updatedFirstEntry.expire_date &&
+        firstEntry.uses_allowed === updatedFirstEntry.uses_allowed &&
+        firstEntry.uses_used === updatedFirstEntry.uses_used) continue;
+
+      const pincodeary = [updatedFirstEntry, ...entries.slice(1)];
       const result = await units.updateOne({ _id: unit._id }, { $set: { pincodeary } });
       updated += result.modifiedCount;
     }

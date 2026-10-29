@@ -106,7 +106,7 @@ const getAdminVehiclesByHoaId = async (req, res) => {
 //console.log("getAdminVehiclesByHoaId Filter qry:", qry2);
 
     const vehicles = await Vehicle.find(qry2);
-    console.log("getAdminVehiclesByHoaId reponse size is:", vehicles.length);
+  //  console.log("getAdminVehiclesByHoaId reponse size is:", vehicles.length);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -147,7 +147,7 @@ const getVehiclesByHoaIdOwnerId = async (req, res) => {
   try {
     let { hoaId, role, ownerid } = req.params;
     let { filter } = req.query;
-      console.log("getVehiclesByHoaIdOwnerId role received params:",  req.params);
+    //  console.log("getVehiclesByHoaIdOwnerId role received params:",  req.params);
     //   console.log("getVehiclesByHoaIdOwnerId role received:", role,filter);
     // const oid2 = "616d84252dc9bd0016da9673";
     if (!filter) filter = "owner";
@@ -240,7 +240,7 @@ const getVehiclesForUnitNumber = async (req, res) => {
     // ));
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
-    console.log('get vehicles for ',unitNumber);
+   // console.log('get vehicles for ',unitNumber);
 
   //  const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter", checkout: { $gte: today } };
    //   const qry = { hoaid: hoaId, unitnumber: unitNumber, carownertype: "renter" };
@@ -264,6 +264,7 @@ const getVehiclesForUnitNumber = async (req, res) => {
 const createVehicle = async (req, res) => {
   try {
     const vehicleData = req.validatedData;
+  //  console.log('CONTROLLER VD CREATE VEHICLE',vehicleData);
     const vehicle = await Vehicle.create(vehicleData);
     // Log new vehicle creation
     await logHPSRecord(vehicle,vehicleData.startdate,vehicleData.enddate);
@@ -285,7 +286,7 @@ const updateVehicle = async (req, res) => {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
-   // console.log('UPDATE VEHICLE VEHICLE DATA',vehicleData);
+  //  console.log('CONTROLLER UPDATE VEHICLE VEHICLE DATA',vehicleData);
 
     const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicleData, { new: true });
 
@@ -368,7 +369,7 @@ const deleteVehiclesByStatusFlag = async (req, res) => {
 
 const batchUpdateDateFields = async (req, res) => {
   try {
-    console.log("Batch updating vehicle date fields");
+  //  console.log("Batch updating vehicle date fields");
 
     const vehicles = await Vehicle.find({});
     let updatedCount = 0;
@@ -501,7 +502,7 @@ const deleteRenterVehicles = async (req, res) => {
     const { hoaId } = req.params;
     const { date } = req.query;
 
-    console.log('date to delete is ',date,hoaId);
+   // console.log('date to delete is ',date,hoaId);
 
     //  const countBefore = await Vehicle.countDocuments({ 
     //   hoaid: hoaId, 
@@ -514,7 +515,7 @@ const deleteRenterVehicles = async (req, res) => {
       enddate: { $lt: date } 
     });
 
-    console.log('Matching records found:', countBefore);
+ //   console.log('Matching records found:', countBefore);
     
 
     if (!date) {
@@ -574,7 +575,7 @@ const lookupPlate = async (req, res) => {
   if (!PLATE_RECOGNIZER_TOKEN) {
     return res.status(500).json({ message: "Plate Recognizer API token is missing on server" });
   }
-  console.log('lookupPlate got to here', PLATE_RECOGNIZER_TOKEN);
+ // console.log('lookupPlate got to here', PLATE_RECOGNIZER_TOKEN);
 
   try {
     const formData = new FormData();
@@ -590,7 +591,7 @@ const lookupPlate = async (req, res) => {
 
 
     formData.append('mmc', 'true');
- console.log('lookupPlate got to here 2 formdata',formData);
+// console.log('lookupPlate got to here 2 formdata',formData);
 
     const response = await fetch('https://api.platerecognizer.com/v1/plate-reader/', {
       method: 'POST',
@@ -601,13 +602,13 @@ const lookupPlate = async (req, res) => {
     });
 
     const data = await response.json();
-    console.log("WE HAVE A RESPONSE FROM PLATE RECOGNIZER",data);
+  //  console.log("WE HAVE A RESPONSE FROM PLATE RECOGNIZER",data);
 
     if (data && data.results && data.results.length > 0) {
       const result = data.results[0];
       const mmc = result.vehicle || {};
-       console.log('vehicle controller RESULT PLATE:', result.plate);
-      console.log('vehicle controller mmc:', mmc);
+ //     console.log('vehicle controller RESULT PLATE:', result.plate);
+   //   console.log('vehicle controller mmc:', mmc);
       
       res.json({
         plate: result.plate.toUpperCase(),
@@ -619,11 +620,11 @@ const lookupPlate = async (req, res) => {
         dscore: result.dscore,
       });
     } else {
-       console.log("WE HAVE A NO IMAGE FOUND RESPONSE",data);
+      // console.log("WE HAVE A NO IMAGE FOUND RESPONSE",data);
       res.status(404).json({ message: "No plate detected" });
     }
   } catch (error) {
-    console.error("Error calling Plate Recognizer API:", error);
+  //  console.error("Error calling Plate Recognizer API:", error);
     res.status(500).json({ message: "Error calling Plate Recognizer API", error: error.message });
   }
 };

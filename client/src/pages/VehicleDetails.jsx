@@ -84,7 +84,7 @@ export default function VehicleDetails() {
   // 
   const selectedOwnerType =  carownertype;
 
-  console.log('VD selectedOwnerType',selectedOwnerType)
+ // console.log('VD selectedOwnerType',selectedOwnerType)
 
 
 
@@ -336,6 +336,7 @@ export default function VehicleDetails() {
           carownerphone: response.data.carownerphone || "phone",
           unitnumber: response.data.unitnumber || "un",
           carownertype: response.data.carownertype || "cot",
+          createdbytype: response.data.createdbytype || "cbt",
           make: response.data.make || "",
           model: response.data.model || "",
           color: response.data.color || "",
@@ -813,11 +814,12 @@ export default function VehicleDetails() {
                     <select
                       className="standardselect100"
                       name="carownertype"
-                      value={formData.carownertype || vehicleOwnerTypeAry[0].value}
+                      // value={formData.carownertype || vehicleOwnerTypeAry[0].value}
+                       value={formData.carownertype}
                       onChange={handleFormChange}
                       disabled={isModifyMode || createdfrom === "rentervehicles"}
                     >
-                      <option value="" disabled>Select owner type</option>
+                      <option value="" >Select owner type</option>
                       {vehicleOwnerTypeAry.map(type => (
                         <option key={type.value} value={type.value}>
                           {type.label}

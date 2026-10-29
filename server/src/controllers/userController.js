@@ -44,18 +44,19 @@ const getUserById = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const { first_name, last_name, phone, email, hoaid,
-      unitnumber, role, password, handicapped } = req.body;
+      unitnumber, role, password, handicapped,company} = req.body;
     console.log('controller ', req.body)
 
     if (!first_name || !last_name || !phone || !email || !password || !hoaid || !unitnumber) {
-      console.log("create user we failed here");
-      console.log('first_name ', first_name);
-      console.log('last_name ', last_name);
-      console.log('phone ', phone);
-      console.log('email ', email);
-      console.log('password ', password);
-      console.log('hoaid ', hoaid);
-      console.log('unitnumber ', unitnumber);
+      // console.log("create user we failed here");
+      // console.log('first_name ', first_name);
+      // console.log('last_name ', last_name);
+      // console.log('phone ', phone);
+      // console.log('email ', email);
+      // console.log('password ', password);
+      // console.log('hoaid ', hoaid);
+      // console.log('unitnumber ', unitnumber);
+      // console.log('company ', company);
       return res.status(400).json({ message: "Missing required fields: first_name, last_name, phone, email, password, hoaid" });
     }
 
@@ -82,6 +83,7 @@ const createUser = async (req, res) => {
       hoaid,
       unitnumber,
       role,
+      company,
       handicapped
 
     });
@@ -97,7 +99,8 @@ const createUser = async (req, res) => {
         phone: user.phone,
         role: user.role,
         unitnumber: user.unitnumber,
-        handicapped: user.handicapped
+        handicapped: user.handicapped,
+        company: user.company
       }
     });
   } catch (error) {
@@ -110,9 +113,8 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { first_name, last_name, phone, email, unitnumber, bedrooms, role, company,
-      pincode, password, inventory_allowed_owner, parking_allowed_renter,
-      parking_allowed_owner, owner_free_parking, renter_free_parking, handicapped } = req.body;
+    const { first_name, last_name, phone, email, unitnumber, role, company,
+      password,  handicapped } = req.body;
     // console.log("updateUser body:", req.body);
 
     const user = await User.findById(id);
@@ -152,6 +154,7 @@ const updateUser = async (req, res) => {
     // if (parking_allowed_owner !== undefined) user.parking_allowed_owner = parking_allowed_owner;
     // if (owner_free_parking !== undefined) user.owner_free_parking = owner_free_parking;
     // if (renter_free_parking !== undefined) user.renter_free_parking = renter_free_parking;
+  //  console.log('USER CONTROLLER user is',user)
 
     await user.save();  // we use save because the model has a pre-save hook to hash password
 
@@ -166,7 +169,8 @@ const updateUser = async (req, res) => {
         //    pincode: user.pincode,
         unitnumber: user.unitnumber,
         role: user.role,
-        handicapped: user.handicapped
+        handicapped: user.handicapped,
+        company: user.company
       }
     });
   } catch (error) {
@@ -297,6 +301,7 @@ const getCurrentUser = async (req, res) => {
       email: user.email,
       unitnumber: user.unitnumber,
       role: user.role,
+      company: user.company,
 
       // these will be obtained from unit table when needed.
       // pincode: user.pincode,

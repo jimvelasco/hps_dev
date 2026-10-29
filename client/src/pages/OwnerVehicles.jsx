@@ -470,9 +470,9 @@ export default function OwnerVehicles() {
           role: loggedInUser.role,
           vehicles: vehicles,
           ownerOfUnit: loggedInUser,
-          vehid: null,
+          vehid: '',
           unit: unit,
-          carownertype: null,
+          carownertype: '',
 
           // numberOfVehicles: vehicles.length,
           createdfrom: 'ownervehicles',

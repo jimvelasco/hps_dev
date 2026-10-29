@@ -29,7 +29,7 @@ export default function UserDetails() {
     handicapped: false,
     hoaid: "",
     password: "",
-    
+    company: ""  
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -48,7 +48,8 @@ export default function UserDetails() {
             role: response.data.role || "",
             handicapped: response.data.handicapped ?? false,
             hoaid: response.data.hoaid || "",
-             password: response.data.password || "",
+            password: response.data.password || "",
+            company: response.data.company || "",
 
           });
         } catch (err) {
@@ -76,6 +77,7 @@ export default function UserDetails() {
         email: prev.email || "",
         unitnumber:  numonunit || prev.unitnumber || "",
         hoaid: prev.hoaid || "",
+        company: prev.company || "",
         role: "owner",
         password: ""
       }));
@@ -145,6 +147,7 @@ export default function UserDetails() {
         handicapped: formData.handicapped,
         hoaid: formData.hoaid,
         password: formData.password,
+        company: formData.company,
       };
 
     //  console.log('user detail submit data is ', submitData);
@@ -323,7 +326,7 @@ export default function UserDetails() {
                   name="role"
                 >
                    <option value="owner">Owner</option>
-                    <option value="owner">Tenant</option>
+                    <option value="tenant">Tenant</option>
                    <option value="admin">Admin</option>
                   <option value="enforcer">Enforcer</option>
                 </select>
@@ -394,6 +397,25 @@ export default function UserDetails() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
+                    fontSize: "14px",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </div>
+               <div style={{ marginBottom: "15px" }}>
+                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                 Company
+                </label>
+                <input
+                  type="text"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleInputChange}
                   style={{
                     width: "100%",
                     padding: "10px",

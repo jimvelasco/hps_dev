@@ -18,6 +18,7 @@ export const updateUserProfileSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters').optional().or(z.literal('')),
   pincode: z.string().min(1, 'Pincode is required').optional(),
+  company: z.string().optional()
 });
 
 export const updateUnitDetailsSchema = z.object({

@@ -57,7 +57,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             // console.log('we found a user for unit:', unitNumber, user);
             setUserIdForUnit(user._id);
             setOwnerOfUnit(user);
-           // console.log('RV NON OWNER TYPE',nonownerType);
+            console.log('RV NON OWNER TYPE',nonownerType);
           }
         } catch (err) {
           console.error("Error fetching user for unit:", err);

@@ -42,3 +42,6 @@ const tweakDbFields = async () => {
 };
 
 tweakDbFields();
+
+// from server dir
+//node scripts/v2scripts/MASTER_tweak_dbfields.js

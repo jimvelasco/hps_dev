@@ -6,8 +6,8 @@ const copyRenterVehicleOwnerType = async () => {
     await connectDB();
 
     const result = await mongoose.connection.db.collection("vehicles").updateMany(
-      { carownertype: "renter", createdbytype: { $ne: "renter" } },
-      [{ $set: { createdbytype: "$carownertype" } }]
+      { carownertype: "renter", createdbytype: { $ne: "other" } },
+      { $set: { createdbytype: "other" } }
     );
 
     console.log(`Renter vehicles matched: ${result.matchedCount}, updated: ${result.modifiedCount}`);

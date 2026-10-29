@@ -34,7 +34,8 @@ export default function UserProfile() {
     renter_free_parking: "",
     owner_free_parking: "",
     password: "",
-    passwordConfirm: ""
+    passwordConfirm: "",
+    company: "" 
   });
 
   /*
@@ -73,6 +74,7 @@ export default function UserProfile() {
             phone: response.data.phone || "",
             email: response.data.email || "",
             unitnumber: response.data.unitnumber || "",
+            company: response.data.company || "",
             password: "",
             passwordConfirm: "",
 
@@ -159,16 +161,13 @@ export default function UserProfile() {
         last_name: formData.last_name,
         phone: formData.phone,
         email: formData.email,
-
-        // unit table
-        // pincode: formData.pincode,
-        // renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : 1,
-        // owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : 1
+        company: formData.company,
       };
 
       if (formData.password) {
         submitData.password = formData.password;
       }
+    //  console.log('USER PROFILE SUBMIT DATA IS ',submitData)
 
       const response = await axios.put(`/users/profile/${loggedInUser._id}`, submitData);
 
@@ -322,6 +321,18 @@ export default function UserProfile() {
                 // }}
               />
             </div>
+             <div style={{ marginBottom: "15px" }}>
+                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+                 Company
+                </label>
+                <input
+                className = "standardinput"
+                  type="text"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleInputChange}
+                />
+              </div>
 
 
             {(loggedInUser && loggedInUser.role !== 'admin') && (
