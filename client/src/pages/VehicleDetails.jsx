@@ -43,11 +43,34 @@ export default function VehicleDetails() {
   //   ? ['visitor', 'contractor','dayuseonly']
   //   : ['owner', 'family', 'friend', 'tenant', 'visitor', 'contractor','dayuseonly','multiday'];
 
-     const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
-    ? ['visitor', 'contractor','dayuseonly']
-    : ['owner', 'family', 'friend', 'tenant','dayuseonly','multiday'];
+  // const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+  //   ? [
+  //       { value: 'visitor', label: 'Visitor' },
+  //       { value: 'contractor', label: 'Contractor' },
+  //       { value: 'dayuseonly', label: 'Day Use Only' }
+  //     ]
+  //   : [
+  //       { value: 'owner', label: 'Owner' },
+  //       { value: 'family', label: 'Family' },
+  //       { value: 'friend', label: 'Friend' },
+  //       { value: 'tenant', label: 'Tenant' },
+  //       { value: 'dayuseonly', label: 'Day Use Only' },
+  //       { value: 'multiday', label: 'Multi Day' }
+  //     ];
 
 
+  const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+    ? [
+        { value: 'dayuseonly', label: 'Day Use Only' }
+      ]
+    : [
+        { value: 'owner', label: 'Owner' },
+        { value: 'family', label: 'Family' },
+        { value: 'friend', label: 'Friend' },
+        { value: 'tenant', label: 'Tenant' },
+        { value: 'multiday', label: 'Multiple Days' },
+        { value: 'dayuseonly', label: 'Day Use Only' }
+      ];
 
 
   //console.log('VD LOCATION STATE',location.state);
@@ -61,7 +84,7 @@ export default function VehicleDetails() {
   // 
   const selectedOwnerType = createdfrom === "rentervehicles"
     ? nonownerType
-    : carownertype || vehicleOwnerTypeAry[0];
+    : carownertype || vehicleOwnerTypeAry[0].value;
 
  // console.log('VD selectedOwnerType',selectedOwnerType)
 
@@ -777,14 +800,14 @@ export default function VehicleDetails() {
                     <select
                       className="standardselect100"
                       name="carownertype"
-                      value={formData.carownertype || vehicleOwnerTypeAry[0]}
+                      value={formData.carownertype || vehicleOwnerTypeAry[0].value}
                       onChange={handleFormChange}
                       disabled={isModifyMode || createdfrom === "rentervehicles"}
                     >
                       <option value="" disabled>Select owner type</option>
                       {vehicleOwnerTypeAry.map(type => (
-                        <option key={type} value={type}>
-                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        <option key={type.value} value={type.value}>
+                          {type.label}
                         </option>
                       ))}
                     </select>

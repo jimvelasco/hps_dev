@@ -46,25 +46,20 @@ export const getVehicleActiveStatusBoolean_checkin = (element) => {
 }
 
 export const getVehicleActiveStatusBoolean = (element) => {
-  //const todayUTC = new Date(); // "2025-12-03"
-  //const todayStr = todayUTC.toISOString().split('T')[0]; 
-  //const todayStr = todayUTC.toLocaleDateString("en-CA");
 
   const todayUTC = new Date(); // "2025-12-03"
   const todayStr = formatLocalDate(todayUTC);
 
-
-
   //const mongoDateIn = new Date(element.checkin);
   const mongoDateInStr = element.startdate;
   // const mongoDate = new Date(element.checkout);
-  const mongoDateStr = element.enddate;
+  const mongoDateOutStr = element.enddate;
 
-  if (mongoDateInStr > todayStr && mongoDateStr >= todayStr) {
+  if (mongoDateInStr > todayStr && mongoDateOutStr > todayStr) {
     //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
     return false;
   }
-  if (mongoDateStr >= todayStr) {
+  if (mongoDateOutStr >= todayStr) {
     //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
     return true;
   }
@@ -88,14 +83,18 @@ const getVehicleActiveStatusBoolean2 = (sdate, edate) => {
   //const mongoDateIn = new Date(sdate);
   const mongoDateInStr = sdate; //formatLocalDate(new Date(sdate)); //utcDateOnly(mongoDateIn);
   //const mongoDate = new Date(edate);
-  const mongoDateStr = edate; //formatLocalDate(new Date(edate));
+  const mongoDateOutStr = edate; //formatLocalDate(new Date(edate));
 
-  //console.log('vhelper use formatLocalDate',mongoDateInStr,mongoDateStr);
+  // console.log('vhelper use formatLocalDate',mongoDateInStr,mongoDateOutStr,todayStr);
 
-  if (mongoDateInStr > todayStr && mongoDateStr >= todayStr) {
+  if (mongoDateInStr == todayStr && mongoDateOutStr == todayStr) {
+    return true;
+  }
+
+  if (mongoDateInStr > todayStr && mongoDateOutStr > todayStr) {
     return false;
   }
-  if (mongoDateStr >= todayStr) {
+  if (mongoDateOutStr >= todayStr) {
     return true;
   }
   else {
@@ -148,7 +147,9 @@ export const formatPhoneNumber = (phone) => {
   return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 }
 
-
+// *********** THIS IS THE METHOD THAT GETS CALLED 
+// *********** THIS IS THE METHOD THAT GETS CALLED 
+// *********** THIS IS THE METHOD THAT GETS CALLED 
 
 export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction, allActiveVehiclesCount) => {
   const formsdate = formvehicle.startdate;
@@ -162,9 +163,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   // console.log('OKTOADD formsdate',formsdate);
   // console.log('OKTOADD formedate',formedate);
   // console.log('OKTOADD allActiveVehiclesCount',allActiveVehiclesCount);
-
-
-
 
   const todayStr = new Date().toLocaleDateString("en-CA");
   let maxactiveallowed = unit.parking_allowed_unit;
@@ -189,6 +187,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   let dates_span_today = getVehicleActiveStatusBoolean2(formsdate, formedate);
 
+  console.log('dates span today', dates_span_today);
+
   let msgType = 0;
 
   let robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 0 };
@@ -200,7 +200,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   if (!vehicleId) {
     console.log("WE MUST NEW VEHICLE check day use count");
 
-    if (dayUseCount >= maxdayuse && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
+    if (dayUseCount >= maxdayuse && dates_span_today && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
       return robj;
     }
@@ -233,6 +233,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
 
+
+
   if (is_vehicle_active && dates_span_today) {
     //  console.log("form dates are active, vehicle is active");
     robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
@@ -249,6 +251,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 1 };
     } else {
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+    }
+    if (dayUseCount >= maxdayuse) {
+      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
     }
     return robj;
   }
@@ -278,11 +283,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
 export const daypassVehicleCount = (vehicles) => {
   //console.log('CALLING DAYPASSVEHICLECOUNT')
+  const todayUTC = new Date(); // "2025-12-03"
+  const todayStr = formatLocalDate(todayUTC);
   let cnt = 0;
   vehicles.forEach((el) => {
-    //  console.log('daypassVehicleCount el day_use_only',el.day_use_only);
+    //  console.log('daypassVehicleCount dates',el.startdate,el.enddate,todayStr, getVehicleActiveStatusBoolean2(el.startdate, el.enddate));
     if (el.day_use_only === 1) {
-      if (getVehicleActiveStatusBoolean(el)) {
+      if (getVehicleActiveStatusBoolean2(el.startdate, el.enddate)) {
         cnt += 1
       }
     }
