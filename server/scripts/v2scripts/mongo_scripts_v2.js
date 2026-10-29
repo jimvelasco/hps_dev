@@ -1,5 +1,33 @@
 //mongosh "mongodb://localhost:27017"
 
+// HOAS
+
+db.hoas.updateMany(
+  {},
+  { $set: { "daypasses_allowed_owner": 1 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "parking_allowed_tenant": 2 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "tenant_free_parking_spots": 2 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "daypasses_allowed_tenant": 0 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "daypasses_allowed_renter": 0 }}
+);
+db.hoas.updateMany(
+  {},
+  { $set: { "parking_handicapped_hoa": 0 }}
+);
+
+// UNITS
 
 db.units.updateMany({}, { $unset: { pincodeary: "" } })
 
@@ -52,38 +80,12 @@ db.units.updateMany(
 );
 
 
-db.hoas.updateMany(
-  {},
-  { $set: { "daypasses_allowed_owner": 1 }}
-);
-db.hoas.updateMany(
-  {},
-  { $set: { "parking_allowed_tenant": 2 }}
-);
-db.hoas.updateMany(
-  {},
-  { $set: { "tenant_free_parking_spots": 2 }}
-);
-db.hoas.updateMany(
-  {},
-  { $set: { "daypasses_allowed_tenant": 0 }}
-);
-db.hoas.updateMany(
-  {},
-  { $set: { "daypasses_allowed_renter": 0 }}
-);
-
-
-db.hoas.updateMany(
-  {},
-  { $set: { "parking_handicapped_hoa": 0 }}
-);
+// VEHICLES
 
 db.vehicles.updateMany(
   {},
   { $set: { "day_use_only": 0 }}
 );
-
 
 db.vehicles.updateMany(
   {},
