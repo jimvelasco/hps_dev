@@ -484,8 +484,8 @@ const importHOAUserCSV = async (req, res) => {
 
 
   let oary = [];
-  for (const record of records.slice(0, 3)) {
-    //  for (const record of records) {
+  //for (const record of records.slice(0, 3)) {
+    for (const record of records) {
     const output = Object.fromEntries(headers.map((header, index) => {
       const column = header.trim();
       let field = record[index];
@@ -556,8 +556,12 @@ const importHOAUserCSV = async (req, res) => {
   if (unitIndex === -1 || !records.length) {
     return res.status(400).json({ message: "CSV must include a Unit column and at least one row" });
   }
+  if (oary.some(({ Role }) => !Role?.trim())) {
+    return res.status(400).json({ message: "CSV must include a Role for every row" });
+  }
 
-  const unitNumbers = records.slice(0, 3).map((record) => record[unitIndex].trim());
+  //const unitNumbers = records.slice(0, 3).map((record) => record[unitIndex].trim());
+   const unitNumbers = records.map((record) => record[unitIndex].trim());
   if (unitNumbers.some((unitnumber) => !unitnumber)) {
     return res.status(400).json({ message: "Every CSV row must include a Unit" });
   }
@@ -565,7 +569,7 @@ const importHOAUserCSV = async (req, res) => {
     return res.status(400).json({ message: "Every CSV row must include a Name" });
   }
 
-  const phoaid = hoaid + 'x';
+  const phoaid = hoaid; // + 'x';
   const units = [];
   let createdUsers = 0;
   let skipped = 0;
@@ -576,7 +580,7 @@ const importHOAUserCSV = async (req, res) => {
     for (const [index, unitnumber] of unitNumbers.entries()) {
       currentUnitNumber = unitnumber;
       unitCreatedWithoutUser = false;
-      const { first_name, last_name, Phone, Emails } = oary[index];
+      const { first_name, last_name, Phone, Emails, Role } = oary[index];
       if (Emails && await User.findOne({ hoaid: phoaid, email: Emails })) {
         console.log('WE ARE SKIPPING A RECORD ',phoaid,Emails);
         skipped += 1;
@@ -601,13 +605,22 @@ const importHOAUserCSV = async (req, res) => {
         daypasses_allowed_renter: daypasses_allowed_renter,
 
         pincodeary: [{
-          pincode: 'PIN' + unitnumber,
-          action: "standard",
-          description: "pin description",
+          pincode:  unitnumber + 'str',
+          action: "renter",
+          description: "short term renter",
           uses_allowed: -1,
           uses_used: 0,
           expire_date: ""
-        }]
+        },
+        {
+          pincode:  unitnumber + 'duo',
+          action: "dayuseonly",
+          description: "day use only",
+          uses_allowed: -1,
+          uses_used: 0,
+          expire_date: ""
+        }
+      ]
       });
       units.push(unit);
       unitCreatedWithoutUser = true;
@@ -620,7 +633,8 @@ const importHOAUserCSV = async (req, res) => {
         last_name,
         phone: Phone,
         email: Emails,
-        password: 'PW' + unitnumber
+        role: Role.trim(),
+        password:  unitnumber + 'pw'
       });
       createdUsers += 1;
       unitCreatedWithoutUser = false;

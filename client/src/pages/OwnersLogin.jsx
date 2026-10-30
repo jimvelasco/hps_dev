@@ -38,7 +38,7 @@ export default function OwnersLogin({loginType}) {
         setEmail('jim.lodge@gmail.com');
       }
        if (hoaId === 'TIMBER') {
-        setEmail('jim.velasco@gmail.com');
+        setEmail('katherinepvelasco@gmail.com');
       }
     //  console.log("OwnersLogin component mounted", hoa);
     }
