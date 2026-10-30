@@ -396,14 +396,14 @@ export default function OwnerVehicles() {
       // const dayuseok = doesUnitHaveDayUse(unit);
       const daypassCount = daypassVehicleCount(allVehicles);
 
-      //console.log('ov daypass count is ', daypassCount);
+   //   console.log('ov daypass count is ', daypassCount,parkingLimitInventory);
 
 
       //JJVFIX
 
-      if (daypassCount > 0) {
-        parkingLimitInventory += 1;
-      }
+     // if (daypassCount > 0) {
+        parkingLimitInventory += daypassCount;
+    //  }
 
 
 

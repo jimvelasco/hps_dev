@@ -155,14 +155,16 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
 
-   console.log('OKTOADD incoming array is ',vehiclearray);
-   console.log('OKTOADD formvehicle.carownertype',formvehicle.carownertype);
+   //console.log('OKTOADD incoming array is ',vehiclearray);
+   //console.log('OKTOADD formvehicle.carownertype',formvehicle.carownertype);
   // console.log('OKTOADD vehicleId', vehicleId);
   // console.log('OKTOADD createdfrom',createdfrom);
   // console.log('OKTOADD pincodeAction',pincodeAction);
   // console.log('OKTOADD formsdate',formsdate);
   // console.log('OKTOADD formedate',formedate);
-   console.log('OKTOADD allActiveVehiclesCount',allActiveVehiclesCount);
+   //console.log('OKTOADD allActiveVehiclesCount',allActiveVehiclesCount);
+  //  console.log('OKTOADD UNIT IS ',unit);
+
 
   const todayStr = new Date().toLocaleDateString("en-CA");
   let maxactiveallowed = unit.parking_allowed_unit;
@@ -174,11 +176,16 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let dayUseCount = daypassVehicleCount(vehiclearray);
   let totalActiveMinusDayUseCount = filteredActiveArrayCount - dayUseCount;
 
-  if (dayUseCount === 1) {
-    maxactiveallowed += 1
-  }
+ // console.log("VH dayUseCount",dayUseCount)
 
-  console.log('totalActiveCount ', filteredActiveArrayCount, 'dayUseCount ', dayUseCount, 'dayUseCount ', dayUseCount);
+  // if (dayUseCount === 0) {
+  //   maxactiveallowed += unit.daypasses_allowed_owner;
+  // }
+
+  
+    maxactiveallowed += dayUseCount;
+
+  //console.log('totalActiveCount ', filteredActiveArrayCount, 'dayUseCount ', dayUseCount, 'dayUseCount ', dayUseCount,'maxactiveallowed ', maxactiveallowed);
 
   let ownerFreeParking = unit.owner_free_parking || 0;
 
@@ -215,7 +222,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     if (dates_span_today) {
       //  console.log("form dates ARE active, vehicle is null")
       if (allActiveVehiclesCount >= maxactiveallowed) {
-        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 11 };
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
       } else {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
         if (dayUseCount >= maxdayuse && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
