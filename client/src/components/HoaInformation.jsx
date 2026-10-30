@@ -19,13 +19,13 @@ const [handicappedCount, setHandicappedCount] = useState(0);
     let active = true;
     setVehicles([]);
     const qry = `/vehicles/allhoaid/${encodeURIComponent(hoaId)}`
-    console.log('qry is',qry);
+   // console.log('qry is',qry);
 
     axios.get(qry)
       .then(response => {
         if (active) {
           setVehicles(response.data);
-               console.log("HOA vehicles:", response.data);
+          //     console.log("HOA vehicles:", response.data);
           const cnt = daypassVehicleCount(response.data);
           //    console.log('HOA INFO DAYPASS COUNT',cnt);
           setDayUseCount(cnt);

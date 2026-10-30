@@ -303,13 +303,13 @@ export const daypassVehicleCount = (vehicles) => {
 }
 
 export const handicappedVehicleCount = (vehicles) => {
-  console.log('CALLING handicappedVehicleCount',vehicles)
+ // console.log('CALLING handicappedVehicleCount',vehicles)
   const todayUTC = new Date(); // "2025-12-03"
   const todayStr = formatLocalDate(todayUTC);
   let cnt = 0;
   vehicles.forEach((el) => {
     //  console.log('daypassVehicleCount dates',el.startdate,el.enddate,todayStr, getVehicleActiveStatusBoolean2(el.startdate, el.enddate));
-    console.log('handicapped',el.handicapped);
+   // console.log('handicapped',el.handicapped);
     if (el.handicapped === 1) {
         cnt += 1
     }

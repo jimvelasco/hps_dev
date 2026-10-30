@@ -110,7 +110,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           const response = await axios.get(qry);
 
           const responseData = response.data;
-          console.log('choices from rentervehicles',responseData,pincodeAction)
+       //  console.log('choices from rentervehicles',responseData,pincodeAction)
           // responseData.forEach((el, index) => {
           //   console.log(`responseData renters Index ${index}: ${el.enddate}`);
           // });

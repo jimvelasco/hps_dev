@@ -61,16 +61,16 @@ export default function VehicleDetails() {
 
   const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
     ? [
-        { value: 'dayuseonly', label: 'Day Use Only' }
-      ]
+      { value: 'dayuseonly', label: 'Day Use Only' }
+    ]
     : [
-        { value: 'owner', label: 'Owner' },
-        { value: 'family', label: 'Family' },
-        { value: 'friend', label: 'Friend' },
-        { value: 'tenant', label: 'Tenant' },
-        { value: 'multiday', label: 'Multiple Days' },
-        { value: 'dayuseonly', label: 'Day Use Only' }
-      ];
+      { value: 'owner', label: 'Owner' },
+      { value: 'family', label: 'Family' },
+      { value: 'friend', label: 'Friend' },
+      { value: 'tenant', label: 'Tenant' },
+      { value: 'multiday', label: 'Multiple Days' },
+      { value: 'dayuseonly', label: 'Day Use Only' }
+    ];
 
 
   //console.log('VD LOCATION STATE',location.state);
@@ -82,9 +82,9 @@ export default function VehicleDetails() {
   //   : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
 
   // 
-  const selectedOwnerType =  carownertype;
+  const selectedOwnerType = carownertype;
 
- // console.log('VD selectedOwnerType',selectedOwnerType)
+  // console.log('VD selectedOwnerType',selectedOwnerType)
 
 
 
@@ -124,11 +124,11 @@ export default function VehicleDetails() {
   // };
 
   const defaultDayUseOnly = createdfrom === 'rentervehicles'
-    ? unit?.day_use_only === 1 ||  nonownerType === 'dayuseonly' ? 1 : 0
-    : createdfrom === 'ownervehicles' && (unit?.day_use_only === 1 ) ? 1 : 0;
+    ? unit?.day_use_only === 1 || nonownerType === 'dayuseonly' ? 1 : 0
+    : createdfrom === 'ownervehicles' && (unit?.day_use_only === 1) ? 1 : 0;
 
 
- 
+
 
   const [formData, setFormData] = useState({
     carowner_fname: "",
@@ -155,29 +155,29 @@ export default function VehicleDetails() {
 
     let daysplus = 0;
 
-     console.log('WE GOT HERE' ,carownertype)
+    console.log('WE GOT HERE', carownertype)
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
     }
-    if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
-      daysplus = 0;
-
-      setDisableInDateField(true);
-      setDisableOutDateField(true)
-    }
-    if (createdfrom === 'rentervehicles' && carownertype === 'contractor') {
-      daysplus = 0;
-      setDisableInDateField(true);
-      setDisableOutDateField(false)
-    }
+    // if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
+    //   daysplus = 0;
+    //   setDisableInDateField(true);
+    //   setDisableOutDateField(true)
+    // }
+    // if (createdfrom === 'rentervehicles' && carownertype === 'contractor') {
+    //   daysplus = 0;
+    //   setDisableInDateField(true);
+    //   setDisableOutDateField(false)
+    // }
     if (createdfrom === 'rentervehicles' && carownertype === 'dayuseonly') {
+      console.log('THIS IS WHERE IT FAILS');
       daysplus = 0;
       setDisableInDateField(true);
       setDisableOutDateField(true)
     }
     if (createdfrom === 'rentervehicles' && carownertype === 'multiday') {
-     
+
       daysplus = 0;
       setDisableInDateField(true);
       setDisableOutDateField(false)
@@ -242,7 +242,7 @@ export default function VehicleDetails() {
           pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
           day_use_only: defaultDayUseOnly,
-           handicapped: 0,
+          handicapped: 0,
           startdate: formatLocalDate(new Date()),
           enddate: formatLocalDate(edate),
         }
@@ -279,13 +279,15 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-         console.log('about to set vehicle', response.data)
-         const theVehicle = response.data;
+        console.log('about to set vehicle', response.data)
+        const theVehicle = response.data;
         setVehicle(response.data);
 
 
         let sd = response.data.startdate;
         let ed = response.data.enddate;
+
+        console.log('VD vehicle from fetch', response.data)
 
         // if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
 
@@ -301,13 +303,29 @@ export default function VehicleDetails() {
         //   setDisableInDateField(true)
         //   setDisableOutDateField(true)
         // }
-        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
+        console.log('SPECIFICS ARE theVehicle.carownertype', theVehicle.carownertype, 'SPECIFICS ARE theVehicle.createdbytype', theVehicle.createdbytype)
+        //  if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' && theVehicle.createdbytype !== 'other')) {
+        //   sd = formatLocalDate(new Date());
+        //   ed = formatLocalDate(new Date());
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(true)
+        // }
+        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' && theVehicle.createdbytype === 'other')) {
+          // sd = theVehicle.startdate;
+          // ed = theVehicle.enddate;
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
+
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
-         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
+        if (createdfrom === 'ownervehicles' ) {
+          sd = theVehicle.startdate;
+          ed = theVehicle.enddate;
+          setDisableInDateField(false)
+          setDisableOutDateField(false)
+        }
+        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
           sd = formatLocalDate(new Date());
           ed = theVehicle.enddate;
           setDisableInDateField(true)
@@ -802,7 +820,7 @@ export default function VehicleDetails() {
                       className="standardselect100"
                       name="carownertype"
                       // value={formData.carownertype || vehicleOwnerTypeAry[0].value}
-                       value={formData.carownertype}
+                      value={formData.carownertype}
                       onChange={handleFormChange}
                       disabled={isModifyMode || createdfrom === "rentervehicles"}
                     >
@@ -1017,19 +1035,19 @@ export default function VehicleDetails() {
                     disabled={disableOutDateField}
                   />
                 </div>
-                 <div className="unit-checkbox-row">
-                <input
-                  type="checkbox"
-                  id="vehicle-handicapped"
-                  name="handicapped"
-                  checked={formData.handicapped === 1}
-                  onChange={handleFormChange}
-                  style={{ width: "18px", height: "18px", cursor: "pointer" }}
-                
+                <div className="unit-checkbox-row">
+                  <input
+                    type="checkbox"
+                    id="vehicle-handicapped"
+                    name="handicapped"
+                    checked={formData.handicapped === 1}
+                    onChange={handleFormChange}
+                    style={{ width: "18px", height: "18px", cursor: "pointer" }}
 
-                />
-                <label className="input-label" htmlFor="vehicle-handicapped">Handicapped</label>
-              </div>
+
+                  />
+                  <label className="input-label" htmlFor="vehicle-handicapped">Handicapped</label>
+                </div>
 
 
                 {/* <div style={{ marginBottom: "15px", display: "invisible" }}>
