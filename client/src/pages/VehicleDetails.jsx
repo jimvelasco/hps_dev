@@ -291,19 +291,7 @@ export default function VehicleDetails() {
 
         // if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
 
-        // if (createdfrom === 'rentervehicles' && (carownertype === 'visitor')) {
-        //   sd = formatLocalDate(new Date());
-        //   ed = formatLocalDate(new Date());
-        //   setDisableInDateField(true)
-        //   setDisableOutDateField(true)
-        // }
-        // if (createdfrom === 'rentervehicles' && (carownertype === 'contractor')) {
-        //   sd = formatLocalDate(new Date());
-        //   ed = formatLocalDate(new Date());
-        //   setDisableInDateField(true)
-        //   setDisableOutDateField(true)
-        // }
-        console.log('SPECIFICS ARE theVehicle.carownertype', theVehicle.carownertype, 'SPECIFICS ARE theVehicle.createdbytype', theVehicle.createdbytype)
+       // console.log('SPECIFICS ARE theVehicle.carownertype', theVehicle.carownertype, 'SPECIFICS ARE theVehicle.createdbytype', theVehicle.createdbytype)
         //  if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' && theVehicle.createdbytype !== 'other')) {
         //   sd = formatLocalDate(new Date());
         //   ed = formatLocalDate(new Date());
