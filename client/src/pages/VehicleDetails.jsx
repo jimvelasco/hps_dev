@@ -93,6 +93,7 @@ export default function VehicleDetails() {
   const [stateUnit, setStateUnit] = useState();
   const [disableInDateField, setDisableInDateField] = useState(false)
   const [disableOutDateField, setDisableOutDateField] = useState(false)
+  const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [createdByType, setCreatedByType] = useState("owner");
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
@@ -123,28 +124,11 @@ export default function VehicleDetails() {
   // };
 
   const defaultDayUseOnly = createdfrom === 'rentervehicles'
-    ? unit?.day_use_only === 1 || nonownerType === 'contractor' || nonownerType === 'visitor' || nonownerType === 'dayuseonly' ? 1 : 0
-    : createdfrom === 'ownervehicles' && (unit?.day_use_only === 1 || pincodeAction === 'daypass') ? 1 : 0;
+    ? unit?.day_use_only === 1 ||  nonownerType === 'dayuseonly' ? 1 : 0
+    : createdfrom === 'ownervehicles' && (unit?.day_use_only === 1 ) ? 1 : 0;
 
 
-  // let daysplus = 3;
-
-  // if (createdfrom === 'ownervehicles' && pincodeAction === 'daypass') {
-  //   daysplus = 0;
-  // }
-  // if (createdfrom === 'rentervehicles' && carownertype === 'visitor') {
-  //   daysplus = 0;
-  // }
-  // if (createdfrom === 'rentervehicles' && carownertype === 'contractor') {
-  //   daysplus = 0;
-  // }
-
-  // const edate = new Date();
-  // edate.setDate(edate.getDate() + daysplus);
-
-
-
-  const [termsAcknowledged, setTermsAcknowledged] = useState(false);
+ 
 
   const [formData, setFormData] = useState({
     carowner_fname: "",
@@ -327,7 +311,7 @@ export default function VehicleDetails() {
           sd = formatLocalDate(new Date());
           ed = theVehicle.enddate;
           setDisableInDateField(true)
-          setDisableOutDateField(false)
+          setDisableOutDateField(true)
         }
 
 
