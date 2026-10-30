@@ -495,8 +495,8 @@ export default function UnitDetails() {
                       <option value="special">Special???</option> */}
                       <option value="">--Select action--</option>
                       <option value="renter">Short Term Renter</option>
-                      <option value="visitor">Visitor / Day Guest</option>
-                      <option value="contractor">Contractor / Vendor</option>
+                      {/* <option value="visitor">Visitor / Day Guest</option>
+                      <option value="contractor">Contractor / Vendor</option> */}
                        <option value="dayuseonly">Day Use</option>
                      
                     </select>
