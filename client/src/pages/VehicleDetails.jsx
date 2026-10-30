@@ -162,7 +162,7 @@ export default function VehicleDetails() {
     pin_code_value: pincodeValue,
     pin_code_action: pincodeAction,
     day_use_only: defaultDayUseOnly,
-
+    handicapped: 0,
     startdate: formatLocalDate(new Date()),
     enddate: formatLocalDate(new Date())
   });
@@ -234,6 +234,7 @@ export default function VehicleDetails() {
           pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
           day_use_only: defaultDayUseOnly,
+          handicapped: 0,
           startdate: formatLocalDate(new Date()),
           enddate: formatLocalDate(edate),
 
@@ -257,6 +258,7 @@ export default function VehicleDetails() {
           pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
           day_use_only: defaultDayUseOnly,
+           handicapped: 0,
           startdate: formatLocalDate(new Date()),
           enddate: formatLocalDate(edate),
         }
@@ -348,6 +350,7 @@ export default function VehicleDetails() {
           enddate: ed,
           requires_payment: response.data.requires_payment || 0,
           day_use_only: response.data.day_use_only ?? 0,
+          handicapped: response.data.handicapped ?? 0,
           pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
         });
@@ -1030,8 +1033,22 @@ export default function VehicleDetails() {
                     disabled={disableOutDateField}
                   />
                 </div>
+                 <div className="unit-checkbox-row">
+                <input
+                  type="checkbox"
+                  id="vehicle-handicapped"
+                  name="handicapped"
+                  checked={formData.handicapped === 1}
+                  onChange={handleFormChange}
+                  style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                
 
-                <div style={{ marginBottom: "15px", display: "invisible" }}>
+                />
+                <label className="input-label" htmlFor="vehicle-handicapped">Handicapped</label>
+              </div>
+
+
+                {/* <div style={{ marginBottom: "15px", display: "invisible" }}>
                   <label className="input-label" htmlFor="vehicle-pin-code">
                     PIN Code
                   </label>
@@ -1055,7 +1072,7 @@ export default function VehicleDetails() {
                     readOnly
                     disabled
                   />
-                </div>
+                </div> */}
               </fieldset>
 
 

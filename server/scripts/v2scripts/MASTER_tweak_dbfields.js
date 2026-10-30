@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import connectDB from "../../src/config/db.js";
 
 const operations = [
+  ["hoas", { $set: { daypasses_allowed_hoa: 10 } }],
   ["hoas", { $set: { daypasses_allowed_owner: 1 } }],
   ["hoas", { $set: { parking_allowed_tenant: 2 } }],
   ["hoas", { $set: { tenant_free_parking_spots: 2 } }],
@@ -20,6 +21,7 @@ const operations = [
   ["units", { $set: { daypasses_allowed_renter: 0 } }],
   ["units", { $set: { day_use_only: 0 } }],
   ["vehicles", { $set: { day_use_only: 0 } }],
+  ["vehicles", { $set: { handicapped: 0 } }],
   ["vehicles", { $set: { createdbytype: "owner" } }],
   ["vehicles", { $set: { pin_code_value: "" } }],
   ["vehicles", { $set: { pin_code_action: "renter" } }]

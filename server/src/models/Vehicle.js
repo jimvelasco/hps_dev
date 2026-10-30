@@ -75,6 +75,9 @@ const vehicleSchema = new mongoose.Schema(
   day_use_only: {
      type: Number, default: 0
   },
+  handicapped: {
+    type: Number, default: 0
+  },
   enddate: {
     type: String
   },

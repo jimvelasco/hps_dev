@@ -36,6 +36,11 @@ const HoaSchema = new mongoose.Schema({
     default: 50
   },
 
+   daypasses_allowed_hoa: {
+    type: Number,
+    default: 10
+  },
+
   // this is the number of spots  reserved for handicapped 
   parking_handicapped_hoa: {
     type: Number,

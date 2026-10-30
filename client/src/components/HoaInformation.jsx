@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import ParkingSpacesOverview from "./ParkingSpacesOverview";
-import { daypassVehicleCount } from "../utils/vehicleHelpers";
+import { daypassVehicleCount,handicappedVehicleCount } from "../utils/vehicleHelpers";
 
 
 
@@ -11,21 +11,26 @@ export default function HoaInformation({ hoa }) {
   const navigate = useNavigate();
   const [vehicles, setVehicles] = useState([]);
   const [dayUseCount, setDayUseCount] = useState(0);
+const [handicappedCount, setHandicappedCount] = useState(0);
 
   useEffect(() => {
     if (!hoaId) return;
 
     let active = true;
     setVehicles([]);
+    const qry = `/vehicles/allhoaid/${encodeURIComponent(hoaId)}`
+    console.log('qry is',qry);
 
-    axios.get(`/vehicles/allhoaid/${encodeURIComponent(hoaId)}`)
+    axios.get(qry)
       .then(response => {
         if (active) {
           setVehicles(response.data);
-          //     console.log("HOA vehicles:", response.data);
+               console.log("HOA vehicles:", response.data);
           const cnt = daypassVehicleCount(response.data);
           //    console.log('HOA INFO DAYPASS COUNT',cnt);
           setDayUseCount(cnt);
+          const hcnt = handicappedVehicleCount(response.data);
+          setHandicappedCount(hcnt);
 
         }
       })
@@ -121,10 +126,10 @@ export default function HoaInformation({ hoa }) {
              <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>HOA Parking</h3>
              <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
              <div><strong>Total Parking Places:</strong> </div><div>{hoa.parking_allowed_hoa}</div>
-              <div><strong>Handicapped Places:</strong> </div><div>{hoa.parking_handicapped_hoa}</div>
-              <div><strong>Handicapped Used:</strong> </div><div>{0}</div>
+              <div><strong>Handicapped Places:</strong> </div><div>{hoa.parking_handicapped_hoa}</div> 
+              <div><strong>Handicapped Used:</strong> </div><div>{handicappedCount}</div>
              
-              <div><strong>Day Passes Allowed:</strong> </div><div>{8}</div>
+              <div><strong>Day Passes Allowed:</strong> </div><div>{hoa.daypasses_allowed_hoa}</div>
               <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
 
             </div>
@@ -155,7 +160,7 @@ export default function HoaInformation({ hoa }) {
           <div><strong>Day Passes Allowed:</strong> </div><div>{8}</div>
           <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
           <div><strong>Handicapped Places:</strong> </div><div>{7}</div>
-          <div><strong>Handicapped Used:</strong> </div><div>{2}</div>
+          <div><strong>Handicapped Used:</strong> </div><div>{handicappedCount}</div>
         </div>
       </section>
     </div>

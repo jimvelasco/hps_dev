@@ -51,6 +51,7 @@ const getVehiclesByHoaId = async (req, res) => {
     const qry = { hoaid: hoaId };
     
     const vehicles = await Vehicle.find(qry);
+    console.log('controller getVehiclesByHoaId',vehicles)
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });

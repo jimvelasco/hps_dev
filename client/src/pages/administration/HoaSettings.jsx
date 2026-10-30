@@ -24,6 +24,7 @@ export default function HoaSettings() {
     zip: "",
     parking_allowed_hoa: 50,
     parking_handicapped_hoa: 0,
+    daypasses_allowed_hoa: 10,
     inventory_allowed_owner: 5,
     parking_allowed_renter: 2,
     parking_allowed_owner: 2,
@@ -50,6 +51,7 @@ export default function HoaSettings() {
         zip: hoa.zip || "",
         parking_allowed_hoa: hoa.parking_allowed_hoa || 50,
         parking_handicapped_hoa: hoa.parking_handicapped_hoa || 0,
+        daypasses_allowed_hoa: hoa.daypasses_allowed_hoa ?? 10,
         inventory_allowed_owner: hoa.inventory_allowed_owner || 5,
         parking_allowed_renter: hoa.parking_allowed_renter || 2,
         parking_allowed_owner: hoa.parking_allowed_owner || 2,
@@ -71,6 +73,7 @@ export default function HoaSettings() {
     const { name, value } = e.target;
     const numericFields = [
       "parking_allowed_hoa",
+      "daypasses_allowed_hoa",
       "inventory_allowed_owner",
       "parking_allowed_renter",
       "parking_allowed_owner",
@@ -229,6 +232,17 @@ export default function HoaSettings() {
                 className="standardinput"
                 name="parking_handicapped_hoa"
                 value={formData.parking_handicapped_hoa}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
+              <label className="input-label">Day Passes Allowed</label>
+              <input
+                type="number"
+                className="standardinput"
+                name="daypasses_allowed_hoa"
+                value={formData.daypasses_allowed_hoa}
                 onChange={handleInputChange}
               />
             </div>

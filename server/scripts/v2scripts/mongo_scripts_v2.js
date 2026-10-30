@@ -4,6 +4,11 @@
 
 db.hoas.updateMany(
   {},
+  { $set: { "daypasses_allowed_hoa": 10 }}
+);
+
+db.hoas.updateMany(
+  {},
   { $set: { "daypasses_allowed_owner": 1 }}
 );
 db.hoas.updateMany(
@@ -85,6 +90,11 @@ db.units.updateMany(
 db.vehicles.updateMany(
   {},
   { $set: { "day_use_only": 0 }}
+);
+
+db.vehicles.updateMany(
+  {},
+  { $set: { "handicapped": 0 }}
 );
 
 db.vehicles.updateMany(
