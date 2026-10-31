@@ -582,7 +582,7 @@ export default function VehicleDetails() {
       vehcbt = cv.createdbytype;
     }
 
-    //   console.log('the cv is ',cv,unitcbt)
+      
 
     // JJVFIX
     try {
@@ -596,7 +596,9 @@ export default function VehicleDetails() {
           cbt = "owner";
         }
       }
-
+      // console.log('the cv is ',cv)
+      //  console.log('the vehcbt ',vehcbt)
+      //   console.log('the cbt is ',cbt)
 
 
       const vehiclePayload = {

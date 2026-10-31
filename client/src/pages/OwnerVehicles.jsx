@@ -222,6 +222,7 @@ export default function OwnerVehicles() {
   const unitQuery = unitSearch.trim().toLowerCase();
   const plateQuery = plateSearch.trim().toLowerCase();
   // JJVFIX not sure what happens here not filtering out renters for admin
+  // this will not show the renter vehicles in the display
   const filteredVehicles = loggedInUser?.role === "admin"
     ? vehicles.filter(vehicle =>
       String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
@@ -403,12 +404,14 @@ export default function OwnerVehicles() {
 
       // const dayuseok = doesUnitHaveDayUse(unit);
 
+      // this will get all the count all the ACTIVE daypass vehicles 
       const daypassCount = daypassVehicleCount(allVehicles);
+
+      // this counts all vehicles with a daypass that are active or inactive
       const anydaypassCount = anyDaypassVehicleCount(allVehicles);
 
-      console.log('IN HANDLE CREATE ALL VEHICLES ARE',allVehicles)
-
-      //   console.log('ov daypass count is ', daypassCount,parkingLimitInventory);
+      // console.log('vehicles in owner vehicles 414',vehicles)
+      // console.log('vehicles in owner allVehicles 414',allVehicles)
 
 
       //JJVFIX
@@ -422,13 +425,13 @@ export default function OwnerVehicles() {
       // this needs to be verified
       // console.log('data from ov veh.length pli',vehicles.length,parkingLimitInventory)
 
-
       let rentervehs = allActiveVehicles.filter(v => v.carownertype === 'renter').length
       let ownervehs = allActiveVehicles.filter(v => v.carownertype !== 'renter' && v.carownertype !== 'dayuseonly').length
       let dayusevehs = allActiveVehicles.filter(v => v.carownertype === 'dayuseonly').length
-      console.log('OV all active rentervehs are', rentervehs);
-      console.log('OV all active ownervehs are', ownervehs);
-      console.log('OV all active dayusevehs are', dayusevehs);
+
+      // console.log('OV all active rentervehs are', rentervehs);
+      // console.log('OV all active ownervehs are', ownervehs);
+      // console.log('OV all active dayusevehs are', dayusevehs);
 
       // if (rentervehs > 0) {
       //    msg = (<>Vehicle limit reached. <br /> You may only have <br />{parkingLimitInventory} vehicles in your inventory.<br /><br/>
@@ -450,40 +453,6 @@ export default function OwnerVehicles() {
         return;
       }
 
-      // console.log('ov vehicles',vehicles);
-      // let ownerdplimit = unit.daypasses_allowed_owner; //1;  // this should come from hoa config
-
-      // if (loggedInUser.role === 'tenant') {
-      //   ownerdplimit = unit.daypasses_allowed_tenant;
-      // }
-      //   console.log('IN OV IN ADD METHOD.  THE ACTIVE VEHICLES NEEDS A NUMBER',allVehicles.length);
-
-      //    console.log('the owner daily pass limit is daypassCount,ownerdplimit',daypassCount,ownerdplimit,loggedInUser.role);
-      // let activevehiclelimit = unit.parking_allowed_owner;
-
-      // if (daypassCount > 0) {
-      //   activevehiclelimit += 1;
-      // }
-
-
-      // JJVFIX
-
-      // msg = (<>Daypass Limit Reached. <br /> You may only have <br /> {ownerdplimit} daypass vehicle.</>);
-
-      // // if (daypassCount >= ownerdplimit && pin_code_action === 'daypass') {
-      //  if (anydaypassCount >= ownerdplimit) {
-      //   setModal({
-      //     isOpen: true,
-      //     type: "alert",
-      //     title: "Validation Error",
-      //     message: msg,
-      //     confirmText: "OK",
-      //     onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
-      //   });
-      //   return;
-      // }
-
-     
 
       navigate(`/${hoaId}/vehicledetails/create/${uid}`, {
         state: {
