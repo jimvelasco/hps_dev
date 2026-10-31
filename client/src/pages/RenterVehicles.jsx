@@ -482,11 +482,13 @@ export default function RenterVehicles() {
 
   const t = nonownerTypeText + ' Vehicles'; // +   localStorage.getItem('unitNumber');
 
-  //console.log('pincodeAction', pincodeAction)
+ //console.log('pincodeAction', pincodeAction)
 
   //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "renter" ||  v.carownertype === "dayuseonly")];  // only show renters
 
-  const displayedVehicles = vehicles.filter(v => v.carownertype === (pincodeAction === 'dayuseonly' ? 'dayuseonly' : 'renter'));
+  const displayedVehicles = vehicles.filter(v => pincodeAction === 'dayuseonly'
+    ? v.carownertype === 'dayuseonly' || v.carownertype === 'multiday'
+    : v.carownertype === 'renter');
   //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "dayuseonly" )]; 
 
   return (
