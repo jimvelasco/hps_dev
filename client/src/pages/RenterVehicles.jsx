@@ -7,7 +7,7 @@ import { useError } from "../context/ErrorContext";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
-import { getVehicleActiveStatusBoolean, utcDateOnly,daypassVehicleCount } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 import HoaInformation from "../components/HoaInformation";
 import { getAWSResource } from "../utils/awsHelper";
@@ -31,7 +31,9 @@ export default function RenterVehicles() {
   const [pincodeActionLabel, setPincodeActionLabel] = useState("");
   const [disableAddVehicle, setDisableAddVehicle] = useState(false)
   const [allActiveCount, setAllActiveCount] = useState(0);
+  const [allActiveVehicles, setAllActiveVehicles] = useState([]);
   const [daypassCount, setDaypassCount] = useState(0);
+  const [containsDaypassCount, setContainsDaypassCount] = useState(0)
 
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
@@ -39,12 +41,13 @@ export default function RenterVehicles() {
   const nonownerTypeText = location.state?.nonownerTypeText;
   const pincodeAction = location.state?.pincodeAction;
   const pincodeValue = location.state?.pincodeValue;
- 
+  const createdfrom = location.state?.createdfrom;
+
   // from renterlogin the state passed is
   //  navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
   //               state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: response.data.action }
   //           });
-const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
 
   useEffect(() => {
@@ -57,7 +60,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             // console.log('we found a user for unit:', unitNumber, user);
             setUserIdForUnit(user._id);
             setOwnerOfUnit(user);
-            console.log('RV NON OWNER TYPE',nonownerType);
+       //     console.log('RV NON OWNER TYPE', nonownerType);
           }
         } catch (err) {
           console.error("Error fetching user for unit:", err);
@@ -110,7 +113,8 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           const response = await axios.get(qry);
 
           const responseData = response.data;
-       //  console.log('choices from rentervehicles',responseData,pincodeAction)
+          //   console.log('the response data is ',responseData);
+          //  console.log('choices from rentervehicles',responseData,pincodeAction)
           // responseData.forEach((el, index) => {
           //   console.log(`responseData renters Index ${index}: ${el.enddate}`);
           // });
@@ -122,23 +126,28 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          // const dayusecount  = daypassVehicleCount(updatedVehicles);
-          setDaypassCount( daypassVehicleCount(updatedVehicles));
-         
-         
-          
 
-        //  console.log('updatedVehicles', updatedVehicles.length,updatedVehicles);
+
+          // const dayusecount  = daypassVehicleCount(updatedVehicles);
+          setDaypassCount(daypassVehicleCount(updatedVehicles));
+
+          console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
+
+          let containsdaypass = updatedVehicles.filter(v => v.carownertype === 'dayuseonly').length;
+          setContainsDaypassCount(containsdaypass)
 
           let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
           setAllActiveCount(activeVehicles.length);
+          setAllActiveVehicles(activeVehicles);
+
+          //   console.log('RV activeVehicles ', activeVehicles);
 
 
 
 
           //      console.log('renter vehicles active vehicles length', activeVehicles.length);
 
-          //     console.log('passed in location state',location.state);
+          console.log('RENTER VEHICLES passed in location state', location.state);
 
 
           //   console.log('active vehicles length', activeVehicles.length);
@@ -154,48 +163,48 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           //   if (v.carownertype === nonownerType) return true;
           // });
 
-       //   console.log('NON OWNER VEHICLES', nonOwnerVehicles);
-        // JJVFIX this should bring in the visitor from owner inventory. for demo only
-        // look at logic here
-         const todayUTC = new Date(); // "2025-12-03"
-          const todayStr = formatLocalDate(todayUTC); 
+          //   console.log('NON OWNER VEHICLES', nonOwnerVehicles);
+          // JJVFIX this should bring in the visitor from owner inventory. for demo only
+          // look at logic here
+          const todayUTC = new Date(); // "2025-12-03"
+          const todayStr = formatLocalDate(todayUTC);
 
           // JJVFIX
 
-        //  console.log('PIN CODE ACTION', pincodeAction,todayStr);
+          //  console.log('PIN CODE ACTION', pincodeAction,todayStr);
 
           let nonTypeVehicles = [];
           if (pincodeAction === 'renter') {
-             nonTypeVehicles = nonOwnerVehicles.filter(v => {
-               if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
+            nonTypeVehicles = nonOwnerVehicles.filter(v => {
+              if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
             });
             setDisableAddVehicle(false);
 
-           } else if (pincodeAction === 'contractor') {
+          } else if (pincodeAction === 'contractor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === pincodeAction) return true;
             });
             // 
-             } else if (pincodeAction  === 'visitor') {
+          } else if (pincodeAction === 'visitor') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'visitor') return true;
             });
             // setDisableAddVehicle(true);
             // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
-          } else if (pincodeAction  === 'dayuseonly') {
+          } else if (pincodeAction === 'dayuseonly') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'dayuseonly' || v.carownertype === 'multiday') return true;
             });
             // setDisableAddVehicle(true);
             // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
             // pincode action comes from the select list so this will never happen.  its always multiday
-          }  else if (pincodeAction  === 'multiday') {
+          } else if (pincodeAction === 'multiday') {
             nonTypeVehicles = nonOwnerVehicles.filter(v => {
               if (v.carownertype === 'multiday') return true;
             });
             // setDisableAddVehicle(true);
             // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
-          } 
+          }
           // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
           //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
           //     if (v.carownertype === nonownerType) return true;
@@ -208,19 +217,21 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           //     console.log('we have a winner');
           //   }
           // });
-         
+
 
           // nonownerType
 
           // we get the entire batch of vehicles not just the other
-          setVehicles(nonTypeVehicles);
-          // setVehicles(updatedVehicles);
+          // setVehicles(nonTypeVehicles);
+          //.filter(v => v.carownertype !== "renter");
+          setVehicles(nonOwnerVehicles);
+          // setVehicles(nonTypeVehicles);
 
-        //  if (pincodeAction != 'standard') {
-            if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
-            if (pincodeAction == 'contractor') setPincodeActionLabel('(Contractor)');
-            if (pincodeAction == 'visitor') setPincodeActionLabel('(Visitor)');
-        //  }
+          //  if (pincodeAction != 'standard') {
+          if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
+          if (pincodeAction == 'contractor') setPincodeActionLabel('(Contractor)');
+          if (pincodeAction == 'visitor') setPincodeActionLabel('(Visitor)');
+          //  }
 
           // console.log('updatedVehicles',updatedVehicles)
           setVehiclesError(null);
@@ -234,7 +245,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
 
       fetchVehicles();
     }
-  }, [hoaId, unitNumber, nonownerType,unitForRenter]);
+  }, [hoaId, unitNumber, nonownerType, unitForRenter]);
 
   if (loading) {
     return <div style={{ padding: "20px" }}>Loading HOA data...</div>;
@@ -279,6 +290,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
       }
     });
     setVehicles(sorted);
+
   };
 
   const handleDetailsClick = (vehicle) => {
@@ -297,8 +309,8 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
         unit: unitForRenter,
         carownertype: nonownerType,
         createdfrom: 'rentervehicles',
-        pincodeAction: pincodeAction,
-        allActiveVehiclesCount: allActiveCount
+        pincodeAction: pincodeAction
+
       }
     });
   }
@@ -319,23 +331,44 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
     let activeVehicleCount = activeVehicles.length;
 
+    console.log('RV all active vehicles are', activeVehicles);
+
+    // let rentervehs = allActiveVehicles.filter(v => v.carownertype === 'renter').length
+    // let ownervehs = allActiveVehicles.filter(v => v.carownertype !== 'renter' && v.carownertype !== 'dayuseonly').length
+    // let dayusevehs =  allActiveVehicles.filter(v => v.carownertype === 'dayuseonly').length
+    // console.log('RV all active rentervehs are', rentervehs);
+    // console.log('RV all active ownervehs are', ownervehs);
+    // console.log('RV all active dayusevehs are', dayusevehs);
+
+    let rentervehs = vehicles.filter(v => v.carownertype === 'renter' && v.calculatedActiveFlag === true).length
+    let ownervehs = vehicles.filter(v => v.carownertype !== 'renter' && v.calculatedActiveFlag === true).length
+    let dayusevehs = vehicles.filter(v => v.carownertype === 'dayuseonly' && v.calculatedActiveFlag === true).length
+    let dayusevehsany = vehicles.filter(v => v.carownertype === 'dayuseonly').length
+    console.log('VH all active rentervehs are', rentervehs);
+    console.log('VH all active ownervehs are', ownervehs);
+    console.log('VH all active dayusevehs are', dayusevehs);
+    console.log('VH all active dayusevehsany are', dayusevehsany);
+
     const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
     let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
+    // unitParkingLimit += dayusevehs;
 
-     const daypassesallowed = unitForRenter.daypasses_allowed_owner;
-     if ((daypassCount >= daypassesallowed) && nonownerType !== 'renter' ) {
-       setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Validation Error",
-        message: (<>Daypass limit reached.<br />You are allowed <br /> {daypassesallowed}  day pass vehicle(s).</>),
-        confirmText: "OK",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
-      });
-      return;
-     }
+    // const daypassesallowed = unitForRenter.daypasses_allowed_owner;
+    // if ((daypassCount >= daypassesallowed) && nonownerType !== 'renter') {
+    //   setModal({
+    //     isOpen: true,
+    //     type: "alert",
+    //     title: "Validation Error",
+    //     message: (<>Daypass limit reached.<br />You are allowed <br /> {daypassesallowed}  day pass vehicle(s).</>),
+    //     confirmText: "OK",
+    //     onConfirm: () => {
+    //       setModal(prev => ({ ...prev, isOpen: false }));
+    //     },
+    //   });
+    //   return;
+    // }
+
+    // unitParkingLimit += daypassCount;
 
 
     // console.log('RV handlecreate allActiveCount unitParkingLimit pa pv',
@@ -343,13 +376,36 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
 
 
 
-     let msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
+    let msg = 'now is the time';
+
+
+    if (ownervehs > 0) { // we must have one in 
+      msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
         CALL THE OWNER OR ADMIN</>);
+    } else {
+      msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. </>)
 
-    //  msg = (<>You are not allowed to have more active vehicles than your parking allowance. {unitParkingLimit} <br />
-    //   Please deactivate another vehicle before activating this one.</>);
+    }
 
-    if (allActiveCount >= unitParkingLimit) {
+    console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit)
+
+    if (dayusevehs > 0) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: `There is a contractor active in the unit.`,
+        confirmText: "OK",
+        // cancelText: "Cancel",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
+      return;
+    }
+
+
+    if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
       // if (currentVehicleCount >= renterFreeParking) {
       // console.log("*******Parking limit reached, showing modal");
       setModal({
@@ -381,7 +437,8 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
         carownertype: nonownerType,
         createdfrom: 'rentervehicles',
         pincodeValue: pincodeValue,
-        pincodeAction: pincodeAction
+        pincodeAction: pincodeAction,
+        allActiveVehicles: allActiveVehicles
 
       }
     });
@@ -424,9 +481,13 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
   }
 
   const t = nonownerTypeText + ' Vehicles'; // +   localStorage.getItem('unitNumber');
-  // const displayedVehicles = vehicles.filter(v => v.carownertype !== "owner");
-  const displayedVehicles = [...vehicles];
 
+  //console.log('pincodeAction', pincodeAction)
+
+  //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "renter" ||  v.carownertype === "dayuseonly")];  // only show renters
+
+  const displayedVehicles = vehicles.filter(v => v.carownertype === (pincodeAction === 'dayuseonly' ? 'dayuseonly' : 'renter'));
+  //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "dayuseonly" )]; 
 
   return (
     <div className="page-background" style={{ backgroundImage: `url('${backgroundImage}')` }}>
@@ -441,7 +502,6 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             </label>
             </div> */}
 
-
         <div className="tableview">
           <div className="standardtitlebar320" >
             <label className="input-label2">
@@ -450,16 +510,12 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             </label><br />
             <div className="button-grid">
               <button className="btns btn-primary" style={{ maxWidth: "150px", marginTop: "5px" }} onClick={handleCreateClick}
-                disabled = {disableAddVehicle}
+                disabled={disableAddVehicle}
               >
                 <FontAwesomeIcon
                   icon={faPlus}
                 />  Add Vehicle
-               
-                
-
               </button>
-
             </div>
           </div>
         </div>
@@ -471,7 +527,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
             </label>
             <br />
             <button className="btns btn-primary" style={{ width: "180px", marginTop: "5px" }} onClick={handleCreateClick}
-             disabled = {disableAddVehicle}
+              disabled={disableAddVehicle}
             >
               <FontAwesomeIcon
                 icon={faPlus}
@@ -486,15 +542,11 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
           </div>
         )}
 
-        {/* <div className="standardtitlebar2">
-          <span><b>Vehicle List</b></span>
-        </div> */}
-
         {vehiclesLoading ? (
           <div className="ajaxloading">
             <p className="error-text">Loading vehicles...</p>
           </div>
-          //   ) : vehicles && vehicles.length > 0 ? (
+          //   ) : vehicles && vehicles.length > 0 ? (.filter(v => v.carownertype === "renter")
         ) : displayedVehicles.length > 0 ? (
 
           <>

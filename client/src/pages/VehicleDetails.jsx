@@ -32,7 +32,8 @@ export default function VehicleDetails() {
 
 
   const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
-    createdfrom, pincodeValue, pincodeAction, allActiveVehiclesCount } = location.state || {};
+    createdfrom, pincodeValue, pincodeAction } = location.state || {};
+
 
 
   // const vehicleOwnerTypeAry = unit?.day_use_only === 1
@@ -95,6 +96,9 @@ export default function VehicleDetails() {
   const [disableOutDateField, setDisableOutDateField] = useState(false)
   const [termsAcknowledged, setTermsAcknowledged] = useState(false);
   const [createdByType, setCreatedByType] = useState("owner");
+
+  const [isDayUseVehicle, setIsDayUseVehicle] = useState(false);
+
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
 
@@ -155,7 +159,7 @@ export default function VehicleDetails() {
 
     let daysplus = 0;
 
-    console.log('WE GOT HERE', carownertype)
+  //  console.log('WE GOT HERE', carownertype)
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
@@ -171,7 +175,6 @@ export default function VehicleDetails() {
     //   setDisableOutDateField(false)
     // }
     if (createdfrom === 'rentervehicles' && carownertype === 'dayuseonly') {
-      console.log('THIS IS WHERE IT FAILS');
       daysplus = 0;
       setDisableInDateField(true);
       setDisableOutDateField(true)
@@ -193,7 +196,9 @@ export default function VehicleDetails() {
 
 
     // JJVFIX
-    console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+   // console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+  //  console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
+
 
 
 
@@ -279,7 +284,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-        console.log('about to set vehicle', response.data)
+     //   console.log('about to set vehicle', response.data)
         const theVehicle = response.data;
         setVehicle(response.data);
 
@@ -287,17 +292,7 @@ export default function VehicleDetails() {
         let sd = response.data.startdate;
         let ed = response.data.enddate;
 
-        console.log('VD vehicle from fetch', response.data)
-
-        // if (createdfrom === 'rentervehicles' && (carownertype === 'visitor' || carownertype === 'contractor')) {
-
-       // console.log('SPECIFICS ARE theVehicle.carownertype', theVehicle.carownertype, 'SPECIFICS ARE theVehicle.createdbytype', theVehicle.createdbytype)
-        //  if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' && theVehicle.createdbytype !== 'other')) {
-        //   sd = formatLocalDate(new Date());
-        //   ed = formatLocalDate(new Date());
-        //   setDisableInDateField(true)
-        //   setDisableOutDateField(true)
-        // }
+      
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' && theVehicle.createdbytype === 'other')) {
           // sd = theVehicle.startdate;
           // ed = theVehicle.enddate;
@@ -307,15 +302,16 @@ export default function VehicleDetails() {
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
-        if (createdfrom === 'ownervehicles' ) {
+        if (createdfrom === 'ownervehicles' &&   (theVehicle.carownertype === 'dayuseonly')) {
           sd = theVehicle.startdate;
           ed = theVehicle.enddate;
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
-        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
+        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
+          console.log('we are from rentervehicles clicked on a multiday');
           sd = formatLocalDate(new Date());
-          ed = theVehicle.enddate;
+          ed = formatLocalDate(new Date());
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
@@ -344,6 +340,14 @@ export default function VehicleDetails() {
           pin_code_value: pincodeValue,
           pin_code_action: pincodeAction,
         });
+
+        if (response.data.day_use_only === 1) {
+          setIsDayUseVehicle(true)
+        //  console.log('IS DAY USE IS TRUE')
+        } else {
+           setIsDayUseVehicle(false)
+         //  console.log('IS DAY USE IS FALSE')
+        }
         //    console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
 
         setError(null);
@@ -362,6 +366,8 @@ export default function VehicleDetails() {
     }
   }, [isModifyMode, vehid]);
 
+  // will not run unless new vehid and in modify mode
+
 
 
 
@@ -372,13 +378,14 @@ export default function VehicleDetails() {
     navigate(-1);
   };
 
+  // JJVFIX
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
     // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     setFormData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
-      ...(name === "carownertype" && { day_use_only: value === "visitor" || value === "contractor" || value === "dayuseonly" || value === "multiday" ? 1 : 0 })
+      ...(name === "carownertype" && { day_use_only:  value === "dayuseonly" || value === "multiday" ? 1 : 0 })
     }));
   };
 
@@ -498,58 +505,44 @@ export default function VehicleDetails() {
       return;
     }
 
-    const templatemsg = <>Check Out: {formData.enddate}<br />must be before <br />Today: {todayStr}</>;
-
-    // if (createdfrom === 'ownervehicles' && (formData.carownertype === 'contractor' || formData.carownertype === 'visitor')) {
-    //JJVFIX. do we need this
-    // if (createdfrom === 'ownervehicles' && (formData.carownertype === 'visitor')) {
-    //   if (formData.enddate > todayStr) {
-    //     setModal({
-    //       isOpen: true,
-    //       type: "alert",
-    //       title: "Validation Error",
-    //       message: templatemsg,
-    //       confirmText: "OK",
-    //       onConfirm: () => {
-    //         setModal(prev => ({ ...prev, isOpen: false }))
-    //       }
-    //     });
-    //     return;
-    //   }
-    // }
-
-
-
-
-    //  const { unitNumber, role, vehicles, ownerOfUnit, vehid, unit } = location.state || {};
-
-
+   
     // const renterFreeParking = ownerOfUnit?.renter_free_parking || 0;
     // const ownerFreeParking = ownerOfUnit?.owner_free_parking || 0;
 
-    // let msg = ("You are not allowed to have more active vehicles than your parking allowance. \n Please deactivate another vehicle before activating this one.")
-
-    //const oktoaddobj = okToActivateVehicle(formData, vehicles, role, unitOwner,vehid);
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
-    oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction, allActiveVehiclesCount);
+    oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
+   
     console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
 
     if (createdfrom === 'ownervehicles') {
-      msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
-        Please deactivate another vehicle before activating this one.</>);
+      if (oktoaddobj.msgType === 1) {
+        msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit} <br />
+          Please deactivate another vehicle before activating this one.</>);
+      }
       if (oktoaddobj.msgType === 2) {
+        msg = (<>You are not allowed to have more<br />active vehicles than your <br /> parking allowance {stateUnit.parking_allowed_unit} <br />
+          The unit has an active renter.</>);
+      }
+      if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />
           You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.</>);
       }
 
     }
     if (createdfrom === 'rentervehicles') {
-      msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
-        CALL THE OWNER OR ADMIN</>);
+      // msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
+      //   CALL THE OWNER OR ADMIN</>);
+       if (oktoaddobj.msgType === 1) {
+        msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit}</>);
+      }
       if (oktoaddobj.msgType === 2) {
+        msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit} <br />
+          CALL THE OWNER OR ADMIN.</>);
+      }
+      if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />
           You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.</>);
       }
