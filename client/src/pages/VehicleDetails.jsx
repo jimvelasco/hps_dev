@@ -315,6 +315,15 @@ export default function VehicleDetails() {
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
+         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
+        //  console.log('we are from rentervehicles clicked on a multiday');
+        //  sd = formatLocalDate(new Date());
+           sd = theVehicle.startdate;
+         // ed = formatLocalDate(new Date());
+          ed = theVehicle.enddate;
+          setDisableInDateField(true)
+          setDisableOutDateField(true)
+        }
 
 
         setFormData({

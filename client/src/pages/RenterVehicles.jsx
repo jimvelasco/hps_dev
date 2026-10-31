@@ -171,7 +171,7 @@ export default function RenterVehicles() {
 
           // JJVFIX
 
-          //  console.log('PIN CODE ACTION', pincodeAction,todayStr);
+         //   console.log('PIN CODE ACTION', pincodeAction,todayStr);
 
           let nonTypeVehicles = [];
           if (pincodeAction === 'renter') {
@@ -229,6 +229,7 @@ export default function RenterVehicles() {
 
           //  if (pincodeAction != 'standard') {
           if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
+          if (pincodeAction == 'dayuseonly') setPincodeActionLabel('(Day Use)');
           if (pincodeAction == 'contractor') setPincodeActionLabel('(Contractor)');
           if (pincodeAction == 'visitor') setPincodeActionLabel('(Visitor)');
           //  }
@@ -324,6 +325,8 @@ export default function RenterVehicles() {
       alert("Unable to load unit information");
       return;
     }
+
+    console.log('unit for renter',unitForRenter);
     //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
@@ -340,6 +343,7 @@ export default function RenterVehicles() {
     // console.log('RV all active ownervehs are', ownervehs);
     // console.log('RV all active dayusevehs are', dayusevehs);
 
+
     let rentervehs = vehicles.filter(v => v.carownertype === 'renter' && v.calculatedActiveFlag === true).length
     let ownervehs = vehicles.filter(v => v.carownertype !== 'renter' && v.calculatedActiveFlag === true).length
     let dayusevehs = vehicles.filter(v => v.carownertype === 'dayuseonly' && v.calculatedActiveFlag === true).length
@@ -351,6 +355,7 @@ export default function RenterVehicles() {
 
     const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
     let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
+    let freepassesallowed = Number(unitForRenter.daypasses_allowed_owner);
     // unitParkingLimit += dayusevehs;
 
     // const daypassesallowed = unitForRenter.daypasses_allowed_owner;
@@ -387,14 +392,16 @@ export default function RenterVehicles() {
 
     }
 
-    console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit)
+    console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
 
-    if (dayusevehs > 0) {
+
+
+    if (dayusevehsany > 0) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: `There is a contractor active in the unit.`,
+        message: (<>You are not allowed to have <br />more day passes than {freepassesallowed}. </>),
         confirmText: "OK",
         // cancelText: "Cancel",
         onConfirm: () => {
@@ -425,6 +432,7 @@ export default function RenterVehicles() {
     const fakevid = null
     const qry = `/${hoaId}/vehicledetails/create/${userIdForUnit}`;
     //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
+    // JJVFIX role?
     navigate(qry, {
       state: {
         nonownerType: nonownerType,
@@ -486,9 +494,16 @@ export default function RenterVehicles() {
 
   //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "renter" ||  v.carownertype === "dayuseonly")];  // only show renters
 
+  //with no multiday pin we are forced to do this
   const displayedVehicles = vehicles.filter(v => pincodeAction === 'dayuseonly'
     ? v.carownertype === 'dayuseonly' || v.carownertype === 'multiday'
     : v.carownertype === 'renter');
+
+ // const displayedVehicles = vehicles.filter(v => v.carownertype === pincodeAction);
+
+ 
+
+
   //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "dayuseonly" )]; 
 
   return (

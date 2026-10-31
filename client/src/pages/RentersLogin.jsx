@@ -114,12 +114,14 @@ export default function RentersLogin() {
             // console.log('RENTERS LOGIN PINCODEACTIONARY IS ', response.data.pinActionAry);
             // console.log('RENTERS LOGIN NON OWNER TYPE IS ', nonownerType);
 
-          //  console.log('');
+            //  console.log('');
 
             let pincodeaction = response.data.action;
             let pincodeindex = response.data.pinIndex;
             let pincodearylength = response.data.pinCodeArrayLength;
             let pinactionary = response.data.pinActionAry;
+
+          //  console.log('pinactionary', pinactionary)
 
             // JJVFIX
 
@@ -131,6 +133,7 @@ export default function RentersLogin() {
             //  pincodearylength > 1 means the user has more than the default pin.  
             // the pin itself know which type of person it is for (contractor or visitor)
 
+            // this works
             if (pincodearylength === 1) {
                 pincodeaction = nonownerType;
             }
@@ -148,19 +151,31 @@ export default function RentersLogin() {
                     pincodeaction = nonownerType;
                 }
             }
-            // if (pincodearylength > 1) {
-            //     console.log('pinactionary',pinactionary)
-            //     if (pincodeaction !== nonownerType) {
-            //         setShowTypeMismatch(true);
-            //         return;
-            //     }
+
+            /*
+            <option value="renter">Short Term Renter</option>
+                       <option value="dayuseonly">Day Use</option>
+                        <option value="multiday">Multiple Days (day use)</option>
+            */
+
+            // if (pincodearylength === 1) {
+            //     pincodeaction = 'renter';
             // }
+            // if (pincodearylength > 1) {
+            //     if (pinactionary.includes('dayuseonly')) {
+            //         pincodeaction = 'dayuseonly'
+            //     }
+            //        if (pinactionary.includes('multiday')) {
+            //          pincodeaction = 'multiday'
+            //      }
+            // }
+
 
             localStorage.setItem("token", response.data.token);
 
             // Navigate to renter vehicles
             navigate(`/${hoaId}/rentervehicles/${encodeURIComponent(unitNumber)}`, {
-                state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: pincodeaction,createdfrom:'renterlogin' }
+                state: { nonownerType, nonownerTypeText, unitNumber, pincodeValue: pin, pincodeAction: pincodeaction, createdfrom: 'renterlogin' }
             });
 
         } catch (err) {
@@ -239,7 +254,8 @@ export default function RentersLogin() {
                                 <option value="friend">Friend</option>*/}
                                 {/* <option value="visitor">Visitor / Day Guest</option>
                                 <option value="contractor">Contractor / Vendor</option> */}
-                                 <option value="dayuseonly">Day Use</option>
+                                <option value="dayuseonly">Day Use</option>
+                                {/* <option value="multiday">Multiple Days (day use)</option> */}
 
                             </select>
                         </div>
