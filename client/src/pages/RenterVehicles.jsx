@@ -224,8 +224,9 @@ export default function RenterVehicles() {
           // we get the entire batch of vehicles not just the other
           // setVehicles(nonTypeVehicles);
           //.filter(v => v.carownertype !== "renter");
-          setVehicles(nonOwnerVehicles);
+          //setVehicles(nonOwnerVehicles);
           // setVehicles(nonTypeVehicles);
+           setVehicles(updatedVehicles);
 
           //  if (pincodeAction != 'standard') {
           if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
@@ -346,10 +347,12 @@ export default function RenterVehicles() {
 
     let rentervehs = vehicles.filter(v => v.carownertype === 'renter' && v.calculatedActiveFlag === true).length
     let ownervehs = vehicles.filter(v => v.carownertype !== 'renter' && v.calculatedActiveFlag === true).length
+    let owneractivevehs = vehicles.filter(v => v.carownertype === 'owner' && v.calculatedActiveFlag === true).length
     let dayusevehs = vehicles.filter(v => v.carownertype === 'dayuseonly' && v.calculatedActiveFlag === true).length
     let dayusevehsany = vehicles.filter(v => v.carownertype === 'dayuseonly').length
     console.log('VH all active rentervehs are', rentervehs);
     console.log('VH all active ownervehs are', ownervehs);
+    console.log('VH all active owneractivevehs are', owneractivevehs);
     console.log('VH all active dayusevehs are', dayusevehs);
     console.log('VH all active dayusevehsany are', dayusevehsany);
 
@@ -384,7 +387,7 @@ export default function RenterVehicles() {
     let msg = 'now is the time';
 
 
-    if (ownervehs > 0) { // we must have one in 
+    if (owneractivevehs > 0) { // we must have one in 
       msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
         CALL THE OWNER OR ADMIN</>);
     } else {
@@ -394,14 +397,45 @@ export default function RenterVehicles() {
 
     console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
 
-
-
-    if (dayusevehsany > 0) {
+     if (rentervehs >=  unitParkingLimit ) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: (<>You are not allowed to have <br />more day passes than {freepassesallowed}. </>),
+        message:(<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. </>),
+        confirmText: "OK",
+        // cancelText: "Cancel",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
+      return;
+    }
+
+    if (owneractivevehs > 0) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: msg,
+        confirmText: "OK",
+        // cancelText: "Cancel",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
+      return;
+    }
+
+
+
+    if (dayusevehs > 0) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: (<>You are not allowed to have <br />more day passes than {freepassesallowed}. <br />
+        There may be cleaning people in the unit.</>),
         confirmText: "OK",
         // cancelText: "Cancel",
         onConfirm: () => {
