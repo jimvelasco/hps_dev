@@ -395,7 +395,7 @@ export default function RenterVehicles() {
 
     }
 
-    console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
+   // console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
 
      if (rentervehs >=  unitParkingLimit ) {
       setModal({
@@ -417,7 +417,8 @@ export default function RenterVehicles() {
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: msg,
+        message: (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
+        CALL THE OWNER OR ADMIN</>),
         confirmText: "OK",
         // cancelText: "Cancel",
         onConfirm: () => {

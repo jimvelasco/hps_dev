@@ -315,6 +315,15 @@ export default function VehicleDetails() {
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
+        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'renter')) {
+          const edate = new Date();
+          edate.setDate(edate.getDate() + 3);
+          
+          sd = formatLocalDate(new Date());
+          ed = formatLocalDate(edate);
+          setDisableInDateField(false)
+          setDisableOutDateField(false)
+        }
          if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
         //  console.log('we are from rentervehicles clicked on a multiday');
         //  sd = formatLocalDate(new Date());
