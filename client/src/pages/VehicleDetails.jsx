@@ -854,18 +854,9 @@ export default function VehicleDetails() {
                   </label>
 
 
-                  {/* {createdfrom === "rentervehicles" && (
-                    <div style={{ fontWeight: "normal" }}>
-                      <div style={{ marginLeft: "12px", marginTop: "15px" }}>
-                        {formData.carownertype?.toUpperCase()}
-                      </div>
-
-                    </div>
-                  )
-                  } */}
 
 
-                  {/* {createdfrom === "rentervehicles" && (
+                  {createdfrom === "rentervehicles" && (
                     <div style={{ fontWeight: "normal" }}>
                       <div style={{ marginLeft: "12px", marginTop: "15px" }}>
                         {formData.carownertype?.toUpperCase()}
@@ -889,8 +880,9 @@ export default function VehicleDetails() {
                         </option>
                       ))}
                     </select>
-                  )} */}
-                  {createdfrom === "ownervehicles" && (
+                  )}
+
+                  {/* {createdfrom === "ownervehicles" && (
                     <select
                       className="standardselect100"
                       name="carownertype"
@@ -921,7 +913,7 @@ export default function VehicleDetails() {
                         </option>
                       ))}
                     </select>
-                  )}
+                  )} */}
 
 
 
