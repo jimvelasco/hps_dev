@@ -331,7 +331,7 @@ export default function VehicleDetails() {
          // ed = formatLocalDate(new Date());
           ed = theVehicle.enddate;
           setDisableInDateField(true)
-          setDisableOutDateField(true)
+          setDisableOutDateField(false)
         }
 
 

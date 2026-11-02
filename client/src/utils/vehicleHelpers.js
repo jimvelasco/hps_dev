@@ -310,13 +310,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
 
     let requirespayment = theCurrentVehicle.requires_payment;
-   // console.log('vehicle requires payment is', requirespayment);
-
-   // console.log('VH car exists veh_grp_ary', veh_grp_ary);
-
-
-
-
+  
     if (is_vehicle_active && dates_span_today) {
       robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
       return robj;
@@ -355,10 +349,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       //     return robj;
       //   }
 
-      if (veh_grp_ary.dayusemultivehs.count > 0) {
-        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
-        return robj;
-      }
+      // if (veh_grp_ary.dayusemultivehs.count > 0) {
+      //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
+      //   return robj;
+      // }
 
       // console.log('allActiveVehiclesCount', allActiveVehiclesCount);
       // console.log('maxactiveallowed', maxactiveallowed);
