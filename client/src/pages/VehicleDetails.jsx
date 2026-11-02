@@ -73,6 +73,11 @@ export default function VehicleDetails() {
       { value: 'dayuseonly', label: 'Day Use Only' }
     ];
 
+  const renterOwnerTypeAry = [
+      { value: 'multiday', label: 'Multiple Days' },
+      { value: 'dayuseonly', label: 'Day Use Only' }
+    ];
+
 
   //console.log('VD LOCATION STATE',location.state);
 
@@ -849,15 +854,18 @@ export default function VehicleDetails() {
                   </label>
 
 
-                  {createdfrom === "rentervehicles" && (
-                    // <div style={{ fontWeight: "bold" }}>
-                    //   <input className="standardinput"
-                    //     type="text"
-                    //     name="carownertype"
-                    //     value={formData.carownertype}
-                    //     disabled
-                    //   />
-                    // </div>
+                  {/* {createdfrom === "rentervehicles" && (
+                    <div style={{ fontWeight: "normal" }}>
+                      <div style={{ marginLeft: "12px", marginTop: "15px" }}>
+                        {formData.carownertype?.toUpperCase()}
+                      </div>
+
+                    </div>
+                  )
+                  } */}
+
+
+                  {/* {createdfrom === "rentervehicles" && (
                     <div style={{ fontWeight: "normal" }}>
                       <div style={{ marginLeft: "12px", marginTop: "15px" }}>
                         {formData.carownertype?.toUpperCase()}
@@ -870,7 +878,6 @@ export default function VehicleDetails() {
                     <select
                       className="standardselect100"
                       name="carownertype"
-                      // value={formData.carownertype || vehicleOwnerTypeAry[0].value}
                       value={formData.carownertype}
                       onChange={handleFormChange}
                       disabled={isModifyMode || createdfrom === "rentervehicles"}
@@ -882,8 +889,39 @@ export default function VehicleDetails() {
                         </option>
                       ))}
                     </select>
-                  )
-                  }
+                  )} */}
+                  {createdfrom === "ownervehicles" && (
+                    <select
+                      className="standardselect100"
+                      name="carownertype"
+                      value={formData.carownertype}
+                      onChange={handleFormChange}
+                     
+                    >
+                      <option value="" >Select owner type</option>
+                      {vehicleOwnerTypeAry.map(type => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                   {createdfrom === "rentervehicles" && (
+                    <select
+                      className="standardselect100"
+                      name="carownertype"
+                      value={formData.carownertype}
+                      onChange={handleFormChange}
+                      // disabled={isModifyMode || createdfrom === "rentervehicles"}
+                    >
+                     
+                      {renterOwnerTypeAry.map(type => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
+                  )}
 
 
 
