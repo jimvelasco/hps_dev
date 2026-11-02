@@ -546,7 +546,11 @@ export default function VehicleDetails() {
       }
       if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />
-          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.</>);
+          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.<br />Contact Admin to increase<br /> allowed daypass count.</>);
+      }
+      if (oktoaddobj.msgType === 5) {
+        msg = (<>Multi Day and Day Use limit exceded. <br />
+          You are allowed 2 Day Passes templates</>);
       }
 
     }
@@ -561,9 +565,10 @@ export default function VehicleDetails() {
           CALL THE OWNER OR ADMIN.</>);
       }
       if (oktoaddobj.msgType === 3) {
-        msg = (<>Daypass limit reached. <br />
-          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.</>);
+         msg = (<>Daypass limit reached. <br />
+          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.<br />Contact Admin to increase<br /> allowed daypass count.</>);
       }
+
     }
     //   if (role === 'owner') {
     //      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);

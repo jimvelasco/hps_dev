@@ -7,7 +7,7 @@ import { useError } from "../context/ErrorContext";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
-import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount, getVehicleTypeGroups } from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 import HoaInformation from "../components/HoaInformation";
 import { getAWSResource } from "../utils/awsHelper";
@@ -113,7 +113,7 @@ export default function RenterVehicles() {
           const response = await axios.get(qry);
 
           const responseData = response.data;
-          //   console.log('the response data is ',responseData);
+             console.log('the response data is ',responseData);
           //  console.log('choices from rentervehicles',responseData,pincodeAction)
           // responseData.forEach((el, index) => {
           //   console.log(`responseData renters Index ${index}: ${el.enddate}`);
@@ -173,38 +173,34 @@ export default function RenterVehicles() {
 
          //   console.log('PIN CODE ACTION', pincodeAction,todayStr);
 
-          let nonTypeVehicles = [];
-          if (pincodeAction === 'renter') {
-            nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
-            });
-            setDisableAddVehicle(false);
+          // let nonTypeVehicles = [];
+          // if (pincodeAction === 'renter') {
+          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
+          //     if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
+          //   });
+          //   setDisableAddVehicle(false);
 
-          } else if (pincodeAction === 'contractor') {
-            nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === pincodeAction) return true;
-            });
-            // 
-          } else if (pincodeAction === 'visitor') {
-            nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === 'visitor') return true;
-            });
-            // setDisableAddVehicle(true);
-            // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
-          } else if (pincodeAction === 'dayuseonly') {
-            nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === 'dayuseonly' || v.carownertype === 'multiday') return true;
-            });
-            // setDisableAddVehicle(true);
-            // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
-            // pincode action comes from the select list so this will never happen.  its always multiday
-          } else if (pincodeAction === 'multiday') {
-            nonTypeVehicles = nonOwnerVehicles.filter(v => {
-              if (v.carownertype === 'multiday') return true;
-            });
-            // setDisableAddVehicle(true);
-            // if (unitForRenter.day_use_only === 1 || nonTypeVehicles.length === 0) setDisableAddVehicle(false);
-          }
+          // } else if (pincodeAction === 'contractor') {
+          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
+          //     if (v.carownertype === pincodeAction) return true;
+          //   });
+          //   // 
+          // } else if (pincodeAction === 'visitor') {
+          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
+          //     if (v.carownertype === 'visitor') return true;
+          //   });
+          
+          // } else if (pincodeAction === 'dayuseonly') {
+          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
+          //     if (v.carownertype === 'dayuseonly' || v.carownertype === 'multiday') return true;
+          //   });
+           
+          // } else if (pincodeAction === 'multiday') {
+          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
+          //     if (v.carownertype === 'multiday') return true;
+          //   });
+            
+          // }
           // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
           //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
           //     if (v.carownertype === nonownerType) return true;
@@ -231,8 +227,7 @@ export default function RenterVehicles() {
           //  if (pincodeAction != 'standard') {
           if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
           if (pincodeAction == 'dayuseonly') setPincodeActionLabel('(Day Use)');
-          if (pincodeAction == 'contractor') setPincodeActionLabel('(Contractor)');
-          if (pincodeAction == 'visitor') setPincodeActionLabel('(Visitor)');
+          if (pincodeAction == 'multiday') setPincodeActionLabel('(Multi Day)');
           //  }
 
           // console.log('updatedVehicles',updatedVehicles)
@@ -332,49 +327,32 @@ export default function RenterVehicles() {
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
 
+    console.log('all vehicles passed to rv',vehicles)
+
     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
     let activeVehicleCount = activeVehicles.length;
 
     console.log('RV all active vehicles are', activeVehicles);
 
-    // let rentervehs = allActiveVehicles.filter(v => v.carownertype === 'renter').length
-    // let ownervehs = allActiveVehicles.filter(v => v.carownertype !== 'renter' && v.carownertype !== 'dayuseonly').length
-    // let dayusevehs =  allActiveVehicles.filter(v => v.carownertype === 'dayuseonly').length
-    // console.log('RV all active rentervehs are', rentervehs);
-    // console.log('RV all active ownervehs are', ownervehs);
-    // console.log('RV all active dayusevehs are', dayusevehs);
+// JJVFIX should be in hoa definition ?
 
 
-    let rentervehs = vehicles.filter(v => v.carownertype === 'renter' && v.calculatedActiveFlag === true).length
-    let ownervehs = vehicles.filter(v => v.carownertype !== 'renter' && v.calculatedActiveFlag === true).length
-    let owneractivevehs = vehicles.filter(v => v.carownertype === 'owner' && v.calculatedActiveFlag === true).length
-    let dayusevehs = vehicles.filter(v => v.carownertype === 'dayuseonly' && v.calculatedActiveFlag === true).length
-    let dayusevehsany = vehicles.filter(v => v.carownertype === 'dayuseonly').length
-    console.log('VH all active rentervehs are', rentervehs);
-    console.log('VH all active ownervehs are', ownervehs);
-    console.log('VH all active owneractivevehs are', owneractivevehs);
-    console.log('VH all active dayusevehs are', dayusevehs);
-    console.log('VH all active dayusevehsany are', dayusevehsany);
+    const ownertypeary = ['owner','friend','family','tenant'];
 
-    const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
+
+    /*  object keys returned by funtion call
+        rentervehs nonownervehs ownervehs dayusevehs multidayvehs dayusemultivehs dayusemultivehsany
+   */
+
+    const veh_grp_ary = getVehicleTypeGroups(vehicles);
+  
+
+   //const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
     let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
     let freepassesallowed = Number(unitForRenter.daypasses_allowed_owner);
     // unitParkingLimit += dayusevehs;
 
-    // const daypassesallowed = unitForRenter.daypasses_allowed_owner;
-    // if ((daypassCount >= daypassesallowed) && nonownerType !== 'renter') {
-    //   setModal({
-    //     isOpen: true,
-    //     type: "alert",
-    //     title: "Validation Error",
-    //     message: (<>Daypass limit reached.<br />You are allowed <br /> {daypassesallowed}  day pass vehicle(s).</>),
-    //     confirmText: "OK",
-    //     onConfirm: () => {
-    //       setModal(prev => ({ ...prev, isOpen: false }));
-    //     },
-    //   });
-    //   return;
-    // }
+   
 
     // unitParkingLimit += daypassCount;
 
@@ -387,17 +365,17 @@ export default function RenterVehicles() {
     let msg = 'now is the time';
 
 
-    if (owneractivevehs > 0) { // we must have one in 
+    if (veh_grp_ary.ownervehs.count > 0) { // we must have one in 
       msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
         CALL THE OWNER OR ADMIN</>);
-    } else {
-      msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. </>)
-
     }
+    //  else {
+    //   msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. </>)
+    // }
 
    // console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
 
-     if (rentervehs >=  unitParkingLimit ) {
+     if (veh_grp_ary.rentervehs.count >=  unitParkingLimit ) {
       setModal({
         isOpen: true,
         type: "alert",
@@ -412,12 +390,13 @@ export default function RenterVehicles() {
       return;
     }
 
-    if (owneractivevehs > 0) {
+    if (veh_grp_ary.ownervehs.count > 0) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
         message: (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
+        There may be an owner in the unit.<br />
         CALL THE OWNER OR ADMIN</>),
         confirmText: "OK",
         // cancelText: "Cancel",
@@ -428,9 +407,9 @@ export default function RenterVehicles() {
       return;
     }
 
+// active day use and multi
 
-
-    if (dayusevehs > 0) {
+    if (veh_grp_ary.dayusemultivehs.count > 0) {
       setModal({
         isOpen: true,
         type: "alert",

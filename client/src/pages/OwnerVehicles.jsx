@@ -9,7 +9,7 @@ import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
-import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount, anyDaypassVehicleCount } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount, anyDaypassVehicleCount, getVehicleTypeGroups } from "../utils/vehicleHelpers";
 import { doesUnitHaveDayUse } from "../utils/unitHelpers";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
@@ -134,6 +134,8 @@ export default function OwnerVehicles() {
           setAllRawVehicles(rawvehicles);
 
            console.log('rawvehicles', rawvehicles);
+           let gpa = getVehicleTypeGroups(rawvehicles);
+           console.log('gpa',gpa)
 
           let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
         //   console.log('activeVehicles', activeVehicles);
@@ -361,6 +363,9 @@ export default function OwnerVehicles() {
 
 
   const handleCreateClick = async (pin_code_action) => {
+
+    const veh_grp_ary = getVehicleTypeGroups(vehicles);
+    
     const uid = loggedInUser?.unitnumber;
     if (!hoaId || !uid) {
       setModal({
@@ -406,6 +411,8 @@ export default function OwnerVehicles() {
 
       // this will get all the count all the ACTIVE daypass vehicles 
       const daypassCount = daypassVehicleCount(allVehicles);
+      console.log('function daypassVehicleCount',daypassCount);
+      console.log('grp ary dayusemultivehs',veh_grp_ary.dayusemultivehs.count);
 
       // this counts all vehicles with a daypass that are active or inactive
       const anydaypassCount = anyDaypassVehicleCount(allVehicles);
@@ -421,23 +428,6 @@ export default function OwnerVehicles() {
       //  }
 
 
-
-      // this needs to be verified
-      // console.log('data from ov veh.length pli',vehicles.length,parkingLimitInventory)
-
-      let rentervehs = allActiveVehicles.filter(v => v.carownertype === 'renter').length
-      let ownervehs = allActiveVehicles.filter(v => v.carownertype !== 'renter' && v.carownertype !== 'dayuseonly').length
-      let dayusevehs = allActiveVehicles.filter(v => v.carownertype === 'dayuseonly').length
-
-      // console.log('OV all active rentervehs are', rentervehs);
-      // console.log('OV all active ownervehs are', ownervehs);
-      // console.log('OV all active dayusevehs are', dayusevehs);
-
-      // if (rentervehs > 0) {
-      //    msg = (<>Vehicle limit reached. <br /> You may only have <br />{parkingLimitInventory} vehicles in your inventory.<br /><br/>
-      //    It appears a renter has an active vehicle.</>)
-
-      // }
 
       let msg = (<>Vehicle limit reached. <br /> You may only have <br />{parkingLimitInventory} vehicles in your inventory.</>);
 
