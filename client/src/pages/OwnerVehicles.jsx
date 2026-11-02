@@ -539,7 +539,7 @@ export default function OwnerVehicles() {
 
 
   const renderTitleBarTable = () => {
-    return (<div>
+    return (<div >
       
       <div className="button-grid">
         {loggedInUser && loggedInUser.role === "admin" && (
@@ -755,30 +755,57 @@ export default function OwnerVehicles() {
 
 
           {showFilters && (
-            <div className="standardtitlebar">
-              {/* <div style={{ marginBottom: "10px" }}><b>Sort</b></div> */}
+            // <div className="standardtitlebar" style={{backgroundColor: "transparent"}}>
+            //   <div className="button-grid">
+            //     <button className="btnxs btn-primary btn-sort"
+            //       onClick={() => handleSort("owner")}>
+            //       Name
+            //     </button>
+            //     <button className="btnxsp btn-sort"
+            //       onClick={() => handleSort("unit")}>
+            //       Unit
+            //     </button>
+            //     <button className="btnxsp btn-sort "
+            //       onClick={() => handleSort("ownertype")}>
+            //       Type
+            //     </button>
+            //     <button className="btnxsp btn-sort"
+            //       onClick={() => handleSort("plate")}>
+            //       Plate
+            //     </button>
+            //     <button className="btnxsp btn-sort "
+            //       onClick={() => handleSort("enddate")}>
+            //       Checkout
+            //     </button>
+            //     <button className="btnxsp btn-sort "
+            //       onClick={() => handleSort("active")}>
+            //       Active
+            //     </button>
+            //   </div>
+            // </div>  style={{backgroundColor: "transparent"}}
+             <div className="standardtitlebar800">
               <div className="button-grid">
-                <button className="btnxsp btn-sort"
+                <button className="navbutton4"
                   onClick={() => handleSort("owner")}>
                   Name
                 </button>
-                <button className="btnxsp btn-sort"
+                <button className="navbutton4"
                   onClick={() => handleSort("unit")}>
                   Unit
                 </button>
-                <button className="btnxsp btn-sort "
+                <button className="navbutton4 "
                   onClick={() => handleSort("ownertype")}>
                   Type
                 </button>
-                <button className="btnxsp btn-sort"
+                <button className="navbutton4"
                   onClick={() => handleSort("plate")}>
                   Plate
                 </button>
-                <button className="btnxsp btn-sort "
+                <button className="navbutton4 "
                   onClick={() => handleSort("enddate")}>
                   Checkout
                 </button>
-                <button className="btnxsp btn-sort "
+                <button className="navbutton4 "
                   onClick={() => handleSort("active")}>
                   Active
                 </button>
