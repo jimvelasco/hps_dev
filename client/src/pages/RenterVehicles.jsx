@@ -140,88 +140,17 @@ export default function RenterVehicles() {
           setAllActiveCount(activeVehicles.length);
           setAllActiveVehicles(activeVehicles);
 
-          //   console.log('RV activeVehicles ', activeVehicles);
-
-
-
-
-          //      console.log('renter vehicles active vehicles length', activeVehicles.length);
-
-     //     console.log('RENTER VEHICLES passed in location state', location.state);
-
-
-          //   console.log('active vehicles length', activeVehicles.length);
 
           const nonOwnerVehicles = updatedVehicles.filter(v => {
             if (v.carownertype !== "owner") return true;
           });
 
 
-          // this is what brings over the template created by the owner for example a visitor   
-
-          // const nonTypeVehicles = nonOwnerVehicles.filter(v => {
-          //   if (v.carownertype === nonownerType) return true;
-          // });
-
-          //   console.log('NON OWNER VEHICLES', nonOwnerVehicles);
-          // JJVFIX this should bring in the visitor from owner inventory. for demo only
-          // look at logic here
           const todayUTC = new Date(); // "2025-12-03"
           const todayStr = formatLocalDate(todayUTC);
 
-          // JJVFIX
-
-         //   console.log('PIN CODE ACTION', pincodeAction,todayStr);
-
-          // let nonTypeVehicles = [];
-          // if (pincodeAction === 'renter') {
-          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
-          //     if (v.carownertype === pincodeAction && v.enddate >= todayStr) return true;
-          //   });
-          //   setDisableAddVehicle(false);
-
-          // } else if (pincodeAction === 'contractor') {
-          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
-          //     if (v.carownertype === pincodeAction) return true;
-          //   });
-          //   // 
-          // } else if (pincodeAction === 'visitor') {
-          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
-          //     if (v.carownertype === 'visitor') return true;
-          //   });
+        
           
-          // } else if (pincodeAction === 'dayuseonly') {
-          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
-          //     if (v.carownertype === 'dayuseonly' || v.carownertype === 'multiday') return true;
-          //   });
-           
-          // } else if (pincodeAction === 'multiday') {
-          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
-          //     if (v.carownertype === 'multiday') return true;
-          //   });
-            
-          // }
-          // } else if (pincodeAction === 'standard' && nonownerType === 'visitor') {
-          //   nonTypeVehicles = nonOwnerVehicles.filter(v => {
-          //     if (v.carownertype === nonownerType) return true;
-          //   });
-          // } 
-
-          // nonTypeVehicles.forEach((el) => {
-          //   console.log('EL IS',todayStr,el.plate,el.startdate,el.enddate)
-          //   if (el.enddate >= todayStr) {
-          //     console.log('we have a winner');
-          //   }
-          // });
-
-
-          // nonownerType
-
-          // we get the entire batch of vehicles not just the other
-          // setVehicles(nonTypeVehicles);
-          //.filter(v => v.carownertype !== "renter");
-          //setVehicles(nonOwnerVehicles);
-          // setVehicles(nonTypeVehicles);
            setVehicles(updatedVehicles);
 
           //  if (pincodeAction != 'standard') {
@@ -405,8 +334,7 @@ export default function RenterVehicles() {
     if (veh_grp_ary.ownervehs.count > 0) {
       console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
       showerror = true;
-      messagetoshow =  (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
-        There may be an owner in the unit.<br />
+      messagetoshow =  (<> There may be an owner in the unit.<br /><br />           
         CALL THE OWNER OR ADMIN</>)
     } else
 
