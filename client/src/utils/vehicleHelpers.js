@@ -186,19 +186,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   // console.log('OKTOADD FORM DATA IS ', formvehicle);
 
 
-  // let rentervehs = allActiveVehicles.filter(v => v.carownertype === 'renter').length
-  // let ownervehs = allActiveVehicles.filter(v => v.carownertype !== 'renter').length
-
-  // let rentervehs = vehiclearray.filter(v => v.carownertype === 'renter' && v.calculatedActiveFlag === true).length
-  // let ownervehs = vehiclearray.filter(v => v.carownertype !== 'renter' && v.calculatedActiveFlag === true).length
-  // let dayusevehs = vehiclearray.filter(v => v.carownertype === 'dayuseonly' && v.calculatedActiveFlag === true).length
-  // let dayusevehsany = vehiclearray.filter(v => v.carownertype === 'dayuseonly').length
-  // console.log('VH all active rentervehs are', rentervehs);
-  // console.log('VH all active ownervehs are', ownervehs);
-  // console.log('VH all active dayusevehs are', dayusevehs);
-  // console.log('VH all active dayusevehsany are', dayusevehsany);
-
-
 
   let maxactiveallowed = unit.parking_allowed_unit;
   let maxdayuse = unit.daypasses_allowed_owner;
@@ -264,7 +251,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
       if (dates_span_today) {
 
-        console.log("VH LINE 267 ALL VEHICLES PASSED IN", vehiclearray);
+        console.log("VH dates_span_today is true", dates_span_today);
 
         // console.log('VH veh_grp_ary', veh_grp_ary);
         // this will never be true for renter vehicle
@@ -276,6 +263,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         }
 
         if (createdfrom === 'ownervehicles' && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
+           console.log("VH we have a du or md record");
 
           let messagetoshow = '';
           // we could be potenially be adding a day use vehicle so check if they are out there already
@@ -285,7 +273,19 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           } else {
             showerror = true;
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 3 };
+          } 
+
+          if (veh_grp_ary.rentervehs.count > 0) {
+            showerror = true;
+             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+
           }
+            // let mdc = veh_grp_ary.multidayvehsany.count;
+            // let duc = veh_grp_ary.dayusevehsany.count;
+            // if ((mdc + duc) >= 1) {
+            //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 5 };
+            // }
+
         } else
 
           if (veh_grp_ary.rentervehs.count >= 2) {
