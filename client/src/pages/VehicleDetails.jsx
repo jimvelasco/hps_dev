@@ -159,7 +159,7 @@ export default function VehicleDetails() {
 
     let daysplus = 0;
 
-  //  console.log('WE GOT HERE', carownertype)
+    //  console.log('WE GOT HERE', carownertype)
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
@@ -196,8 +196,8 @@ export default function VehicleDetails() {
 
 
     // JJVFIX
-   // console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
-  //  console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
+    // console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+    //  console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
 
 
 
@@ -284,7 +284,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-     //   console.log('about to set vehicle', response.data)
+        //   console.log('about to set vehicle', response.data)
         const theVehicle = response.data;
         setVehicle(response.data);
 
@@ -292,24 +292,28 @@ export default function VehicleDetails() {
         let sd = response.data.startdate;
         let ed = response.data.enddate;
 
-      
-        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' && theVehicle.createdbytype === 'other')) {
-          // sd = theVehicle.startdate;
-          // ed = theVehicle.enddate;
-          sd = formatLocalDate(new Date());
-          ed = formatLocalDate(new Date());
 
+        // if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' && theVehicle.createdbytype === 'other')) {
+        //   // sd = theVehicle.startdate;
+        //   // ed = theVehicle.enddate;
+        //   sd = formatLocalDate(new Date());
+        //   ed = formatLocalDate(new Date());
+
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(true)
+        // }
+        if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
+          const edate = new Date();
+          edate.setDate(edate.getDate() - 1);
+          sd = formatLocalDate(edate);
+          ed = formatLocalDate(edate);
+          //  sd = theVehicle.startdate;
+          //  ed = theVehicle.enddate;
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
-        if (createdfrom === 'ownervehicles' &&   (theVehicle.carownertype === 'dayuseonly')) {
-          sd = theVehicle.startdate;
-          ed = theVehicle.enddate;
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
-        }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
-        //  console.log('we are from rentervehicles clicked on a multiday');
+          //  console.log('we are from rentervehicles clicked on a multiday');
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
           setDisableInDateField(true)
@@ -318,17 +322,17 @@ export default function VehicleDetails() {
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'renter')) {
           const edate = new Date();
           edate.setDate(edate.getDate() + 3);
-          
+
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(edate);
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
-         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
-        //  console.log('we are from rentervehicles clicked on a multiday');
-        //  sd = formatLocalDate(new Date());
-           sd = theVehicle.startdate;
-         // ed = formatLocalDate(new Date());
+        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
+          //  console.log('we are from rentervehicles clicked on a multiday');
+          //  sd = formatLocalDate(new Date());
+          sd = theVehicle.startdate;
+          // ed = formatLocalDate(new Date());
           ed = theVehicle.enddate;
           setDisableInDateField(true)
           setDisableOutDateField(false)
@@ -361,10 +365,10 @@ export default function VehicleDetails() {
 
         if (response.data.day_use_only === 1) {
           setIsDayUseVehicle(true)
-        //  console.log('IS DAY USE IS TRUE')
+          //  console.log('IS DAY USE IS TRUE')
         } else {
-           setIsDayUseVehicle(false)
-         //  console.log('IS DAY USE IS FALSE')
+          setIsDayUseVehicle(false)
+          //  console.log('IS DAY USE IS FALSE')
         }
         //    console.log("VehicleDetails.jsx populated from useEffect formData:", formData);
 
@@ -399,11 +403,36 @@ export default function VehicleDetails() {
   // JJVFIX
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+    console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+   
+    let dateUpdates = {};
+
+    if (name === 'carownertype' && value === 'dayuseonly') {
+      const edate = new Date();
+      console.log('DO SOMETHING WITH DATES day use only');
+      edate.setDate(edate.getDate() - 1);
+      const date = formatLocalDate(edate);
+      dateUpdates = { startdate: date, enddate: date };
+      setDisableInDateField(true)
+      setDisableOutDateField(true)
+    }
+    if (name === 'carownertype' && value === 'multiday') {
+      console.log('DO SOMETHING WITH DATES multiday');
+      const edate = new Date();
+      const edate2 = new Date();
+      edate.setDate(edate.getDate() + 1);
+      edate2.setDate(edate.getDate() + 4);
+      const date = formatLocalDate(edate);
+      const date2 = formatLocalDate(edate2);
+      dateUpdates = { startdate: date, enddate: date2 };
+      setDisableInDateField(true)
+      setDisableOutDateField(false)
+    }
     setFormData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
-      ...(name === "carownertype" && { day_use_only:  value === "dayuseonly" || value === "multiday" ? 1 : 0 })
+      ...(name === "carownertype" && { day_use_only: value === "dayuseonly" || value === "multiday" ? 1 : 0 }),
+      ...dateUpdates
     }));
   };
 
@@ -523,15 +552,15 @@ export default function VehicleDetails() {
       return;
     }
 
-   
+
     // const renterFreeParking = ownerOfUnit?.renter_free_parking || 0;
     // const ownerFreeParking = ownerOfUnit?.owner_free_parking || 0;
 
 
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
-   
-  //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
+
+    //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
 
@@ -557,7 +586,7 @@ export default function VehicleDetails() {
     if (createdfrom === 'rentervehicles') {
       // msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
       //   CALL THE OWNER OR ADMIN</>);
-       if (oktoaddobj.msgType === 1) {
+      if (oktoaddobj.msgType === 1) {
         msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit}</>);
       }
       if (oktoaddobj.msgType === 2) {
@@ -565,7 +594,7 @@ export default function VehicleDetails() {
           CALL THE OWNER OR ADMIN.</>);
       }
       if (oktoaddobj.msgType === 3) {
-         msg = (<>Daypass limit reached. <br />
+        msg = (<>Daypass limit reached. <br />
           You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.<br />Contact Admin to increase<br /> allowed daypass count.</>);
       }
 
@@ -605,7 +634,7 @@ export default function VehicleDetails() {
       vehcbt = cv.createdbytype;
     }
 
-      
+
 
     // JJVFIX
     try {

@@ -328,11 +328,12 @@ export default function RenterVehicles() {
     const currentVehicleCount = vehicles.length;
 
     console.log('all vehicles passed to rv',vehicles)
+     console.log('pincodeaction passed in',pincodeAction)
 
     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
     let activeVehicleCount = activeVehicles.length;
 
-    console.log('RV all active vehicles are', activeVehicles);
+   // console.log('RV all active vehicles are', activeVehicles);
 
 // JJVFIX should be in hoa definition ?
 
@@ -345,6 +346,7 @@ export default function RenterVehicles() {
    */
 
     const veh_grp_ary = getVehicleTypeGroups(vehicles);
+    console.log('veh group create',veh_grp_ary);
   
 
    //const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
@@ -375,65 +377,62 @@ export default function RenterVehicles() {
 
    // console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
 
-     if (veh_grp_ary.rentervehs.count >=  unitParkingLimit ) {
-      setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Validation Error",
-        message:(<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. </>),
-        confirmText: "OK",
-        // cancelText: "Cancel",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
-      });
-      return;
+   let showerror = false;
+   let messagetoshow = '';
+
+   if (pincodeAction === 'dayuseonly') {
+    if (veh_grp_ary.dayusemultivehs.count > 0) {
+       console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
+       showerror = true;
+        messagetoshow = (<>You are not allowed to have <br />more daypassed than allowed<br /> 
+        Call Admin to get an increase. </>);
     }
+    } else 
+     if (veh_grp_ary.rentervehs.count >=  unitParkingLimit ) {
+      console.log('BAILED ON (veh_grp_ary.rentervehs.count >=  unitParkingLimit')
+      showerror = true;
+      messagetoshow = (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}. 
+        </>);
+    } else
+
+     if (veh_grp_ary.allactivevehs.count >=  unitParkingLimit ) {
+      console.log('BAILED ON veh_grp_ary.allactivevehs.count >=  unitParkingLimit ')
+      showerror = true;
+      messagetoshow = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}.
+      < br />There may be an owner in the unit. </>);
+    } else
 
     if (veh_grp_ary.ownervehs.count > 0) {
-      setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Validation Error",
-        message: (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
+      console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
+      showerror = true;
+      messagetoshow =  (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
         There may be an owner in the unit.<br />
-        CALL THE OWNER OR ADMIN</>),
-        confirmText: "OK",
-        // cancelText: "Cancel",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
-      });
-      return;
-    }
+        CALL THE OWNER OR ADMIN</>)
+    } else
 
 // active day use and multi
 
     if (veh_grp_ary.dayusemultivehs.count > 0) {
-      setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Validation Error",
-        message: (<>You are not allowed to have <br />more day passes than {freepassesallowed}. <br />
-        There may be cleaning people in the unit.</>),
-        confirmText: "OK",
-        // cancelText: "Cancel",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
-      });
-      return;
-    }
+      console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
+      showerror = true;
+      messagetoshow = (<>You are not allowed to have <br />more day passes than {freepassesallowed}. <br />
+        There may be cleaning people in the unit.</>)
+    } else
 
 
     if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
-      // if (currentVehicleCount >= renterFreeParking) {
-      // console.log("*******Parking limit reached, showing modal");
-      setModal({
+      console.log('BAILED ON allActiveCount >= (unitParkingLimit + containsDaypassCount')
+      showerror = true;
+      messagetoshow = (<>You are not allowed to have <br />more active vehicles than<br /> 
+        your parking allowance: {unitParkingLimit}. <br /><br />
+        CALL THE OWNER OR ADMIN</>)
+    }
+    if (showerror) {
+       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: msg,
+        message: messagetoshow,
         //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
         confirmText: "OK",
         // cancelText: "Cancel",
@@ -443,6 +442,7 @@ export default function RenterVehicles() {
       });
       return;
     }
+
     const fakevid = null
     const qry = `/${hoaId}/vehicledetails/create/${userIdForUnit}`;
     //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
