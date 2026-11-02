@@ -170,11 +170,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   const veh_grp_ary = getVehicleTypeGroups(vehiclearray, false);
   console.log('we are in vehicle helpers grpary', veh_grp_ary)
-  console.log('formvehicle', formvehicle)
-  console.log('all active', allActiveVehicles)
+  // console.log('formvehicle', formvehicle)
+  // console.log('all active', allActiveVehicles)
 
-  console.log('OKTOADD incoming array is ', vehiclearray);
-  console.log('OKTOADD incoming allActiveVehicles array is  ', allActiveVehiclesCount, allActiveVehicles);
+ // console.log('OKTOADD incoming array is ', vehiclearray);
+ // console.log('OKTOADD incoming allActiveVehicles array is  ', allActiveVehiclesCount, allActiveVehicles);
   //console.log('OKTOADD formvehicle.carownertype',formvehicle.carownertype);
   // console.log('OKTOADD vehicleId', vehicleId);
   //console.log('OKTOADD createdfrom', createdfrom);
@@ -218,7 +218,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let msgType = 0;
   let robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 0 };
   let freeparkinglimit = unit.renter_free_parking;
-  console.log('free parking for unit is', freeparkinglimit);
+//  console.log('free parking for unit is', freeparkinglimit);
 
   if (createdfrom === 'ownervehicles' || createdfrom === 'rentervehicles') {
     // this is run for blank vehicle records (new vehicles)
@@ -310,9 +310,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
 
     let requirespayment = theCurrentVehicle.requires_payment;
-    console.log('vehicle requires payment is', requirespayment);
+   // console.log('vehicle requires payment is', requirespayment);
 
-    console.log('VH car exists veh_grp_ary', veh_grp_ary);
+   // console.log('VH car exists veh_grp_ary', veh_grp_ary);
 
 
 
@@ -329,12 +329,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
 
     if (!is_vehicle_active && dates_span_today) {
-      console.log('existing  dates_span_today veh_grp_ary', veh_grp_ary)
+   //   console.log('existing  dates_span_today veh_grp_ary', veh_grp_ary)
       if (is_day_use_vehicle) {
-        console.log("IT IS A DAY USE VEHICLE",theCurrentVehicle);
-        console.log("IT IS A DAY  dayusevehs",veh_grp_ary.dayusevehs.count);
-        console.log("IT IS A DAY  multidayvehs",veh_grp_ary.multidayvehs.count);
-        console.log("IT IS A DAY  dayusemultivehs",veh_grp_ary.dayusemultivehs.count);
+        // console.log("IT IS A DAY USE VEHICLE",theCurrentVehicle);
+        // console.log("IT IS A DAY  dayusevehs",veh_grp_ary.dayusevehs.count);
+        // console.log("IT IS A DAY  multidayvehs",veh_grp_ary.multidayvehs.count);
+        // console.log("IT IS A DAY  dayusemultivehs",veh_grp_ary.dayusemultivehs.count);
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
         if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };

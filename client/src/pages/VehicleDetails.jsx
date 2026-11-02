@@ -309,7 +309,7 @@ export default function VehicleDetails() {
           setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
-          console.log('we are from rentervehicles clicked on a multiday');
+        //  console.log('we are from rentervehicles clicked on a multiday');
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
           setDisableInDateField(true)
@@ -531,7 +531,7 @@ export default function VehicleDetails() {
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
    
-    console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
+  //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
 
