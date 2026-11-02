@@ -133,12 +133,12 @@ export default function OwnerVehicles() {
 
           setAllRawVehicles(rawvehicles);
 
-           console.log('rawvehicles', rawvehicles);
-           let gpa = getVehicleTypeGroups(rawvehicles);
-           console.log('gpa',gpa)
+          console.log('rawvehicles', rawvehicles);
+          let gpa = getVehicleTypeGroups(rawvehicles);
+          console.log('gpa', gpa)
 
           let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
-        //   console.log('activeVehicles', activeVehicles);
+          //   console.log('activeVehicles', activeVehicles);
           setAllActiveCount(activeVehicles.length);
           setAllActiveVehicles(activeVehicles);
 
@@ -164,9 +164,9 @@ export default function OwnerVehicles() {
 
           let updatedVehicles3 = [...updatedVehicles2]
 
-           //  console.log('OV 165 updatedVehicles3', updatedVehicles3);
+          //  console.log('OV 165 updatedVehicles3', updatedVehicles3);
 
-            let updatedVehicles4 = updatedVehicles3.filter(v => v.calculatedActiveFlag === true);
+          let updatedVehicles4 = updatedVehicles3.filter(v => v.calculatedActiveFlag === true);
 
           //   console.log('OV 169 updatedVehicles4', updatedVehicles4);
 
@@ -180,9 +180,9 @@ export default function OwnerVehicles() {
           // });
 
           // console.log('updatedVehicles3', updatedVehicles3);
-         // console.log('WE ARE ABOUT TO SET-ALL-VEHICLES updatedVehicles.  these are vehicles sans renter.  FOR NOW USE RAWVEHICLES',rawvehicles)
+          // console.log('WE ARE ABOUT TO SET-ALL-VEHICLES updatedVehicles.  these are vehicles sans renter.  FOR NOW USE RAWVEHICLES',rawvehicles)
 
-       //  setAllVehicles(updatedVehicles);
+          //  setAllVehicles(updatedVehicles);
           setAllVehicles(rawvehicles);
           setVehiclesError(null);
         } catch (err) {
@@ -340,7 +340,7 @@ export default function OwnerVehicles() {
           carownertype: vehicle.carownertype,
           pincodeAction: "",
           createdfrom: "ownervehicles",
-         
+
         }
       });
     } catch (err) {
@@ -364,8 +364,10 @@ export default function OwnerVehicles() {
 
   const handleCreateClick = async (pin_code_action) => {
 
+    pin_code_action = "";
+
     const veh_grp_ary = getVehicleTypeGroups(vehicles);
-    
+
     const uid = loggedInUser?.unitnumber;
     if (!hoaId || !uid) {
       setModal({
@@ -411,8 +413,8 @@ export default function OwnerVehicles() {
 
       // this will get all the count all the ACTIVE daypass vehicles 
       const daypassCount = daypassVehicleCount(allVehicles);
-      console.log('function daypassVehicleCount',daypassCount);
-      console.log('grp ary dayusemultivehs',veh_grp_ary.dayusemultivehs.count);
+      console.log('function daypassVehicleCount', daypassCount);
+      console.log('grp ary dayusemultivehs', veh_grp_ary.dayusemultivehs.count);
 
       // this counts all vehicles with a daypass that are active or inactive
       const anydaypassCount = anyDaypassVehicleCount(allVehicles);
@@ -538,6 +540,7 @@ export default function OwnerVehicles() {
 
   const renderTitleBarTable = () => {
     return (<div>
+      
       <div className="button-grid">
         {loggedInUser && loggedInUser.role === "admin" && (
           <>
@@ -552,9 +555,10 @@ export default function OwnerVehicles() {
                 <option value="all">All</option>
               </select>
 
+
             </div>
             <div>
-              <button className="navbutton3"
+              <button className="navbutton4" style={{marginLeft:"-90px"}}
                 onClick={() => setVehicles(handleFilterApply())}>
                 Filter
               </button>
@@ -563,6 +567,7 @@ export default function OwnerVehicles() {
           </>
 
         )}
+      
 
         {loggedInUser && loggedInUser.role !== "admin" && (
           <>
@@ -589,16 +594,14 @@ export default function OwnerVehicles() {
             : (<span>Sort</span>)
           }
         </button>
-        <div>
-          <button className="navbutton3"
-            onClick={handleShowTable}>
-            {showTable ?
-              (<span className="strike">
-                Table</span>)
-              : (<span>Table</span>)
-            }
-          </button>
-        </div>
+        <button className="navbutton3"
+          onClick={handleShowTable}>
+          {showTable ?
+            (<span className="strike">
+              Table</span>)
+            : (<span>Table</span>)
+          }
+        </button>
       </div>
     </div>)
   }
