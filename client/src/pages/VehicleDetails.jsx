@@ -302,6 +302,8 @@ export default function VehicleDetails() {
         //   setDisableInDateField(true)
         //   setDisableOutDateField(true)
         // }
+
+
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
           const edate = new Date();
           edate.setDate(edate.getDate() - 1);
@@ -309,8 +311,18 @@ export default function VehicleDetails() {
           ed = formatLocalDate(edate);
           //  sd = theVehicle.startdate;
           //  ed = theVehicle.enddate;
-          setDisableInDateField(true)
-          setDisableOutDateField(true)
+          setDisableInDateField(false)
+          setDisableOutDateField(false)
+        }
+         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'multiday')) {
+          // const edate = new Date();
+          // edate.setDate(edate.getDate() - 1);
+          // sd = formatLocalDate(edate);
+          // ed = formatLocalDate(edate);
+            sd = theVehicle.startdate;
+            ed = theVehicle.enddate;
+          setDisableInDateField(false)
+          setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
           //  console.log('we are from rentervehicles clicked on a multiday');
@@ -331,10 +343,14 @@ export default function VehicleDetails() {
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
           //  console.log('we are from rentervehicles clicked on a multiday');
           //  sd = formatLocalDate(new Date());
-          sd = theVehicle.startdate;
+           const edate = new Date();
+          edate.setDate(edate.getDate() + 3);
+        //  sd = theVehicle.startdate;
+          sd = formatLocalDate(new Date());
           // ed = formatLocalDate(new Date());
-          ed = theVehicle.enddate;
-          setDisableInDateField(true)
+          ed = formatLocalDate(edate);
+         // ed = theVehicle.enddate;
+          setDisableInDateField(false)
           setDisableOutDateField(false)
         }
 
@@ -403,29 +419,29 @@ export default function VehicleDetails() {
   // JJVFIX
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+   // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
    
     let dateUpdates = {};
 
     if (name === 'carownertype' && value === 'dayuseonly') {
       const edate = new Date();
-      console.log('DO SOMETHING WITH DATES day use only');
+    //  console.log('DO SOMETHING WITH DATES day use only');
       edate.setDate(edate.getDate() - 1);
       const date = formatLocalDate(edate);
       dateUpdates = { startdate: date, enddate: date };
-      setDisableInDateField(true)
-      setDisableOutDateField(true)
+      setDisableInDateField(false)
+      setDisableOutDateField(false)
     }
     if (name === 'carownertype' && value === 'multiday') {
-      console.log('DO SOMETHING WITH DATES multiday');
-      const edate = new Date();
-      const edate2 = new Date();
-      edate.setDate(edate.getDate() + 1);
-      edate2.setDate(edate.getDate() + 4);
-      const date = formatLocalDate(edate);
-      const date2 = formatLocalDate(edate2);
-      dateUpdates = { startdate: date, enddate: date2 };
-      setDisableInDateField(true)
+    //  console.log('DO SOMETHING WITH DATES multiday');
+      // const edate = new Date();
+      // const edate2 = new Date();
+      // edate.setDate(edate.getDate() -1);
+      // edate2.setDate(edate2.getDate() -1);
+      // const date = formatLocalDate(edate);
+      // const date2 = formatLocalDate(edate2);
+      // dateUpdates = { startdate: date, enddate: date2 };
+      setDisableInDateField(false)
       setDisableOutDateField(false)
     }
     setFormData(prev => ({

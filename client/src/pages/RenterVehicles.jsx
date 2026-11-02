@@ -113,7 +113,7 @@ export default function RenterVehicles() {
           const response = await axios.get(qry);
 
           const responseData = response.data;
-             console.log('the response data is ',responseData);
+          //   console.log('the response data is ',responseData);
           //  console.log('choices from rentervehicles',responseData,pincodeAction)
           // responseData.forEach((el, index) => {
           //   console.log(`responseData renters Index ${index}: ${el.enddate}`);
@@ -131,7 +131,7 @@ export default function RenterVehicles() {
           // const dayusecount  = daypassVehicleCount(updatedVehicles);
           setDaypassCount(daypassVehicleCount(updatedVehicles));
 
-          console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
+     //     console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
 
           let containsdaypass = updatedVehicles.filter(v => v.carownertype === 'dayuseonly').length;
           setContainsDaypassCount(containsdaypass)
@@ -147,7 +147,7 @@ export default function RenterVehicles() {
 
           //      console.log('renter vehicles active vehicles length', activeVehicles.length);
 
-          console.log('RENTER VEHICLES passed in location state', location.state);
+     //     console.log('RENTER VEHICLES passed in location state', location.state);
 
 
           //   console.log('active vehicles length', activeVehicles.length);
@@ -322,13 +322,13 @@ export default function RenterVehicles() {
       return;
     }
 
-    console.log('unit for renter',unitForRenter);
+  //  console.log('unit for renter',unitForRenter);
     //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
     const currentVehicleCount = vehicles.length;
 
-    console.log('all vehicles passed to rv',vehicles)
-     console.log('pincodeaction passed in',pincodeAction)
+   // console.log('all vehicles passed to rv',vehicles)
+   //  console.log('pincodeaction passed in',pincodeAction)
 
     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
     let activeVehicleCount = activeVehicles.length;
@@ -346,7 +346,7 @@ export default function RenterVehicles() {
    */
 
     const veh_grp_ary = getVehicleTypeGroups(vehicles);
-    console.log('veh group create',veh_grp_ary);
+ //   console.log('veh group create',veh_grp_ary);
   
 
    //const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
@@ -415,8 +415,10 @@ export default function RenterVehicles() {
     if (veh_grp_ary.dayusemultivehs.count > 0) {
       console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
       showerror = true;
-      messagetoshow = (<>You are not allowed to have <br />more day passes than {freepassesallowed}. <br />
-        There may be cleaning people in the unit.</>)
+      messagetoshow = (<> There may be cleaning <br />people in the unit.<br /><br />
+      You are not allowed to have <br /
+      >more day passes than {freepassesallowed}.
+        </>)
     } else
 
 
