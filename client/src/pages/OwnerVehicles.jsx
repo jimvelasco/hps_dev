@@ -200,7 +200,7 @@ export default function OwnerVehicles() {
   }, [hoaId, ownerId, role]);
 
   const handleFilterApply = () => {
-    console.log('WE CALLED FILTER APPLY')
+ //  console.log('WE CALLED FILTER APPLY')
     let matchingVehicles = [...allVehicles];
     if (filterType === "owner") {
            return matchingVehicles.filter(v => v.createdbytype === 'owner');
@@ -413,8 +413,8 @@ export default function OwnerVehicles() {
 
       // this will get all the count all the ACTIVE daypass vehicles 
       const daypassCount = daypassVehicleCount(allVehicles);
-      console.log('function daypassVehicleCount', daypassCount);
-      console.log('grp ary dayusemultivehs', veh_grp_ary.dayusemultivehs.count);
+   //   console.log('function daypassVehicleCount', daypassCount);
+   //   console.log('grp ary dayusemultivehs', veh_grp_ary.dayusemultivehs.count);
 
       // this counts all vehicles with a daypass that are active or inactive
       const anydaypassCount = anyDaypassVehicleCount(allVehicles);
@@ -432,6 +432,8 @@ export default function OwnerVehicles() {
 
 
       let msg = (<>Vehicle limit reached. <br /> You may only have <br />{parkingLimitInventory} vehicles in your inventory.</>);
+
+    //  console.log('entire inventory is ',veh_grp_ary.nonownervehsany.count)
 
       if (vehicles.length >= parkingLimitInventory) {
         setModal({

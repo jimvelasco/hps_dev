@@ -24,9 +24,9 @@ export default function OwnersLogin({loginType}) {
   const [showForgotPasswordDialog, setShowForgotPasswordDialog] = useState(false);
 
 
-  useEffect(() => {
-    localStorage.setItem("logonType", loginType);
-  }, [loginType]);
+  // useEffect(() => {
+  //   localStorage.setItem("logonType", loginType);
+  // }, [loginType]);
 
   useEffect(() => {
     localStorage.removeItem("token");
@@ -82,8 +82,11 @@ export default function OwnersLogin({loginType}) {
         localStorage.setItem("token", response.data.token);
          const user = response.data.user; 
          const unum = user.unitnumber;
-         localStorage.setItem('unitNumber',unum)
+         localStorage.setItem('unitNumber',unum);
+         
         const flag = user.role; 
+
+         localStorage.setItem('logonType',flag)
       //  console.log('owner login role',flag)
         let nav = `/${hoaId}/ownervehicles/${flag}`;
         if (flag === 'admin') {

@@ -93,9 +93,16 @@ export default function VehicleDetails() {
   //   ];
 
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
+  const logonType = localStorage.getItem('logonType');
   const vehicleOwnerTypeAry = unit?.day_use_only === 1
     ? [{ value: 'dayuseonly', label: 'Day Pass' }]
-    : hoa?.parking_types_array ?? [];
+    : logonType === 'tenant'
+      ? [
+        { value: 'owner', label: 'Owner' },
+        { value: 'friend', label: 'Friend/Family' },
+        { value: 'multiday', label: 'Contractor' }
+      ]
+      : hoa?.parking_types_array ?? [];
 
 
 

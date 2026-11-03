@@ -249,8 +249,8 @@ export default function RenterVehicles() {
     if (pincodeAction === 'dayuseonly') {
       if (veh_grp_ary.dayusemultivehs.count > 0) {
         console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
-        return (<>You are not allowed to have <br />more daypassed than allowed<br />
-          Call Admin to get an increase. </>);
+        return (<>You are not allowed to have <br />more daypassed<br />than allowed: {freepassesallowed}<br /><br />
+          Call Admin to get an<br />increase in day passes. </>);
       }
       return null;
     }
