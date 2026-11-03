@@ -31,6 +31,18 @@ db.hoas.updateMany(
   {},
   { $set: { "parking_handicapped_hoa": 0 }}
 );
+db.hoas.updateMany(
+  {},
+  { $set: { "parking_types_array": 
+    [
+      { value: 'owner', label: 'Owner' },
+      { value: 'family', label: 'Family' },
+      { value: 'friend', label: 'Friend' },
+      { value: 'tenant', label: 'Tenant' },
+      { value: 'multiday', label: 'Contractor' }
+    ]
+  }}
+);
 
 // UNITS
 

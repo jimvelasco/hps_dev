@@ -61,25 +61,42 @@ export default function VehicleDetails() {
 
 
   // const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
-    const vehicleOwnerTypeAry = unit?.day_use_only === 1
+  // const vehicleOwnerTypeAry = unit?.day_use_only === 1
+  // ? [
+  //   { value: 'dayuseonly', label: 'Day Pass' }
+  // ]
+  // : loggedInUser?.role === 'rentalmanagerxx'
+  //   ? [
+  //     { value: 'rentalmanager', label: 'Rental Manager' }
+  //   ]
+  //   : [
+  //     { value: 'owner', label: 'Owner' },
+  //     { value: 'family', label: 'Family' },
+  //     { value: 'friend', label: 'Friend' },
+  //     // { value: 'rentalmanager', label: 'Rental Manager' },
+  //     // { value: 'multiday', label: 'Multi Day' },
+  //     // { value: 'dayuseonly', label: 'Day Pass' },
+  //     { value: 'tenant', label: 'Tenant' },
+  //     { value: 'multiday', label: 'Contractor' }
+  //   ];
 
-    ? [
-      { value: 'dayuseonly', label: 'Day Pass' }
-    ]
-    : loggedInUser?.role === 'rentalmanagerxx'
-      ? [
-        { value: 'rentalmanager', label: 'Rental Manager' }
-      ]
-      : [
-        { value: 'owner', label: 'Owner' },
-        { value: 'family', label: 'Family' },
-        { value: 'friend', label: 'Friend' },
-        // { value: 'rentalmanager', label: 'Rental Manager' },
-        // { value: 'multiday', label: 'Multi Day' },
-        // { value: 'dayuseonly', label: 'Day Pass' },
-        { value: 'tenant', label: 'Tenant' },
-        { value: 'multiday', label: 'Contractor' }
-      ];
+  // const vehicleOwnerTypeAry = unit?.day_use_only === 1
+  //   ? [
+  //     { value: 'dayuseonly', label: 'Day Pass' }
+  //   ]
+  //   : [
+  //     { value: 'owner', label: 'Owner' },
+  //     { value: 'family', label: 'Family' },
+  //     { value: 'friend', label: 'Friend' },
+  //     { value: 'tenant', label: 'Tenant' },
+  //     { value: 'multiday', label: 'Contractor' }
+  //   ];
+
+  const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
+  const vehicleOwnerTypeAry = unit?.day_use_only === 1
+    ? [{ value: 'dayuseonly', label: 'Day Pass' }]
+    : hoa?.parking_types_array ?? [];
+
 
 
 
@@ -89,9 +106,9 @@ export default function VehicleDetails() {
   //     { value: 'multiday', label: 'Multiple Days' },
   //     { value: 'dayuseonly', label: 'Day Pass' }
   //   ];
-     const renterOwnerTypeAry = [
-      { value: 'dayuseonly', label: 'Day Pass' }
-    ];
+  const renterOwnerTypeAry = [
+    { value: 'dayuseonly', label: 'Day Pass' }
+  ];
 
 
   //console.log('VD LOCATION STATE',location.state);
@@ -116,8 +133,6 @@ export default function VehicleDetails() {
   const [isDayUseVehicle, setIsDayUseVehicle] = useState(false);
 
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
-  const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
-
   const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
 
   // const handlePlateDetected = (data) => {
@@ -200,7 +215,7 @@ export default function VehicleDetails() {
       setDisableInDateField(true);
       setDisableOutDateField(false)
     }
-     if (createdfrom === 'rentervehicles' && carownertype === 'renter') {
+    if (createdfrom === 'rentervehicles' && carownertype === 'renter') {
       daysplus = 3;
       setDisableInDateField(false);
       setDisableOutDateField(false)
@@ -210,12 +225,12 @@ export default function VehicleDetails() {
       setDisableInDateField(false);
       setDisableOutDateField(false)
     }
-     if (createdfrom === 'ownervehicles' && carownertype === 'tenant') {
+    if (createdfrom === 'ownervehicles' && carownertype === 'tenant') {
       daysplus = 3;
       setDisableInDateField(false);
       setDisableOutDateField(false)
     }
-     if (createdfrom === 'ownervehicles' && carownertype === 'dayuseonly' ||  carownertype === 'multiday') {
+    if (createdfrom === 'ownervehicles' && carownertype === 'dayuseonly' || carownertype === 'multiday') {
       daysplus = 3;
       setDisableInDateField(false);
       setDisableOutDateField(false)
@@ -333,7 +348,7 @@ export default function VehicleDetails() {
         //   setDisableOutDateField(true)
         // }
 
-     //   console.log('cf cot',createdfrom,theVehicle.carownertype);
+        //   console.log('cf cot',createdfrom,theVehicle.carownertype);
 
 
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
@@ -346,27 +361,27 @@ export default function VehicleDetails() {
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
-         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'multiday')) {
+        if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'multiday')) {
           // const edate = new Date();
           // edate.setDate(edate.getDate() - 1);
           // sd = formatLocalDate(edate);
           // ed = formatLocalDate(edate);
-            sd = theVehicle.startdate;
-            ed = theVehicle.enddate;
+          sd = theVehicle.startdate;
+          ed = theVehicle.enddate;
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'tenant')) {
           let enabled = true;
-       //   console.log('logontype',localStorage.getItem('logonType'))
+          //   console.log('logontype',localStorage.getItem('logonType'))
           let ltype = localStorage.getItem('logonType');
           if (ltype === 'owner') enabled = false;
           // const edate = new Date();
           // edate.setDate(edate.getDate() - 1);
           // sd = formatLocalDate(edate);
           // ed = formatLocalDate(edate);
-            sd = theVehicle.startdate;
-            ed = theVehicle.enddate;
+          sd = theVehicle.startdate;
+          ed = theVehicle.enddate;
           setDisableInDateField(enabled)
           setDisableOutDateField(enabled)
         }
@@ -389,13 +404,13 @@ export default function VehicleDetails() {
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
           //  console.log('we are from rentervehicles clicked on a multiday');
           //  sd = formatLocalDate(new Date());
-           const edate = new Date();
+          const edate = new Date();
           edate.setDate(edate.getDate() + 3);
-        //  sd = theVehicle.startdate;
+          //  sd = theVehicle.startdate;
           sd = formatLocalDate(new Date());
           // ed = formatLocalDate(new Date());
           ed = formatLocalDate(edate);
-         // ed = theVehicle.enddate;
+          // ed = theVehicle.enddate;
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
@@ -465,13 +480,13 @@ export default function VehicleDetails() {
   // JJVFIX
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-   // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
-   
+    // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+
     let dateUpdates = {};
 
     if (name === 'carownertype' && value === 'dayuseonly') {
       const edate = new Date();
-    //  console.log('DO SOMETHING WITH DATES day use only');
+      //  console.log('DO SOMETHING WITH DATES day use only');
       edate.setDate(edate.getDate() - 1);
       const date = formatLocalDate(edate);
       dateUpdates = { startdate: date, enddate: date };
@@ -479,7 +494,7 @@ export default function VehicleDetails() {
       setDisableOutDateField(false)
     }
     if (name === 'carownertype' && value === 'multiday') {
-    //  console.log('DO SOMETHING WITH DATES multiday');
+      //  console.log('DO SOMETHING WITH DATES multiday');
       // const edate = new Date();
       // const edate2 = new Date();
       // edate.setDate(edate.getDate() -1);
@@ -643,10 +658,10 @@ export default function VehicleDetails() {
         msg = (<>Multi Day and Day Use limit exceded. <br />
           You are allowed 2 Day Passes templates</>);
       }
-       if (oktoaddobj.msgType === 6) {
+      if (oktoaddobj.msgType === 6) {
         msg = (<>Renter in unit</>);
       }
-         if (oktoaddobj.msgType === 7) {
+      if (oktoaddobj.msgType === 7) {
         msg = (<>Owners can only have one tenant</>);
       }
 
@@ -896,7 +911,7 @@ export default function VehicleDetails() {
                   <label className="input-label">
                     Company
                   </label>
-                   <input className="standardinput"
+                  <input className="standardinput"
                     type="tel"
                     name="carownerphone"
                     value={formData.carownertype}
@@ -904,9 +919,9 @@ export default function VehicleDetails() {
                     required
                   />
 
-                
-                    </div>
-               
+
+                </div>
+
 
 
 
@@ -1231,7 +1246,7 @@ export default function VehicleDetails() {
 
             <div style={{ marginTop: "20px" }}>
 
-               {/* <input className="checkboxhide"
+              {/* <input className="checkboxhide"
                   type="checkbox"
                   id="vehicle-day-use-only"
                   name="day_use_only"
@@ -1325,7 +1340,7 @@ export default function VehicleDetails() {
                   Cancel
                 </button>
                 {/* {isModifyMode && localStorage.getItem('logonType') !== 'tenant' && ( */}
-                   {isModifyMode &&  (
+                {isModifyMode && (
                   <button className="btn btn-danger"
                     type="button"
 
