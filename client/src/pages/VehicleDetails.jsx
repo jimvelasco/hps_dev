@@ -215,6 +215,11 @@ export default function VehicleDetails() {
       setDisableInDateField(false);
       setDisableOutDateField(false)
     }
+     if (createdfrom === 'ownervehicles' && carownertype === 'dayuseonly' ||  carownertype === 'multiday') {
+      daysplus = 3;
+      setDisableInDateField(false);
+      setDisableOutDateField(false)
+    }
 
     const edate = new Date();
     edate.setDate(edate.getDate() + daysplus);
@@ -327,6 +332,8 @@ export default function VehicleDetails() {
         //   setDisableInDateField(true)
         //   setDisableOutDateField(true)
         // }
+
+     //   console.log('cf cot',createdfrom,theVehicle.carownertype);
 
 
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
