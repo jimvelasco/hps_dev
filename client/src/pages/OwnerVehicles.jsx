@@ -16,7 +16,7 @@ import { getAWSResource } from "../utils/awsHelper";
 
 
 export default function OwnerVehicles() {
-  const { hoaId } = useParams();
+  const { hoaId ,role:routeRole} = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
@@ -62,6 +62,7 @@ export default function OwnerVehicles() {
       setOwnerId(loggedInUser._id);
       setShowUnitId(loggedInUser.unitnumber);
       setLogonType(localStorage.getItem('logonType'));
+      console.log('role from url',routeRole, loggedInUser.role)
 
 
     } else {
@@ -202,11 +203,7 @@ export default function OwnerVehicles() {
     console.log('WE CALLED FILTER APPLY')
     let matchingVehicles = [...allVehicles];
     if (filterType === "owner") {
-      //return matchingVehicles.filter(v => v.carownertype === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
-      // return matchingVehicles.filter(v => vehicleOwnerTypeAry.includes(v.carownertype)); // === "owner" || v.carownertype === "friend" || v.carownertype === "family"|| v.carownertype === "contractor");
-      // JJVFIX did not have the 'other' in there
-      return matchingVehicles.filter(v => v.createdbytype === 'owner');
-      // return matchingVehicles.filter(v => v.createdbytype === 'owner' || v.createdbytype === 'other');
+           return matchingVehicles.filter(v => v.createdbytype === 'owner');
     }
     if (filterType === "other") {
       //return matchingVehicles.filter(v => v.carownertype === "renter");

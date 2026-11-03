@@ -26,8 +26,8 @@ const getUnits = async (req, res) => {
     // Let's see... if I comment out the hardcoded role, it will return all roles for that HOA.
   }
 
-  const users = await Unit.find(filter).sort({ unitnumber: 1 });
-  res.json(users);
+  const units = await Unit.find(filter).sort({ unitnumber: 1 });
+  res.json(units);
 };
 
 

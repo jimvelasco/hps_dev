@@ -685,6 +685,9 @@ input.input-date2:disabled {
   gap: 10px;
   margin: 15px 0;
 }
+.checkboxhide {
+  visibility: hidden;
+}
 
 .input-label {
   margin-bottom: 4px;

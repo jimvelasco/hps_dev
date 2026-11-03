@@ -429,7 +429,7 @@ export default function RenterVehicles() {
 
   //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "renter" ||  v.carownertype === "dayuseonly")];  // only show renters
 
-  //with no multiday pin we are forced to do this
+  //with no multiday pin we are forced to do this.  The pincodeAction comes from the pincode they selected
   const displayedVehicles = vehicles.filter(v => pincodeAction === 'dayuseonly'
     ? v.carownertype === 'dayuseonly' || v.carownertype === 'multiday'
     : v.carownertype === 'renter');

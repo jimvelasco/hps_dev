@@ -60,19 +60,30 @@ export default function VehicleDetails() {
   //     ];
 
 
-  const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+  // const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
+    const vehicleOwnerTypeAry = unit?.day_use_only === 1
+
     ? [
       { value: 'dayuseonly', label: 'Day Pass' }
     ]
-    : [
-      { value: 'owner', label: 'Owner' },
-      { value: 'family', label: 'Family' },
-      { value: 'friend', label: 'Friend' },
-      { value: 'contractor', label: 'Contractor' },
-      { value: 'tenant', label: 'Tenant' }
-      // { value: 'multiday', label: 'Multiple Days' },
-      // { value: 'dayuseonly', label: 'Day Pass' }
-    ];
+    : loggedInUser?.role === 'rentalmanagerxx'
+      ? [
+        { value: 'rentalmanager', label: 'Rental Manager' }
+      ]
+      : [
+        { value: 'owner', label: 'Owner' },
+        { value: 'family', label: 'Family' },
+        { value: 'friend', label: 'Friend' },
+        // { value: 'rentalmanager', label: 'Rental Manager' },
+        // { value: 'multiday', label: 'Multi Day' },
+        // { value: 'dayuseonly', label: 'Day Pass' },
+        { value: 'tenant', label: 'Tenant' },
+        { value: 'contractor', label: 'Contractor' }
+      ];
+
+
+
+
 
   // const renterOwnerTypeAry = [
   //     { value: 'multiday', label: 'Multiple Days' },
@@ -86,10 +97,6 @@ export default function VehicleDetails() {
   //console.log('VD LOCATION STATE',location.state);
 
 
-
-  // JJVFIX const selectedOwnerType = createdfrom === "rentervehicles"
-  //   ? nonownerType || role || ""
-  //   : carownertype || (vehicleOwnerTypeAry.includes(role) ? role : "");
 
   // 
   const selectedOwnerType = carownertype;
@@ -878,6 +885,22 @@ export default function VehicleDetails() {
                   />
                 </div>
 
+                <div style={{ marginBottom: "15px" }}>
+                  <label className="input-label">
+                    Company
+                  </label>
+                   <input className="standardinput"
+                    type="tel"
+                    name="carownerphone"
+                    value={formData.carownertype}
+                    onChange={handleFormChange}
+                    required
+                  />
+
+                
+                    </div>
+               
+
 
 
 
@@ -1201,9 +1224,7 @@ export default function VehicleDetails() {
 
             <div style={{ marginTop: "20px" }}>
 
-
-              <div className="unit-checkbox-row">
-                <input
+               {/* <input className="checkboxhide"
                   type="checkbox"
                   id="vehicle-day-use-only"
                   name="day_use_only"
@@ -1211,9 +1232,20 @@ export default function VehicleDetails() {
                   onChange={handleFormChange}
                   style={{ width: "18px", height: "18px", cursor: "pointer" }}
                   disabled={true}
+                /> */}
 
+
+              <div className="unit-checkbox-row">
+                <input className="checkboxhidex"
+                  type="checkbox"
+                  id="vehicle-day-use-only"
+                  name="day_use_only"
+                  checked={formData.day_use_only === 1}
+                  onChange={handleFormChange}
+                  style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                  disabled={true}
                 />
-                <label className="input-label" htmlFor="vehicle-day-use-only">Day use only</label>
+                <label className="input-label" htmlFor="vehicle-day-use-only">Day Pass</label>
               </div>
 
               <div style={{ marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>

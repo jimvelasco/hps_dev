@@ -33,6 +33,20 @@ export default function UserDetails() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const userRoleTypeAry = localStorage.getItem('logonType') === 'admin' 
+    ? [
+      { value: 'dayuseonly', label: 'Day Pass' }
+    ]
+    : [
+      { value: 'owner', label: 'Owner' },
+      { value: 'family', label: 'Family' },
+      { value: 'friend', label: 'Friend' },
+      { value: 'contractor', label: 'Contractor' },
+      { value: 'tenant', label: 'Tenant' }
+      // { value: 'multiday', label: 'Multiple Days' },
+      // { value: 'dayuseonly', label: 'Day Pass' }
+    ];
+
   useEffect(() => {
     if (userId) {
       const fetchUser = async () => {
@@ -52,6 +66,7 @@ export default function UserDetails() {
             company: response.data.company || "",
 
           });
+        
         } catch (err) {
           setError(err.response?.data?.message || err.message || "Failed to fetch user");
           console.error("Error fetching user:", err);
@@ -62,6 +77,7 @@ export default function UserDetails() {
       fetchUser();
     } else if (hoa && !userId) {
        console.log('we are creating a new user',location.state)
+         console.log('user details logonType', localStorage.getItem('logonType'))
       setFormData(prev => ({
         ...prev,
         // inventory_allowed_owner: hoa.inventory_allowed_owner || "",
@@ -327,6 +343,7 @@ export default function UserDetails() {
                 >
                    <option value="owner">Owner</option>
                     <option value="tenant">Tenant</option>
+                     {/* <option value="rentalmanager">Rental Manager</option> */}
                    <option value="admin">Admin</option>
                   <option value="enforcer">Enforcer</option>
                 </select>
