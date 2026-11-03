@@ -164,13 +164,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   const todayUTC = new Date(); // "2025-12-03"
   const todayStr = formatLocalDate(todayUTC);
-//  console.log('okToAddUnitVehicle vehiclearray', vehiclearray)
+  //  console.log('okToAddUnitVehicle vehiclearray', vehiclearray)
   const allActiveVehicles = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   const allActiveVehiclesCount = allActiveVehicles.length;
 
   const veh_grp_ary = getVehicleTypeGroups(vehiclearray, false);
-  //console.log('we are in vehicle helpers grpary', veh_grp_ary)
-  // console.log('formvehicle', formvehicle)
+  console.log('we are in vehicle helpers grpary', veh_grp_ary)
+ //  console.log('formvehicle', formvehicle)
   // console.log('all active', allActiveVehicles)
 
   // console.log('OKTOADD incoming array is ', vehiclearray);
@@ -205,7 +205,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let msgType = 0;
   let robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 0 };
   let freeparkinglimit = unit.renter_free_parking;
-  //  console.log('free parking for unit is', freeparkinglimit);
+ // console.log('free parking for unit is', freeparkinglimit);
 
   if (createdfrom === 'ownervehicles' || createdfrom === 'rentervehicles') {
     // this is run for blank vehicle records (new vehicles)
@@ -213,6 +213,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     if (createdfrom === 'ownervehicles' && formvehicle.day_use_only === 1) {
       formdayusecnt = 1;
+    }
+
+    if (createdfrom === 'ownervehicles' && formvehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehsany.count > 0) {
+       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 7 };
+        return robj;
     }
 
 
@@ -235,23 +240,30 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     if (!vehicleId) {
       if (!dates_span_today) {
 
-        const maxdayusemulti = 2;
+        // const maxdayusemulti = 20;
 
-        if (createdfrom === 'ownervehicles' && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
-          robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
-          let mdc = veh_grp_ary.multidayvehsany.count;
-          let duc = veh_grp_ary.dayusevehsany.count;
-          if ((mdc + duc) >= maxdayusemulti) {
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 5 };
-          }
-          return robj;
-        }
+        // if (createdfrom === 'ownervehicles' && (formvehicle.carownertype === 'dayuseonly' || 
+        //   formvehicle.carownertype === 'multiday' || 
+        //   formvehicle.carownertype === 'tenant')) {
+        //   robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
+        //   let mdc = veh_grp_ary.multidayvehsany.count;
+        //   let duc = veh_grp_ary.dayusevehsany.count;
+        //   if ((mdc + duc) >= maxdayusemulti) {
+        //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 5 };
+        //   }
+        //   return robj;
+        // }
+
+        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
+        return robj;
+
+
       }
 
 
       if (dates_span_today) {
 
-        console.log("VH dates_span_today is true", dates_span_today);
+     //   console.log("VH dates_span_today is true", dates_span_today);
 
         // console.log('VH veh_grp_ary', veh_grp_ary);
         // this will never be true for renter vehicle
@@ -262,8 +274,22 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           }
         }
 
-        if (createdfrom === 'ownervehicles' && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
-           console.log("VH we have a du or md record");
+        if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count)) {
+          showerror = true;
+          if (veh_grp_ary.rentervehs.count > 0) {
+            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+          } else {
+            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
+          }
+          return robj;
+        }
+
+
+
+        if (createdfrom === 'ownervehicles' && (formvehicle.carownertype === 'dayuseonly' ||
+          formvehicle.carownertype === 'multiday' ||
+          formvehicle.carownertype === 'tenant' ||
+          formvehicle.carownertype === 'contractor')) {
 
           let messagetoshow = '';
           // we could be potenially be adding a day use vehicle so check if they are out there already
@@ -273,106 +299,121 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           } else {
             showerror = true;
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 3 };
-          } 
+          }
 
           if (veh_grp_ary.rentervehs.count > 0) {
             showerror = true;
-             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
 
-          }
+            // }
             // let mdc = veh_grp_ary.multidayvehsany.count;
             // let duc = veh_grp_ary.dayusevehsany.count;
             // if ((mdc + duc) >= 1) {
             //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 5 };
             // }
+            return robj;
 
-        } else
+          }
+        }
+        // else
 
-          if (veh_grp_ary.rentervehs.count >= 2) {
-            showerror = true;
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+        // if (veh_grp_ary.rentervehs.count >= 2) {
+        //   showerror = true;
+        //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
 
-          } else
-            if (veh_grp_ary.rentervehs.count < 2) {
-              robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
-            } else
+        // } else
+        //   if (veh_grp_ary.rentervehs.count < 2) {
+        //     robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
+        //   } else
 
 
 
-              if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count)) {
-                showerror = true;
+        // if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count)) {
+        //   showerror = true;
 
-                if (veh_grp_ary.rentervehs.count > 0) {
-                  robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
-                } else {
-                  robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
-                }
-              }
-        if (showerror) {
+        //   if (veh_grp_ary.rentervehs.count > 0) {
+        //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
+        //   } else {
+        //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
+        //   }
+        // }
+        // if (showerror) {
+        //   return robj;
+        // }
+      }
+      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
+      return robj;
+    }
+
+    //else {
+
+    // VEHICLE ID EXISTS
+
+
+    let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
+    let theCurrentVehicle = theCurrentVehicleAry[0];
+    console.log('VD EXISTS the current vehicle is', theCurrentVehicle)
+    let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
+    let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
+    const maxdayusemulti = 2;
+    let requirespayment = theCurrentVehicle.requires_payment;
+    if (is_vehicle_active && dates_span_today) {
+      robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
+      return robj;
+    }
+    if (is_vehicle_active && !dates_span_today) {
+      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+      return robj;
+    }
+    if (!is_vehicle_active && dates_span_today) {
+      if (is_day_use_vehicle) {
+        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+        if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
+          console.log('VH BAILED ON veh_grp_ary.dayusemultivehs.count >= maxdayuse')
+          showerror = true;
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
           return robj;
         }
-      }
-    } else {
-
-      // VEHICLE ID EXISTS
-
-
-      let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
-      let theCurrentVehicle = theCurrentVehicleAry[0];
-      console.log('VD EXISTS the current vehicle is', theCurrentVehicle)
-      let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
-      let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
-      const maxdayusemulti = 2;
-      let requirespayment = theCurrentVehicle.requires_payment;
-      if (is_vehicle_active && dates_span_today) {
-        robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
         return robj;
       }
-      if (is_vehicle_active && !dates_span_today) {
-        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+
+      if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
+        if (veh_grp_ary.rentervehs.count > 0) {
+          console.log('VH BAILED ON veh_grp_ary.rentervehs.count > 0')
+          showerror = true;
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
+        } else {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 1 };
+        }
+        return robj;
+      } else {
+        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 1 };
+        if (veh_grp_ary.dayusemultivehs.count > 0) {
+          console.log('VH BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
+          showerror = true;
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
+        }
         return robj;
       }
-      if (!is_vehicle_active && dates_span_today) {
-        if (is_day_use_vehicle) {
-          robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
-          if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
-            console.log('VH BAILED ON veh_grp_ary.dayusemultivehs.count >= maxdayuse')
-            showerror = true;
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
-          }
-        } else
-          if (veh_grp_ary.dayusemultivehs.count > 0) {
-            console.log('VH BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
-            showerror = true;
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
-          } else
-            if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
-              if (veh_grp_ary.rentervehs.count > 0) {
-                console.log('VH BAILED ON veh_grp_ary.rentervehs.count > 0')
-                showerror = true;
-                robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
-              } else {
-                robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 1 };
-              }
-            } else {
-              robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 1 };
-            }
-       
-      }
+
     }
-     return robj;
+
+
+
+
+
+
+    if (!is_vehicle_active && !dates_span_today) {
+      //   console.log('THIS IS WHERE')
+      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+      return robj;
+    }
+
+
+
+
+
   }
-
-  if (!is_vehicle_active && !dates_span_today) {
-    //   console.log('THIS IS WHERE')
-    robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
-    return robj;
-  }
-
-
-
-
-
 } // end of okToAddUnitVehicle
 
 
@@ -390,7 +431,8 @@ export const getVehicleTypeGroups = (vehicles, log = false) => {
     { name: 'multidayvehsany', matches: v => v.carownertype === 'multiday' },
     { name: 'dayusemultivehs', matches: v => (v.carownertype === 'dayuseonly' || v.carownertype === 'multiday') && v.calculatedActiveFlag === true },
     { name: 'dayusemultivehsany', matches: v => v.carownertype === 'dayuseonly' || v.carownertype === 'multiday' },
-    { name: 'allactivevehs', matches: v => v.calculatedActiveFlag === true }
+    { name: 'allactivevehs', matches: v => v.calculatedActiveFlag === true },
+    { name: 'tenantvehsany', matches: v => v.carownertype === 'tenant' }
   ];
 
   const groupArray = Object.fromEntries(groups.map(({ name, matches }) => {
@@ -402,6 +444,10 @@ export const getVehicleTypeGroups = (vehicles, log = false) => {
 
   return groupArray;
 }
+
+
+
+
 
 export const anyDaypassVehicleCount = (vehicles) => {
   let cnt = 0;

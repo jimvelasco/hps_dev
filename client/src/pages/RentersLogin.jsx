@@ -254,7 +254,7 @@ export default function RentersLogin() {
                                 <option value="friend">Friend</option>*/}
                                 {/* <option value="visitor">Visitor / Day Guest</option>
                                 <option value="contractor">Contractor / Vendor</option> */}
-                                <option value="dayuseonly">Day Use</option>
+                                <option value="dayuseonly">Day Pass</option>
                                 {/* <option value="multiday">Multiple Days (day use)</option> */}
 
                             </select>

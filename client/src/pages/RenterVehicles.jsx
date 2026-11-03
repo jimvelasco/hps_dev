@@ -245,6 +245,47 @@ export default function RenterVehicles() {
 
   // navigate(qry, { state: { unitNumber: uid, role: arole, numberOfVehicles: vehicles.length } });
 
+  const getCreateValidationMessage = (veh_grp_ary, unitParkingLimit, freepassesallowed) => {
+    if (pincodeAction === 'dayuseonly') {
+      if (veh_grp_ary.dayusemultivehs.count > 0) {
+        console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
+        return (<>You are not allowed to have <br />more daypassed than allowed<br />
+          Call Admin to get an increase. </>);
+      }
+      return null;
+    }
+
+    if (veh_grp_ary.rentervehs.count >= unitParkingLimit) {
+      console.log('BAILED ON (veh_grp_ary.rentervehs.count >=  unitParkingLimit')
+      return (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}.
+        </>);
+    }
+    if (veh_grp_ary.allactivevehs.count >= unitParkingLimit) {
+      console.log('BAILED ON veh_grp_ary.allactivevehs.count >=  unitParkingLimit ')
+      return (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}.
+        <br />There may be an owner in the unit. </>);
+    }
+    if (veh_grp_ary.ownervehs.count > 0) {
+      console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
+      return (<> There may be an owner in the unit.<br /><br />
+        CALL THE OWNER OR ADMIN</>);
+    }
+    if (veh_grp_ary.dayusemultivehs.count > 0) {
+      console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
+      return (<> There may be cleaning <br />people in the unit.<br /><br />
+        You are not allowed to have <br />more day passes than {freepassesallowed}.
+        </>);
+    }
+    if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
+      console.log('BAILED ON allActiveCount >= (unitParkingLimit + containsDaypassCount')
+      return (<>You are not allowed to have <br />more active vehicles than<br />
+        your parking allowance: {unitParkingLimit}. <br /><br />
+        CALL THE OWNER OR ADMIN</>);
+    }
+
+    return null;
+  };
+
   const handleCreateClick = () => {
     if (!ownerOfUnit || !unitForRenter) {
       alert("Unable to load unit information");
@@ -306,58 +347,8 @@ export default function RenterVehicles() {
 
    // console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
 
-   let showerror = false;
-   let messagetoshow = '';
-
-   if (pincodeAction === 'dayuseonly') {
-    if (veh_grp_ary.dayusemultivehs.count > 0) {
-       console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
-       showerror = true;
-        messagetoshow = (<>You are not allowed to have <br />more daypassed than allowed<br /> 
-        Call Admin to get an increase. </>);
-    }
-    } else 
-     if (veh_grp_ary.rentervehs.count >=  unitParkingLimit ) {
-      console.log('BAILED ON (veh_grp_ary.rentervehs.count >=  unitParkingLimit')
-      showerror = true;
-      messagetoshow = (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}. 
-        </>);
-    } else
-
-     if (veh_grp_ary.allactivevehs.count >=  unitParkingLimit ) {
-      console.log('BAILED ON veh_grp_ary.allactivevehs.count >=  unitParkingLimit ')
-      showerror = true;
-      messagetoshow = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}.
-      < br />There may be an owner in the unit. </>);
-    } else
-
-    if (veh_grp_ary.ownervehs.count > 0) {
-      console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
-      showerror = true;
-      messagetoshow =  (<> There may be an owner in the unit.<br /><br />           
-        CALL THE OWNER OR ADMIN</>)
-    } else
-
-// active day use and multi
-
-    if (veh_grp_ary.dayusemultivehs.count > 0) {
-      console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
-      showerror = true;
-      messagetoshow = (<> There may be cleaning <br />people in the unit.<br /><br />
-      You are not allowed to have <br /
-      >more day passes than {freepassesallowed}.
-        </>)
-    } else
-
-
-    if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
-      console.log('BAILED ON allActiveCount >= (unitParkingLimit + containsDaypassCount')
-      showerror = true;
-      messagetoshow = (<>You are not allowed to have <br />more active vehicles than<br /> 
-        your parking allowance: {unitParkingLimit}. <br /><br />
-        CALL THE OWNER OR ADMIN</>)
-    }
-    if (showerror) {
+    const messagetoshow = getCreateValidationMessage(veh_grp_ary, unitParkingLimit, freepassesallowed);
+    if (messagetoshow !== null) {
        setModal({
         isOpen: true,
         type: "alert",

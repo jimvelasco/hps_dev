@@ -145,7 +145,8 @@ export default function OwnerVehicles() {
           //JJVFIX. do not show tenants
 
           // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter" && v.carownertype !== "tenant" );
-          const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
+         // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
+          const updatedVehicles = [...rawvehicles];
 
           // console.log('OV 148 updatedVehicles THESE ARE carowner type != renter', updatedVehicles);
 
@@ -230,7 +231,9 @@ export default function OwnerVehicles() {
       String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
       String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
     )
-    : vehicles.filter(v => v.carownertype !== "renter");
+    : loggedInUser?.role === "tenant"
+      ? vehicles.filter(v => v.carownertype === "tenant")
+      : vehicles.filter(v => v.carownertype !== "renter");
 
   //console.log('filtered vehicles should be all of them in vehicles sans the renter vehicles', filteredVehicles)
 

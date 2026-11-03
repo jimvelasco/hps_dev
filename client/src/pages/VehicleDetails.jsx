@@ -62,20 +62,24 @@ export default function VehicleDetails() {
 
   const vehicleOwnerTypeAry = unit?.day_use_only === 1 || pincodeAction === 'daypass'
     ? [
-      { value: 'dayuseonly', label: 'Day Use Only' }
+      { value: 'dayuseonly', label: 'Day Pass' }
     ]
     : [
       { value: 'owner', label: 'Owner' },
       { value: 'family', label: 'Family' },
       { value: 'friend', label: 'Friend' },
-      { value: 'tenant', label: 'Tenant' },
-      { value: 'multiday', label: 'Multiple Days' },
-      { value: 'dayuseonly', label: 'Day Use Only' }
+      { value: 'contractor', label: 'Contractor' },
+      { value: 'tenant', label: 'Tenant' }
+      // { value: 'multiday', label: 'Multiple Days' },
+      // { value: 'dayuseonly', label: 'Day Pass' }
     ];
 
-  const renterOwnerTypeAry = [
-      { value: 'multiday', label: 'Multiple Days' },
-      { value: 'dayuseonly', label: 'Day Use Only' }
+  // const renterOwnerTypeAry = [
+  //     { value: 'multiday', label: 'Multiple Days' },
+  //     { value: 'dayuseonly', label: 'Day Pass' }
+  //   ];
+     const renterOwnerTypeAry = [
+      { value: 'dayuseonly', label: 'Day Pass' }
     ];
 
 
@@ -185,12 +189,21 @@ export default function VehicleDetails() {
       setDisableOutDateField(true)
     }
     if (createdfrom === 'rentervehicles' && carownertype === 'multiday') {
-
       daysplus = 0;
       setDisableInDateField(true);
       setDisableOutDateField(false)
     }
+     if (createdfrom === 'rentervehicles' && carownertype === 'renter') {
+      daysplus = 3;
+      setDisableInDateField(false);
+      setDisableOutDateField(false)
+    }
     if (createdfrom === 'ownervehicles') {
+      daysplus = 3;
+      setDisableInDateField(false);
+      setDisableOutDateField(false)
+    }
+     if (createdfrom === 'ownervehicles' && carownertype === 'tenant') {
       daysplus = 3;
       setDisableInDateField(false);
       setDisableOutDateField(false)
@@ -328,6 +341,20 @@ export default function VehicleDetails() {
             ed = theVehicle.enddate;
           setDisableInDateField(false)
           setDisableOutDateField(false)
+        }
+        if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'tenant')) {
+          let enabled = true;
+       //   console.log('logontype',localStorage.getItem('logonType'))
+          let ltype = localStorage.getItem('logonType');
+          if (ltype === 'owner') enabled = false;
+          // const edate = new Date();
+          // edate.setDate(edate.getDate() - 1);
+          // sd = formatLocalDate(edate);
+          // ed = formatLocalDate(edate);
+            sd = theVehicle.startdate;
+            ed = theVehicle.enddate;
+          setDisableInDateField(enabled)
+          setDisableOutDateField(enabled)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
           //  console.log('we are from rentervehicles clicked on a multiday');
@@ -601,6 +628,12 @@ export default function VehicleDetails() {
       if (oktoaddobj.msgType === 5) {
         msg = (<>Multi Day and Day Use limit exceded. <br />
           You are allowed 2 Day Passes templates</>);
+      }
+       if (oktoaddobj.msgType === 6) {
+        msg = (<>Renter in unit</>);
+      }
+         if (oktoaddobj.msgType === 7) {
+        msg = (<>Owners can only have one tenant</>);
       }
 
     }
@@ -1252,7 +1285,8 @@ export default function VehicleDetails() {
                 >
                   Cancel
                 </button>
-                {isModifyMode && localStorage.getItem('logonType') !== 'tenant' && (
+                {/* {isModifyMode && localStorage.getItem('logonType') !== 'tenant' && ( */}
+                   {isModifyMode &&  (
                   <button className="btn btn-danger"
                     type="button"
 
