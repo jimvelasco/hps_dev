@@ -132,6 +132,10 @@ export default function Administration() {
     navigate(`/${hoaId}/contact-information`);
   };
 
+  const handleManageParkingTypes = () => {
+    navigate(`/${hoaId}/parking-types`);
+  };
+
   const handleImageUpload = () => {
     navigate(`/${hoaId}/image-upload`);
   };
@@ -268,6 +272,15 @@ export default function Administration() {
               onClick={handleManageContactInformation}
               style={{ width: "200px" }} >
               Contact Information
+            </button>
+          </section>
+
+          <section className="admin_section parking-types-admin-card">
+            <h5 className="admin_section_title">Manage</h5>
+            <h3>Parking Types</h3>
+            <p>Manage parking type values, labels, and display order.</p>
+            <button className="standardsubmitbutton" onClick={handleManageParkingTypes}>
+              Parking Types
             </button>
           </section>
 

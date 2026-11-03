@@ -1519,6 +1519,115 @@ section.standardsection {
 /* ****** EDITABLE TABLE ************************ */
 /* ********************************************** */
 
+.parking-types-admin-card h3 {
+  color: #e91e63;
+  margin-top: 0;
+}
+
+.parking-types-admin-card p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.parking-types-admin-card .standardsubmitbutton {
+  width: 200px;
+}
+
+.parking-types-page {
+  position: relative;
+  isolation: isolate;
+}
+
+.parking-types-background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.parking-types-container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.parking-types-container .editable-table-title {
+  margin-bottom: 10px;
+}
+
+.parking-types-container .editable-table-input {
+  box-sizing: border-box;
+  min-width: 120px;
+}
+
+.parking-types-cell {
+  display: block;
+  width: 100%;
+  min-height: 32px;
+  border: 0;
+  padding: 6px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.parking-types-cell.empty {
+  color: #666;
+}
+
+.parking-types-drag-handle {
+  border: 0;
+  background: transparent;
+  color: #333;
+  padding: 6px 10px;
+  font-size: 22px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.parking-types-drag-handle:active {
+  cursor: grabbing;
+}
+
+.parking-types-container .parking-types-dragging {
+  opacity: 0.5;
+}
+
+.parking-types-container .parking-types-drop-target {
+  outline: 2px solid #1976d2;
+  outline-offset: -2px;
+}
+
+.parking-types-page button:focus-visible,
+.parking-types-admin-card button:focus-visible {
+  outline: 2px solid #1976d2;
+  outline-offset: 3px;
+}
+
+.parking-types-cell:hover:not(:disabled) {
+  background-color: #e3f2fd;
+}
+
+.parking-types-cell:active:not(:disabled) {
+  background-color: #bbdefb;
+}
+
+.parking-types-page button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 600px) {
+  .parking-types-page .page-content,
+  .parking-types-page .editable-table-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
 .editable-table-container {
   min-height: 100vh;
   background-color: #f5f5f5;
