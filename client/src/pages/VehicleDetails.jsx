@@ -78,7 +78,7 @@ export default function VehicleDetails() {
         // { value: 'multiday', label: 'Multi Day' },
         // { value: 'dayuseonly', label: 'Day Pass' },
         { value: 'tenant', label: 'Tenant' },
-        { value: 'contractor', label: 'Contractor' }
+        { value: 'multiday', label: 'Contractor' }
       ];
 
 
