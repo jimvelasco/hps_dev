@@ -24,7 +24,9 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           </div>
 
           
-            <div className="full-row" style={{ marginBottom: '0px' }}>{ vehicle.carownertype.toUpperCase()}</div>
+            <div className="full-row" style={{ marginBottom: '0px' }}>
+              {vehicle.carownertype === 'dayuseonly' ? 'DAY PASS' : vehicle.carownertype === 'multiday' ? 'MULTIPLE DAYS' : vehicle.carownertype.toUpperCase()}
+            </div>
           <div className="full-row" style={{ marginBottom: '10px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
            
           </div>
