@@ -155,7 +155,7 @@ export default function RenterVehicles() {
 
           //  if (pincodeAction != 'standard') {
           if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
-          if (pincodeAction == 'dayuseonly') setPincodeActionLabel('(Day Use)');
+          if (pincodeAction == 'dayuseonly') setPincodeActionLabel('(Day Pass)');
           if (pincodeAction == 'multiday') setPincodeActionLabel('(Multi Day)');
           //  }
 
