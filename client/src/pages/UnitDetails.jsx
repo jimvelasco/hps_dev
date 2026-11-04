@@ -497,8 +497,8 @@ export default function UnitDetails() {
                       <option value="renter">Short Term Renter</option>
                       {/* <option value="visitor">Visitor / Day Guest</option>
                       <option value="contractor">Contractor / Vendor</option> */}
-                       <option value="dayuseonly">Day Use</option>
-                        <option value="multiday">Multiple Days (day use)</option>
+                       <option value="dayuseonly">Day Pass</option>
+                        {/* <option value="multiday">Multiple Days (day use)</option> */}
                      
                     </select>
                     <label className="input-label_normal" htmlFor={`unit-pin-description-${index}`}>Description</label>
