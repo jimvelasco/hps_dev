@@ -412,7 +412,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
 
 export const getVehicleTypeGroups = (vehicles, log = false) => {
-  const ownerTypes = ['owner', 'friend', 'family', 'tenant'];
+  const ownerTypes = ['owner', 'friend', 'family', 'tenant','rentalmanager'];
   // nonownervehs will include active daypass or multi vehicles
   //const allActiveVehicles = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   const groups = [

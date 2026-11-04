@@ -243,7 +243,9 @@ export default function OwnersDashboard() {
     }
     //  console.log('OwnersDashboard hoa:', hoa);
   }
-  // console.log("OwnersDashboard render loggedInUser", loggedInUser);
+  // console.log("OwnersDashboard render loggedInUser", loggedInUser); ownerTypes.includes(v.carownertype)
+
+  const ownerTypes = ['owner', 'tenant','rentalmanager'];
 
   return (
     <div style={{ marginTop: "0px", minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
@@ -263,7 +265,9 @@ export default function OwnersDashboard() {
             />  Add User
             </button>
             &nbsp; &nbsp; &nbsp; &nbsp;
-            {role === "owner" && (
+            {ownerTypes.includes(role)  && (
+
+           // {role === "owner" || role === "rentalmanager" && (
               <button className="btn btn-primary"
                 onClick={handleShowUsersClick}
                 disabled={!loggedInUser?.unitnumber}

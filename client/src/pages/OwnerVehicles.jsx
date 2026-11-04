@@ -62,7 +62,7 @@ export default function OwnerVehicles() {
       setOwnerId(loggedInUser._id);
       setShowUnitId(loggedInUser.unitnumber);
       setLogonType(localStorage.getItem('logonType'));
-   //   console.log('role from url',routeRole, loggedInUser.role)
+    //  console.log('OV role from url',routeRole, loggedInUser.role)
 
 
     } else {
