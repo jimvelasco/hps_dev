@@ -1240,6 +1240,72 @@ section.standardsectiondashboard {
   /* height: 170px */
 }
 
+.users-for-unit-page {
+  color: #333;
+}
+
+.users-for-unit-heading {
+  margin-bottom: 20px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.users-for-unit-heading h1 {
+  font-size: 1.5rem;
+}
+
+.users-for-unit-heading p {
+  line-height: 1.5;
+}
+
+.users-for-unit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.users-for-unit-card {
+  flex: 1 1 300px;
+  min-width: 0;
+  width: 100%;
+  padding: 16px;
+  gap: 12px;
+  overflow-wrap: anywhere;
+}
+
+.users-for-unit-card h2 {
+  font-size: 1.1rem;
+}
+
+.users-for-unit-card p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.users-for-unit-primary {
+  color: #1565c0;
+  font-weight: bold;
+}
+
+.users-for-unit-details {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px 16px;
+}
+
+.users-for-unit-details dd {
+  margin: 0;
+}
+
+.users-for-unit-details .grid-item-bold,
+.users-for-unit-details .grid-item-normal {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
 .xxrow-with-gap {
   margin-bottom: 10px;
   border-bottom: 3px solid black;

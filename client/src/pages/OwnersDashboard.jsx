@@ -131,6 +131,12 @@ export default function OwnersDashboard() {
     navigate(`/${hoaId}/users`);
   };
 
+  const handleShowUsersClick = () => {
+    if (loggedInUser?.unitnumber) {
+      navigate(`/${hoaId}/users-for-unit/${encodeURIComponent(loggedInUser.unitnumber)}`);
+    }
+  };
+
   const handleNotificationsClick = () => {
     navigate(`/${hoaId}/notifications`);
   };
@@ -248,14 +254,24 @@ export default function OwnersDashboard() {
 
         {(role !== "admin") && (
           <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
-            <button className="btns btn-primary"
+            <div className="button-gridx">
+            <button className="btn btn-primary"
               onClick={handleCreateUserClick}
             >
               <FontAwesomeIcon
               icon={faPlus}
             />  Add User
             </button>
-            
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            {role === "owner" && (
+              <button className="btn btn-primary"
+                onClick={handleShowUsersClick}
+                disabled={!loggedInUser?.unitnumber}
+              >
+                Show Users
+              </button>
+            )}
+            </div>
           </div>
 
         )}

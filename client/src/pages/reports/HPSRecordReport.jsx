@@ -19,7 +19,7 @@ export default function HPSRecordReport() {
   const [deleteDate, setDeleteDate] = useState("");
 
   useEffect(() => {
-    if (loggedInUser && loggedInUser.role === 'owner') {
+    if (loggedInUser && loggedInUser.role !== 'admin') {
       setUnitFilter(loggedInUser.unitnumber || "");
     }
   }, [loggedInUser]);

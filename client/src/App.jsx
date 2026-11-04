@@ -13,6 +13,7 @@ import OwnersDashboard from "./pages/OwnersDashboard";
 import OnsiteVehicles from "./pages/OnsiteVehicles";
 import Violations from "./pages/Violations";
 import Users from "./pages/Users";
+import UsersForUnit from "./pages/UsersForUnit";
 import UserDetails from "./pages/UserDetails";
 import UnitDetails from "./pages/UnitDetails";
 import Notifications from "./pages/Notifications";
@@ -24,7 +25,6 @@ import PaymentRanges from "./pages/administration/PaymentRanges";
 import PaymentRefund from "./pages/administration/PaymentRefund";
 import UpdateAllUsers from "./pages/administration/UpdateAllUsers";
 import UpdateAllUnits from "./pages/administration/UpdateAllUnits";
-
 import ContactInformation from "./pages/administration/ContactInformation";
 import ParkingTypes from "./pages/administration/ParkingTypes";
 import HoaSettings from "./pages/administration/HoaSettings";
@@ -143,6 +143,11 @@ function App() {
             <Route path="/:hoaId/users" element={
               <ProtectedRoute>
                 <Users />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/users-for-unit/:unitNumber" element={
+              <ProtectedRoute>
+                <UsersForUnit />
               </ProtectedRoute>
             } />
             <Route path="/:hoaId/user" element={

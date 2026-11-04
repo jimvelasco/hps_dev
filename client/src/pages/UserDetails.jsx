@@ -32,20 +32,40 @@ export default function UserDetails() {
     company: ""  
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+/*
+   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
+    const logonType = localStorage.getItem('logonType');
+    const vehicleOwnerTypeAry = unit?.day_use_only === 1
+      ? [{ value: 'dayuseonly', label: 'Day Pass' }]
+      : logonType === 'tenant'
+        ? [
+          { value: 'owner', label: 'Owner' },
+          { value: 'friend', label: 'Friend/Family' },
+          { value: 'multiday', label: 'Contractor' }
+        ]
+        : hoa?.parking_types_array ?? [];
+        */
 
   const userRoleTypeAry = localStorage.getItem('logonType') === 'admin' 
     ? [
-      { value: 'dayuseonly', label: 'Day Pass' }
+      { value: 'owner', label: 'Owner' },
+      { value: 'tenant', label: 'Tenant' },
+       { value: 'rentalmanager', label: 'Rental Manager' },
+       { value: 'admin', label: 'Admin' },
+      { value: 'enforcer', label: 'Enforcer' }
     ]
     : [
       { value: 'owner', label: 'Owner' },
-      { value: 'family', label: 'Family' },
-      { value: 'friend', label: 'Friend' },
-      { value: 'contractor', label: 'Contractor' },
-      { value: 'tenant', label: 'Tenant' }
-      // { value: 'multiday', label: 'Multiple Days' },
-      // { value: 'dayuseonly', label: 'Day Pass' }
+      { value: 'tenant', label: 'Tenant' },
+      { value: 'rentalmanager', label: 'Rental Manager' }
     ];
+
+    /*
+    <option value="owner">Owner</option>
+                    <option value="tenant">Tenant</option>
+                   <option value="admin">Admin</option>
+                  <option value="enforcer">Enforcer</option>
+    */
 
   useEffect(() => {
     if (userId) {
@@ -336,18 +356,37 @@ export default function UserDetails() {
                   Role
                 </label>
 
-                <select className="standardselect"
+                {/* <select className="standardselect"
                   value={formData.role}
                   onChange={handleInputChange}
                   name="role"
                 >
                    <option value="owner">Owner</option>
                     <option value="tenant">Tenant</option>
-                     {/* <option value="rentalmanager">Rental Manager</option> */}
                    <option value="admin">Admin</option>
                   <option value="enforcer">Enforcer</option>
+                </select> */}
+                <select className="standardselect"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  name="role"
+                  disabled={isEditMode}
+                >
+                   {userRoleTypeAry.map(type => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
                 </select>
               </div>
+
+              
+               {/* {vehicleOwnerTypeAry.map(type => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))} */}
+             
 
              
 
