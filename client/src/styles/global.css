@@ -742,14 +742,18 @@ input.input-date2:disabled {
   border-radius: 4px;
   background-color: #d32f2f;
   color: white;
-  font-size: 12px
+  font-size: 12px;
+  max-width: 60%;
+  display:block;
 }
 .spanhighlightyes {
   padding: 4px 8px;
   border-radius: 4px;
   background-color: #1976d2;
   color: white;
-  font-size: 12px
+  font-size: 12px;
+   max-width: 60%;
+   display:block;
 }
 
 

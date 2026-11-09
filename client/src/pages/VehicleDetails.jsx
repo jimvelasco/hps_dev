@@ -340,7 +340,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-        //   console.log('about to set vehicle', response.data)
+           console.log('about to set vehicle', response.data)
         const theVehicle = response.data;
         setVehicle(response.data);
 
@@ -755,7 +755,7 @@ export default function VehicleDetails() {
           You are allowed 2 Day Passes templates</>);
       }
       if (oktoaddobj.msgType === 6) {
-        msg = (<>Renter in unit</>);
+        msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management (123-456-7890)</>);
       }
       if (oktoaddobj.msgType === 7) {
         msg = (<>Owners can only have one tenant</>);
@@ -847,7 +847,7 @@ export default function VehicleDetails() {
         // })
       };
 
-      //  console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
+     //   console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')

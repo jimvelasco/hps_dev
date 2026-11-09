@@ -222,7 +222,7 @@ const getVehicleById = async (req, res) => {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
- //   console.log('VEHICLE CONTROLLER VEHICLE',vehicle)
+    console.log('VEHICLE CONTROLLER VEHICLE',vehicle)
 
     res.json(vehicle);
   } catch (error) {
@@ -280,6 +280,7 @@ const updateVehicle = async (req, res) => {
   try {
     const { vehicleId } = req.params;
     const vehicleData = req.validatedData;
+//    console.log('controller updateVehicle',vehicleData)
 
     // Fetch old record for comparison
     const oldVehicle = await Vehicle.findById(vehicleId);
@@ -287,9 +288,10 @@ const updateVehicle = async (req, res) => {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
-  //  console.log('CONTROLLER UPDATE VEHICLE VEHICLE DATA',vehicleData);
+   // console.log('CONTROLLER UPDATE VEHICLE VEHICLE DATA',vehicleData);
 
     const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, vehicleData, { new: true });
+   // console.log('CONTROLLER UPDATE UPDATED VEHICLE',updatedVehicle);
 
 // console.log('UPDATE VEHICLE uodated data',updatedVehicle);
     // Log only if startdate or enddate changed

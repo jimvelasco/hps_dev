@@ -46,6 +46,9 @@ const vehicleSchema = new mongoose.Schema(
   year: {
     type: String
   },
+   company: {
+    type: String
+  },
   vehicle_type: {
     type: String
   },
