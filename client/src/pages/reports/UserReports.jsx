@@ -67,7 +67,7 @@ export default function UserReports() {
             </button>
           </section>
 
-          <section className="standardsection"  style={{minHeight:"176px"}}>
+          {/* <section className="standardsection"  style={{minHeight:"176px"}}>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Owner List</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               A list of all owners with their contact details.
@@ -79,7 +79,7 @@ export default function UserReports() {
             >
               Owner List
             </button>
-          </section>
+          </section> */}
         </div>
       </div>
     </div>

@@ -81,6 +81,9 @@ export default function HPSRecordReport() {
     navigate(`/${hoaId}/reports`);
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   const navButtons = [
     {
       label: "Back",
@@ -219,6 +222,23 @@ export default function HPSRecordReport() {
                 
                 <div>
                    <p>&nbsp;</p>
+
+                    <button
+                  onClick={handleGoBack}
+                  className="standardbutton"
+                  style={{
+                    backgroundColor: "#f44336",
+                    color: "white",
+                    border: "none",
+                    padding: "5px 10px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    width:"80px"
+                  }}
+                >
+                  Cancel
+                </button>
+                &nbsp;
 
                 <button
                   onClick={handleDeleteBeforeDate}

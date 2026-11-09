@@ -6,7 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
-import { utcDateOnly, okToAddUnitVehicle } from "../utils/vehicleHelpers";
+import { utcDateOnly, okToAddUnitVehicle,getVehicleTypeGroups,getMaxEnddateOfVehicles} from "../utils/vehicleHelpers";
 import { getAWSResource } from "../utils/awsHelper";
 //import PlateLookup from "../components/PlateLookup";
 
@@ -270,6 +270,7 @@ export default function VehicleDetails() {
           vehicle_type: "Car",
           plate: "",
           plate_state: "CO",
+          company: "Company",
           unitnumber: unitNumber,
           carownertype: selectedOwnerType,
           pin_code_value: pincodeValue,
@@ -281,6 +282,7 @@ export default function VehicleDetails() {
 
         }
         )
+        setDisableInDateField(true)
       }
       if (dmode === 0) {
         setFormData({
@@ -294,6 +296,7 @@ export default function VehicleDetails() {
           vehicle_type: "Car",
           plate: "",
           plate_state: "",
+          company: "",
           unitnumber: unitNumber,
           carownertype: selectedOwnerType,
           pin_code_value: pincodeValue,
@@ -304,6 +307,7 @@ export default function VehicleDetails() {
           enddate: formatLocalDate(edate),
         }
         )
+         setDisableInDateField(true)
       }
     }
   }, [hoaId]);
@@ -405,7 +409,7 @@ export default function VehicleDetails() {
 
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(edate);
-          setDisableInDateField(false)
+          setDisableInDateField(true)
           setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
@@ -437,6 +441,7 @@ export default function VehicleDetails() {
           year: response.data.year || "",
           vehicle_type: response.data.vehicle_type || "",
           plate: response.data.plate || "",
+          company: response.data.company || "",
           plate_state: response.data.plate_state || "",
           startdate: sd,
           enddate: ed,
@@ -473,6 +478,8 @@ export default function VehicleDetails() {
   }, [isModifyMode, vehid]);
 
   // will not run unless new vehid and in modify mode
+
+
 
 
 
@@ -526,6 +533,10 @@ export default function VehicleDetails() {
     sessionStorage.setItem("termsAcknowledged", checked);
   };
 
+ 
+
+
+
   const handleDeleteClick = () => {
     //   console.log('delete button clicked');
     setModal({
@@ -572,12 +583,90 @@ export default function VehicleDetails() {
   };
 
 
+  //  const getCreateValidationMessage = () => {
+  
+  //     let unitParkingLimit = Number(unit.parking_allowed_unit);
+  //     let freepassesallowed = Number(unit.daypasses_allowed_owner);
+  //     const veh_grp_ary = getVehicleTypeGroups(vehicles);
+  //     console.log('veh_grp',veh_grp_ary);
+  //      console.log('unitParkingLimit',unitParkingLimit);
+  //       console.log('freepassesallowed',freepassesallowed);
+  
+  //     if (pincodeAction === 'dayuseonly') {
+  //       if (veh_grp_ary.dayusemultivehs.count > 0) {
+  //         console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
+  //         return (<>You are not allowed to have <br />more daypassed<br />than allowed: {freepassesallowed}<br /><br />
+  //           Call Admin to get an<br />increase in day passes. </>);
+  //       }
+  //       return null;
+  //     }
+  
+  //     if (veh_grp_ary.rentervehs.count >= unitParkingLimit) {
+  //       console.log('BAILED ON (veh_grp_ary.rentervehs.count >=  unitParkingLimit')
+  //       return (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}.
+  //       </>);
+  //     }
+  //     if (veh_grp_ary.allactivevehs.count >= unitParkingLimit) {
+  //       console.log('BAILED ON veh_grp_ary.allactivevehs.count >=  unitParkingLimit ')
+  //       return (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}.
+  //         <br />There may be an owner in the unit. </>);
+  //     }
+  //     if (veh_grp_ary.ownervehs.count > 0) {
+  //       console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
+  //       return (<> There may be an owner in the unit.<br /><br />
+  //         CALL THE OWNER OR ADMIN</>);
+  //     }
+  //     if (veh_grp_ary.dayusemultivehs.count > 0) {
+  //       console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
+  //       return (<> There may be cleaning <br />people in the unit.<br /><br />
+  //         You are not allowed to have <br />more day passes than {freepassesallowed}.
+  //       </>);
+  //     }
+  //     if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
+  //       console.log('BAILED ON allActiveCount >= (unitParkingLimit + containsDaypassCount')
+  //       return (<>You are not allowed to have <br />more active vehicles than<br />
+  //         your parking allowance: {unitParkingLimit}. <br /><br />
+  //         CALL THE OWNER OR ADMIN</>);
+  //     }
+  //     return null;
+  //   };
+  
+  //  const showFailureMessage = () => {
+  //      const veh_grp_ary = getVehicleTypeGroups(vehicles);
+  //     const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
+  //     console.log('maxenddateofgroup',maxenddateofgroup,formData.startdate)
+  //      const messagetoshow = getCreateValidationMessage();
+  //      if (maxenddateofgroup === formData.startdate) {
+  //       messagetoshow = null;
+  //      }
+  //     if (messagetoshow !== null) {
+  //       setModal({
+  //         isOpen: true,
+  //         type: "alert",
+  //         title: "Validation Error",
+  //         message: messagetoshow,
+  //         //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
+  //         confirmText: "OK",
+  //         // cancelText: "Cancel",
+  //         onConfirm: () => {
+  //           setModal(prev => ({ ...prev, isOpen: false }));
+  //         },
+  //       });
+  //       return null;
+  //     }
+  
+  //   }
 
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    // if (showFailureMessage() === null) {
+    //     return;
+    // };
+  
     const todayUTC = new Date(); // "2025-12-03"
     const todayStr = formatLocalDate(todayUTC);
+   // showFailureMessage();
 
     if (!isModifyMode && createdfrom === "rentervehicles" && (!pincodeValue || typeof pincodeAction !== "string")) {
       setModal({
@@ -654,8 +743,8 @@ export default function VehicleDetails() {
           Please deactivate another vehicle before activating this one.</>);
       }
       if (oktoaddobj.msgType === 2) {
-        msg = (<>You are not allowed to have more<br />active vehicles than your <br /> parking allowance {stateUnit.parking_allowed_unit} <br />
-          The unit has an active renter.</>);
+        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit} <br />
+          If issues, adjust your registrations or <br /> contact HOA Management. <br />123-456-7890</>);
       }
       if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />
@@ -706,6 +795,8 @@ export default function VehicleDetails() {
     } else {
       rpflag = oktoaddobj.rpflag; //0;
     }
+
+
     //   }
     // if (role === 'renter') {
     //   oktoaddobj = okToActivateRenterVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
@@ -919,11 +1010,10 @@ export default function VehicleDetails() {
                     Company
                   </label>
                   <input className="standardinput"
-                    type="tel"
-                    name="carownerphone"
-                    value={formData.carownertype}
+                    type="text"
+                    name="company"
+                    value={formData.company}
                     onChange={handleFormChange}
-                    required
                   />
 
 
@@ -1119,7 +1209,6 @@ export default function VehicleDetails() {
                     name="make"
                     value={formData.make}
                     onChange={handleFormChange}
-                    required
                   />
                 </div>
 

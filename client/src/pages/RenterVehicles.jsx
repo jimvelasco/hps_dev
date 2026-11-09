@@ -7,10 +7,12 @@ import { useError } from "../context/ErrorContext";
 import axios from "../services/api";
 import DashboardNavbar from "../components/DashboardNavbar";
 import VehiclesGridPhone from "../components/VehiclesGridPhone";
-import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount, getVehicleTypeGroups } from "../utils/vehicleHelpers";
+import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount, getVehicleTypeGroups,
+  getMaxEnddateOfVehicles,getMinStartdateOfVehicles} from "../utils/vehicleHelpers";
 import ModalAlert from "../components/ModalAlert";
 import HoaInformation from "../components/HoaInformation";
 import { getAWSResource } from "../utils/awsHelper";
+import { vehicleMessageHelper } from "../utils/vehicleMessageHelper";
 
 
 
@@ -60,7 +62,7 @@ export default function RenterVehicles() {
             // console.log('we found a user for unit:', unitNumber, user);
             setUserIdForUnit(user._id);
             setOwnerOfUnit(user);
-       //     console.log('RV NON OWNER TYPE', nonownerType);
+            //     console.log('RV NON OWNER TYPE', nonownerType);
           }
         } catch (err) {
           console.error("Error fetching user for unit:", err);
@@ -131,7 +133,7 @@ export default function RenterVehicles() {
           // const dayusecount  = daypassVehicleCount(updatedVehicles);
           setDaypassCount(daypassVehicleCount(updatedVehicles));
 
-     //     console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
+          //     console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
 
           let containsdaypass = updatedVehicles.filter(v => v.carownertype === 'dayuseonly').length;
           setContainsDaypassCount(containsdaypass)
@@ -149,9 +151,9 @@ export default function RenterVehicles() {
           const todayUTC = new Date(); // "2025-12-03"
           const todayStr = formatLocalDate(todayUTC);
 
-        
-          
-           setVehicles(updatedVehicles);
+
+
+          setVehicles(updatedVehicles);
 
           //  if (pincodeAction != 'standard') {
           if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
@@ -245,46 +247,23 @@ export default function RenterVehicles() {
 
   // navigate(qry, { state: { unitNumber: uid, role: arole, numberOfVehicles: vehicles.length } });
 
-  const getCreateValidationMessage = (veh_grp_ary, unitParkingLimit, freepassesallowed) => {
-    if (pincodeAction === 'dayuseonly') {
-      if (veh_grp_ary.dayusemultivehs.count > 0) {
-        console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
-        return (<>You are not allowed to have <br />more daypassed<br />than allowed: {freepassesallowed}<br /><br />
-          Call Admin to get an<br />increase in day passes. </>);
-      }
+  const showFailureMessage = () => {
+    const messagetoshow = vehicleMessageHelper(vehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount);
+    if (messagetoshow !== null) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: messagetoshow,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
       return null;
     }
 
-    if (veh_grp_ary.rentervehs.count >= unitParkingLimit) {
-      console.log('BAILED ON (veh_grp_ary.rentervehs.count >=  unitParkingLimit')
-      return (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}.
-        </>);
-    }
-    if (veh_grp_ary.allactivevehs.count >= unitParkingLimit) {
-      console.log('BAILED ON veh_grp_ary.allactivevehs.count >=  unitParkingLimit ')
-      return (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}.
-        <br />There may be an owner in the unit. </>);
-    }
-    if (veh_grp_ary.ownervehs.count > 0) {
-      console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
-      return (<> There may be an owner in the unit.<br /><br />
-        CALL THE OWNER OR ADMIN</>);
-    }
-    if (veh_grp_ary.dayusemultivehs.count > 0) {
-      console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
-      return (<> There may be cleaning <br />people in the unit.<br /><br />
-        You are not allowed to have <br />more day passes than {freepassesallowed}.
-        </>);
-    }
-    if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
-      console.log('BAILED ON allActiveCount >= (unitParkingLimit + containsDaypassCount')
-      return (<>You are not allowed to have <br />more active vehicles than<br />
-        your parking allowance: {unitParkingLimit}. <br /><br />
-        CALL THE OWNER OR ADMIN</>);
-    }
-
-    return null;
-  };
+  }
 
   const handleCreateClick = () => {
     if (!ownerOfUnit || !unitForRenter) {
@@ -292,39 +271,43 @@ export default function RenterVehicles() {
       return;
     }
 
-  //  console.log('unit for renter',unitForRenter);
+  const veh_grp_ary = getVehicleTypeGroups(vehicles, false);
+  const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
+   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
+   console.log('maxenddateofgroup',maxenddateofgroup)
+   console.log('minstartdaterenters',minstartdaterenters)
+
+    //  console.log('unit for renter',unitForRenter);
     //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
-    const currentVehicleCount = vehicles.length;
 
-   // console.log('all vehicles passed to rv',vehicles)
-   //  console.log('pincodeaction passed in',pincodeAction)
+    // console.log('all vehicles passed to rv',vehicles)
+    //  console.log('pincodeaction passed in',pincodeAction)
 
     let activeVehicles = vehicles.filter(v => v.calculatedActiveFlag === true);
     let activeVehicleCount = activeVehicles.length;
 
-   // console.log('RV all active vehicles are', activeVehicles);
+    // console.log('RV all active vehicles are', activeVehicles);
 
-// JJVFIX should be in hoa definition ?
+    // JJVFIX should be in hoa definition ?
 
 
-    const ownertypeary = ['owner','friend','family','tenant'];
+    const ownertypeary = ['owner', 'friend', 'family', 'tenant'];
 
 
     /*  object keys returned by funtion call
         rentervehs nonownervehs ownervehs dayusevehs multidayvehs dayusemultivehs dayusemultivehsany
    */
 
-    const veh_grp_ary = getVehicleTypeGroups(vehicles);
- //   console.log('veh group create',veh_grp_ary);
-  
+    //   console.log('veh group create',veh_grp_ary);
 
-   //const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
+
+    //const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
     let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
     let freepassesallowed = Number(unitForRenter.daypasses_allowed_owner);
     // unitParkingLimit += dayusevehs;
 
-   
+
 
     // unitParkingLimit += daypassCount;
 
@@ -337,30 +320,35 @@ export default function RenterVehicles() {
     let msg = 'now is the time';
 
 
-    if (veh_grp_ary.ownervehs.count > 0) { // we must have one in 
-      msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
-        CALL THE OWNER OR ADMIN</>);
-    }
+    // if (veh_grp_ary.ownervehs.count > 0) { // we must have one in 
+    //   msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
+    //     CALL THE OWNER OR ADMIN</>);
+    // }
     //  else {
     //   msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. </>)
     // }
 
-   // console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
+    // console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
 
-    const messagetoshow = getCreateValidationMessage(veh_grp_ary, unitParkingLimit, freepassesallowed);
-    if (messagetoshow !== null) {
-       setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Validation Error",
-        message: messagetoshow,
-        //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
-        confirmText: "OK",
-        // cancelText: "Cancel",
-        onConfirm: () => {
-          setModal(prev => ({ ...prev, isOpen: false }));
-        },
-      });
+    // const messagetoshow = getCreateValidationMessage();
+    // if (messagetoshow !== null) {
+    //   setModal({
+    //     isOpen: true,
+    //     type: "alert",
+    //     title: "Validation Error",
+    //     message: messagetoshow,
+    //     //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
+    //     confirmText: "OK",
+    //     // cancelText: "Cancel",
+    //     onConfirm: () => {
+    //       setModal(prev => ({ ...prev, isOpen: false }));
+    //     },
+    //   });
+    //   return;
+    // }
+
+
+    if (showFailureMessage() === null) {
       return;
     }
 
@@ -425,7 +413,7 @@ export default function RenterVehicles() {
 
   const t = nonownerTypeText + ' Vehicles'; // +   localStorage.getItem('unitNumber');
 
- //console.log('pincodeAction', pincodeAction)
+  //console.log('pincodeAction', pincodeAction)
 
   //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "renter" ||  v.carownertype === "dayuseonly")];  // only show renters
 
@@ -438,12 +426,12 @@ export default function RenterVehicles() {
   // DO NOT SHOW MULTIDAY RECORDS
 
   const displayedVehicles = vehicles.filter(v => pincodeAction === 'dayuseonly'
-    ? v.carownertype === 'dayuseonly' 
+    ? v.carownertype === 'dayuseonly'
     : v.carownertype === 'renter');
 
- // const displayedVehicles = vehicles.filter(v => v.carownertype === pincodeAction);
+  // const displayedVehicles = vehicles.filter(v => v.carownertype === pincodeAction);
 
- 
+
 
 
   //const displayedVehicles = [...vehicles.filter(v => v.carownertype === "dayuseonly" )]; 

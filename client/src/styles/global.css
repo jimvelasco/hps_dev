@@ -11,14 +11,21 @@ body {
   background-color: white;
   overscroll-behavior-y: none;
 }
+
 html {
   overscroll-behavior-y: none;
 }
+
 .app {
   min-height: 100dvh;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
 }
 
@@ -32,24 +39,28 @@ h1, h2, h3, h4, h5, h6 {
   padding: 5px;
   max-width: 1200px;
   margin: 0 auto;
-  border:0px solid yellow;
+  border: 0px solid yellow;
 }
+
 .page-content {
   padding-left: 25px;
-  padding-right:25px;
+  padding-right: 25px;
   max-width: 1200px;
   margin: 0 auto;
-  border:0px solid yellow;
-   padding-bottom:20px;
+  border: 0px solid yellow;
+  padding-bottom: 20px;
 }
+
 .error-page-content {
   padding-top: 100px;
 }
+
 .vehicle-details-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 20px;
 }
+
 /*style={{ padding: "30px", maxWidth: "1200px", margin: "0 auto" }} */
 .flexLayout {
   background-color: white;
@@ -64,6 +75,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: start;
 
 }
+
 .flex-container {
   display: flex;
   flex-direction: column;
@@ -76,15 +88,17 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 8px;
   /* margin-right:10px; */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-   /* position: relative; */
-   /* border:3px solid yellow; */
-   width:250px;
-   overflow-Y: auto;
+  /* position: relative; */
+  /* border:3px solid yellow; */
+  width: 250px;
+  overflow-Y: auto;
 
 }
+
 .bg_lightgray {
   background-color: #D3D3D3;
 }
+
 .wid60 {
   width: 60px
 }
@@ -96,6 +110,7 @@ h1, h2, h3, h4, h5, h6 {
 .wid100 {
   width: 100px
 }
+
 .width180 {
   width: 180px !important
 }
@@ -122,18 +137,19 @@ h1, h2, h3, h4, h5, h6 {
 .vehicles-table-owner {
   display: grid;
   /* grid-template-columns: 1.2fr .4fr .6fr .6fr .6fr 1.0fr 1.0fr 1.0fr .6fr .6fr; */
-   /* grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr .8fr; */
-   grid-template-columns: 1.2fr .6fr .6fr 1.0fr .6fr .8fr 1.0fr 1.0fr .6fr .6fr;
+  /* grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr .8fr; */
+  grid-template-columns: 1.2fr .6fr .6fr 1.2fr .6fr .8fr .8fr .8fr 1fr .6fr;
   gap: 0;
   min-width: 800px;
- 
+
   /* max-width: 380px; */
 }
+
 .vehicles-table-owner8 {
   display: grid;
   /* grid-template-columns: repeat(8, 1fr); */
   /* grid-template-columns: 1.2fr .8fr .8fr .8fr .8fr .8fr .8fr 0.8fr ; */
-  grid-template-columns: 1.2fr .6fr .6fr .6fr 1.0fr 1.0fr  1.0fr .6fr;
+  grid-template-columns: 1.2fr .6fr .6fr .6fr 1.0fr 1.0fr 1.0fr .6fr;
   gap: 0;
 }
 
@@ -176,7 +192,7 @@ h1, h2, h3, h4, h5, h6 {
 .users-table {
   display: grid;
   /* grid-template-columns: repeat(6, 1fr); */
-  grid-template-columns: 1fr 1fr 1fr  1fr  .5fr .5fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr .5fr .5fr;
 
   gap: 0px;
 }
@@ -263,7 +279,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-  width:300px;
+  width: 300px;
   margin: 0px auto
 }
 
@@ -379,7 +395,7 @@ button.standarddeletebutton180:hover:disabled {
 }
 
 
-.close-button{
+.close-button {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -476,7 +492,7 @@ button.navbutton2:hover {
 
 
 button.navbutton3 {
-  padding:6px;
+  padding: 6px;
   font-size: 14px;
   background-color: #1976d2;
   color: white;
@@ -484,10 +500,10 @@ button.navbutton3 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: normal;
-  min-width:130px;
+  min-width: 130px;
   /* height: 24px;
   margin: 2px; */
-  margin:5px;
+  margin: 5px;
 
 }
 
@@ -503,7 +519,7 @@ button.navbutton3:hover {
 
 
 button.navbutton4 {
-  padding:6px;
+  padding: 6px;
   font-size: 14px;
   background-color: #1976d2;
   color: white;
@@ -511,10 +527,10 @@ button.navbutton4 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: normal;
-  min-width:90px;
+  min-width: 90px;
   /* height: 24px;
   margin: 2px; */
-  margin:5px;
+  margin: 5px;
 
 }
 
@@ -565,22 +581,26 @@ button.navbutton-goback:hover {
 
 fieldset {
   /* Ensure the fieldset has proper relative positioning and containment */
-   box-sizing: border-box;
+  box-sizing: border-box;
   border: 1px solid 600;
   padding: 1rem;
   width: 100%;
-  min-width: 0; /* Crucial if the fieldset is inside a flex container */
- 
+  min-width: 0;
+  /* Crucial if the fieldset is inside a flex container */
+
 }
 
 input[type="date"] {
-  box-sizing: border-box; /* Includes padding and border in the element's total width */
+  box-sizing: border-box;
+  /* Includes padding and border in the element's total width */
   width: 80%;
   max-width: 100%;
   min-width: 0;
 }
+
 input[type="email"] {
-  box-sizing: border-box; /* Includes padding and border in the element's total width */
+  box-sizing: border-box;
+  /* Includes padding and border in the element's total width */
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -590,6 +610,7 @@ input[type="email"] {
   font-size: 14px;
   padding: 10px;
 }
+
 /*
  style={{
                   width: "100%",
@@ -603,7 +624,7 @@ input[type="email"] {
 */
 
 select.standardselect {
- box-sizing: border-box;
+  box-sizing: border-box;
   padding: 8px 12px;
   border-radius: 4px;
   border: 1px solid #ccc;
@@ -626,8 +647,8 @@ input.standardinput {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-   width: 100%; 
-   max-width: 300px;
+  width: 100%;
+  max-width: 300px;
 
 }
 
@@ -638,7 +659,7 @@ input.standardinput2 {
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
-   width: 90%; 
+  width: 90%;
 
 }
 
@@ -654,11 +675,13 @@ input.input-date {
   box-sizing: border-box;
   width: 100%;
 }
+
 input.input-date:disabled {
   /* border: 3px solid  red; */
-   background-color: #ccc;
+  background-color: #ccc;
   cursor: not-allowed;
 }
+
 input.input-date2 {
   padding: 8px 12px;
   border-radius: 4px;
@@ -667,9 +690,10 @@ input.input-date2 {
   box-sizing: border-box;
   width: 200px;
 }
+
 input.input-date2:disabled {
   /* border: 3px solid  red; */
-   background-color: #ccc;
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
@@ -685,6 +709,7 @@ input.input-date2:disabled {
   gap: 10px;
   margin: 15px 0;
 }
+
 .checkboxhide {
   visibility: hidden;
 }
@@ -692,21 +717,39 @@ input.input-date2:disabled {
 .input-label {
   margin-bottom: 4px;
   font-weight: bold;
-  display:block
+  display: block
 }
+
 .search-label {
   margin-bottom: 4px;
   font-weight: bold;
 }
+
 .input-label_normal {
   margin-bottom: 4px;
   font-weight: normal;
-   display:block
+  display: block
 }
+
 .input-label2 {
   /* margin-bottom: 4px; */
   font-weight: bold;
-  font-size:14px;
+  font-size: 14px;
+}
+
+.spanhighlightno {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #d32f2f;
+  color: white;
+  font-size: 12px
+}
+.spanhighlightyes {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #1976d2;
+  color: white;
+  font-size: 12px
 }
 
 
@@ -716,25 +759,26 @@ input.input-date2:disabled {
 
 .standardtitlebar_nh {
   background-color: #333;
-  color:#b9eaa1;
+  color: #b9eaa1;
   padding: 20px;
- text-align: center;
+  text-align: center;
   width: 100%;
-  margin-top:0px;
+  margin-top: 0px;
   box-sizing: border-box;
   margin-bottom: 20px;
 }
+
 .standardtitlebar {
   background-color: #333;
-  color:#b9eaa1;
+  color: #b9eaa1;
   padding: 10px;
- text-align: center;
+  text-align: center;
   border-radius: 8px;
   width: 95%;
   margin: auto;
   text-align: center;
   opacity: .8;
-   margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 
@@ -767,7 +811,7 @@ input.input-date2:disabled {
   color: black;
   padding: 10px;
   border-radius: 8px;
-  width:380px;
+  width: 380px;
   margin: auto;
   text-align: center;
   opacity: .8;
@@ -781,7 +825,7 @@ input.input-date2:disabled {
   color: black;
   padding: 10px;
   border-radius: 8px;
-  width:320px;
+  width: 320px;
   margin: auto;
   text-align: center;
   opacity: .8;
@@ -795,7 +839,7 @@ input.input-date2:disabled {
   color: black;
   padding: 10px;
   border-radius: 8px;
-  max-width:700px;
+  max-width: 700px;
   margin: auto;
   text-align: center;
   opacity: .8;
@@ -811,7 +855,7 @@ input.input-date2:disabled {
   margin: auto;
   text-align: center;
   opacity: .8;
-  margin-top: 10px; 
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
@@ -863,15 +907,15 @@ input.input-date2:disabled {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
-  text-align:center;
+  text-align: center;
   box-sizing: border-box;
-  width:260px
- 
+  width: 260px
 }
+
 .admin_section_title {
- 
- padding-bottom:5px;
- 
+
+  padding-bottom: 5px;
+
 }
 
 .admin_section {
@@ -880,9 +924,9 @@ input.input-date2:disabled {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
-  text-align:center;
+  text-align: center;
   box-sizing: border-box;
-  width:260px;
+  width: 260px;
   height: 180px;
 }
 
@@ -892,10 +936,11 @@ section.standardsection {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
-  text-align:center;
+  text-align: center;
   box-sizing: border-box;
-  width:260px;
+  width: 260px;
 }
+
 section.standardsection-wide {
   background-color: white;
   padding: 20px;
@@ -903,8 +948,8 @@ section.standardsection-wide {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
   box-sizing: border-box;
-  text-align:center;
-  width:360px;
+  text-align: center;
+  width: 360px;
 
 }
 
@@ -922,8 +967,8 @@ section.standardsectiondashboard {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   border: 0px solid black;
   /* text-align:center; */
-  width:280px;
-  margin-bottom:20px;
+  width: 280px;
+  margin-bottom: 20px;
 
 }
 
@@ -1001,10 +1046,12 @@ section.standardsectiondashboard {
   }
 
   .input-date2 {
-        width: 90%; /* Makes it span the full width of its container */
-        max-width: 90%;
-        box-sizing: border-box; /* Ensures padding doesn't push it out of bounds */
-    }
+    width: 90%;
+    /* Makes it span the full width of its container */
+    max-width: 90%;
+    box-sizing: border-box;
+    /* Ensures padding doesn't push it out of bounds */
+  }
 
 }
 
@@ -1018,11 +1065,14 @@ section.standardsectiondashboard {
   .phoneview {
     display: none;
   }
-   .input-date2 {
-        width: 100%; /* Makes it span the full width of its container */
-        max-width: 100%;
-        box-sizing: border-box; /* Ensures padding doesn't push it out of bounds */
-    }
+
+  .input-date2 {
+    width: 100%;
+    /* Makes it span the full width of its container */
+    max-width: 100%;
+    box-sizing: border-box;
+    /* Ensures padding doesn't push it out of bounds */
+  }
 
 }
 
@@ -1047,7 +1097,7 @@ section.standardsectiondashboard {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
- 
+
   justify-content: center;
   align-items: flex-start;
   /* max-height: 600px; */
@@ -1076,7 +1126,7 @@ section.standardsectiondashboard {
   margin: 2px;
   border: 0px solid yellow;
   width: 100%;
- 
+
 }
 
 
@@ -1091,7 +1141,7 @@ section.standardsectiondashboard {
   margin: 2px;
   border: 2px solid white;
   width: 100%;
- 
+
 }
 
 .grid-container-1a {
@@ -1103,8 +1153,7 @@ section.standardsectiondashboard {
   border-radius: 8px;
   box-sizing: border-box;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-  width:380px
-  
+  width: 380px
 }
 
 .grid-container-1 {
@@ -1115,8 +1164,7 @@ section.standardsectiondashboard {
   padding: 3px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-  width:100%
-  
+  width: 100%
 }
 
 .grid-container-2 {
@@ -1131,7 +1179,6 @@ section.standardsectiondashboard {
   border: 0px solid black;
   width: 360px;
   height: 250px
-  
 }
 
 .grid-container-4 {
@@ -1146,8 +1193,8 @@ section.standardsectiondashboard {
   border: 0px solid black;
   width: 360px;
   height: 170px
-  
 }
+
 .grid-container-2x {
   display: grid;
   grid-row-gap: 10px;
@@ -1158,47 +1205,45 @@ section.standardsectiondashboard {
   border-radius: 8px;
   align-items: center;
   border: 0px solid black;
- 
- 
 
- width:260px
- 
-  
+
+
+  width: 260px
 }
 
 .grid-container-2-plate {
- display: grid;
+  display: grid;
   grid-column-gap: 0px;
   grid-template-columns: 1fr 2fr;
   background-color: white;
   padding: 5px;
-  
+
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-   width: 220px;
+  width: 220px;
   /* width: 180px; */
   /* height: 100px */
-  
+
 }
 
 
 .grid-container-3-plate {
- display: grid;
+  display: grid;
   grid-column-gap: 0px;
   grid-template-columns: 1fr 1.5fr 1fr;
   background-color: white;
   padding: 5px;
-  
+
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-   width: 200px;
+  width: 200px;
   /* width: 180px; */
   /* height: 100px */
-  
+
 }
 
 
@@ -1220,23 +1265,23 @@ section.standardsectiondashboard {
 .grid-container-3_oldhoa {
   display: grid;
   grid-column-gap: 1px;
-   /* grid-row-gap: 10px; */
+  /* grid-row-gap: 10px; */
   grid-template-columns: 1.2fr 1.5fr 1.0fr;
-   /* grid-template-columns: 1fr 1fr 1fr; */
+  /* grid-template-columns: 1fr 1fr 1fr; */
   background-color: white;
   padding: 5px;
   /* row-gap: 20px; */
-  
+
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
   max-width: 380px;
   min-width: 260px;
-  min-height:270px;
+  min-height: 270px;
 
   box-sizing: border-box;
- 
+
   /* height: 170px */
 }
 
@@ -1310,10 +1355,13 @@ section.standardsectiondashboard {
   margin-bottom: 10px;
   border-bottom: 3px solid black;
 }
+
 .row-with-gap {
   border-bottom: 1px solid black !important;
-  padding-bottom: 3px; /* Space between text and the line */
-  margin-bottom:3px;  /* Space between the line and the next row */
+  padding-bottom: 3px;
+  /* Space between text and the line */
+  margin-bottom: 3px;
+  /* Space between the line and the next row */
 }
 
 .grid-container-3-full {
@@ -1326,12 +1374,13 @@ section.standardsectiondashboard {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 1px solid black;
-  width:100%;
+  width: 100%;
 }
+
 .grid-container-2-full {
   display: grid;
   grid-column-gap: 0px;
-  grid-template-columns: 1fr 1fr ;
+  grid-template-columns: 1fr 1fr;
   background-color: #ffffff;
   padding: 10px;
   border-radius: 8px;
@@ -1346,8 +1395,8 @@ section.standardsectiondashboard {
   grid-column: 1 /-1;
   /* span all columns */
   text-align: center;
-  margin:0px;
-  padding:0px;
+  margin: 0px;
+  padding: 0px;
 
   /* border:1px solid black */
 }
@@ -1355,6 +1404,7 @@ section.standardsectiondashboard {
 .vehicle-pin-action-row {
   min-height: 1lh;
 }
+
 .vehicle-pin-action-rowl {
   min-height: 1lh;
   text-align: left;
@@ -1368,10 +1418,10 @@ section.standardsectiondashboard {
   /*  rgba(0, 0, 0, 0.8); */
   /* padding:5px; */
   /* margin-bottom: 10px; */
-   font-size: .8rem;
+  font-size: .8rem;
   /* font-size: 12pt; */
   text-align: left;
- 
+
   overflow: hidden;
 }
 
@@ -1687,6 +1737,7 @@ section.standardsection {
 }
 
 @media (max-width: 600px) {
+
   .parking-types-page .page-content,
   .parking-types-page .editable-table-content {
     padding-left: 10px;
@@ -1714,8 +1765,8 @@ section.standardsection {
   border-radius: 4px;
   margin-bottom: 20px;
   border: 1px solid #ef5350;
-  width:70%;
-  text-align:center;
+  width: 70%;
+  text-align: center;
   margin: auto;
 }
 
@@ -1921,28 +1972,31 @@ input.standardinput:disabled {
   margin-bottom: 0px;
   display: grid;
   grid-column-gap: 10px;
-   grid-row-gap: 4px;
+  grid-row-gap: 4px;
   grid-template-columns: 1fr 2fr;
   /* width: 100%; */
 
 }
+
 .hoainformation2colr {
   margin-bottom: 0px;
   display: grid;
   grid-column-gap: 10px;
-   grid-row-gap: 4px;
+  grid-row-gap: 4px;
   grid-template-columns: 3fr 1fr;
 }
 
-.hoainformation > div {
+.hoainformation>div {
   margin-bottom: 5px;
   font-size: 14px;
 }
-.hoainformation2col > div {
+
+.hoainformation2col>div {
   margin-bottom: 5px;
   font-size: 14px;
 }
-.hoainformation2colr > div {
+
+.hoainformation2colr>div {
   margin-bottom: 5px;
   font-size: 14px;
 }
@@ -1970,8 +2024,10 @@ input.standardinput:disabled {
   grid-template-columns: repeat(auto-fit, minmax(85px, .8fr));
   gap: 0.75rem;
   /* place-items: center; */
-   justify-items: center;   /* Centers button inside the cell */
-  justify-content: center; /* Centers the whole row of cells */
+  justify-items: center;
+  /* Centers button inside the cell */
+  justify-content: center;
+  /* Centers the whole row of cells */
   /* background-color: red; */
   /* border:1px solid white; */
 }
@@ -1982,16 +2038,19 @@ input.standardinput:disabled {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 0.75rem;
   /* place-items: center; */
-   justify-items: center;   /* Centers button inside the cell */
-  justify-content: center; /* Centers the whole row of cells */
+  justify-items: center;
+  /* Centers button inside the cell */
+  justify-content: center;
+  /* Centers the whole row of cells */
   /* background-color: red; */
   /* border:1px solid white; */
- 
+
 }
 
-.button-grid > :only-child {
+.button-grid> :only-child {
   justify-self: center;
 }
+
 .button-grid-lc {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -2000,7 +2059,7 @@ input.standardinput:disabled {
   /* border:1px solid white; */
 }
 
-.button-grid-lc > :only-child {
+.button-grid-lc> :only-child {
   justify-self: center;
 }
 
@@ -2035,7 +2094,7 @@ input.standardinput:disabled {
   width: 100%;
   min-height: 32px;
   padding: 0.25rem 0.25rem;
- 
+
   border-radius: 4px;
   border: 1px solid #ccc;
 
@@ -2077,12 +2136,14 @@ input.standardinput:disabled {
     box-shadow 0.15s ease,
     transform 0.05s ease;
 }
+
 @media (hover: hover) {
   .btns:hover {
     filter: opacity(0.8);
     /* box-shadow: 0 1px 2px rgba(0,0,0,0.8); */
   }
-   .btns_nm:hover {
+
+  .btns_nm:hover {
     filter: opacity(0.8);
     /* box-shadow: 0 1px 2px rgba(0,0,0,0.8); */
   }
@@ -2112,6 +2173,32 @@ input.standardinput:disabled {
     box-shadow 0.15s ease,
     transform 0.05s ease;
 }
+
+
+.btnxsa {
+  width: 100%;
+  /* min-height: 24px; */
+  padding: 0.25rem 0.125rem;
+  min-width: 100px;
+
+  border-radius: 4px;
+  border: 1px solid #ccc;
+
+  background-color: #ffffff;
+  color: #222;
+  font-size: .8rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.05s ease;
+}
+
 @media (hover: hover) {
   .btnxs:hover {
     filter: opacity(0.8);
@@ -2120,7 +2207,7 @@ input.standardinput:disabled {
 }
 
 
-.btnxsp{
+.btnxsp {
   width: 100%;
   padding: 0.25rem 0.125rem;
   max-width: 100px;
@@ -2139,6 +2226,7 @@ input.standardinput:disabled {
     box-shadow 0.15s ease,
     transform 0.05s ease;
 }
+
 @media (hover: hover) {
   .btnxsp:hover {
     filter: brightness(0.8);
@@ -2146,7 +2234,7 @@ input.standardinput:disabled {
 }
 
 
-.btnlp{
+.btnlp {
   width: 110px;
   /* padding: 0.25rem 0.25rem; */
   height: 40px;
@@ -2165,6 +2253,7 @@ input.standardinput:disabled {
     box-shadow 0.15s ease,
     transform 0.05s ease;
 }
+
 @media (hover: hover) {
   .btnlp:hover {
     filter: opacity(0.8);
@@ -2193,7 +2282,7 @@ Hover: #B91C1C
 */
 
 
-.zzbtn-primary{
+.zzbtn-primary {
   /* background-color: #2563EB; */
   background-color: #2563EB;
   color: #ffffff;
@@ -2208,7 +2297,7 @@ Hover: #B91C1C
 }
 
 .zzbtn-default {
-    background-color: #DC2626;
+  background-color: #DC2626;
   color: white;
   border-color: #DC2626;
 }
@@ -2221,6 +2310,7 @@ Hover: #B91C1C
   color: #ffffff;
   border-color: #7690ab;
 }
+
 .strike {
   text-decoration: line-through;
   text-decoration-thickness: 3px;
@@ -2252,16 +2342,17 @@ Hover: #B91C1C
 /* BUTTONS BUTTONS BUTTONS BUTTONS */
 
 .navbarlink {
-  cursor:pointer;
-  color:#b9eaa1;
-  text-decoration:none;
+  cursor: pointer;
+  color: #b9eaa1;
+  text-decoration: none;
 }
-.navbarlink:hover { 
+
+.navbarlink:hover {
   filter: opacity(.7)
 }
 
 button.navbutton2 {
-  padding:6px;
+  padding: 6px;
   font-size: 14px;
   background-color: #2563EB;
   color: white;
@@ -2269,7 +2360,7 @@ button.navbutton2 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: normal;
-  min-width:100px;
+  min-width: 100px;
   margin: 4px;
 
 }
@@ -2300,7 +2391,7 @@ button.navbutton4 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  /* width:100%; */ 
+  /* width:100%; */
   width: 120px;
   transition: background-color 0.3s ease
 }
@@ -2315,7 +2406,7 @@ button.navbutton4 {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  /* width:100%; */ 
+  /* width:100%; */
   width: 180px;
   transition: background-color 0.3s ease
 }
@@ -2388,6 +2479,7 @@ Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destruct
   color: #ffffff;
   border-color: #64748B;
 }
+
 .btn-secondary {
   background-color: #ffc107;
   color: #112e51;
@@ -2400,11 +2492,13 @@ Delete: #DC2626 (Red) or #D32F2F (as currently in global.css) - Use for destruct
   color: #ffffff;
   border-color: #94A3B8;
 }
+
 .btn-cancel {
   background-color: #2196f3;
   color: #ffffff;
   border-color: #94A3B8;
 }
+
 .btn-logout {
   background-color: #d22f2f;
   color: white;

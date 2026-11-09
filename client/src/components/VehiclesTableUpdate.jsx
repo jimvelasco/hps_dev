@@ -80,7 +80,18 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             )}
           </div>
 
-
+ <div className="standard-table-header" style={{
+            textDecoration: "underline",
+            cursor: "pointer"
+          }} onClick={() => handleSort("active")}>
+           Active
+            {sortColumn === "active" && (
+              <FontAwesomeIcon
+                icon={faArrowUp}
+                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
+              />
+            )}
+          </div>
 
 
           {/* <div className="standard-table-header ">Type</div> */}
@@ -119,18 +130,7 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
                 Check Out {sortColumn === "enddate" ? (sortDirection === "asc" ? "▲" : "▼") : ""}
               </span>
             </div> */}
-          <div className="standard-table-header" style={{
-            textDecoration: "underline",
-            cursor: "pointer"
-          }} onClick={() => handleSort("active")}>
-           Active
-            {sortColumn === "active" && (
-              <FontAwesomeIcon
-                icon={faArrowUp}
-                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
-              />
-            )}
-          </div>
+         
           {/* <div className="standard-table-header " style={{ cursor: "pointer" }} onClick={() => handleSort("active")}>
               <span style={{ textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "5px" }}>
                 Active {sortColumn === "active" ? (sortDirection === "asc" ? "▲" : "▼") : ""}
@@ -150,11 +150,16 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             <div className="standard-table-cell">{vehicle.carownertype ? vehicle.carownertype.charAt(0).toUpperCase() + vehicle.carownertype.slice(1) : ""}</div>
 
               <div style={{ marginTop: '5px' }}>
-              <button className="btnxs btn-secondary"
+              <button className="btnxsa btn-secondary"
                 onClick={() => handleDetailsClick(vehicle)}>
                 {vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}
               </button>
             </div>
+  <div className="standard-table-cell ">
+              {getVehicleActiveStatusBoolean(vehicle) ? <span className="spanhighlightyes">Yes</span> : <span className="spanhighlightno">No</span>}
+            </div>
+
+
             <div className="standard-table-cell ">{vehicle.vehicle_type}</div>
             <div className="standard-table-cell ">{vehicle.make}</div>
             <div className="standard-table-cell ">{vehicle.model}</div>
@@ -164,15 +169,15 @@ export default function VehiclesTableUpdate({ vehicles, role, sortColumn, sortDi
             {/* <div className="standard-table-cell">{vehicle.plate + (vehicle.plate_state ? ` (${vehicle.plate_state})` : "")}</div> */}
 
             <div className="standard-table-cell ">{utcDateOnly(vehicle.checkout)}</div>
-            <div className="standard-table-cell ">
-              {getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"}
-            </div>
+          
 
             {/* <div className="standard-table-cell">
                 {vehicle.requires_payment == 1 ? (
                   <b>Pay Now</b>
                 ) : vehicle.requires_payment == 2 ? (<b>Paid</b>) : (<b>Free</b>)}
               </div> */}
+
+
 
             {vehicle.requires_payment == 1 ? (
               <div className="xbutton-grid" style={{ marginTop: "5px",marginRight:"5px" }}>

@@ -13,7 +13,7 @@ export default function VehiclesTableOnsite({ vehicles, role, sortColumn, sortDi
             overflow: "hidden"
         }}>
             <div className="vehicles-table-owner8"
-            style={{ gridTemplateColumns:"1.0fr 1.2fr 1.0fr 1.0fr .6fr .6fr .6fr.8fr  .6fr"}}>
+            style={{ gridTemplateColumns:"1.0fr 1.2fr 1.0fr 1.0fr 1.0fr .6fr .6fr .6fr.8fr  .6fr"}}>
                 <>
 
                     <div className="standard-table-header" style={{
@@ -40,6 +40,20 @@ export default function VehiclesTableOnsite({ vehicles, role, sortColumn, sortDi
                             />
                         )}
                     </div>
+
+                    <div className="standard-table-header" style={{
+                        textDecoration: "underline",
+                        cursor: "pointer"
+                    }} onClick={() => handleSort("unit")}>
+                        Unit
+                        {sortColumn === "unit" && (
+                            <FontAwesomeIcon
+                                icon={faArrowUp}
+                                style={{ transform: sortDirection === "desc" ? "rotate(180deg)" : "none" }}
+                            />
+                        )}
+                    </div>
+
 
                     <div className="standard-table-header ">Phone</div>
 
@@ -72,6 +86,7 @@ export default function VehiclesTableOnsite({ vehicles, role, sortColumn, sortDi
                         <div className="standard-table-cell">
                             {vehicle.carowner_lname}, {vehicle.carowner_fname}
                         </div>
+                        <div className="standard-table-cell "> {vehicle.unitnumber}</div>
                         <div className="standard-table-cell "> {vehicle.carownerphone}</div>
                         <div className="standard-table-cell ">{utcDateOnly(vehicle.checkout)}</div>
                         <div className="standard-table-cell "> {vehicle.carownertype}</div>

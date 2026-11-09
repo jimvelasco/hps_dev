@@ -1,50 +1,5 @@
 
 
-export const getVehicleActiveStatusBoolean_checkin = (element) => {
-  //const todayUTC = new Date(); // "2025-12-03"
-  //const todayStr = todayUTC.toISOString().split('T')[0]; 
-  //const todayStr = todayUTC.toLocaleDateString("en-CA");
-
-  const todayUTC = new Date(); // "2025-12-03"
-  const todayStr = formatLocalDate(todayUTC);
-  // const today = new Date(Date.UTC(
-  //   now.getUTCFullYear(),
-  //   now.getUTCMonth(),
-  //   now.getUTCDate()
-  //  ));
-  // const today = new Date();
-  // today.setHours(0, 0, 0, 0);
-  // Date.UTC(
-  //   now.getUTCFullYear(),
-  //   now.getUTCMonth(),
-  //   now.getUTCDate()
-  // ));
-  //const mongoDate = new Date(element.enddate);
-  //console.log('the mongodate is ',mongoDate);
-
-
-  const mongoDateIn = new Date(element.checkin);
-  const mongoDateInStr = utcDateOnly(mongoDateIn);
-  const mongoDate = new Date(element.checkout);
-  const mongoDateStr = utcDateOnly(mongoDate);
-
-  if (mongoDateInStr > todayStr && mongoDateStr >= todayStr) {
-    //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
-    return false;
-  }
-  if (mongoDateStr >= todayStr) {
-    //  console.log('getVehicleActiveStatusBoolean rvalue is true',mongoDateInStr,mongoDateStr,todayStr);
-    return true;
-  }
-
-
-  else {
-    // console.log('getVehicleActiveStatusBoolean rvalue is false')
-
-    return false;
-  }
-}
-
 export const getVehicleActiveStatusBoolean = (element) => {
 
   const todayUTC = new Date(); // "2025-12-03"
@@ -102,25 +57,6 @@ const getVehicleActiveStatusBoolean2 = (sdate, edate) => {
   }
 }
 
-export const getVehicleIsActiveTodayBoolean_checkin = (element) => {
-  // const now = new Date();
-  // const today = new Date(Date.UTC(
-  //   now.getUTCFullYear(),
-  //   now.getUTCMonth(),
-  //   now.getUTCDate()
-  // ));
-  //const now = new Date();
-  const todayUTC = new Date();
-  //const todayStr = todayUTC.toISOString().split('T')[0];
-  const todayStr = todayUTC.toLocaleDateString("en-CA");
-  const mongoDate = new Date(element.checkout);
-  const mongoDateStr = utcDateOnly(mongoDate);
-  if (mongoDateStr == todayStr) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 
 export const getVehicleIsActiveTodayBoolean = (element) => {
@@ -161,15 +97,22 @@ export const formatPhoneNumber = (phone) => {
 export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehicleId, unit, createdfrom, pincodeAction) => {
   const formsdate = formvehicle.startdate;
   const formedate = formvehicle.enddate;
+  const veh_grp_ary = getVehicleTypeGroups(vehiclearray, false);
+  const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
 
   const todayUTC = new Date(); // "2025-12-03"
   const todayStr = formatLocalDate(todayUTC);
-  //  console.log('okToAddUnitVehicle vehiclearray', vehiclearray)
+    console.log('okToAddUnitVehicle vehiclearray', vehiclearray)
   const allActiveVehicles = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   const allActiveVehiclesCount = allActiveVehicles.length;
+    console.log('okToAddUnitVehicle allActiveVehicles', allActiveVehicles)
 
-  const veh_grp_ary = getVehicleTypeGroups(vehiclearray, false);
-  console.log('we are in vehicle helpers grpary', veh_grp_ary)
+  
+    // console.log('the max date of nonownervehs is ', maxenddateofgroup,veh_grp_ary.nonownervehs.array);
+      // console.log('the max date of and forms dates is ', maxenddateofgroup,formsdate,formedate);
+
+     
+
  //  console.log('formvehicle', formvehicle)
   // console.log('all active', allActiveVehicles)
 
@@ -194,7 +137,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   }
 
 
-  console.log('role of logged on person ', localStorage.getItem('logonType'),maxdayuse)
+  //console.log('role of logged on person ', localStorage.getItem('logonType'),maxdayuse)
 
   let filteredActiveArray = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   let filteredActiveArrayCount = filteredActiveArray.length
@@ -217,17 +160,22 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   if (createdfrom === 'ownervehicles' || createdfrom === 'rentervehicles') {
     // this is run for blank vehicle records (new vehicles)
-    console.log('formvehicle okToAddUnitVehicle',formvehicle);
+  //  console.log('formvehicle okToAddUnitVehicle',formvehicle);
     let formdayusecnt = 0;
-
     if (createdfrom === 'ownervehicles' && formvehicle.day_use_only === 1) {
       formdayusecnt = 1;
     }
-
-    if (createdfrom === 'ownervehicles' && formvehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehsany.count > 0) {
-       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 7 };
-        return robj;
+    if (createdfrom === 'rentervehicles' && formvehicle.day_use_only === 1) {
+      formdayusecnt = 1;
     }
+
+     let overlapbump = 0;
+     if (maxenddateofgroup === formsdate) {
+      overlapbump = 1;
+     }
+     console.log('overlapbump',overlapbump);
+
+   
 
 
     // if (createdfrom === 'ownervehicles' && (formvehicle.carownertype === 'dayuseonly' || formvehicle.carownertype === 'multiday')) {
@@ -244,6 +192,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     let showerror = false;
     let messagetoshow = '';
+
+    console.log('FORM DATES AND MAX FROM GROUP',formsdate,formedate,maxenddateofgroup);
 
 
     if (!vehicleId) {
@@ -272,35 +222,41 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
       if (dates_span_today) {
 
+        console.log('veh_grp_ary.allactivevehs.count', veh_grp_ary.allactivevehs.count);
+        console.log('maxactiveallowed', maxactiveallowed);
+        console.log(' veh_grp_ary.dayusemultivehs.count', veh_grp_ary.dayusemultivehs.count);
+        console.log(' veh_grp_ary.nonownervehs.count', veh_grp_ary.nonownervehs.count);
+
+        console.log('formdayusecnt', formdayusecnt);
+        console.log('overlapbump', overlapbump);
+
      //   console.log("VH dates_span_today is true", dates_span_today);
+     
 
         // console.log('VH veh_grp_ary', veh_grp_ary);
         // this will never be true for renter vehicle
         if (formdayusecnt === 1) {
-          if (veh_grp_ary.dayusemultivehs.count > 0) {
+          // if (veh_grp_ary.dayusemultivehs.count > 0 && veh_grp_ary.nonownervehs.count === maxactiveallowed) {
+                    
+          if (veh_grp_ary.dayusemultivehs.count > 0 ) {
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 3 };
             return robj;
           }
         }
 
-        // let formvehincrement = 0;
-        // let formcartype = formvehicle.carownertype;
-        // if (formcartype === 'multiday') {
-        //   formvehincrement = 1;
-        // }
+        
 
-         console.log('wrong message sent aavc, max,dumc,fvi',
-            veh_grp_ary.allactivevehs.count,maxactiveallowed,veh_grp_ary.dayusemultivehs.count,formdayusecnt)
 
-        if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + formdayusecnt)) {
-         
+        if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + formdayusecnt + overlapbump)) {
+
+        //    console.log('we failed the max allowed test the max date of and forms dates is ', maxenddateofgroup,formsdate,formedate);
         //  console.log('form vehicle is',formvehicle)
           showerror = true;
-          if (veh_grp_ary.rentervehs.count > 0) {
+        //  if (veh_grp_ary.rentervehs.count > 0) {
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
-          } else {
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
-          }
+        //  } else {
+        //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 1 };
+        // }
           return robj;
         }
 
@@ -313,7 +269,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           let messagetoshow = '';
           // we could be potenially be adding a day use vehicle so check if they are out there already
           ///console.log('WE ARE ADDING A DAY USE TYPE OF VEHICLE max day use is ',maxdayuse)
-          console.log('veh_grp_ary dst',veh_grp_ary)
+        //  console.log('veh_grp_ary dst',veh_grp_ary)
           if (veh_grp_ary.dayusemultivehs.count + formdayusecnt < maxdayuse) {
             robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 1 };
           } else {
@@ -370,6 +326,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         }
         return robj;
       }
+
+       if (createdfrom === 'ownervehicles' && formvehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehsany.count > 1) {
+       robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 7 };
+        return robj;
+    }
 
       if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
         if (veh_grp_ary.rentervehs.count > 0) {
@@ -444,6 +405,22 @@ export const getVehicleTypeGroups = (vehicles, log = false) => {
 
 
 
+export const getMaxEnddateOfVehicles = (vehicles) => {
+  return vehicles.reduce((maxEnddate, vehicle) => {
+    return vehicle.enddate && (!maxEnddate || vehicle.enddate > maxEnddate)
+      ? vehicle.enddate
+      : maxEnddate;
+  }, null);
+}
+
+export const getMinStartdateOfVehicles = (vehicles) => {
+  return vehicles.reduce((minStartdate, vehicle) => {
+    return vehicle.startdate && (!minStartdate || vehicle.startdate < minStartdate)
+      ? vehicle.startdate
+      : minStartdate;
+  }, null);
+}
+
 export const anyDaypassVehicleCount = (vehicles) => {
   let cnt = 0;
   vehicles.forEach((el) => {
@@ -485,41 +462,78 @@ export const handicappedVehicleCount = (vehicles) => {
   return cnt;
 }
 
+ // form valication
 
+  //  export const getCreateValidationMessage = () => {
+  
+  //     let unitParkingLimit = Number(unit.parking_allowed_unit);
+  //     let freepassesallowed = Number(unit.daypasses_allowed_owner);
+  //     const veh_grp_ary = getVehicleTypeGroups(vehicles);
+  //     console.log('veh_grp',veh_grp_ary);
+  //      console.log('unitParkingLimit',unitParkingLimit);
+  //       console.log('freepassesallowed',freepassesallowed);
+  
+  //     if (pincodeAction === 'dayuseonly') {
+  //       if (veh_grp_ary.dayusemultivehs.count > 0) {
+  //         console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
+  //         return (<>You are not allowed to have <br />more daypassed<br />than allowed: {freepassesallowed}<br /><br />
+  //           Call Admin to get an<br />increase in day passes. </>);
+  //       }
+  //       return null;
+  //     }
+  
+  //     if (veh_grp_ary.rentervehs.count >= unitParkingLimit) {
+  //       console.log('BAILED ON (veh_grp_ary.rentervehs.count >=  unitParkingLimit')
+  //       return (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}.
+  //       </>);
+  //     }
+  //     if (veh_grp_ary.allactivevehs.count >= unitParkingLimit) {
+  //       console.log('BAILED ON veh_grp_ary.allactivevehs.count >=  unitParkingLimit ')
+  //       return (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}.
+  //         <br />There may be an owner in the unit. </>);
+  //     }
+  //     if (veh_grp_ary.ownervehs.count > 0) {
+  //       console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
+  //       return (<> There may be an owner in the unit.<br /><br />
+  //         CALL THE OWNER OR ADMIN</>);
+  //     }
+  //     if (veh_grp_ary.dayusemultivehs.count > 0) {
+  //       console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
+  //       return (<> There may be cleaning <br />people in the unit.<br /><br />
+  //         You are not allowed to have <br />more day passes than {freepassesallowed}.
+  //       </>);
+  //     }
+  //     if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
+  //       console.log('BAILED ON allActiveCount >= (unitParkingLimit + containsDaypassCount')
+  //       return (<>You are not allowed to have <br />more active vehicles than<br />
+  //         your parking allowance: {unitParkingLimit}. <br /><br />
+  //         CALL THE OWNER OR ADMIN</>);
+  //     }
+  //     return null;
+  //   };
+  
+  //  export const showFailureMessage = () => {
+  
+  //      const messagetoshow = getCreateValidationMessage();
+  //     if (messagetoshow !== null) {
+  //       setModal({
+  //         isOpen: true,
+  //         type: "alert",
+  //         title: "Validation Error",
+  //         message: messagetoshow,
+  //         //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
+  //         confirmText: "OK",
+  //         // cancelText: "Cancel",
+  //         onConfirm: () => {
+  //           setModal(prev => ({ ...prev, isOpen: false }));
+  //         },
+  //       });
+  //       return null;
+  //     }
+  
+  //   }
+  // end form valication
 
-// let filteredActive = [];
-// if (vehicleId) {
-//   filteredActive = activeArray.filter(v => v._id === vehicleId);
-//   const thevehicle = filteredActive[0];
-//   const rp = thevehicle.requires_payment;
-//   robj = { oktoadd: true, rpflag: rp }
-//   return  robj; //{ oktoadd: true, rpflag: rp };
-// } else {
-//   if (activeArray.length == 0) {
-//      robj = { oktoadd: true, rpflag: 0 }
-//     return robj; //{ oktoadd: true, rpflag: 0 };
-//   }
-//   if (activeArray.length == 1 && (activeArray[0].requires_payment == 1 || activeArray[0].requires_payment == 2)) {
-//      robj = { oktoadd: true, rpflag: 0 }
-//     return robj; //{ oktoadd: true, rpflag: 0 };
-//   }
-//   if (activeArray.length == 1 && activeArray[0].requires_payment == 0) {
-//     robj = { oktoadd: true, rpflag: 1 }
-//     return robj; //{ oktoadd: true, rpflag: 1 };
-//   }
-// }
-// return robj;
-
-// if (activeArray.length == 1 && activeArray[0].requires_payment == 1) {
-//   console.log('RETURNING REQUIRES PAYMENT TRUE')
-//   return {oktoadd:true, rpflag:0};
-// }
-//  if (activeArray.length == 1 && activeArray[0].requires_payment == 0) {
-//   console.log('RETURNING REQUIRES PAYMENT TRUE')
-//   return {oktoadd:true, rpflag:1};
-// }
-// console.log('RETURNING NEITHER CONDITION TRUE')
-//  return {oktoadd:true,  rpflag:0};
 
 
 

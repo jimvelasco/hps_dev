@@ -123,7 +123,10 @@ export default function OnsiteVehicles() {
       } else if (column === "active") {
         valueA = a.calculatedActiveFlag || "";
         valueB = b.calculatedActiveFlag || "";
-      }
+      } else if (column === "unit") {
+        valueA = (a.unitnumber || "").toLowerCase();
+        valueB = (b.unitnumber || "").toLowerCase();
+      } 
       if (newDirection === "asc") {
         return String(valueA).localeCompare(String(valueB));
       } else {

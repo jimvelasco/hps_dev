@@ -185,12 +185,24 @@ export default function UnitDetails() {
     e.preventDefault();
     // console.log('WE ARE SUBMITTING')
 
-    if (!formData.pincodeary.some(entry => typeof entry?.pincode === "string" && entry.pincode.trim())) {
+    const pinCodes = formData.pincodeary.map(entry => entry.pincode);
+    let pinError = null;
+    if (pinCodes.length === 0) {
+      pinError = "Please enter at least one PIN in PIN Entries.";
+    } else {
+      const invalidIndex = pinCodes.findIndex(pin => !/^[0-9]{4,}$/.test(pin));
+      if (invalidIndex !== -1) {
+        pinError = `PIN #${invalidIndex + 1} must contain at least 4 numeric digits.`;
+      } else if (new Set(pinCodes).size !== pinCodes.length) {
+        pinError = "All PINs must be different.";
+      }
+    }
+    if (pinError) {
       setModal({
         isOpen: true,
         type: "alert",
         title: "Validation Error",
-        message: "Please enter at least one PIN in PIN Entries.",
+        message: pinError,
         confirmText: "OK",
         onConfirm: () => {
           setModal(prev => ({ ...prev, isOpen: false }))
@@ -419,7 +431,7 @@ export default function UnitDetails() {
                   onChange={(e) => setFormData(prev => ({ ...prev, is_resident: e.target.checked ? 1 : 0 }))}
                   disabled={!isAdminView}
                 />
-                <label className="input-label" htmlFor="unit-is_resident">Primary Residence for Owner</label>
+                <label className="input-label" htmlFor="unit-is_resident" title="Is this the Owner's primary residence">Primary Residence for Owner</label>
               </div>
 
               <div className="unit-checkbox-row">
@@ -428,8 +440,20 @@ export default function UnitDetails() {
                   type="checkbox"
                   checked={formData.available_for_rent === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
+                  disabled={!isAdminView}
                 />
-                <label className="input-label" htmlFor="unit-available_for_rent">Available for rent</label>
+                <label className="input-label" htmlFor="unit-available_for_rent" 
+                title="This flag will prevent the unit number from even showing in the list when a non-owner uses the app">Available for Rent</label>
+              </div>
+               <div className="unit-checkbox-row" style={{marginBottom:"35px"}}>
+                <input
+                  id="unit-day_use_only"
+                  type="checkbox"
+                  checked={formData.day_use_only === 1}
+                  onChange={(e) => setFormData(prev => ({ ...prev, day_use_only: e.target.checked ? 1 : 0 }))}
+                  disabled={!isAdminView}
+                />
+                <label className="input-label" htmlFor="unit-day_use_only" title="The virual room will only allow day passes">Day Pass Only Unit</label>
               </div>
              
 
@@ -471,6 +495,7 @@ export default function UnitDetails() {
                       id={`unit-pin-${index}`}
                       className="standardinput"
                       type="text"
+                      inputMode="numeric"
                       value={entry.pincode ?? ""}
                       onChange={(e) => handlePinEntryChange(index, "pincode", e.target.value)}
                       // disabled={!isAdminView && entry.action !== "standard"}
@@ -747,16 +772,7 @@ export default function UnitDetails() {
 
               </fieldset>
 
-               <div className="unit-checkbox-row">
-                <input
-                  id="unit-day_use_only"
-                  type="checkbox"
-                  checked={formData.day_use_only === 1}
-                  onChange={(e) => setFormData(prev => ({ ...prev, day_use_only: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView}
-                />
-                <label className="input-label" htmlFor="unit-day_use_only">Day use only</label>
-              </div>
+              
 
 
               <div className="button-grid">

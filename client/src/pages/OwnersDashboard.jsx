@@ -184,13 +184,19 @@ export default function OwnersDashboard() {
       hoverColor: "#1976d2",
       which: "standard"
     });
+
+      if (loggedInUser.role != "tenant") {
+
+    
     navButtons.push({
       label: "Unit",
       onClick: handleUnitClick,
       which: "standard"
-    }
-    )
+    })
   }
+  }
+
+
   //  navButtons.push({
   //   label: "Unit",
   //   onClick: handleReportClick,
@@ -240,6 +246,10 @@ export default function OwnersDashboard() {
       ttitle = "Owner";
     } else if (loggedInUser.role == "renter") {
       ttitle = "Renter";
+    } else if (loggedInUser.role == "tenant") {
+      ttitle = "Tenant";
+    } else if (loggedInUser.role == "rentalmanager") {
+      ttitle = "Rental Manager";
     }
     //  console.log('OwnersDashboard hoa:', hoa);
   }

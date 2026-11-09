@@ -69,10 +69,10 @@ export default function RentersLogin() {
         setLoadingUnits(true);
         try {
             const response = await axios.get("/units", { params: { hoaid: hoaId } });
-            const unitNumbers = response.data.filter(unit => unit.unitnumber && unit.available_for_rent)
-                .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber }));
+            const unitNumbers = response.data.filter(unit => unit.unitnumber && (unit.available_for_rent || unit.day_use_only === 1))
+                .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber,day_use_only: unit.day_use_only ,available_for_rent: unit.available_for_rent}));
             unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
-            //  console.log('unit numbers array',unitNumbers);
+           //   console.log('unit numbers array',unitNumbers);
             setUnits(unitNumbers);
         } catch (err) {
             // console.error("Error fetching units:", err);
