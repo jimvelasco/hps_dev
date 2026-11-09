@@ -276,8 +276,6 @@ export default function OwnersDashboard() {
             </button>
             &nbsp; &nbsp; &nbsp; &nbsp;
             {ownerTypes.includes(role)  && (
-
-           // {role === "owner" || role === "rentalmanager" && (
               <button className="btn btn-primary"
                 onClick={handleShowUsersClick}
                 disabled={!loggedInUser?.unitnumber}

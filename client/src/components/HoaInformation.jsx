@@ -3,12 +3,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import ParkingSpacesOverview from "./ParkingSpacesOverview";
 import { daypassVehicleCount,handicappedVehicleCount } from "../utils/vehicleHelpers";
+import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 
 
 export default function HoaInformation({ hoa }) {
   const { hoaId } = useParams();
   const navigate = useNavigate();
+  const { user: loggedInUser } = useLoggedInUser();
+  const role = loggedInUser?.role;
   const [vehicles, setVehicles] = useState([]);
   const [dayUseCount, setDayUseCount] = useState(0);
 const [handicappedCount, setHandicappedCount] = useState(0);
@@ -111,10 +114,12 @@ const [handicappedCount, setHandicappedCount] = useState(0);
 
       </section>
       <section className="standardsectiondashboard">
-        <h3 style={{ color: "#1976d2", marginTop: 0, textAlign: "center" }}>HOA Address</h3>
+      
         {hoa && (
-          <>
-            <div className="hoainformation2col" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
+          <>{role === 'admin' && (
+            <>
+              <h3 style={{ color: "#1976d2", marginTop: 0, textAlign: "center" }}>HOA Address</h3>
+             <div className="hoainformation2col" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
               <div><strong>Name:</strong></div><div> {hoa.name}</div>
               <div><strong>Address:</strong></div><div> {hoa.address}</div>
               <div><strong>City:</strong></div><div> {hoa.city}</div>
@@ -122,6 +127,10 @@ const [handicappedCount, setHandicappedCount] = useState(0);
               <div><strong>Zip:</strong></div><div>{hoa.zip}</div>
               <div><strong>Id:</strong></div><div> {hoa.hoaid}</div>
             </div>
+            </>
+
+          )}
+           
 
              <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>HOA Parking</h3>
              <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>

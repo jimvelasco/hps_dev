@@ -140,7 +140,7 @@ export default function UserDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('THE FORM DATA IS ',formData)
+   // console.log('THE FORM DATA IS ',formData)
 
     if (!formData.first_name || !formData.last_name || !formData.phone || !formData.email) {
       setModal({

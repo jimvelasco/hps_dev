@@ -134,9 +134,9 @@ export default function OwnerVehicles() {
 
           setAllRawVehicles(rawvehicles);
 
-          console.log('rawvehicles', rawvehicles);
+        //  console.log('rawvehicles', rawvehicles);
           let gpa = getVehicleTypeGroups(rawvehicles);
-          console.log('gpa', gpa)
+       //  console.log('gpa', gpa)
 
           let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
           //   console.log('activeVehicles', activeVehicles);
