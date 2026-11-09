@@ -366,11 +366,12 @@ export default function UserDetails() {
                    <option value="admin">Admin</option>
                   <option value="enforcer">Enforcer</option>
                 </select> */}
-                <select className="standardselect"
+                <select className="standardselect100"
                   value={formData.role}
                   onChange={handleInputChange}
                   name="role"
                   disabled={isEditMode}
+                 
                 >
                    {userRoleTypeAry.map(type => (
                         <option key={type.value} value={type.value}>
