@@ -689,6 +689,7 @@ input.input-date2 {
   font-size: 14px;
   box-sizing: border-box;
   width: 200px;
+  background-color: white;
 }
 
 input.input-date2:disabled {
@@ -1049,11 +1050,12 @@ section.standardsectiondashboard {
     margin: 0px;
   }
 
-  .input-date2 {
+  .input-date2yyy{
     width: 90%;
     /* Makes it span the full width of its container */
     max-width: 90%;
     box-sizing: border-box;
+    background-color: white;
     /* Ensures padding doesn't push it out of bounds */
   }
 
@@ -1070,7 +1072,7 @@ section.standardsectiondashboard {
     display: none;
   }
 
-  .input-date2 {
+  .input-date2xx {
     width: 100%;
     /* Makes it span the full width of its container */
     max-width: 100%;
