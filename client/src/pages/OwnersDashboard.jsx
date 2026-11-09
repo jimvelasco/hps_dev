@@ -266,9 +266,10 @@ export default function OwnersDashboard() {
 
         {(role !== "admin") && (
           <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
-            <div className="button-gridx">
+            <div className="button-grid" style={{maxWidth:"300px",textAlign:"center", margin:"0px auto"}}>
             <button className="btn btn-primary"
               onClick={handleCreateUserClick}
+              style={{width:'150px'}}
             >
               <FontAwesomeIcon
               icon={faPlus}
@@ -278,7 +279,7 @@ export default function OwnersDashboard() {
             {ownerTypes.includes(role)  && (
               <button className="btn btn-primary"
                 onClick={handleShowUsersClick}
-                disabled={!loggedInUser?.unitnumber}
+               style={{width:'150px'}}
               >
                 Show Users
               </button>
