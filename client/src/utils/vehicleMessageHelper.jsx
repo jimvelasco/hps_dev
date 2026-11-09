@@ -12,41 +12,37 @@ export const vehicleMessageHelper = (vehicles, unit, pincodeAction, allActiveCou
     overlapbump = 1;
   }
 
+  console.log('overlapbump',overlapbump)
+
   if (pincodeAction === 'dayuseonly') {
+   // console.log('pincodeAction',pincodeAction)
     // if (veh_grp_ary.dayusemultivehs.count > 0) {
     //   return (<>You are not allowed to have <br />more daypassed<br />than allowed: {freepassesallowed}<br /><br />
     //     Call Admin to get an<br />increase in day passes. </>);
     // }
-     if (veh_grp_ary.dayusemultivehs.count > 0) {
-      return (<>You are not allowed more daypasses than allowed:  {freepassesallowed} <br /> If issues, first contact person that provided <br />
-      Unit/PIN or HOA Management (999-888-7777)</>);
+     if (veh_grp_ary.dayusemultivehs.count > 0  ) {
+      return (<>You are not allowed more daypasses<br /> than allowed:  {freepassesallowed} <br /> If issues, first contact person that provided <br />
+      Unit/PIN or HOA Management <br />(999-888-7777)</>);
     }
     return null;
   }
 
-  // if (veh_grp_ary.rentervehs.count + overlapbump >= unitParkingLimit) {
-  //   return (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}.
-  //   </>);
-  // }
-   if (veh_grp_ary.rentervehs.count + overlapbump >= unitParkingLimit) {
+   if (veh_grp_ary.rentervehs.count  >= unitParkingLimit + overlapbump) {
     return (<>You are not allowed more  <br />parking than allowed {unitParkingLimit}.<br />If issues, first contact person that provided <br />
     Unit/PIN or HOA Management.< br />123-456-7890
     </>);
   }
-  if (veh_grp_ary.allactivevehs.count + overlapbump >= unitParkingLimit) {
+  if (veh_grp_ary.allactivevehs.count >= unitParkingLimit  + overlapbump) {
     return (<>You are not allowed more parking than allowed:  {unitParkingLimit}< br/> If issues, first contact person that provided 
     <br />Unit/PIN or HOA Management< br/>123-456-7890</>);
   }
-  // if (veh_grp_ary.ownervehs.count + overlapbump > 0) {
-  //   return (<> There may be an owner in the unit.<br /><br />
-  //     CALL THE OWNER OR ADMIN</>);
-  // }
-  if (veh_grp_ary.ownervehs.count + overlapbump > 0) {
+ 
+  if (veh_grp_ary.ownervehs.count >= unitParkingLimit  + overlapbump) {
     return (<> There may be an owner in the unit.<br />
      If issues, first contact person that provided <br />
     Unit/PIN or HOA Management.< br />123-456-7890</>);
   }
-  if (veh_grp_ary.dayusemultivehs.count + overlapbump > 0) {
+  if (veh_grp_ary.dayusemultivehs.count > 0 ) {
     return (<> There may be cleaning <br />people in the unit.<br /><br />
       You are not allowed to have <br />more day passes than {freepassesallowed}.
     </>);

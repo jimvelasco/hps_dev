@@ -741,9 +741,14 @@ export default function VehicleDetails() {
       if (oktoaddobj.msgType === 1) {
         msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit} <br />
           Please deactivate another vehicle before activating this one.</>);
+           msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
+           Please deactivate another vehicle before activating this one.<br />
+          If issues, adjust your registrations or <br /> contact HOA Management. <br />123-456-7890</>);
+
+
       }
       if (oktoaddobj.msgType === 2) {
-        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit} <br />
+        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />123-456-7890</>);
       }
       if (oktoaddobj.msgType === 3) {

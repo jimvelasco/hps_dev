@@ -249,7 +249,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + formdayusecnt + overlapbump)) {
 
-        //    console.log('we failed the max allowed test the max date of and forms dates is ', maxenddateofgroup,formsdate,formedate);
+            console.log('we failed the max allowed test the max date of and forms dates is ', maxenddateofgroup,formsdate,formedate);
         //  console.log('form vehicle is',formvehicle)
           showerror = true;
         //  if (veh_grp_ary.rentervehs.count > 0) {
@@ -302,7 +302,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
     let theCurrentVehicle = theCurrentVehicleAry[0];
-    console.log('VD EXISTS the current vehicle is', theCurrentVehicle)
+   // console.log('VD EXISTS the current vehicle is', theCurrentVehicle)
     let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
     let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
     const maxdayusemulti = 2;
@@ -410,7 +410,7 @@ export const getMaxEnddateOfVehicles = (vehicles) => {
     return vehicle.enddate && (!maxEnddate || vehicle.enddate > maxEnddate)
       ? vehicle.enddate
       : maxEnddate;
-  }, null);
+  },  formatLocalDate(new Date)); //null
 }
 
 export const getMinStartdateOfVehicles = (vehicles) => {
@@ -418,8 +418,11 @@ export const getMinStartdateOfVehicles = (vehicles) => {
     return vehicle.startdate && (!minStartdate || vehicle.startdate < minStartdate)
       ? vehicle.startdate
       : minStartdate;
-  }, null);
+  }, formatLocalDate(new Date));
 }
+
+//  const todayUTC = new Date(); // "2025-12-03"
+//   const todayStr = formatLocalDate(todayUTC);
 
 export const anyDaypassVehicleCount = (vehicles) => {
   let cnt = 0;
