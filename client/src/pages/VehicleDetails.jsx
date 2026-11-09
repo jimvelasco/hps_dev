@@ -98,7 +98,9 @@ export default function VehicleDetails() {
     ? [{ value: 'dayuseonly', label: 'Day Pass' }]
     : logonType === 'tenant'
       ? [
+       { value: 'owner', label: 'Owner' },
         { value: 'friend', label: 'Friend/Family' }
+       
       ]
       : logonType === 'owner'
         ? [
@@ -347,7 +349,7 @@ export default function VehicleDetails() {
         const qry = `/vehicles/id/${vehid}`;
         // console.log("VehicleDetails.jsx qry:", qry);
         const response = await axios.get(qry);
-           console.log('about to set vehicle', response.data)
+        //   console.log('about to set vehicle', response.data)
         const theVehicle = response.data;
         setVehicle(response.data);
 

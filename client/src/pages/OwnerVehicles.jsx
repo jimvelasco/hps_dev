@@ -231,8 +231,8 @@ export default function OwnerVehicles() {
       String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
     )
     : loggedInUser?.role === "tenant"
-      ? vehicles.filter(v => v.carownertype === "tenant")
-      : vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant");
+      ? vehicles.filter(v => v.carownertype === "tenant" ||  v.createdbyrole === "tenant")
+      : vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" &&  v.createdbytype !== "other");
 
   //console.log('filtered vehicles should be all of them in vehicles sans the renter vehicles', filteredVehicles)
 

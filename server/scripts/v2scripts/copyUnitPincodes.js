@@ -13,28 +13,14 @@ const copyUnitPincodes = async () => {
 
     for await (const unit of units.find({ unitnumber: { $exists: true, $ne: null } }, { projection: { unitnumber: 1, pincodeary: 1 } })) {
       examined++;
-      const pincode = String(unit.unitnumber);
-      const entries = Array.isArray(unit.pincodeary) ? unit.pincodeary : [];
-      const firstEntry = entries[0] && typeof entries[0] === "object" && !Array.isArray(entries[0])
-        ? entries[0]
-        : {};
+      const unitnumber = String(unit.unitnumber);
+      const pincodeary = [
+        { pincode: `${unitnumber}01`, action: "renter", expire_date: null, uses_allowed: -1, uses_used: 0 },
+        { pincode: `${unitnumber}02`, action: "dayuseonly", expire_date: null, uses_allowed: -1, uses_used: 0 }
+      ];
 
-      const updatedFirstEntry = {
-        ...firstEntry,
-        pincode,
-        action: firstEntry.action || "renter",
-        expire_date: firstEntry.expire_date ?? null,
-        uses_allowed: firstEntry.uses_allowed ?? -1,
-        uses_used: firstEntry.uses_used ?? 0
-      };
+      if (JSON.stringify(unit.pincodeary) === JSON.stringify(pincodeary)) continue;
 
-      if (firstEntry.pincode === updatedFirstEntry.pincode &&
-        firstEntry.action === updatedFirstEntry.action &&
-        firstEntry.expire_date === updatedFirstEntry.expire_date &&
-        firstEntry.uses_allowed === updatedFirstEntry.uses_allowed &&
-        firstEntry.uses_used === updatedFirstEntry.uses_used) continue;
-
-      const pincodeary = [updatedFirstEntry, ...entries.slice(1)];
       const result = await units.updateOne({ _id: unit._id }, { $set: { pincodeary } });
       updated += result.modifiedCount;
     }
