@@ -639,6 +639,7 @@ select.standardselect100 {
   font-size: 14px;
   width: 100%;
   max-width: 300px;
+  background-color: white;
 }
 
 input.standardinput {
