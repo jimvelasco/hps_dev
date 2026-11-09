@@ -96,7 +96,7 @@ export default function VehicleDetails() {
   const logonType = localStorage.getItem('logonType');
   const vehicleOwnerTypeAry = unit?.day_use_only === 1
     ? [{ value: 'dayuseonly', label: 'Day Pass' }]
-    : logonType === 'tenant'
+    : logonType === 'tenant' || logonType === 'owner' || logonType === 'rentalmanager'
       ? [
         { value: 'owner', label: 'Owner' },
         { value: 'friend', label: 'Friend/Family' },

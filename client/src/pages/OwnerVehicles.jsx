@@ -321,6 +321,20 @@ export default function OwnerVehicles() {
         return;
       }
 
+       if (loggedInUser.role === "rentalmanager") {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: `Rental Managers cannot modify vehicles.`,
+          confirmText: "OK",
+          onConfirm: () => {
+            setModal(prev => ({ ...prev, isOpen: false }));
+          },
+        });
+        return;
+      }
+
       const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
       // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
       let unitNumber = uid; //loggedInUser ? loggedInUser.unitnumber : "999999999999";
@@ -380,6 +394,20 @@ export default function OwnerVehicles() {
       });
       return;
     }
+
+      if (loggedInUser.role === "rentalmanager") {
+        setModal({
+          isOpen: true,
+          type: "alert",
+          title: "Validation Error",
+          message: `Rental Managers cannot add vehicles.`,
+          confirmText: "OK",
+          onConfirm: () => {
+            setModal(prev => ({ ...prev, isOpen: false }));
+          },
+        });
+        return;
+      }
 
     try {
       const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(uid)}`);
@@ -537,6 +565,10 @@ export default function OwnerVehicles() {
   let titlestr = "Owner Vehicles " + localStorage.getItem('unitNumber');
   if (role === "admin") {
     titlestr = "Admininistrator All Vehicles";
+  } else if (role === "rentalmanager") {
+     titlestr = "Rental Manager Vehicles "  + localStorage.getItem('unitNumber');
+  } else if (role === "tenant") {
+     titlestr = "Tenant Vehicles " + localStorage.getItem('unitNumber');
   }
 
 
