@@ -114,6 +114,11 @@ db.vehicles.updateMany(
  { $set: { "createdbytype": "owner" }}
 );
 
+db.vehicles.updateMany(
+  {},
+ { $set: { "createdbyrole": "owner" }}
+);
+
 
 db.vehicles.updateMany(
   {},

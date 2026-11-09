@@ -101,6 +101,7 @@ export default function RentersLogin() {
         }
 
         localStorage.setItem('unitNumber', unitNumber);
+        localStorage.setItem('logonType', "");
         try {
             const response = await axios.post(`/users/renters/verify-pin`, {
                 hoaId,

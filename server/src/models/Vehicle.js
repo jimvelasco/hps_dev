@@ -17,6 +17,9 @@ const vehicleSchema = new mongoose.Schema(
    createdbytype: {
     type: String
   },
+   createdbyrole: {
+    type: String
+  },
   carownername: {
     type: String,
   },

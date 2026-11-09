@@ -102,12 +102,12 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
               } 
             </div>
           {/* <div><b>{vehicle.carownertype}</b></div> */}
-  {/* 
+  
            <div className="full-row vehicle-pin-action-row">
             
-           {(vehicle.day_use_only === 1) && "DAY USE"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype}
+           {(vehicle.day_use_only === 1) && "DAY PASS"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype}
            </div>
- */}
+
 
         </div>
       ))}

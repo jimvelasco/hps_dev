@@ -31,6 +31,7 @@ const operations = [
   ["vehicles", { $set: { day_use_only: 0 } }],
   ["vehicles", { $set: { handicapped: 0 } }],
   ["vehicles", { $set: { createdbytype: "owner" } }],
+  ["vehicles", { $set: { createdbyrole: "owner" } }],
   ["vehicles", { $set: { pin_code_value: "" } }],
   ["vehicles", { $set: { pin_code_action: "renter" } }]
 ];

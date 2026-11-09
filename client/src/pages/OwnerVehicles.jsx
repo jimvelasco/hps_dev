@@ -161,7 +161,9 @@ export default function OwnerVehicles() {
           //    console.log('updatedVehicles2', role, updatedVehicles2);
 
           if (role === 'tenant') {
-            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant");
+            console.log('updated vehicles2',updatedVehicles2)
+            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant" || v.carownertype === "friend" );
+             console.log('updated vehicles2 after filter',updatedVehicles2)
           }
 
           let updatedVehicles3 = [...updatedVehicles2]
@@ -230,7 +232,7 @@ export default function OwnerVehicles() {
     )
     : loggedInUser?.role === "tenant"
       ? vehicles.filter(v => v.carownertype === "tenant")
-      : vehicles.filter(v => v.carownertype !== "renter");
+      : vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant");
 
   //console.log('filtered vehicles should be all of them in vehicles sans the renter vehicles', filteredVehicles)
 

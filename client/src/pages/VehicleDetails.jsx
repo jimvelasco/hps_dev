@@ -96,13 +96,20 @@ export default function VehicleDetails() {
   const logonType = localStorage.getItem('logonType');
   const vehicleOwnerTypeAry = unit?.day_use_only === 1
     ? [{ value: 'dayuseonly', label: 'Day Pass' }]
-    : logonType === 'tenant' || logonType === 'owner' || logonType === 'rentalmanager'
+    : logonType === 'tenant'
       ? [
-        { value: 'owner', label: 'Owner' },
-        { value: 'friend', label: 'Friend/Family' },
-        { value: 'multiday', label: 'Contractor' }
+        { value: 'friend', label: 'Friend/Family' }
       ]
-      : hoa?.parking_types_array ?? [];
+      : logonType === 'owner'
+        ? [
+          { value: 'owner', label: 'Owner' },
+          { value: 'friend', label: 'Friend/Family' },
+          { value: 'tenant', label: 'Tenant' },
+          { value: 'multiday', label: 'Contractor' }
+        ]
+        : logonType === 'rentalmanager'
+          ? [{ value: 'owner', label: 'Owner' }]
+          : hoa?.parking_types_array ?? [];
 
 
 
@@ -844,7 +851,8 @@ export default function VehicleDetails() {
         hoaid: hoaId,
         ownerid: oid,
         requires_payment: rpflag,
-        createdbytype: cbt
+        createdbytype: cbt,
+        createdbyrole: localStorage.getItem('logonType')
 
         // ...(!isModifyMode && {
         //   pin_code_value: createdfrom === "rentervehicles" ? pincodeValue : "",
@@ -1039,7 +1047,7 @@ export default function VehicleDetails() {
                   {createdfrom === "rentervehicles" && (
                     <div style={{ fontWeight: "normal" }}>
                       <div style={{ marginLeft: "12px", marginTop: "15px" }}>
-                        {formData.carownertype?.toUpperCase()}
+                        {formData.carownertype === 'dayuseonly' ? 'DAY PASS' : formData.carownertype?.toUpperCase()}
                       </div>
 
                     </div>

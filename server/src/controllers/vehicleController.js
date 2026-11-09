@@ -265,7 +265,7 @@ const getVehiclesForUnitNumber = async (req, res) => {
 const createVehicle = async (req, res) => {
   try {
     const vehicleData = req.validatedData;
-  //  console.log('CONTROLLER VD CREATE VEHICLE',vehicleData);
+    console.log('CONTROLLER VD CREATE VEHICLE',vehicleData);
     const vehicle = await Vehicle.create(vehicleData);
     // Log new vehicle creation
     await logHPSRecord(vehicle,vehicleData.startdate,vehicleData.enddate);
