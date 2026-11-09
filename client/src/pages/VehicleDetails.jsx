@@ -1359,7 +1359,7 @@ export default function VehicleDetails() {
 
 
               <div className="unit-checkbox-row">
-                <input className="checkboxhidex"
+                <input className="checkboxhide"
                   type="checkbox"
                   id="vehicle-day-use-only"
                   name="day_use_only"
@@ -1368,7 +1368,7 @@ export default function VehicleDetails() {
                   style={{ width: "18px", height: "18px", cursor: "pointer" }}
                   disabled={true}
                 />
-                <label className="input-label" htmlFor="vehicle-day-use-only">Day Pass</label>
+                {/* <label className="input-label" htmlFor="vehicle-day-use-only">Day Pass</label> */}
               </div>
 
               <div style={{ marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
