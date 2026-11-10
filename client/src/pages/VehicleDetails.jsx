@@ -1393,7 +1393,7 @@ export default function VehicleDetails() {
                     type="button"
 
                     onClick={handleDeleteClick}
-                    disabled={formSubmitting || !termsAcknowledged || loggedInUser.role === 'rentalmanager'} 
+                    disabled={formSubmitting || !termsAcknowledged } 
                   >
                     Delete
                   </button>
@@ -1408,7 +1408,9 @@ export default function VehicleDetails() {
                 <button>one</button>
                 <button>two</button>
                 <button>three</button>
-              </div> */}
+              </div>
+              || loggedInUser.role === 'rentalmanager'
+              */}
             </div>
           </form>
         </div>
