@@ -108,8 +108,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   //  console.log('okToAddUnitVehicle allActiveVehicles', allActiveVehicles)
 
   
-    // console.log('the max date of nonownervehs is ', maxenddateofgroup,veh_grp_ary.nonownervehs.array);
-      // console.log('the max date of and forms dates is ', maxenddateofgroup,formsdate,formedate);
 
      
 
@@ -173,7 +171,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
      if (maxenddateofgroup === formsdate) {
       overlapbump = 1;
      }
-     console.log('overlapbump',overlapbump);
+     //console.log('overlapbump',overlapbump);
 
    
 
@@ -193,7 +191,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     let showerror = false;
     let messagetoshow = '';
 
-  //  console.log('FORM DATES AND MAX FROM GROUP',formsdate,formedate,maxenddateofgroup);
 
 
     if (!vehicleId) {
@@ -249,7 +246,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + formdayusecnt + overlapbump)) {
 
-           // console.log('we failed the max allowed test the max date of and forms dates is ', maxenddateofgroup,formsdate,formedate);
         //  console.log('form vehicle is',formvehicle)
           showerror = true;
         //  if (veh_grp_ary.rentervehs.count > 0) {
@@ -410,7 +406,7 @@ export const getMaxEnddateOfVehicles = (vehicles) => {
     return vehicle.enddate && (!maxEnddate || vehicle.enddate > maxEnddate)
       ? vehicle.enddate
       : maxEnddate;
-  },  formatLocalDate(new Date)); //null
+  },  null); //null
 }
 
 export const getMinStartdateOfVehicles = (vehicles) => {
@@ -418,7 +414,7 @@ export const getMinStartdateOfVehicles = (vehicles) => {
     return vehicle.startdate && (!minStartdate || vehicle.startdate < minStartdate)
       ? vehicle.startdate
       : minStartdate;
-  }, formatLocalDate(new Date));
+  }, null);
 }
 
 //  const todayUTC = new Date(); // "2025-12-03"

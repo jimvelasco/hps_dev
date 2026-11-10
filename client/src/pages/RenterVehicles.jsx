@@ -273,10 +273,7 @@ export default function RenterVehicles() {
     }
 
   const veh_grp_ary = getVehicleTypeGroups(vehicles, false);
-  const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
-   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
-  // console.log('maxenddateofgroup',maxenddateofgroup)
- //  console.log('minstartdaterenters',minstartdaterenters)
+ 
 
     //  console.log('unit for renter',unitForRenter);
     //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;

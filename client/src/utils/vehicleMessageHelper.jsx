@@ -7,15 +7,22 @@ export const vehicleMessageHelper = (vehicles, unit, pincodeAction, allActiveCou
   const unitParkingLimit = Number(unit.parking_allowed_unit);
   const freepassesallowed = Number(unit.daypasses_allowed_owner);
   const veh_grp_ary = getVehicleTypeGroups(vehicles);
+  console.log('veh_grp_ary.nonownervehs.array',veh_grp_ary.nonownervehs.array)
+   console.log('veh_grp_ary.rentervehs.array',veh_grp_ary.rentervehs.array)
   const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
   const phonetocall =  getHoaContactPhoneNumber(hoa,"pm_renter");
   let overlapbump = 0;
-  if (maxenddateofgroup === minstartdaterenters) {
+
+  if (maxenddateofgroup === null &&  minstartdaterenters === null) {
+    overlapbump = 0;
+  } else if (maxenddateofgroup === minstartdaterenters) {
     overlapbump = 1;
   }
 
-  //console.log('overlapbump',overlapbump)
+  //  console.log('maxenddateofgroup',maxenddateofgroup)
+  //  console.log('minstartdaterenters',minstartdaterenters)
+  //  console.log('overlapbump',overlapbump)
 
   if (pincodeAction === 'dayuseonly') {
    // console.log('pincodeAction',pincodeAction)
