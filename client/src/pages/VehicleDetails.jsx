@@ -266,7 +266,7 @@ export default function VehicleDetails() {
 
 
     // JJVFIX
-    // console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+    console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
     //  console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
 
 
@@ -1393,7 +1393,7 @@ export default function VehicleDetails() {
                     type="button"
 
                     onClick={handleDeleteClick}
-                    disabled={formSubmitting || !termsAcknowledged } 
+                    disabled={formSubmitting || !termsAcknowledged || role === 'rentalmanager'} 
                   >
                     Delete
                   </button>
