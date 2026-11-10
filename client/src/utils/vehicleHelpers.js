@@ -172,7 +172,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       overlapbump = 1;
      }
      //console.log('overlapbump',overlapbump);
-
+     if (veh_grp_ary.rentervehs.count >= freeparkinglimit) {
+      irpflag = 0; // would be 1 if payment implemeted
+     }
    
 
 
