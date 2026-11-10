@@ -264,7 +264,7 @@ export default function OwnersDashboard() {
 
       <div className="page-content">
 
-        {(role !== "admin") && (
+        {(role !== "admin" && role !== "tenant") && (
           <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
             <div className="button-grid" style={{maxWidth:"280px",textAlign:"center", margin:"0px auto"}}>
             <button className="btns btn-primary"
@@ -287,6 +287,10 @@ export default function OwnersDashboard() {
             </div>
           </div>
 
+        )}
+
+        {(role === 'tenant') && (
+           <div  style={{ textAlign: "center", marginBottom: "15px" }}>&nbsp;</div>
         )}
 
 

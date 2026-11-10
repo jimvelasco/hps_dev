@@ -768,7 +768,7 @@ export default function VehicleDetails() {
       }
       if (oktoaddobj.msgType === 2) {
         msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
-          If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
+          If issues, adjust your registrations or <br /> contact HOA Management.xx <br />{phonetocall}</>);
       }
       if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />

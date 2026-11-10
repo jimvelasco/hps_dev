@@ -127,12 +127,13 @@ const [handicappedCount, setHandicappedCount] = useState(0);
               <div><strong>Zip:</strong></div><div>{hoa.zip}</div>
               <div><strong>Id:</strong></div><div> {hoa.hoaid}</div>
             </div>
+            <div style={{marginBottom:"5px"}}>&nbsp;</div>
             </>
 
           )}
            
 
-             <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>HOA Parking</h3>
+             <h3 style={{ color: "#1976d2", marginTop: "0px", marginBottom: "15px", textAlign: "center" }}>HOA Parking</h3>
              <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
              <div><strong>Total Parking Places:</strong> </div><div>{hoa.parking_allowed_hoa}</div>
               <div><strong>Handicapped Places:</strong> </div><div>{hoa.parking_handicapped_hoa}</div> 
