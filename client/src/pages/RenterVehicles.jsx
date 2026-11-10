@@ -123,17 +123,22 @@ export default function RenterVehicles() {
 
           //console.log('all vehicles from response ',unitNumber);
 
-          const updatedVehicles = responseData.map(v => ({
-            ...v,
-            calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
-          }));
+          const todayStr = formatLocalDate(new Date());
+          const updatedVehicles = responseData
+            .filter(v => v.carownertype !== 'dayuseonly' || v.enddate >= todayStr)
+            .map(v => ({
+              ...v,
+              calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+            }));
 
 
+
+          //console.log('updated vehicles', updatedVehicles)
 
           // const dayusecount  = daypassVehicleCount(updatedVehicles);
           setDaypassCount(daypassVehicleCount(updatedVehicles));
 
-          //     console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
+        //  console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
 
           let containsdaypass = updatedVehicles.filter(v => v.carownertype === 'dayuseonly').length;
           setContainsDaypassCount(containsdaypass)
@@ -142,15 +147,12 @@ export default function RenterVehicles() {
           setAllActiveCount(activeVehicles.length);
           setAllActiveVehicles(activeVehicles);
 
-
-          const nonOwnerVehicles = updatedVehicles.filter(v => {
-            if (v.carownertype !== "owner") return true;
-          });
+        //  console.log('activeVehicles',activeVehicles)
 
 
-          const todayUTC = new Date(); // "2025-12-03"
-          const todayStr = formatLocalDate(todayUTC);
-
+          // const nonOwnerVehicles = updatedVehicles.filter(v => {
+          //   if (v.carownertype !== "owner") return true;
+          // });
 
 
           setVehicles(updatedVehicles);
