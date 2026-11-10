@@ -44,6 +44,7 @@ export default function OwnerVehicles() {
   const [unitForOwner, setUnitForOwner] = useState(null);
   const [logonType, setLogonType] = useState("owner");
   const [activeVehicles, setActiveVehicles] = useState(0);
+  const [disableAddButton, setDisableAddButton] = useState(false);
 
   // these are vehicle types that will show up on this page
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -63,6 +64,9 @@ export default function OwnerVehicles() {
       setShowUnitId(loggedInUser.unitnumber);
       setLogonType(localStorage.getItem('logonType'));
     //  console.log('OV role from url',routeRole, loggedInUser.role)
+     if (localStorage.getItem('logonType') === 'rentalmanager') {
+      setDisableAddButton(true)
+     }
 
 
     } else {
@@ -161,9 +165,9 @@ export default function OwnerVehicles() {
           //    console.log('updatedVehicles2', role, updatedVehicles2);
 
           if (role === 'tenant') {
-            console.log('updated vehicles2',updatedVehicles2)
+         //   console.log('updated vehicles2',updatedVehicles2)
             updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant" || v.carownertype === "friend" );
-             console.log('updated vehicles2 after filter',updatedVehicles2)
+           //  console.log('updated vehicles2 after filter',updatedVehicles2)
           }
 
           let updatedVehicles3 = [...updatedVehicles2]
@@ -225,20 +229,39 @@ export default function OwnerVehicles() {
   const plateQuery = plateSearch.trim().toLowerCase();
   // JJVFIX not sure what happens here not filtering out renters for admin
   // this will not show the renter vehicles in the display
+
+  
+
   const filteredVehicles = loggedInUser?.role === "admin"
     ? vehicles.filter(vehicle =>
       String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
       String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
     )
     : loggedInUser?.role === "tenant"
-      ? vehicles.filter(v => v.carownertype === "tenant" ||  v.createdbyrole === "tenant")
-      : vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" &&  v.createdbytype !== "other");
+      ? vehicles.filter(v => v.createdbyrole === "tenant" || v.carownertype === "tenant")
+      : loggedInUser?.role === "rentalmanager" 
+      ? vehicles.filter(v => v.carownertype !== "renter"  &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== "")
+      :  vehicles.filter(v => v.carownertype !== "renter"  &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== "");
+
+
+    //    const filteredVehicles = loggedInUser?.role === "admin"
+    // ? vehicles.filter(vehicle =>
+    //   String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
+    //   String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
+    // )
+    // : loggedInUser?.role === "tenant"
+    //   ? vehicles.filter(v => v.createdbyrole === "tenant")
+    //   : vehicles.filter(v => v.carownertype !== "renter");
 
   //console.log('filtered vehicles should be all of them in vehicles sans the renter vehicles', filteredVehicles)
 
   // useEffect(() => {
   //   setVehicles(handleFilterApply(allVehicles));
   // }, [allVehicles, filterType]);
+  //? vehicles.filter(v => v.carownertype === "tenant" ||  v.createdbyrole === "tenant")
+  //: vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" &&  v.createdbytype !== "other");
+  //&&  v.createdbyrole !== "tenant"
+  // &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== ""
 
   useEffect(() => {
     setVehicles(allVehicles);
@@ -323,19 +346,19 @@ export default function OwnerVehicles() {
         return;
       }
 
-       if (loggedInUser.role === "rentalmanager") {
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: `Rental Managers cannot modify vehicles.`,
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }));
-          },
-        });
-        return;
-      }
+      //  if (loggedInUser.role === "rentalmanager") {
+      //   setModal({
+      //     isOpen: true,
+      //     type: "alert",
+      //     title: "Validation Error",
+      //     message: `Rental Managers cannot modify vehicles.`,
+      //     confirmText: "OK",
+      //     onConfirm: () => {
+      //       setModal(prev => ({ ...prev, isOpen: false }));
+      //     },
+      //   });
+      //   return;
+      // }
 
       const qry = `/${hoaId}/vehicledetails/modify/${vid}`;
       // console.log("ownervehicles.js handleDetailsClick clicked qry", qry);
@@ -347,7 +370,7 @@ export default function OwnerVehicles() {
         state: {
           nonownerType: vehicle.carownertype,
           unitNumber: unitNumber,
-          role: arole,
+          role: loggedInUser.role,
 
           vehicles: vehicles,
           ownerOfUnit: loggedInUser,
@@ -397,19 +420,19 @@ export default function OwnerVehicles() {
       return;
     }
 
-      if (loggedInUser.role === "rentalmanager") {
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: `Rental Managers cannot add vehicles.`,
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }));
-          },
-        });
-        return;
-      }
+      // if (loggedInUser.role === "rentalmanager") {
+      //   setModal({
+      //     isOpen: true,
+      //     type: "alert",
+      //     title: "Validation Error",
+      //     message: `Rental Managers cannot add vehicles.`,
+      //     confirmText: "OK",
+      //     onConfirm: () => {
+      //       setModal(prev => ({ ...prev, isOpen: false }));
+      //     },
+      //   });
+      //   return;
+      // }
 
     try {
       const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(uid)}`);
@@ -608,7 +631,8 @@ export default function OwnerVehicles() {
         {loggedInUser && loggedInUser.role !== "admin" && (
           <>
             <button className="navbutton3"
-              onClick={() => handleCreateClick('standard')}>
+              onClick={() => handleCreateClick('standard')}
+              disabled = {disableAddButton}>
               <FontAwesomeIcon
                 icon={faPlus}
               />  Add Vehicle
