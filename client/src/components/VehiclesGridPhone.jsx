@@ -104,9 +104,10 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           {/* <div><b>{vehicle.carownertype}</b></div> */}
   
            <div className="full-row vehicle-pin-action-row">
-               {vehicle.createdbyrole} - {vehicle.createdbytype} - {vehicle.carownertype}
+               Create role: {vehicle.createdbyrole}
             
-           {/* {(vehicle.day_use_only === 1) && "DAY PASS"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype} */}
+           {/* {(vehicle.day_use_only === 1) && "DAY PASS"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype} 
+            - {vehicle.createdbytype} - {vehicle.carownertype}*/}
            </div>
 
 
