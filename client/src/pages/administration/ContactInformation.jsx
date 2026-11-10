@@ -271,7 +271,7 @@ export default function ContactInformation() {
     );
 
     setSaving(true);
-    console.log('filledContacts:', filledContacts);
+  //  console.log('filledContacts:', filledContacts);
     try {
       await axios.put(`/hoas/${hoaId}`, {
         contact_information: filledContacts
