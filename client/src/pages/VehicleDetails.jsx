@@ -7,7 +7,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { utcDateOnly, okToAddUnitVehicle,getVehicleTypeGroups,getMaxEnddateOfVehicles} from "../utils/vehicleHelpers";
-import { useHoaContactPhoneNumber } from "../utils/hoaHelpers";
+import { getHoaContactPhoneNumber } from "../utils/hoaHelpers";
 
 import { getAWSResource } from "../utils/awsHelper";
 //import PlateLookup from "../components/PlateLookup";
