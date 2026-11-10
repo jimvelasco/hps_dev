@@ -154,7 +154,8 @@ export default function VehicleDetails() {
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
 
-  const phonetocall = useHoaContactPhoneNumber("pm_renter");
+  //const phonetocall = useHoaContactPhoneNumber("pm_renter");
+   const phonetocall =  getHoaContactPhoneNumber(hoa,"pm_renter");
 
 
 

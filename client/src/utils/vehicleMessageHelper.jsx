@@ -1,6 +1,6 @@
 import React from "react";
 import { getVehicleTypeGroups, getMaxEnddateOfVehicles, getMinStartdateOfVehicles } from "./vehicleHelpers";
-import { useHoaContactPhoneNumber } from "./hoaHelpers";
+import { useHoaContactPhoneNumber,getHoaContactPhoneNumber } from "./hoaHelpers";
 
 
 export const vehicleMessageHelper = (vehicles, unit, pincodeAction, allActiveCount, containsDaypassCount,hoa) => {
@@ -9,7 +9,7 @@ export const vehicleMessageHelper = (vehicles, unit, pincodeAction, allActiveCou
   const veh_grp_ary = getVehicleTypeGroups(vehicles);
   const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
-  const phonetocall =  useHoaContactPhoneNumber("pm_renter");
+  const phonetocall =  getHoaContactPhoneNumber(hoa,"pm_renter");
   let overlapbump = 0;
   if (maxenddateofgroup === minstartdaterenters) {
     overlapbump = 1;
