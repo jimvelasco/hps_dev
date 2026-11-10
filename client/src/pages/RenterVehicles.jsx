@@ -248,7 +248,7 @@ export default function RenterVehicles() {
   // navigate(qry, { state: { unitNumber: uid, role: arole, numberOfVehicles: vehicles.length } });
 
   const showFailureMessage = () => {
-    const messagetoshow = vehicleMessageHelper(vehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount);
+    const messagetoshow = vehicleMessageHelper(vehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount,hoa);
     if (messagetoshow !== null) {
       setModal({
         isOpen: true,

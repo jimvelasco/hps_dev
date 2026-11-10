@@ -7,6 +7,8 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
 import { utcDateOnly, okToAddUnitVehicle,getVehicleTypeGroups,getMaxEnddateOfVehicles} from "../utils/vehicleHelpers";
+import { useHoaContactPhoneNumber } from "../utils/hoaHelpers";
+
 import { getAWSResource } from "../utils/awsHelper";
 //import PlateLookup from "../components/PlateLookup";
 
@@ -29,6 +31,7 @@ export default function VehicleDetails() {
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const [todayString, setTodayString] = useState("")
   const location = useLocation();
+
 
 
   const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
@@ -150,6 +153,11 @@ export default function VehicleDetails() {
 
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
+
+  const phonetocall = useHoaContactPhoneNumber("pm_renter");
+
+
+
 
   // const handlePlateDetected = (data) => {
   //   // Mapping from Plate Recognizer vehicle types to our options
@@ -745,6 +753,7 @@ export default function VehicleDetails() {
     //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
     let rpflag = 0;
     let msg = "";
+    //console.log('phonetocall',phonetocall)
 
     if (createdfrom === 'ownervehicles') {
       if (oktoaddobj.msgType === 1) {
@@ -752,13 +761,13 @@ export default function VehicleDetails() {
           Please deactivate another vehicle before activating this one.</>);
            msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
            Please deactivate another vehicle before activating this one.<br />
-          If issues, adjust your registrations or <br /> contact HOA Management. <br />123-456-7890</>);
+          If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
 
 
       }
       if (oktoaddobj.msgType === 2) {
         msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
-          If issues, adjust your registrations or <br /> contact HOA Management. <br />123-456-7890</>);
+          If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
       }
       if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />
@@ -769,7 +778,7 @@ export default function VehicleDetails() {
           You are allowed 2 Day Passes templates</>);
       }
       if (oktoaddobj.msgType === 6) {
-        msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management (123-456-7890)</>);
+        msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
       }
       if (oktoaddobj.msgType === 7) {
         msg = (<>Owners can only have one tenant</>);
