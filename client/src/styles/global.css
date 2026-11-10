@@ -1407,6 +1407,17 @@ section.standardsectiondashboard {
 
   /* border:1px solid black */
 }
+.full-row-left {
+  grid-column: 1 /-1;
+  /* span all columns */
+  text-align: left;
+  font-size: 12px;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 0px
+
+  /* border:1px solid black */
+}
 
 .vehicle-pin-action-row {
   min-height: 1lh;

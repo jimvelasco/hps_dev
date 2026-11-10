@@ -300,7 +300,7 @@ export default function VehicleDetails() {
 
         }
         )
-        setDisableInDateField(true)
+        setDisableInDateField(false)
       }
       if (dmode === 0) {
         setFormData({
@@ -325,7 +325,7 @@ export default function VehicleDetails() {
           enddate: formatLocalDate(edate),
         }
         )
-         setDisableInDateField(true)
+         setDisableInDateField(false)
       }
     }
   }, [hoaId]);
@@ -412,7 +412,7 @@ export default function VehicleDetails() {
           sd = theVehicle.startdate;
           ed = theVehicle.enddate;
           setDisableInDateField(enabled)
-          setDisableOutDateField(enabled)
+          setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
           //  console.log('we are from rentervehicles clicked on a multiday');
@@ -601,79 +601,6 @@ export default function VehicleDetails() {
   };
 
 
-  //  const getCreateValidationMessage = () => {
-  
-  //     let unitParkingLimit = Number(unit.parking_allowed_unit);
-  //     let freepassesallowed = Number(unit.daypasses_allowed_owner);
-  //     const veh_grp_ary = getVehicleTypeGroups(vehicles);
-  //     console.log('veh_grp',veh_grp_ary);
-  //      console.log('unitParkingLimit',unitParkingLimit);
-  //       console.log('freepassesallowed',freepassesallowed);
-  
-  //     if (pincodeAction === 'dayuseonly') {
-  //       if (veh_grp_ary.dayusemultivehs.count > 0) {
-  //         console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0')
-  //         return (<>You are not allowed to have <br />more daypassed<br />than allowed: {freepassesallowed}<br /><br />
-  //           Call Admin to get an<br />increase in day passes. </>);
-  //       }
-  //       return null;
-  //     }
-  
-  //     if (veh_grp_ary.rentervehs.count >= unitParkingLimit) {
-  //       console.log('BAILED ON (veh_grp_ary.rentervehs.count >=  unitParkingLimit')
-  //       return (<>You are not allowed to have <br />more active vehicles than<br /> the parking allowance: {unitParkingLimit}.
-  //       </>);
-  //     }
-  //     if (veh_grp_ary.allactivevehs.count >= unitParkingLimit) {
-  //       console.log('BAILED ON veh_grp_ary.allactivevehs.count >=  unitParkingLimit ')
-  //       return (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}.
-  //         <br />There may be an owner in the unit. </>);
-  //     }
-  //     if (veh_grp_ary.ownervehs.count > 0) {
-  //       console.log('BAILED ON (veh_grp_ary.ownervehs.count > 0')
-  //       return (<> There may be an owner in the unit.<br /><br />
-  //         CALL THE OWNER OR ADMIN</>);
-  //     }
-  //     if (veh_grp_ary.dayusemultivehs.count > 0) {
-  //       console.log('BAILED ON veh_grp_ary.dayusemultivehs.count > 0)')
-  //       return (<> There may be cleaning <br />people in the unit.<br /><br />
-  //         You are not allowed to have <br />more day passes than {freepassesallowed}.
-  //       </>);
-  //     }
-  //     if (allActiveCount >= (unitParkingLimit + containsDaypassCount)) {
-  //       console.log('BAILED ON allActiveCount >= (unitParkingLimit + containsDaypassCount')
-  //       return (<>You are not allowed to have <br />more active vehicles than<br />
-  //         your parking allowance: {unitParkingLimit}. <br /><br />
-  //         CALL THE OWNER OR ADMIN</>);
-  //     }
-  //     return null;
-  //   };
-  
-  //  const showFailureMessage = () => {
-  //      const veh_grp_ary = getVehicleTypeGroups(vehicles);
-  //     const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
-  //     console.log('maxenddateofgroup',maxenddateofgroup,formData.startdate)
-  //      const messagetoshow = getCreateValidationMessage();
-  //      if (maxenddateofgroup === formData.startdate) {
-  //       messagetoshow = null;
-  //      }
-  //     if (messagetoshow !== null) {
-  //       setModal({
-  //         isOpen: true,
-  //         type: "alert",
-  //         title: "Validation Error",
-  //         message: messagetoshow,
-  //         //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
-  //         confirmText: "OK",
-  //         // cancelText: "Cancel",
-  //         onConfirm: () => {
-  //           setModal(prev => ({ ...prev, isOpen: false }));
-  //         },
-  //       });
-  //       return null;
-  //     }
-  
-  //   }
 
 
   const handleFormSubmit = async (e) => {
@@ -768,7 +695,7 @@ export default function VehicleDetails() {
       }
       if (oktoaddobj.msgType === 2) {
         msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
-          If issues, adjust your registrations or <br /> contact HOA Management.xx <br />{phonetocall}</>);
+          If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
       }
       if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />
