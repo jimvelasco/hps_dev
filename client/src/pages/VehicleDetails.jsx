@@ -1388,12 +1388,12 @@ export default function VehicleDetails() {
                   Cancel
                 </button>
                 {/* {isModifyMode && localStorage.getItem('logonType') !== 'tenant' && ( */}
-                {isModifyMode && (
+                {isModifyMode &&   (
                   <button className="btn btn-danger"
                     type="button"
 
                     onClick={handleDeleteClick}
-                    disabled={formSubmitting || !termsAcknowledged}
+                    disabled={formSubmitting || !termsAcknowledged || loggedInUser.role === 'rentalmanager'} 
                   >
                     Delete
                   </button>
