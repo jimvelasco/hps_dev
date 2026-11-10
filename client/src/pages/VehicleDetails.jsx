@@ -6,7 +6,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 import DashboardNavbar from "../components/DashboardNavbar";
 import ModalAlert from "../components/ModalAlert";
-import { utcDateOnly, okToAddUnitVehicle} from "../utils/vehicleHelpers";
+import { utcDateOnly, okToAddUnitVehicle } from "../utils/vehicleHelpers";
 import { getHoaContactPhoneNumber } from "../utils/hoaHelpers";
 
 import { getAWSResource } from "../utils/awsHelper";
@@ -101,9 +101,9 @@ export default function VehicleDetails() {
     ? [{ value: 'dayuseonly', label: 'Day Pass' }]
     : logonType === 'tenant'
       ? [
-       { value: 'owner', label: 'Owner' },
+        { value: 'owner', label: 'Owner' },
         { value: 'friend', label: 'Friend/Family' }
-       
+
       ]
       : logonType === 'owner'
         ? [
@@ -155,7 +155,7 @@ export default function VehicleDetails() {
   const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
 
   //const phonetocall = useHoaContactPhoneNumber("pm_renter");
-   const phonetocall =  getHoaContactPhoneNumber(hoa,"pm_renter");
+  const phonetocall = getHoaContactPhoneNumber(hoa, "pm_renter");
 
 
 
@@ -267,6 +267,7 @@ export default function VehicleDetails() {
 
     // JJVFIX
     console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+    console.log("nonownerType ", nonownerType);
     //  console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
 
 
@@ -275,7 +276,7 @@ export default function VehicleDetails() {
 
     if (hoa && !isModifyMode) {
       let dmode = hoa.use_demo_mode;
-      //  console.log('dmode:', dmode);
+      // console.log('dmode:', dmode);
       if (dmode === 1) {
         setFormData({
           carowner_fname: "Mary",
@@ -300,7 +301,14 @@ export default function VehicleDetails() {
 
         }
         )
-        setDisableInDateField(false)
+        if (nonownerType === 'dayuseonly') {
+          setDisableInDateField(true)
+          setDisableOutDateField(true)
+        } else {
+          setDisableInDateField(false)
+          setDisableOutDateField(false)
+        }
+
       }
       if (dmode === 0) {
         setFormData({
@@ -325,7 +333,13 @@ export default function VehicleDetails() {
           enddate: formatLocalDate(edate),
         }
         )
-         setDisableInDateField(false)
+         if (nonownerType === 'dayuseonly') {
+          setDisableInDateField(true)
+          setDisableOutDateField(true)
+        } else {
+          setDisableInDateField(false)
+          setDisableOutDateField(false)
+        }
       }
     }
   }, [hoaId]);
@@ -551,7 +565,7 @@ export default function VehicleDetails() {
     sessionStorage.setItem("termsAcknowledged", checked);
   };
 
- 
+
 
 
 
@@ -608,10 +622,10 @@ export default function VehicleDetails() {
     // if (showFailureMessage() === null) {
     //     return;
     // };
-  
+
     const todayUTC = new Date(); // "2025-12-03"
     const todayStr = formatLocalDate(todayUTC);
-   // showFailureMessage();
+    // showFailureMessage();
 
     if (!isModifyMode && createdfrom === "rentervehicles" && (!pincodeValue || typeof pincodeAction !== "string")) {
       setModal({
@@ -687,8 +701,8 @@ export default function VehicleDetails() {
       if (oktoaddobj.msgType === 1) {
         msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit} <br />
           Please deactivate another vehicle before activating this one.</>);
-           msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
-           Please deactivate another vehicle before activating this one.<br />
+        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
+          Please deactivate another vehicle before activating this one.<br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
 
 
@@ -799,7 +813,7 @@ export default function VehicleDetails() {
         // })
       };
 
-     //   console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
+      //   console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
@@ -1388,12 +1402,12 @@ export default function VehicleDetails() {
                   Cancel
                 </button>
                 {/* {isModifyMode && localStorage.getItem('logonType') !== 'tenant' && ( */}
-                {isModifyMode &&   (
+                {isModifyMode && (
                   <button className="btn btn-danger"
                     type="button"
 
                     onClick={handleDeleteClick}
-                    disabled={formSubmitting || !termsAcknowledged || role === 'rentalmanager'} 
+                    disabled={formSubmitting || !termsAcknowledged || role === 'rentalmanager'}
                   >
                     Delete
                   </button>
