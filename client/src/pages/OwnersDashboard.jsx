@@ -184,7 +184,7 @@ export default function OwnersDashboard() {
       hoverColor: "#1976d2",
       which: "standard"
     });
-    
+
     let disablebutton = false;
     if (loggedInUser.role === "tenant") {
       disablebutton = true;
@@ -293,7 +293,7 @@ export default function OwnersDashboard() {
         )}
 
         {(role === 'tenant' || role === 'rentalmanager') && (
-          <div style={{ textAlign: "center", marginBottom: "15px" }}>&nbsp;</div>
+          <div className ="standardtitlebar380" >{ttitle} Dashboard</div>
         )}
 
 
