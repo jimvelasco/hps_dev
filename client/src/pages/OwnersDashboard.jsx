@@ -184,16 +184,19 @@ export default function OwnersDashboard() {
       hoverColor: "#1976d2",
       which: "standard"
     });
-
-      if (loggedInUser.role != "tenant") {
-
     
+    let disablebutton = false;
+    if (loggedInUser.role === "tenant") {
+      disablebutton = true;
+    }
+
+
     navButtons.push({
       label: "Unit",
       onClick: handleUnitClick,
-      which: "standard"
+      which: "standard",
+      disabled: disablebutton
     })
-  }
   }
 
 
@@ -255,7 +258,7 @@ export default function OwnersDashboard() {
   }
   // console.log("OwnersDashboard render loggedInUser", loggedInUser); ownerTypes.includes(v.carownertype)
 
-  const ownerTypes = ['owner', 'tenant','rentalmanager'];
+  const ownerTypes = ['owner', 'tenant', 'rentalmanager'];
 
   return (
     <div style={{ marginTop: "0px", minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
@@ -266,31 +269,31 @@ export default function OwnersDashboard() {
 
         {(role !== "admin" && role !== "tenant" && role !== "rentalmanager") && (
           <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
-            <div className="button-grid" style={{maxWidth:"280px",textAlign:"center", margin:"0px auto"}}>
-            <button className="btns btn-primary"
-              onClick={handleCreateUserClick}
-              style={{width:'120px'}}
-            >
-              <FontAwesomeIcon
-              icon={faPlus}
-            />  Add User
-            </button>
-            &nbsp; &nbsp; &nbsp; &nbsp;
-            {ownerTypes.includes(role)  && (
+            <div className="button-grid" style={{ maxWidth: "280px", textAlign: "center", margin: "0px auto" }}>
               <button className="btns btn-primary"
-                onClick={handleShowUsersClick}
-               style={{width:'120px'}}
+                onClick={handleCreateUserClick}
+                style={{ width: '120px' }}
               >
-                Show Users
+                <FontAwesomeIcon
+                  icon={faPlus}
+                />  Add User
               </button>
-            )}
+              &nbsp; &nbsp; &nbsp; &nbsp;
+              {ownerTypes.includes(role) && (
+                <button className="btns btn-primary"
+                  onClick={handleShowUsersClick}
+                  style={{ width: '120px' }}
+                >
+                  Show Users
+                </button>
+              )}
             </div>
           </div>
 
         )}
 
         {(role === 'tenant' || role === 'rentalmanager') && (
-           <div  style={{ textAlign: "center", marginBottom: "15px" }}>&nbsp;</div>
+          <div style={{ textAlign: "center", marginBottom: "15px" }}>&nbsp;</div>
         )}
 
 

@@ -79,7 +79,7 @@ export default function UsersForUnit() {
 
         <div className="page-content users-for-unit-page">
           <div className="standardtitlebar800">
-            <h1>Users for Unit {unitNumber}</h1>
+            <h3>Users for Unit {unitNumber}</h3>
           </div>
           {userLoading ? (
             <p className="ajaxloader" role="status">Loading your account...</p>

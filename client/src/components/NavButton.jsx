@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function NavButton({ label, onClick,  className ,which }) {
+export default function NavButton({ label, onClick,  className ,which ,disabled = false}) {
   let type="button";
   if (which === "goback") {
     className = "btns btn-cancel";
@@ -15,6 +15,7 @@ export default function NavButton({ label, onClick,  className ,which }) {
       type={type}
       className={className}
       onClick={onClick}
+      disabled = {disabled}
     >
       {label}
     </button>

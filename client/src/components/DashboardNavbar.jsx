@@ -53,6 +53,7 @@ export default function DashboardNavbar({ title, title2, buttons }) {
                 onClick={button.onClick}
                 className="navbutton"
                 which={button.which}
+                disabled={button.disabled}
               />
             ))}
           </div>
