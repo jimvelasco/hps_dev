@@ -286,7 +286,7 @@ export default function RenterVehicles() {
  
  
 
-    //  console.log('unit for renter',unitForRenter);
+     // console.log('unit for renter',unitForRenter);
     //  const parkingLimit = unitForRenter.parking_allowed_renter || 0;
     const renterFreeParking = unitForRenter.renter_free_parking || 0;
 

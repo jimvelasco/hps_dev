@@ -155,7 +155,7 @@ export default function VehicleDetails() {
   const [isPlateLookupOpen, setIsPlateLookupOpen] = useState(false);
 
   //const phonetocall = useHoaContactPhoneNumber("pm_renter");
-  const phonetocall = getHoaContactPhoneNumber(hoa, "pm_renter");
+  const phonetocall = ""; //getHoaContactPhoneNumber(hoa, "pm_renter");
 
 
 

@@ -13,6 +13,8 @@ import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount, anyDay
 import { doesUnitHaveDayUse } from "../utils/unitHelpers";
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
+import { vehicleMessageHelper } from "../utils/vehicleMessageHelper";
+
 
 
 export default function OwnerVehicles() {
@@ -403,6 +405,26 @@ export default function OwnerVehicles() {
 
 
 
+  const showFailureMessage = () => {
+     if (hoa?.hoaid !== hoaId) return null;
+     const pincodeAction = 'standard';
+     const containsDaypassCount = 0;
+    const messagetoshow = vehicleMessageHelper(vehicles, unitForOwner, pincodeAction, allActiveCount, containsDaypassCount,hoa);
+    if (messagetoshow !== null) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: messagetoshow,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }));
+        },
+      });
+      return null;
+    }
+
+  }
 
 
 
@@ -437,6 +459,11 @@ export default function OwnerVehicles() {
       });
       return;
 
+    }
+
+
+    if (showFailureMessage() === null) {
+      return;
     }
 
       // if (loggedInUser.role === "rentalmanager") {
