@@ -36,6 +36,7 @@ export default function RenterVehicles() {
   const [allActiveVehicles, setAllActiveVehicles] = useState([]);
   const [daypassCount, setDaypassCount] = useState(0);
   const [containsDaypassCount, setContainsDaypassCount] = useState(0)
+  
 
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
@@ -281,6 +282,8 @@ export default function RenterVehicles() {
     }
 
   const veh_grp_ary = getVehicleTypeGroups(vehicles, false);
+
+ 
  
 
     //  console.log('unit for renter',unitForRenter);

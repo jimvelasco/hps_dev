@@ -45,6 +45,7 @@ export default function OwnerVehicles() {
   const [logonType, setLogonType] = useState("owner");
   const [activeVehicles, setActiveVehicles] = useState(0);
   const [disableAddButton, setDisableAddButton] = useState(false);
+  const [maxDaypassTemplates, setMaxDaypassTemplates] = useState(2);
 
   // these are vehicle types that will show up on this page
   const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -263,6 +264,10 @@ export default function OwnerVehicles() {
   //&&  v.createdbyrole !== "tenant"
   // &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== ""
 
+  // for default use
+  //   &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== ""
+  //filter(v => v.carownertype !== "renter")
+
   useEffect(() => {
     setVehicles(allVehicles);
   }, [allVehicles]);
@@ -407,6 +412,8 @@ export default function OwnerVehicles() {
 
     const veh_grp_ary = getVehicleTypeGroups(vehicles);
 
+    const maxdaypasstemplates = 2;
+
     const uid = loggedInUser?.unitnumber;
     if (!hoaId || !uid) {
       setModal({
@@ -418,6 +425,18 @@ export default function OwnerVehicles() {
         onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
       });
       return;
+    }
+    if (veh_grp_ary.dayusemultivehsany.count >= maxDaypassTemplates) {
+       setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Error",
+        message: "You can only have 2 day pass templates.",
+        confirmText: "OK",
+        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+      });
+      return;
+
     }
 
       // if (loggedInUser.role === "rentalmanager") {
