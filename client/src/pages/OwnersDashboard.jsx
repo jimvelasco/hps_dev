@@ -305,7 +305,7 @@ export default function OwnersDashboard() {
         )}
 
         {(role === 'tenant' || role === 'rentalmanager' || role ==='admin') && (
-          <div className ="standardtitlebar380" >{ttitle} Dashboard</div>
+          <div className ="standardtitlebar320" >{ttitle} Dashboard</div>
         )}
 
 
