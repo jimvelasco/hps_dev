@@ -108,6 +108,10 @@ db.vehicles.updateMany(
   {},
   { $set: { "handicapped": 0 }}
 );
+db.vehicles.updateMany(
+  {},
+  { $set: { "multiday": 0 }}
+);
 
 db.vehicles.updateMany(
   {},

@@ -1450,7 +1450,7 @@ export default function VehicleDetails() {
                     type="button"
 
                     onClick={handleDeleteClick}
-                    disabled={formSubmitting || !termsAcknowledged || role === 'rentalmanager'}
+                    disabled={formSubmitting || !termsAcknowledged }
                   >
                     Delete
                   </button>
