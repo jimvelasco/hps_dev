@@ -167,16 +167,28 @@ export default function OwnersDashboard() {
       color: "#2196f3",
       hoverColor: "#1976d2",
       which: "standard"
-    },
-    {
+    }
+      ];
+
+    // if (loggedInUser.role != "admin") { 
+    //   label: "Onsite",
+    //   onClick: handleOnsiteClick,
+    //   //  color: "#2196f3",
+    //   //  hoverColor: "#1976d2",
+    //   which: "standard"
+    // },
+
+  //  if (loggedInUser.role === "admin") {
+    navButtons.push({
       label: "Onsite",
       onClick: handleOnsiteClick,
-      //  color: "#2196f3",
-      //  hoverColor: "#1976d2",
+      color: "#2196f3",
+      hoverColor: "#1976d2",
       which: "standard"
-    },
-  ];
-  if (loggedInUser.role != "admin") {
+    });
+ // }
+
+  if (loggedInUser.role !== "admin") {
     navButtons.push({
       label: "Profile",
       onClick: handleProfileClick,
@@ -207,13 +219,13 @@ export default function OwnersDashboard() {
   // },
 
 
-
+ if (loggedInUser.role === "admin") {
   navButtons.push({
     label: "Reports",
     onClick: handleReportClick,
     which: "standard"
-  }
-  )
+  })
+}
 
   navButtons.push({
     label: "Logout",
@@ -268,26 +280,26 @@ export default function OwnersDashboard() {
       <div className="page-content">
 
         {(role !== "admin" && role !== "tenant" && role !== "rentalmanager") && (
-          <div className="hoainformation" style={{ textAlign: "center", marginBottom: "15px" }}>
-            <div className="button-grid" style={{ maxWidth: "280px", textAlign: "center", margin: "0px auto" }}>
-              <button className="btns btn-primary"
+          <div className="standardtitlebar320">
+            <div className="button-grid2" >
+              <button className="btns btn-primary" style={{maxWidth:"120px"}}
                 onClick={handleCreateUserClick}
-                style={{ width: '120px' }}
+               
               >
                 <FontAwesomeIcon
                   icon={faPlus}
                 />  Add User
               </button>
-              &nbsp; &nbsp; &nbsp; &nbsp;
               {ownerTypes.includes(role) && (
-                <button className="btns btn-primary"
+                <button className="btns btn-primary" style={{maxWidth:"120px"}}
                   onClick={handleShowUsersClick}
-                  style={{ width: '120px' }}
+                 
                 >
                   Show Users
                 </button>
               )}
             </div>
+       
           </div>
 
         )}

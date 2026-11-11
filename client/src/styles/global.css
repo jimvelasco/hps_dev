@@ -29,6 +29,16 @@ h6 {
   margin: 0;
 }
 
+@media screen and (max-width: 600px) {
+  body { font-size: 13px}
+  input, select,textarea,button {
+    font-size: 14px
+  }
+  table {
+    font-size: 12px;
+  }
+}
+
 .standardlayout {
   background-color: #f5f5f5;
   min-height: 100vh;
@@ -2054,6 +2064,20 @@ input.standardinput:disabled {
   /* Centers the whole row of cells */
   /* background-color: red; */
   /* border:1px solid white; */
+}
+
+.button-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* grid-template-columns: repeat(auto-fit, minmax(90px, .5fr)); */
+  gap: 0.75rem;
+  justify-items: center;
+  justify-content: center;
+  
+}
+
+.button-grid2 > button {
+  white-space: nowrap;
 }
 
 

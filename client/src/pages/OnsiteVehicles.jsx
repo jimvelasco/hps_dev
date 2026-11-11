@@ -327,12 +327,12 @@ export default function OnsiteVehicles() {
   let role = "owner";
 
   let bgcolor = 'white';
-
+// disabled={showTable}>
 
   const renderTitleBar = () => {
     return (<div>
       <button className="navbutton2" onClick={handleShowGrid}
-        disabled={showTable}>
+        disabled={true}>
         {isGridVisible ?
           (<span className="strike">
             Violations</span>)

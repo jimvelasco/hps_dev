@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../services/api";
 import ParkingSpacesOverview from "./ParkingSpacesOverview";
-import { daypassVehicleCount,handicappedVehicleCount } from "../utils/vehicleHelpers";
+import { daypassVehicleCount, handicappedVehicleCount } from "../utils/vehicleHelpers";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 
@@ -14,7 +14,7 @@ export default function HoaInformation({ hoa }) {
   const role = loggedInUser?.role;
   const [vehicles, setVehicles] = useState([]);
   const [dayUseCount, setDayUseCount] = useState(0);
-const [handicappedCount, setHandicappedCount] = useState(0);
+  const [handicappedCount, setHandicappedCount] = useState(0);
 
   useEffect(() => {
     if (!hoaId) return;
@@ -22,7 +22,7 @@ const [handicappedCount, setHandicappedCount] = useState(0);
     let active = true;
     setVehicles([]);
     const qry = `/vehicles/allhoaid/${encodeURIComponent(hoaId)}`
-   // console.log('qry is',qry);
+    // console.log('qry is',qry);
 
     axios.get(qry)
       .then(response => {
@@ -113,54 +113,45 @@ const [handicappedCount, setHandicappedCount] = useState(0);
         )}
 
       </section>
+       {hoa && role === 'admin' && (
       <section className="standardsectiondashboard">
-      
-        {hoa && (
-          <>{role === 'admin' && (
-            <>
-              <h3 style={{ color: "#1976d2", marginTop: 0, textAlign: "center" }}>HOA Address</h3>
-             <div className="hoainformation2col" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
-              <div><strong>Name:</strong></div><div> {hoa.name}</div>
-              <div><strong>Address:</strong></div><div> {hoa.address}</div>
-              <div><strong>City:</strong></div><div> {hoa.city}</div>
-              <div><strong>State:</strong></div><div>{hoa.state}</div>
-              <div><strong>Zip:</strong></div><div>{hoa.zip}</div>
-              <div><strong>Id:</strong></div><div> {hoa.hoaid}</div>
-            </div>
-            <div style={{marginBottom:"5px"}}>&nbsp;</div>
-            </>
-
-          )}
-           
-
-             <h3 style={{ color: "#1976d2", marginTop: "0px", marginBottom: "15px", textAlign: "center" }}>HOA Parking</h3>
-             <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
-             <div><strong>Total Parking Places:</strong> </div><div>{hoa.parking_allowed_hoa}</div>
-              <div><strong>Handicapped Places:</strong> </div><div>{hoa.parking_handicapped_hoa}</div> 
-              <div><strong>Handicapped Used:</strong> </div><div>{handicappedCount}</div>
-             
-              <div><strong>Day Passes Allowed:</strong> </div><div>{hoa.daypasses_allowed_hoa}</div>
-              <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
-
-            </div>
+       
+                <h3 style={{ color: "#1976d2", marginTop: 0, textAlign: "center" }}>HOA Address</h3>
+                <div className="hoainformation2col" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
+                  <div><strong>Name:</strong></div><div> {hoa.name}</div>
+                  <div><strong>Address:</strong></div><div> {hoa.address}</div>
+                  <div><strong>City:</strong></div><div> {hoa.city}</div>
+                  <div><strong>State:</strong></div><div>{hoa.state}</div>
+                  <div><strong>Zip:</strong></div><div>{hoa.zip}</div>
+                  <div><strong>Id:</strong></div><div> {hoa.hoaid}</div>
+                </div>
+                <div style={{ marginBottom: "5px" }}>&nbsp;</div>
 
 
+                <h3 style={{ color: "#1976d2", marginTop: "0px", marginBottom: "15px", textAlign: "center" }}>HOA Parking</h3>
+                <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
+                  <div><strong>Total Parking Places:</strong> </div><div>{hoa.parking_allowed_hoa}</div>
+                  <div><strong>Handicapped Places:</strong> </div><div>{hoa.parking_handicapped_hoa}</div>
+                  <div><strong>Handicapped Used:</strong> </div><div>{handicappedCount}</div>
 
-            <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>Unit Parking</h3>
-            <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
-              
-              <div><strong>Owner Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_owner}</div>
-              <div><strong>Tenant Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_tenant}</div>
+                  <div><strong>Day Passes Allowed:</strong> </div><div>{hoa.daypasses_allowed_hoa}</div>
+                  <div><strong>Day Passes Used:</strong> </div><div>{dayUseCount}</div>
 
-              <div><strong>Unit Parking Allowed</strong> </div><div>{hoa.parking_allowed_unit}</div>
-              <div><strong>Renter Parking Allowed</strong> </div><div>{hoa.parking_allowed_renter}</div>
+                </div>
 
-            </div>
+                <h3 style={{ color: "#1976d2", marginTop: "15px", marginBottom: "15px", textAlign: "center" }}>Unit Parking</h3>
+                <div className="hoainformation2colr" style={{ textAlign: "left", marginTop: "15px", marginLeft: "15px" }}>
 
-           
-          </>
-        )}
+                  <div><strong>Owner Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_owner}</div>
+                  <div><strong>Tenant Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_tenant}</div>
+
+                  <div><strong>Unit Parking Allowed</strong> </div><div>{hoa.parking_allowed_unit}</div>
+                  <div><strong>Renter Parking Allowed</strong> </div><div>{hoa.parking_allowed_renter}</div>
+
+                </div>
       </section>
+  )}
+
 
       <section className="standardsectiondashboard" style={{ display: "none" }}>
         <h3 style={{ color: "#1976d2", marginTop: 0, textAlign: "center" }}>Parking Spaces</h3>

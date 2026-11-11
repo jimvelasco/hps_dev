@@ -115,7 +115,7 @@ export default function RenterVehicles() {
           const response = await axios.get(qry);
 
           const responseData = response.data;
-          //   console.log('the response data is ',responseData);
+         //    console.log('the response data is ',responseData);
           //  console.log('choices from rentervehicles',responseData,pincodeAction)
           // responseData.forEach((el, index) => {
           //   console.log(`responseData renters Index ${index}: ${el.enddate}`);
@@ -124,8 +124,14 @@ export default function RenterVehicles() {
           //console.log('all vehicles from response ',unitNumber);
 
           const todayStr = formatLocalDate(new Date());
+          // const updatedVehicles = responseData
+          //   .filter(v => v.carownertype !== 'dayuseonly' || v.enddate >= todayStr)
+          //   .map(v => ({
+          //     ...v,
+          //     calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+          //   }));
+
           const updatedVehicles = responseData
-            .filter(v => v.carownertype !== 'dayuseonly' || v.enddate >= todayStr)
             .map(v => ({
               ...v,
               calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
@@ -289,63 +295,13 @@ export default function RenterVehicles() {
 
     // console.log('RV all active vehicles are', activeVehicles);
 
-    // JJVFIX should be in hoa definition ?
-
-
-    const ownertypeary = ['owner', 'friend', 'family', 'tenant'];
-
-
-    /*  object keys returned by funtion call
-        rentervehs nonownervehs ownervehs dayusevehs multidayvehs dayusemultivehs dayusemultivehsany
-   */
-
-    //   console.log('veh group create',veh_grp_ary);
 
 
     //const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
     let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
     let freepassesallowed = Number(unitForRenter.daypasses_allowed_owner);
-    // unitParkingLimit += dayusevehs;
-
-
-
-    // unitParkingLimit += daypassCount;
-
-
-    // console.log('RV handlecreate allActiveCount unitParkingLimit pa pv',
-    //   allActiveCount, unitParkingLimit, pincodeAction, pincodeValue)
-
-
-
+   
     let msg = 'now is the time';
-
-
-    // if (veh_grp_ary.ownervehs.count > 0) { // we must have one in 
-    //   msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. <br /><br />
-    //     CALL THE OWNER OR ADMIN</>);
-    // }
-    //  else {
-    //   msg = (<>You are not allowed to have <br />more active vehicles than<br /> your parking allowance: {unitParkingLimit}. </>)
-    // }
-
-    // console.log('allActiveCount >= unitParkingLimit', allActiveCount, unitParkingLimit,freepassesallowed)
-
-    // const messagetoshow = getCreateValidationMessage();
-    // if (messagetoshow !== null) {
-    //   setModal({
-    //     isOpen: true,
-    //     type: "alert",
-    //     title: "Validation Error",
-    //     message: messagetoshow,
-    //     //  message: `Free parking limit reached. Maximum renter free parking spots allowed: ${renterFreeParking}`,
-    //     confirmText: "OK",
-    //     // cancelText: "Cancel",
-    //     onConfirm: () => {
-    //       setModal(prev => ({ ...prev, isOpen: false }));
-    //     },
-    //   });
-    //   return;
-    // }
 
 
     if (showFailureMessage() === null) {
