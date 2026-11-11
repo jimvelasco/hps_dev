@@ -337,19 +337,19 @@ export default function OwnerVehicles() {
 
       //  console.log('ov handle details click vehicle:', vehicle.carownertype);
       // editing allowed for all
-      if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
-        setModal({
-          isOpen: true,
-          type: "alert",
-          title: "Validation Error",
-          message: `Owners cannot modify renter vehicles.`,
-          confirmText: "OK",
-          onConfirm: () => {
-            setModal(prev => ({ ...prev, isOpen: false }));
-          },
-        });
-        return;
-      }
+      // if (vehicle.carownertype === "renter" && loggedInUser.role !== "admin") {
+      //   setModal({
+      //     isOpen: true,
+      //     type: "alert",
+      //     title: "Validation Error",
+      //     message: `Owners cannot modify renter vehicles.`,
+      //     confirmText: "OK",
+      //     onConfirm: () => {
+      //       setModal(prev => ({ ...prev, isOpen: false }));
+      //     },
+      //   });
+      //   return;
+      // }
 
       //  if (loggedInUser.role === "rentalmanager") {
       //   setModal({

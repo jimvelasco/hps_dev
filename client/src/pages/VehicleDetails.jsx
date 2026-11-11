@@ -770,6 +770,9 @@ export default function VehicleDetails() {
         msg = (<>Daypass limit reached. <br />
           You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.<br />Contact Admin to increase<br /> allowed daypass count.</>);
       }
+      if (oktoaddobj.msgType === 6) {
+        msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
+      }
 
     }
     //   if (role === 'owner') {

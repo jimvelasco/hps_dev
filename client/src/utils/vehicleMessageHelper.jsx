@@ -14,15 +14,27 @@ export const vehicleMessageHelper = (vehicles, unit, pincodeAction, allActiveCou
   const phonetocall =  ""; //getHoaContactPhoneNumber(hoa,"pm_renter");
   let overlapbump = 0;
 
+
+const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+
   if (maxenddateofgroup === null &&  minstartdaterenters === null) {
     overlapbump = 0;
-  } else if (maxenddateofgroup === minstartdaterenters) {
-    overlapbump = 1;
-  }
+  } 
+  if (maxenddateofgroup !== null &&  minstartdaterenters === null) {
+    let todayStr = formatLocalDate(new Date());
+    if (maxenddateofgroup === todayStr) {
+       overlapbump = 1;
+    }
+  } 
+  
+  // if (maxenddateofgroup === minstartdaterenters) {
+  //   overlapbump = 1;
+  // }
 
-  //  console.log('maxenddateofgroup',maxenddateofgroup)
-  //  console.log('minstartdaterenters',minstartdaterenters)
-  //  console.log('overlapbump',overlapbump)
+    console.log('maxenddateofgroup',maxenddateofgroup)
+    console.log('minstartdaterenters',minstartdaterenters)
+    console.log('overlapbump',overlapbump)
 
   if (pincodeAction === 'dayuseonly') {
    // console.log('pincodeAction',pincodeAction)
