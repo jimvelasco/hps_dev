@@ -37,32 +37,28 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
     console.log('overlapbump',overlapbump)
 
   if (pincodeAction === 'dayuseonly') {
-   // console.log('pincodeAction',pincodeAction)
-    // if (veh_grp_ary.dayusemultivehs.count > 0) {
-    //   return (<>You are not allowed to have <br />more daypassed<br />than allowed: {daypassesallowed}<br /><br />
-    //     Call Admin to get an<br />increase in day passes. </>);
-    // }
      if (veh_grp_ary.dayusemultivehs.count >= daypassesallowed  ) {
       return (<>You are not allowed more daypasses<br /> than allowed:  {daypassesallowed} <br /> If issues, first contact person that provided <br />
-      Unit/PIN or HOA Management <br />{phonetocall}</>);
+      Unit/PIN or HOA Management vv<br />{phonetocall}</>);
     }
     return null;
   }
 
    if (veh_grp_ary.rentervehs.count  >= unitParkingLimit + overlapbump) {
     return (<>You are not allowed more  <br />parking than allowed {unitParkingLimit}.<br />If issues, first contact person that provided <br />
-    Unit/PIN or HOA Management.< br />{phonetocall}
+    Unit/PIN or HOA Managementxx.< br />{phonetocall}
     </>);
   }
   if (veh_grp_ary.allactivevehs.count >= unitParkingLimit  + overlapbump) {
-    return (<>You are not allowed more parking than allowed:  {unitParkingLimit}< br/> If issues, first contact person that provided 
-    <br />Unit/PIN or HOA Management< br/>{phonetocall}</>);
+    console.log( 'veh upl overlap',veh_grp_ary.allactivevehs.count,unitParkingLimit,overlapbump)
+    return (<>You are not allowed more <br />parking than allowed<br />  {unitParkingLimit}< br/> If issues, first contact the person who provided 
+    the Unit/PIN <br />or contact HOA Management.< br/>{phonetocall}</>);
   }
  
   if (veh_grp_ary.ownervehs.count >= unitParkingLimit  + overlapbump) {
     return (<> There may be an owner in the unit.<br />
      If issues, first contact person that provided <br />
-    Unit/PIN or HOA Management.< br />{phonetocall}</>);
+    Unit/PIN or HOA Management.bb< br />{phonetocall}</>);
   }
   // if (veh_grp_ary.dayusemultivehs.count > 0 ) {
   //   return (<> There may be cleaning <br />people in the unit.<br /><br />
