@@ -48,6 +48,7 @@ export default function OwnerVehicles() {
   const [activeVehicles, setActiveVehicles] = useState(0);
   const [disableAddButton, setDisableAddButton] = useState(false);
   const [maxDaypassTemplates, setMaxDaypassTemplates] = useState(2);
+  const [countOtherExpired, setCountOtherExpired] = useState(0);
 
   // these are vehicle types that will show up on this page
   // const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -132,6 +133,11 @@ export default function OwnerVehicles() {
           const response = await axios.get(qry);
           const today = new Date().toLocaleDateString("en-CA");
           const responseData = response.data;
+        //  console.log('vehicles from fetchVehicles',responseData)
+
+           const veh_grp_ary = getVehicleTypeGroups(responseData);
+          //  console.log('FV 137 veh_grp_ary',veh_grp_ary)
+            setCountOtherExpired(veh_grp_ary.otherexpiredvehs.count)
 
           //     console.log('ALL VEHICLES IN UNIT',responseData);
 
@@ -160,15 +166,9 @@ export default function OwnerVehicles() {
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
 
-          /*
-          const todayStr = formatLocalDate(new Date());
-                    const updatedVehicles = responseData
-                      .filter(v => v.createdbytype !== 'other' || !['dayuseonly', 'renter'].includes(v.carownertype) || !v.enddate || v.enddate >= todayStr)
-                      .map(v => ({
-                        ...v,
-                        calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
-                      }));
-          */
+          
+
+        
 
           setAllRawVehicles(rawvehicles);
 
@@ -187,30 +187,19 @@ export default function OwnerVehicles() {
           // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
           const updatedVehicles = [...rawvehicles];
 
-          // console.log('OV 148 updatedVehicles THESE ARE carowner type != renter', updatedVehicles);
-
-          //   setAllVehicles(updatedVehicles);
-
 
 
           // console.log('updatedVehicles vehicles', updatedVehicles);
           let updatedVehicles2 = [...updatedVehicles];
 
-          //    console.log('updatedVehicles2', role, updatedVehicles2);
 
           if (role === 'tenant') {
-            //   console.log('updated vehicles2',updatedVehicles2)
             updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant" || v.carownertype === "friend");
             //  console.log('updated vehicles2 after filter',updatedVehicles2)
           }
 
           let updatedVehicles3 = [...updatedVehicles2]
 
-          //  console.log('OV 165 updatedVehicles3', updatedVehicles3);
-
-          let updatedVehicles4 = updatedVehicles3.filter(v => v.calculatedActiveFlag === true);
-
-          //   console.log('OV 169 updatedVehicles4', updatedVehicles4);
 
           setActiveVehicles(updatedVehicles3);
           // keep vehicles in order
@@ -463,6 +452,7 @@ export default function OwnerVehicles() {
     pin_code_action = "";
 
     const veh_grp_ary = getVehicleTypeGroups(vehicles);
+ //   console.log('veh_grp_ary',veh_grp_ary)
 
     const maxdaypasstemplates = 2;
 
@@ -535,34 +525,26 @@ export default function OwnerVehicles() {
 
       setUnitForOwner(unit);
       let parkingLimitInventory = Number(unit.inventory_allowed_owner);
-      let unitParkingLimit = Number(unit.parking_allowed_unit);
+     // let unitParkingLimit = Number(unit.parking_allowed_unit);
 
 
       // const dayuseok = doesUnitHaveDayUse(unit);
 
       // this will get all the count all the ACTIVE daypass vehicles 
-      const daypassCount = daypassVehicleCount(allVehicles);
+
+    //  const daypassCount = daypassVehicleCount(allVehicles);
       //   console.log('function daypassVehicleCount', daypassCount);
       //   console.log('grp ary dayusemultivehs', veh_grp_ary.dayusemultivehs.count);
 
       // this counts all vehicles with a daypass that are active or inactive
-      const anydaypassCount = anyDaypassVehicleCount(allVehicles);
+   //  const anydaypassCount = anyDaypassVehicleCount(allVehicles);
 
-      // console.log('vehicles in owner vehicles 414',vehicles)
-      // console.log('vehicles in owner allVehicles 414',allVehicles)
-
-
-      //JJVFIX
-
-      // if (daypassCount > 0) {
-      parkingLimitInventory += daypassCount;
-      //  }
+     
 
 
 
       let msg = (<>Vehicle limit reached. <br /> You may only have <br />{parkingLimitInventory} vehicles in your inventory.</>);
 
-      //  console.log('entire inventory is ',veh_grp_ary.nonownervehsany.count)
 
       if (vehicles.length >= parkingLimitInventory) {
         setModal({

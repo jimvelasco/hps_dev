@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import ModalAlert from "./ModalAlert";
 
 export default function DeleteRenterVehiclesModal({ isOpen, onClose, onDelete, isLoading = false }) {
   const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-CA"));
   const [error, setError] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
 
@@ -13,10 +15,12 @@ export default function DeleteRenterVehiclesModal({ isOpen, onClose, onDelete, i
       return;
     }
 
-    if (!window.confirm(`Are you sure you want to delete all renter vehicles with an end date before ${selectedDate}? This action cannot be undone.`)) {
-      return;
-    }
+    setShowConfirmation(true);
+  };
 
+  const handleConfirm = async () => {
+    if (isLoading) return;
+    setShowConfirmation(false);
     try {
       await onDelete(selectedDate);
     } catch (err) {
@@ -27,12 +31,14 @@ export default function DeleteRenterVehiclesModal({ isOpen, onClose, onDelete, i
   const handleClose = () => {
     setSelectedDate(new Date().toLocaleDateString("en-CA"));
     setError(null);
+    setShowConfirmation(false);
     onClose();
   };
 
   if (!isOpen) return null;
 
   return (
+    <>
     <div style={{
       position: "fixed",
       top: 0,
@@ -95,7 +101,7 @@ export default function DeleteRenterVehiclesModal({ isOpen, onClose, onDelete, i
               }}
             />
             <p style={{ fontSize: "12px", color: "#666", marginTop: "10px" }}>
-              This will remove all vehicles marked as 'renter' where the end date is earlier than the date selected above.
+              This will remove all vehicles marked as 'renter' or 'day pass' where the end date is earlier than the date selected above.
             </p>
           </div>
 
@@ -145,5 +151,15 @@ export default function DeleteRenterVehiclesModal({ isOpen, onClose, onDelete, i
         </form>
       </div>
     </div>
+    <ModalAlert
+      isOpen={showConfirmation}
+      type="delete"
+      title="Confirm Delete"
+      message={`Are you sure you want to delete all renter vehicles with an end date before ${selectedDate}? This action cannot be undone.`}
+      confirmText="Delete"
+      onConfirm={handleConfirm}
+      onCancel={() => setShowConfirmation(false)}
+    />
+    </>
   );
 }

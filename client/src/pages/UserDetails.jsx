@@ -199,7 +199,9 @@ export default function UserDetails() {
             confirmText: "OK",
             onConfirm: () => {
               setModal(prev => ({ ...prev, isOpen: false }))
-              navigate(`/${hoaId}/users`);
+              // navigate(`/${hoaId}/users`);
+              navigate(-1);
+
             }
           });
         }
@@ -220,7 +222,8 @@ export default function UserDetails() {
           confirmText: "OK",
           onConfirm: () => {
             setModal(prev => ({ ...prev, isOpen: false }))
-            navigate(`/${hoaId}/users`);
+            // navigate(`/${hoaId}/users`);
+             navigate(-1);
           }
         });
       }

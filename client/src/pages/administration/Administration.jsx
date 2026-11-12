@@ -4,6 +4,7 @@ import axios from "../../services/api";
 import DashboardNavbar from "../../components/DashboardNavbar";
 import CreateFolderModal from "../../components/CreateFolderModal";
 import DeleteRenterVehiclesModal from "../../components/DeleteRenterVehiclesModal";
+import ModalAlert from "../../components/ModalAlert";
 import { useHoa } from "../../context/HoaContext";
 import { getAWSResource } from "../../utils/awsHelper";
 
@@ -18,6 +19,7 @@ export default function Administration() {
   const [showDeleteRenterVehiclesModal, setShowDeleteRenterVehiclesModal] = useState(false);
   const [createFolderLoading, setCreateFolderLoading] = useState(false);
   const [deleteRenterLoading, setDeleteRenterLoading] = useState(false);
+  const [deleteRenterResult, setDeleteRenterResult] = useState(null);
   const [createFolderMessage, setCreateFolderMessage] = useState(null);
 
   const handleBackClick = () => {
@@ -194,11 +196,11 @@ export default function Administration() {
       const response = await axios.delete(`/vehicles/renter-vehicles/${hoaId}`, {
         params: { date }
       });
-      alert(response.data.message);
       setShowDeleteRenterVehiclesModal(false);
+      setDeleteRenterResult({ title: "Success", message: response.data.message });
     } catch (error) {
       const errorMsg = error.response?.data?.message || error.message || "Error deleting vehicles";
-      alert(errorMsg);
+      setDeleteRenterResult({ title: "Error", message: errorMsg });
     } finally {
       setDeleteRenterLoading(false);
     }
@@ -329,7 +331,7 @@ export default function Administration() {
             <h5 className="admin_section_title">Operations</h5>
             <h3 style={{ color: "#d32f2f", marginTop: 0 }}>Purge Renter Vehicles</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
-              Delete renter vehicles ending before a selected date.
+              Delete renter and day pass vehicles.
             </p>
             <button className="standardsubmitbutton"
               onClick={() => setShowDeleteRenterVehiclesModal(true)}
@@ -427,6 +429,12 @@ export default function Administration() {
           onClose={() => setShowDeleteRenterVehiclesModal(false)}
           onDelete={handleDeleteRenterVehicles}
           isLoading={deleteRenterLoading}
+        />
+        <ModalAlert
+          isOpen={Boolean(deleteRenterResult)}
+          title={deleteRenterResult?.title}
+          message={deleteRenterResult?.message}
+          onConfirm={() => setDeleteRenterResult(null)}
         />
       </div>
     </div>

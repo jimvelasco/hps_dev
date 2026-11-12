@@ -353,6 +353,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
 export const getVehicleTypeGroups = (vehicles, log = false) => {
   const ownerTypes = ['owner', 'friend', 'family', 'tenant','rentalmanager'];
+  const todayStr = formatLocalDate(new Date());
+
   // nonownervehs will include active daypass or multi vehicles
   //const allActiveVehicles = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   const groups = [
@@ -367,7 +369,8 @@ export const getVehicleTypeGroups = (vehicles, log = false) => {
     { name: 'dayusemultivehs', matches: v => (v.carownertype === 'dayuseonly' || v.carownertype === 'multiday') && v.calculatedActiveFlag === true },
     { name: 'dayusemultivehsany', matches: v => v.carownertype === 'dayuseonly' || v.carownertype === 'multiday' },
     { name: 'allactivevehs', matches: v => v.calculatedActiveFlag === true },
-    { name: 'tenantvehsany', matches: v => v.carownertype === 'tenant' }
+    { name: 'tenantvehsany', matches: v => v.carownertype === 'tenant' },
+    { name: 'otherexpiredvehs', matches: v => v.createdbytype === 'other' && ['dayuseonly', 'renter'].includes(v.carownertype) && v.enddate && v.enddate < todayStr }
   ];
 
   const groupArray = Object.fromEntries(groups.map(({ name, matches }) => {
