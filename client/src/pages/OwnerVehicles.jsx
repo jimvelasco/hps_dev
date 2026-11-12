@@ -244,7 +244,7 @@ export default function OwnerVehicles() {
       ? vehicles.filter(v => v.createdbyrole === "tenant" || v.carownertype === "tenant")
       : loggedInUser?.role === "rentalmanager" 
       ? vehicles.filter(v => v.carownertype !== "renter"  &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== "")
-      :  vehicles.filter(v => v.carownertype !== "renter"  &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== "");
+      :  vehicles;
 
 
     //    const filteredVehicles = loggedInUser?.role === "admin"
