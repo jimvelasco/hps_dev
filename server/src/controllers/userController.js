@@ -642,6 +642,7 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 
 const forgotPasswordSES = async (req, res) => {
+//  console.log('forgotPasswordSES')
   try {
     const { email, hoaId } = req.body;
     const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
@@ -678,6 +679,9 @@ const forgotPasswordSES = async (req, res) => {
     const resetLink = `${serverUrl}/reset-password/${resetToken}`;
 
     const resetLink3 = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+
+   // console.log('serverUrl',serverUrl)
+     console.log('resetLink3',resetLink3)
 
 
 
@@ -763,7 +767,7 @@ const forgotPasswordSES = async (req, res) => {
 
 
 const sendEmailFromHoaSES = async (req, res) => {
-  console.log('sendEmailFromHoaSES called');
+ // console.log('sendEmailFromHoaSES called');
   try {
     const { hoaId, subject, returnEmail, message, toEmail, fromwhere } = req.body;
 
@@ -782,7 +786,7 @@ const sendEmailFromHoaSES = async (req, res) => {
       return res.status(400).json({ message: "Message cannot exceed 5000 characters" });
     }
 
-    // console.log('sendEmailFromHoaSES toemail', toEmail,'fromwhere',fromwhere)
+     console.log('sendEmailFromHoaSES toemail', toEmail,'fromwhere',fromwhere)
 
     let HPS_EMAIL = toEmail;
     // process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";

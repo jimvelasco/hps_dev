@@ -15,7 +15,7 @@ export default function EmailFromHoa() {
   const location = useLocation();
   const email = location.state?.email;
   const fromwhere = location.state?.fromwhere;
-  //console.log('EmailFromHoa email is:', email);
+  console.log('EmailFromHoa email is:', email);
   //console.log('EmailFromHoa fromwhere is:', fromwhere);
 
   const [sending, setSending] = useState(false);
@@ -100,6 +100,8 @@ export default function EmailFromHoa() {
     }
 
     setSending(true);
+
+   // console.log('WE ARE SENDING THE EMAIL FROM EMAILFROMHOA')
 
     try {
       await axios.post("/users/send-email-from-hoa", {

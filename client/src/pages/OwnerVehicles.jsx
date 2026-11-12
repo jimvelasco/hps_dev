@@ -62,6 +62,7 @@ export default function OwnerVehicles() {
     ]
 
 
+  const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
 
 
@@ -141,12 +142,33 @@ export default function OwnerVehicles() {
           //   calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           // }));
 
-          const rawvehicles = responseData.filter(v => {
-            return true; //v.carownertype !== 'renter';
-          }).map(v => ({
+          const todayStr = formatLocalDate(new Date());
+
+          // this does not filter anything
+          // const rawvehicles = responseData
+          // .filter(v => {
+          //   return true; //v.carownertype !== 'renter';
+          // }).map(v => ({
+          //   ...v,
+          //   calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+          // }));
+
+           const rawvehicles = responseData
+            .filter(v => v.createdbytype !== 'other' || !['dayuseonly', 'renter'].includes(v.carownertype) || !v.enddate || v.enddate >= todayStr)
+            .map(v => ({
             ...v,
             calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           }));
+
+          /*
+          const todayStr = formatLocalDate(new Date());
+                    const updatedVehicles = responseData
+                      .filter(v => v.createdbytype !== 'other' || !['dayuseonly', 'renter'].includes(v.carownertype) || !v.enddate || v.enddate >= todayStr)
+                      .map(v => ({
+                        ...v,
+                        calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+                      }));
+          */
 
           setAllRawVehicles(rawvehicles);
 

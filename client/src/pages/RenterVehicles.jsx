@@ -125,14 +125,8 @@ export default function RenterVehicles() {
           //console.log('all vehicles from response ',unitNumber);
 
           const todayStr = formatLocalDate(new Date());
-          // const updatedVehicles = responseData
-          //   .filter(v => v.carownertype !== 'dayuseonly' || v.enddate >= todayStr)
-          //   .map(v => ({
-          //     ...v,
-          //     calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
-          //   }));
-
           const updatedVehicles = responseData
+            .filter(v => v.createdbytype !== 'other' || !['dayuseonly', 'renter'].includes(v.carownertype) || !v.enddate || v.enddate >= todayStr)
             .map(v => ({
               ...v,
               calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
