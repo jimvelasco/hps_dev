@@ -102,7 +102,8 @@ export default function VehicleDetails() {
     : logonType === 'tenant'
       ? [
         { value: 'owner', label: 'Owner' },
-        { value: 'friend', label: 'Friend/Family' }
+        { value: 'friend', label: 'Friend/Family' },
+         { value: 'tenant', label: 'Tenant' }
 
       ]
       : logonType === 'owner'

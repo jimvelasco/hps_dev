@@ -255,12 +255,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           }
 
 
-          if (createdfrom === 'ownervehicles' &&   formvehicle.carownertype === 'tenant' ) {
-            if (veh_grp_ary.tenantvehsany.count > 0) {
-               robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 7 };
-            return robj;
-            }
-          }
+          // if (createdfrom === 'ownervehicles' &&   formvehicle.carownertype === 'tenant' ) {
+          //   if (veh_grp_ary.tenantvehsany.count > 1) {
+          //      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 7 };
+          //   return robj;
+          //   }
+          // }
 
          
 

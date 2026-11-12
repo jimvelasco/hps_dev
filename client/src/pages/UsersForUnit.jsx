@@ -4,6 +4,7 @@ import axios from "../services/api";
 import { useHoa } from "../context/HoaContext";
 import { getAWSResource } from "../utils/awsHelper";
 import DashboardNavbar from "../components/DashboardNavbar";
+import ModalAlert from "../components/ModalAlert";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 
@@ -19,6 +20,9 @@ export default function UsersForUnit() {
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [usersError, setUsersError] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     if (hoaId && hoa?.hoaid !== hoaId) fetchHoaById(hoaId);
@@ -45,6 +49,23 @@ export default function UsersForUnit() {
       active = false;
     };
   }, [hoaId, unitNumber, canAccess]);
+
+  const handleDelete = async () => {
+    if (!canAccess || !userToDelete?._id || userToDelete.role === "owner" || deletingId) return;
+    const userId = userToDelete._id;
+    setDeletingId(userId);
+    setDeleteError(null);
+    try {
+      await axios.delete(`/users/${userId}`);
+      setUsers(currentUsers => currentUsers.filter(user => user._id !== userId));
+      setUserToDelete(null);
+    } catch (error) {
+      setDeleteError(error.response?.data?.message || error.message || "Failed to delete user.");
+      setUserToDelete(null);
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const handleBackClick = () => {
    
@@ -81,6 +102,7 @@ export default function UsersForUnit() {
           <div className="standardtitlebar800">
             <h3>Users for Unit {unitNumber}</h3>
           </div>
+          {deleteError && <p className="displayerror" role="alert">{deleteError}</p>}
           {userLoading ? (
             <p className="ajaxloader" role="status">Loading your account...</p>
           ) : !canAccess ? (
@@ -109,11 +131,33 @@ export default function UsersForUnit() {
                     <dt className="grid-item-bold">Company</dt>
                     <dd className="grid-item-normal">{user.company || "—"}</dd>
                   </dl>
+                  {user.role !== "owner" && (
+                    <button
+                      type="button"
+                      className="btnxs btn-danger full-row"
+                      onClick={() => {
+                        setDeleteError(null);
+                        setUserToDelete(user);
+                      }}
+                      disabled={Boolean(deletingId)}
+                    >
+                      {deletingId === user._id ? "Deleting..." : "Delete"}
+                    </button>
+                  )}
                 </article>
               ))}
             </div>
           )}
         </div>
+        <ModalAlert
+          isOpen={Boolean(userToDelete)}
+          type="delete"
+          title="Confirm Delete"
+          message={`Delete ${[userToDelete?.first_name, userToDelete?.last_name].filter(Boolean).join(" ") || "this user"}? This cannot be undone.${users.length === 1 ? " Deleting the last user will also delete the unit." : ""}`}
+          confirmText={deletingId ? "Deleting..." : "Delete"}
+          onConfirm={handleDelete}
+          onCancel={() => { if (!deletingId) setUserToDelete(null); }}
+        />
       </div>
   );
   }
