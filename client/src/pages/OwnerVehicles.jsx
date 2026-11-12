@@ -18,7 +18,7 @@ import { vehicleMessageHelper } from "../utils/vehicleMessageHelper";
 
 
 export default function OwnerVehicles() {
-  const { hoaId ,role:routeRole} = useParams();
+  const { hoaId, role: routeRole } = useParams();
   const navigate = useNavigate();
   const { hoa, loading, error, fetchHoaById } = useHoa();
   const { setAppError } = useError();
@@ -50,8 +50,17 @@ export default function OwnerVehicles() {
   const [maxDaypassTemplates, setMaxDaypassTemplates] = useState(2);
 
   // these are vehicle types that will show up on this page
-  const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
-    useState(['owner', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
+  // const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
+  //   useState(['owner', 'tenant', 'family', 'friend', 'visitor', 'contractor']);
+
+  const vehicleOwnerTypeAry =
+    [
+      { value: 'owner', label: 'Owner' },
+      { value: 'friend', label: 'Friend/Family' },
+      { value: 'tenant', label: 'Tenant' },
+      { value: 'dayuseonly', label: 'Day Pass' }
+    ]
+
 
 
 
@@ -66,10 +75,10 @@ export default function OwnerVehicles() {
       setOwnerId(loggedInUser._id);
       setShowUnitId(loggedInUser.unitnumber);
       setLogonType(localStorage.getItem('logonType'));
-    //  console.log('OV role from url',routeRole, loggedInUser.role)
-     if (localStorage.getItem('logonType') === 'rentalmanager') {
-      setDisableAddButton(true)
-     }
+      //  console.log('OV role from url',routeRole, loggedInUser.role)
+      if (localStorage.getItem('logonType') === 'rentalmanager') {
+        setDisableAddButton(true)
+      }
 
 
     } else {
@@ -141,9 +150,9 @@ export default function OwnerVehicles() {
 
           setAllRawVehicles(rawvehicles);
 
-        //  console.log('rawvehicles', rawvehicles);
+          //  console.log('rawvehicles', rawvehicles);
           let gpa = getVehicleTypeGroups(rawvehicles);
-       //  console.log('gpa', gpa)
+          //  console.log('gpa', gpa)
 
           let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
           //   console.log('activeVehicles', activeVehicles);
@@ -153,7 +162,7 @@ export default function OwnerVehicles() {
           //JJVFIX. do not show tenants
 
           // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter" && v.carownertype !== "tenant" );
-         // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
+          // const updatedVehicles = rawvehicles.filter(v => v.carownertype !== "renter");
           const updatedVehicles = [...rawvehicles];
 
           // console.log('OV 148 updatedVehicles THESE ARE carowner type != renter', updatedVehicles);
@@ -168,9 +177,9 @@ export default function OwnerVehicles() {
           //    console.log('updatedVehicles2', role, updatedVehicles2);
 
           if (role === 'tenant') {
-         //   console.log('updated vehicles2',updatedVehicles2)
-            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant" || v.carownertype === "friend" );
-           //  console.log('updated vehicles2 after filter',updatedVehicles2)
+            //   console.log('updated vehicles2',updatedVehicles2)
+            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant" || v.carownertype === "friend");
+            //  console.log('updated vehicles2 after filter',updatedVehicles2)
           }
 
           let updatedVehicles3 = [...updatedVehicles2]
@@ -208,24 +217,22 @@ export default function OwnerVehicles() {
     }
   }, [hoaId, ownerId, role]);
 
-  const handleFilterApply = () => {
- //  console.log('WE CALLED FILTER APPLY')
-    let matchingVehicles = [...allVehicles];
+  const handleFilterApply = (matchingVehicles) => {
     if (filterType === "owner") {
-           return matchingVehicles.filter(v => v.createdbytype === 'owner');
+      return matchingVehicles.filter(v => v.createdbytype === 'owner');
     }
-    if (filterType === "other") {
+    if (filterType === "friend") {
       //return matchingVehicles.filter(v => v.carownertype === "renter");
-      return matchingVehicles.filter(v => v.createdbytype === 'other');
+      return matchingVehicles.filter(v => v.createdbytype !== 'owner' && v.createdbytype !== 'renter' );
     }
-    if (filterType === "dayuse") {
-      //return matchingVehicles.filter(v => v.carownertype === "renter");
-      return matchingVehicles.filter(v => v.day_use_only === 1);
+    if (filterType === "tenant") {
+      return matchingVehicles.filter(v => v.carownertype === "tenant");
+    //  return matchingVehicles.filter(v => v.day_use_only === 1);
     }
-    if (filterType === "all") {
-      return matchingVehicles;
+    if (filterType === "dayuseonly") {
+     return matchingVehicles.filter(v => v.carownertype === "dayuseonly");
     }
-    // return matchingVehicles;
+    return matchingVehicles;
   };
 
   const unitQuery = unitSearch.trim().toLowerCase();
@@ -233,28 +240,28 @@ export default function OwnerVehicles() {
   // JJVFIX not sure what happens here not filtering out renters for admin
   // this will not show the renter vehicles in the display
 
-  
+
 
   const filteredVehicles = loggedInUser?.role === "admin"
-    ? vehicles.filter(vehicle =>
+    ? handleFilterApply(vehicles).filter(vehicle =>
       String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
       String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
     )
     : loggedInUser?.role === "tenant"
       ? vehicles.filter(v => v.createdbyrole === "tenant" || v.carownertype === "tenant")
-      : loggedInUser?.role === "rentalmanager" 
-      ? vehicles.filter(v => v.carownertype !== "renter"  &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== "")
-      :  vehicles;
+      : loggedInUser?.role === "rentalmanager"
+        ? vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" && v.createdbyrole !== "")
+        : vehicles;
 
 
-    //    const filteredVehicles = loggedInUser?.role === "admin"
-    // ? vehicles.filter(vehicle =>
-    //   String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
-    //   String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
-    // )
-    // : loggedInUser?.role === "tenant"
-    //   ? vehicles.filter(v => v.createdbyrole === "tenant")
-    //   : vehicles.filter(v => v.carownertype !== "renter");
+  //    const filteredVehicles = loggedInUser?.role === "admin"
+  // ? vehicles.filter(vehicle =>
+  //   String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
+  //   String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
+  // )
+  // : loggedInUser?.role === "tenant"
+  //   ? vehicles.filter(v => v.createdbyrole === "tenant")
+  //   : vehicles.filter(v => v.carownertype !== "renter");
 
   //console.log('filtered vehicles should be all of them in vehicles sans the renter vehicles', filteredVehicles)
 
@@ -406,11 +413,11 @@ export default function OwnerVehicles() {
 
 
   const showFailureMessage = () => {
-     if (hoa?.hoaid !== hoaId) return null;
-     const pincodeAction = 'standard';
-     const containsDaypassCount = 0;
-     const createdfrom = 'ownervehicles';
-    const messagetoshow = vehicleMessageHelper(createdfrom,vehicles, unitForOwner, pincodeAction, allActiveCount, containsDaypassCount,hoa);
+    if (hoa?.hoaid !== hoaId) return null;
+    const pincodeAction = 'standard';
+    const containsDaypassCount = 0;
+    const createdfrom = 'ownervehicles';
+    const messagetoshow = vehicleMessageHelper(createdfrom, vehicles, unitForOwner, pincodeAction, allActiveCount, containsDaypassCount, hoa);
     if (messagetoshow !== null) {
       setModal({
         isOpen: true,
@@ -450,7 +457,7 @@ export default function OwnerVehicles() {
       return;
     }
     if (veh_grp_ary.dayusemultivehsany.count >= maxDaypassTemplates) {
-       setModal({
+      setModal({
         isOpen: true,
         type: "alert",
         title: "Error",
@@ -467,19 +474,19 @@ export default function OwnerVehicles() {
       return;
     }
 
-      // if (loggedInUser.role === "rentalmanager") {
-      //   setModal({
-      //     isOpen: true,
-      //     type: "alert",
-      //     title: "Validation Error",
-      //     message: `Rental Managers cannot add vehicles.`,
-      //     confirmText: "OK",
-      //     onConfirm: () => {
-      //       setModal(prev => ({ ...prev, isOpen: false }));
-      //     },
-      //   });
-      //   return;
-      // }
+    // if (loggedInUser.role === "rentalmanager") {
+    //   setModal({
+    //     isOpen: true,
+    //     type: "alert",
+    //     title: "Validation Error",
+    //     message: `Rental Managers cannot add vehicles.`,
+    //     confirmText: "OK",
+    //     onConfirm: () => {
+    //       setModal(prev => ({ ...prev, isOpen: false }));
+    //     },
+    //   });
+    //   return;
+    // }
 
     try {
       const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(uid)}`);
@@ -513,8 +520,8 @@ export default function OwnerVehicles() {
 
       // this will get all the count all the ACTIVE daypass vehicles 
       const daypassCount = daypassVehicleCount(allVehicles);
-   //   console.log('function daypassVehicleCount', daypassCount);
-   //   console.log('grp ary dayusemultivehs', veh_grp_ary.dayusemultivehs.count);
+      //   console.log('function daypassVehicleCount', daypassCount);
+      //   console.log('grp ary dayusemultivehs', veh_grp_ary.dayusemultivehs.count);
 
       // this counts all vehicles with a daypass that are active or inactive
       const anydaypassCount = anyDaypassVehicleCount(allVehicles);
@@ -533,7 +540,7 @@ export default function OwnerVehicles() {
 
       let msg = (<>Vehicle limit reached. <br /> You may only have <br />{parkingLimitInventory} vehicles in your inventory.</>);
 
-    //  console.log('entire inventory is ',veh_grp_ary.nonownervehsany.count)
+      //  console.log('entire inventory is ',veh_grp_ary.nonownervehsany.count)
 
       if (vehicles.length >= parkingLimitInventory) {
         setModal({
@@ -638,15 +645,15 @@ export default function OwnerVehicles() {
   if (role === "admin") {
     titlestr = "Admininistrator All Vehicles";
   } else if (role === "rentalmanager") {
-     titlestr = "Rental Manager Vehicles "  + localStorage.getItem('unitNumber');
+    titlestr = "Rental Manager Vehicles " + localStorage.getItem('unitNumber');
   } else if (role === "tenant") {
-     titlestr = "Tenant Vehicles " + localStorage.getItem('unitNumber');
+    titlestr = "Tenant Vehicles " + localStorage.getItem('unitNumber');
   }
 
 
   const renderTitleBarTable = () => {
     return (<div >
-      
+
       <div className="button-grid">
         {loggedInUser && loggedInUser.role === "admin" && (
           <>
@@ -655,41 +662,31 @@ export default function OwnerVehicles() {
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
               >
-                <option value="owner">Owner</option>
-                <option value="other">Non-Owner</option>
-                <option value="dayuse">Day Use</option>
-                <option value="all">All</option>
+
+                {vehicleOwnerTypeAry.map(type => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+                 <option value="all" >All</option>
               </select>
 
-
-            </div>
-            <div>
-              <button className="navbutton4" style={{marginLeft:"-90px"}}
-                onClick={() => setVehicles(handleFilterApply())}>
-                Filter
-              </button>
 
             </div>
           </>
 
         )}
-      
+
 
         {loggedInUser && loggedInUser.role !== "admin" && (
           <>
             <button className="navbutton3"
               onClick={() => handleCreateClick('standard')}
-              disabled = {disableAddButton}>
+              disabled={disableAddButton}>
               <FontAwesomeIcon
                 icon={faPlus}
               />  Add Vehicle
             </button>
-            {/* <button className="navbutton3"
-              onClick={() => handleCreateClick('daypass')}>
-              <FontAwesomeIcon
-                icon={faPlus}
-              />  Add Day Pass
-            </button> */}
           </>
         )}
 
@@ -714,6 +711,8 @@ export default function OwnerVehicles() {
   }
 
 
+
+
   const renderTitleBarPhone = () => {
     return (<div>
       <div className="button-grid">
@@ -724,18 +723,15 @@ export default function OwnerVehicles() {
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
               >
-                <option value="owner">Owner</option>
-                <option value="other">Non-Owner</option>
-                <option value="dayuse">Day Use</option>
-                <option value="all">All</option>
-              </select>
+              
+                {vehicleOwnerTypeAry.map(type => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+                 <option value="all" >All</option>
 
-            </div>
-            <div>
-              <button className="navbutton3"
-                onClick={() => setVehicles(handleFilterApply())}>
-                Filter
-              </button>
+              </select>
 
             </div>
           </>
@@ -751,12 +747,7 @@ export default function OwnerVehicles() {
               icon={faPlus}
             />  Add Vehicle
           </button>
-          {/* <button className="navbutton3"
-            onClick={() => handleCreateClick('daypass')}>
-            <FontAwesomeIcon
-              icon={faPlus}
-            />  Add Day Pass
-          </button> */}
+
         </div>
       )}
 
@@ -862,35 +853,8 @@ export default function OwnerVehicles() {
 
 
           {showFilters && (
-            // <div className="standardtitlebar" style={{backgroundColor: "transparent"}}>
-            //   <div className="button-grid">
-            //     <button className="btnxs btn-primary btn-sort"
-            //       onClick={() => handleSort("owner")}>
-            //       Name
-            //     </button>
-            //     <button className="btnxsp btn-sort"
-            //       onClick={() => handleSort("unit")}>
-            //       Unit
-            //     </button>
-            //     <button className="btnxsp btn-sort "
-            //       onClick={() => handleSort("ownertype")}>
-            //       Type
-            //     </button>
-            //     <button className="btnxsp btn-sort"
-            //       onClick={() => handleSort("plate")}>
-            //       Plate
-            //     </button>
-            //     <button className="btnxsp btn-sort "
-            //       onClick={() => handleSort("enddate")}>
-            //       Checkout
-            //     </button>
-            //     <button className="btnxsp btn-sort "
-            //       onClick={() => handleSort("active")}>
-            //       Active
-            //     </button>
-            //   </div>
-            // </div>  style={{backgroundColor: "transparent"}}
-             <div className="standardtitlebar800">
+
+            <div className="standardtitlebar800">
               <div className="button-grid">
                 <button className="navbutton4"
                   onClick={() => handleSort("owner")}>
