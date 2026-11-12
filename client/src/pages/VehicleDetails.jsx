@@ -728,26 +728,29 @@ export default function VehicleDetails() {
     let msg = "";
     //console.log('phonetocall',phonetocall)
 
-    if (createdfrom === 'ownervehicles') {
+    if (createdfrom === 'ownervehicles' || createdfrom === 'rentervehicles') {
+      // not used anywhere
       if (oktoaddobj.msgType === 1) {
         msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
           Please deactivate another vehicle before activating this one.<br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
-
-
       }
+
+      // message when trying to add third vehicle from form
       if (oktoaddobj.msgType === 2) {
-        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
+        msg = (<>You are not allowed to have more<br />parking than allowed<br />  {stateUnit.parking_allowed_unit} <br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
       }
+      // owner vehicles tried to add a daypass record when one already exists
       if (oktoaddobj.msgType === 3) {
         msg = (<>Daypass limit reached. <br />
           You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.<br />Contact Admin to increase<br /> allowed daypass count.</>);
       }
-      if (oktoaddobj.msgType === 5) {
-        msg = (<>Multi Day and Day Use limit exceded. <br />
-          You are allowed 2 Day Passes templates</>);
-      }
+      // if (oktoaddobj.msgType === 5) {
+      //   msg = (<>Multi Day and Day Use limit exceded. <br />
+      //     You are allowed 2 Day Passes templates</>);
+      // }
+      // renter in unit when adding a new vehicle
       if (oktoaddobj.msgType === 6) {
         msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
       }
@@ -756,25 +759,7 @@ export default function VehicleDetails() {
       }
 
     }
-    if (createdfrom === 'rentervehicles') {
-      // msg = (<>You are not allowed to have more active vehicles than your parking allowance. <br />
-      //   CALL THE OWNER OR ADMIN</>);
-      if (oktoaddobj.msgType === 1) {
-        msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit}</>);
-      }
-      if (oktoaddobj.msgType === 2) {
-        msg = (<>You are not allowed to have more<br />active vehicles than your parking allowance {stateUnit.parking_allowed_unit} <br />
-          CALL THE OWNER OR ADMIN.</>);
-      }
-      if (oktoaddobj.msgType === 3) {
-        msg = (<>Daypass limit reached. <br />
-          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.<br />Contact Admin to increase<br /> allowed daypass count.</>);
-      }
-      if (oktoaddobj.msgType === 6) {
-        msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
-      }
-
-    }
+   
     //   if (role === 'owner') {
     //      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
     if (!oktoaddobj.oktoadd) {

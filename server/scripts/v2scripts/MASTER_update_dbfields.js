@@ -1,13 +1,19 @@
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+// const scripts = [
+//   "createUnitTable.js",
+//   "populateUnitTable.js",
+//   "copyUnitPincodes.js",
+//   "removeUserParkingFields.js",
+//   "copyRenterVehicleOwnerType.js",
+//   "copyUnitnumberToPincodevalue.js"
+// ];
+
 const scripts = [
   "createUnitTable.js",
   "populateUnitTable.js",
-  "copyUnitPincodes.js",
-  "removeUserParkingFields.js",
-  "copyRenterVehicleOwnerType.js",
-  "copyUnitnumberToPincodevalue.js"
+  "copyUnitPincodes.js"
 ];
 
 const serverDirectory = fileURLToPath(new URL("../../", import.meta.url));

@@ -14,7 +14,7 @@ const operations = [
       { value: 'family', label: 'Family' },
       { value: 'friend', label: 'Friend' },
       { value: 'tenant', label: 'Tenant' },
-      { value: 'multiday', label: 'Contractor' }
+      { value: 'dayuseonly', label: 'Day Pass' }
     ] } }],
 
   ["units", { $unset: { pincodeary: "" } }],
@@ -31,6 +31,7 @@ const operations = [
   ["vehicles", { $set: { day_use_only: 0 } }],
   ["vehicles", { $set: { handicapped: 0 } }],
   ["vehicles", { $set: { multiday: 0 } }],
+  ["vehicles", { $set: { company: "" } }],
   ["vehicles", { $set: { createdbytype: "owner" } }],
   ["vehicles", { $set: { createdbyrole: "owner" } }],
   ["vehicles", { $set: { pin_code_value: "" } }],

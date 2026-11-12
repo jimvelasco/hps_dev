@@ -258,7 +258,8 @@ export default function RenterVehicles() {
 
   const showFailureMessage = () => {
      if (hoa?.hoaid !== hoaId) return null;
-    const messagetoshow = vehicleMessageHelper(vehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount,hoa);
+    const createdfrom = 'rentervehicles';
+    const messagetoshow = vehicleMessageHelper(createdfrom,vehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount,hoa);
     if (messagetoshow !== null) {
       setModal({
         isOpen: true,
