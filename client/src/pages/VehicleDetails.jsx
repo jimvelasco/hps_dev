@@ -400,7 +400,7 @@ export default function VehicleDetails() {
 
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
           const edate = new Date();
-          edate.setDate(edate.getDate() - 1);
+          edate.setDate(edate.getDate() - 0);
           sd = formatLocalDate(edate);
           ed = formatLocalDate(edate);
           //  sd = theVehicle.startdate;
@@ -543,27 +543,19 @@ export default function VehicleDetails() {
   // JJVFIX
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+     console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     let dateUpdates = {};
 
     if (name === 'carownertype' && value === 'dayuseonly') {
       const edate = new Date();
       //  console.log('DO SOMETHING WITH DATES day use only');
-      edate.setDate(edate.getDate() - 1);
+      edate.setDate(edate.getDate() - 0);
       const date = formatLocalDate(edate);
       dateUpdates = { startdate: date, enddate: date };
       setDisableInDateField(false)
       setDisableOutDateField(false)
     }
     if (name === 'carownertype' && value === 'multiday') {
-      //  console.log('DO SOMETHING WITH DATES multiday');
-      // const edate = new Date();
-      // const edate2 = new Date();
-      // edate.setDate(edate.getDate() -1);
-      // edate2.setDate(edate2.getDate() -1);
-      // const date = formatLocalDate(edate);
-      // const date2 = formatLocalDate(edate2);
-      // dateUpdates = { startdate: date, enddate: date2 };
       setDisableInDateField(false)
       setDisableOutDateField(false)
     }
@@ -792,13 +784,20 @@ export default function VehicleDetails() {
     setFormSubmitting(true);
 
     let vehcbt = "";
+    let vehcot = "";
 
     let cv = oktoaddobj.currentVehicle;
     if (cv !== null) {
       vehcbt = cv.createdbytype;
+      vehcot = cv.carownertype;
     }
 
+    let multidayveh = 0;
+      if (formData.enddate > formData.startdate && formData.carownertype === 'dayuseonly') {
+        multidayveh = 1;
+      }
 
+console.log('formData is',formData)
 
     // JJVFIX
     try {
@@ -812,10 +811,13 @@ export default function VehicleDetails() {
           cbt = "owner";
         }
       }
-      // console.log('the cv is ',cv)
-      //  console.log('the vehcbt ',vehcbt)
-      //   console.log('the cbt is ',cbt)
 
+      // if they use a daypass template it goes into the other 
+      // bucket and gets zapped and removed from display after day has passed
+      if (role === "" && vehcot === 'dayuseonly') {
+        // cbt = 'other'
+      }
+     
 
       const vehiclePayload = {
         ...formData,
@@ -823,7 +825,8 @@ export default function VehicleDetails() {
         ownerid: oid,
         requires_payment: rpflag,
         createdbytype: cbt,
-        createdbyrole: localStorage.getItem('logonType')
+        createdbyrole: localStorage.getItem('logonType'),
+        multiday: multidayveh
 
         // ...(!isModifyMode && {
         //   pin_code_value: createdfrom === "rentervehicles" ? pincodeValue : "",
@@ -831,7 +834,7 @@ export default function VehicleDetails() {
         // })
       };
 
-      //   console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
+         console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
@@ -1274,7 +1277,7 @@ export default function VehicleDetails() {
                     disabled={disableOutDateField}
                   />
                 </div>
-                 <div className="unit-checkbox-row">
+                 {/* <div className="unit-checkbox-row">
                   <input
                     type="checkbox"
                     id="vehicle-multiday"
@@ -1286,7 +1289,7 @@ export default function VehicleDetails() {
 
                   />
                   <label className="input-label" htmlFor="vehicle-multiday">Multiple Days</label>
-                </div>
+                </div> */}
 
                 <div className="unit-checkbox-row">
                   <input

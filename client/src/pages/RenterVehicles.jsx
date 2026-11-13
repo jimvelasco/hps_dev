@@ -123,14 +123,22 @@ export default function RenterVehicles() {
           // });
 
           //console.log('all vehicles from response ',unitNumber);
-
           const todayStr = formatLocalDate(new Date());
           const updatedVehicles = responseData
-            .filter(v => v.createdbytype !== 'other' || !['dayuseonly', 'renter'].includes(v.carownertype) || !v.enddate || v.enddate >= todayStr)
+            .filter(v => {
+              const isExpiredOtherVehicle = v.createdbytype === 'other' &&
+                ['dayuseonly', 'renter'].includes(v.carownertype) &&
+                v.enddate && v.enddate < todayStr;
+              return !isExpiredOtherVehicle;
+            })
             .map(v => ({
               ...v,
               calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
             }));
+
+            console.log('updated vehicles',updatedVehicles)
+            let updatedVehicles2 = updatedVehicles.filter(v => v.multiday === 0 );
+            console.log('updated vehicles2',updatedVehicles2)
 
 
 
@@ -156,7 +164,7 @@ export default function RenterVehicles() {
           // });
 
 
-          setVehicles(updatedVehicles);
+          setVehicles(updatedVehicles2);
 
           //  if (pincodeAction != 'standard') {
           if (pincodeAction == 'renter') setPincodeActionLabel('(Renter)');
@@ -233,7 +241,7 @@ export default function RenterVehicles() {
     navigate(qry, {
       state: {
         unitNumber: uid,
-        role: "renter",
+        role:  localStorage.getItem('logonType'),
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
         vehid: vid,
@@ -314,7 +322,8 @@ export default function RenterVehicles() {
       state: {
         nonownerType: nonownerType,
         unitNumber: unitNumber,
-        role: location.state?.nonownerType || "renter",
+        // role: location.state?.nonownerType || "renter",
+        role:  localStorage.getItem('logonType'),
         vehicles: vehicles,
         ownerOfUnit: ownerOfUnit,
         unit: unitForRenter,
@@ -476,7 +485,7 @@ export default function RenterVehicles() {
             <div className="xphoneview">
               <VehiclesGridPhone
                 vehicles={displayedVehicles}
-                role={"renter"}
+                role={localStorage.getItem('logonType')}
                 sortColumn={sortColumn}
                 sortDirection={sortDirection}
                 handleSort={handleSort}

@@ -727,6 +727,12 @@ input.input-date2:disabled {
   gap: 10px;
   margin: 15px 0;
 }
+.unit-checkbox-row input:disabled + label {
+  color: #888;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 
 .checkboxhide {
   visibility: hidden;

@@ -77,8 +77,8 @@ export default function OwnerVehicles() {
       setOwnerId(loggedInUser._id);
       setShowUnitId(loggedInUser.unitnumber);
       setLogonType(localStorage.getItem('logonType'));
-      //  console.log('OV role from url',routeRole, loggedInUser.role)
-      if (localStorage.getItem('logonType') === 'rentalmanager') {
+    //  console.log('OV role from url',routeRole, loggedInUser.role)
+      if (localStorage.getItem('logonType') === 'tenant') {
         setDisableAddButton(true)
       }
 
@@ -262,9 +262,9 @@ export default function OwnerVehicles() {
       ? vehicles.filter(v => v.createdbyrole === "tenant" || v.carownertype === "tenant")
       : loggedInUser?.role === "rentalmanager"
         ? vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" && v.createdbyrole !== "")
-        : vehicles;
+        : vehicles ;
 
-
+//.filter(v => v.carownertype !== "renter")
   //    const filteredVehicles = loggedInUser?.role === "admin"
   // ? vehicles.filter(vehicle =>
   //   String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
@@ -396,7 +396,6 @@ export default function OwnerVehicles() {
           nonownerType: vehicle.carownertype,
           unitNumber: unitNumber,
           role: loggedInUser.role,
-
           vehicles: vehicles,
           ownerOfUnit: loggedInUser,
           vehid: vid,
@@ -468,18 +467,18 @@ export default function OwnerVehicles() {
       });
       return;
     }
-    if (veh_grp_ary.dayusemultivehsany.count >= maxDaypassTemplates) {
-      setModal({
-        isOpen: true,
-        type: "alert",
-        title: "Error",
-        message: "You can only have 2 day pass templates.",
-        confirmText: "OK",
-        onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
-      });
-      return;
+    // if (veh_grp_ary.dayusemultivehsany.count >= maxDaypassTemplates) {
+    //   setModal({
+    //     isOpen: true,
+    //     type: "alert",
+    //     title: "Error",
+    //     message: "You can only have 2 day pass templates.",
+    //     confirmText: "OK",
+    //     onConfirm: () => setModal(prev => ({ ...prev, isOpen: false }))
+    //   });
+    //   return;
 
-    }
+    // }
 
 
     if (showFailureMessage() === null) {

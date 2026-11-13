@@ -291,23 +291,25 @@ const updateUnit = async (req, res) => {
 
 const deleteUnit = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const user = await User.findById(id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const { hoaid, unitnumber } = req.params;
+    const currentUser = await User.findById(req.user.userId);
+    if (!currentUser || currentUser.role !== "admin" || currentUser.hoaid !== hoaid) {
+      return res.status(403).json({ message: "Only an HOA admin can delete units" });
     }
 
-    await User.findByIdAndDelete(id);
+    const unit = await Unit.findOneAndDelete({ hoaid, unitnumber });
+    if (!unit) {
+      return res.status(404).json({ message: "Unit not found" });
+    }
+
+    const deletedUsers = await User.deleteMany({ hoaid, unitnumber });
 
     res.status(200).json({
-      message: "User deleted successfully",
-      user: {
-        _id: user._id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email
+      message: "Unit and associated users deleted successfully",
+      deletedUsersCount: deletedUsers.deletedCount,
+      unit: {
+        _id: unit._id,
+        unitnumber: unit.unitnumber
       }
     });
   } catch (error) {

@@ -14,7 +14,7 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   const phonetocall = ""; //getHoaContactPhoneNumber(hoa,"pm_renter");
   let overlapbump = 0;
 
-  console.log('vehicles from helper',vehicles)
+ // console.log('vehicles from helper',vehicles)
 
  // console.log('vehicleMessageHelper createdfrom',createdfrom)
 

@@ -3,7 +3,7 @@ import TableButton from "./TableButton";
 import { formatPhoneNumber } from "../utils/vehicleHelpers";
 
 export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDirection, handleSort, handleDetailsClick, handlePaymentClick, getVehicleActiveStatusBoolean, utcDateOnly }) {
-  // console.log('role in VehiclesGrid:', role);
+   console.log('role in VehiclesGrid:', role);
   return (
 
     <div style={{
@@ -102,13 +102,22 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
               } 
             </div>
           {/* <div><b>{vehicle.carownertype}</b></div> */}
-  
-           <div className="full-row-left" >
-               role: {vehicle.createdbyrole}  &nbsp; cbt: {vehicle.createdbytype} &nbsp; multi: {vehicle.multiday}
-            
-           {/* {(vehicle.day_use_only === 1) && "DAY PASS"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype} 
-            - {vehicle.createdbytype} - {vehicle.carownertype}*/}
+
+         {/* {role === 'admin' || role === 'owner'  &&  (
+             <div className="full-row-left" style={{marginTop:"5px"}}>
+               Role: {vehicle.createdbyrole}  &nbsp; cbt: {vehicle.createdbytype} &nbsp; multi: {vehicle.multiday}
            </div>
+
+          )} */}
+
+           <div className="full-row-left" style={{marginTop:"5px"}}>
+               Role: {vehicle.createdbyrole}  &nbsp; cbt: {vehicle.createdbytype} &nbsp; multi: {vehicle.multiday} - {vehicle.carownertype} 
+           </div>
+  
+          
+
+             {/* {(vehicle.day_use_only === 1) && "DAY PASS"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype} 
+            - {vehicle.createdbytype} - {vehicle.carownertype}*/}
 
 
         </div>

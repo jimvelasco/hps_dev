@@ -132,6 +132,9 @@ export default function UnitDetails() {
 
 
         });
+
+
+        console.log('response.data._id',response.data._id)
       } catch (err) {
         setError(err.response?.data?.message || err.message || "Failed to fetch user");
         console.error("Error fetching user:", err);
@@ -313,23 +316,24 @@ export default function UnitDetails() {
   };
 
   const handleDelete = async () => {
+    //const theunitid = unitId.
     setModal({
       isOpen: true,
       type: "confirm",
       title: "Confirm Delete",
-      message: `Are you sure you want to delete ${formData.first_name} ${formData.last_name}? This action cannot be undone.`,
+      message: `Are you sure you want to delete ${formData.unitnumber}? This action cannot be undone.`,
       confirmText: "Delete",
       cancelText: "Cancel",
       onConfirm: async () => {
         setModal(prev => ({ ...prev, isOpen: false }));
         setIsSubmitting(true);
         try {
-          await axios.delete(`/users/${userId}`);
+          await axios.delete(`/units/${encodeURIComponent(hoaid)}/${encodeURIComponent(formData.unitnumber)}`);
           setModal({
             isOpen: true,
             type: "alert",
             title: "Success",
-            message: "User deleted successfully",
+            message: "Unit deleted successfully",
             confirmText: "OK",
             onConfirm: () => {
               setModal(prev => ({ ...prev, isOpen: false }));
@@ -341,7 +345,7 @@ export default function UnitDetails() {
             isOpen: true,
             type: "alert",
             title: "Error",
-            message: err.response?.data?.message || err.message || "Failed to delete user",
+            message: err.response?.data?.message || err.message || "Failed to delete unit",
             confirmText: "OK",
             onConfirm: () => {
               setModal(prev => ({ ...prev, isOpen: false }));
@@ -420,10 +424,24 @@ export default function UnitDetails() {
                   disabled={!isAdminView}
                 />
               </div>
-              <div style={{
-                marginTop: "15px", marginBottom: "15px", display: "flex",
-                alignItems: "center", gap: "10px"
-              }}>
+           
+
+              <div className="unit-checkbox-row" style={{marginTop:"30px"}}>
+                <input
+                  id="unit-available_for_rent"
+                  type="checkbox"
+                  checked={formData.available_for_rent === 1}
+                  onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
+                  disabled={!isAdminView}
+                />
+                  <label className="input-label" htmlFor="unit-available_for_rent"
+                    title="This flag will prevent the unit number from even showing in the list when a non-owner uses the app">
+                    Available for Rent
+                  </label>
+              </div>
+
+                <div className="unit-checkbox-row" style={{marginTop:"15px"}}>
+        
                 <input
                   id="unit-is_resident"
                   type="checkbox"
@@ -434,43 +452,23 @@ export default function UnitDetails() {
                 <label className="input-label" htmlFor="unit-is_resident" title="Is this the Owner's primary residence">Primary Residence for Owner</label>
               </div>
 
-              <div className="unit-checkbox-row">
-                <input
-                  id="unit-available_for_rent"
-                  type="checkbox"
-                  checked={formData.available_for_rent === 1}
-                  onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView}
-                />
-                <label className="input-label" htmlFor="unit-available_for_rent" 
-                title="This flag will prevent the unit number from even showing in the list when a non-owner uses the app">Available for Rent</label>
-              </div>
-               <div className="unit-checkbox-row" style={{marginBottom:"35px"}}>
+               <div className="unit-checkbox-row" style={{marginTop:"15px",marginBottom:"30px"}}>
                 <input
                   id="unit-day_use_only"
                   type="checkbox"
                   checked={formData.day_use_only === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, day_use_only: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView}
+                  // disabled={!isAdminView && !isEditMode}
+                   disabled={ isEditMode || !isAdminView}
                 />
                 <label className="input-label" htmlFor="unit-day_use_only" title="The virual room will only allow day passes">Day Pass Only Unit</label>
               </div>
+
+               
              
 
 
 
-
-              {/* <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  PIN #
-                </label>
-                <input className="standardinput"
-                  type="text"
-                  name="pincode"
-                  value={formData.pincode}
-                  onChange={handleInputChange}
-                />
-              </div> */}
 
               <fieldset className="input-group">
                 <legend><b>PIN Entries</b></legend>
@@ -512,56 +510,57 @@ export default function UnitDetails() {
                       required
                     >
                      
-                      {/* <option value="standard">Standard</option>
-                      <option value="dayuse">Day Use</option>
-                      <option value="multiuse">Multi Use</option>
-                      <option value="freenight">Free Night Parking</option>
-                      <option value="contractor">Contractor</option>
-                      <option value="special">Special???</option> */}
                       <option value="">--Select action--</option>
                       <option value="renter">Short Term Renter</option>
-                      {/* <option value="visitor">Visitor / Day Guest</option>
-                      <option value="contractor">Contractor / Vendor</option> */}
                        <option value="dayuseonly">Day Pass</option>
-                        {/* <option value="multiday">Multiple Days (day use)</option> */}
-                     
                     </select>
-                    <label className="input-label_normal" htmlFor={`unit-pin-description-${index}`}>Description</label>
-                    <input
-                      id={`unit-pin-description-${index}`}
-                      className="standardinput"
-                      type="text"
-                      value={entry.description ?? ""}
-                      onChange={(e) => handlePinEntryChange(index, "description", e.target.value)}
-                      disabled={false}
-                    />
-                    <label className="input-label_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
-                    <input
-                      id={`unit-pin-uses-allowed-${index}`}
-                      className="standardinput"
-                      type="number"
-                      value={entry.uses_allowed ?? 0}
-                      onChange={(e) => handlePinEntryChange(index, "uses_allowed", e.target.value === "" ? "" : Number(e.target.value))}
-                      disabled={!isAdminView}
-                    />
-                    <label className="input-labe_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-uses-used-${index}`}>Number Used</label>
-                    <input
-                      id={`unit-pin-uses-used-${index}`}
-                      className="standardinput"
-                      type="number"
-                      value={entry.uses_used ?? -1}
-                      onChange={(e) => handlePinEntryChange(index, "uses_used", e.target.value === "" ? "" : Number(e.target.value))}
-                      disabled={!isAdminView}
-                    />
-                    <label className="input-label_normal" style={{ marginTop: "10px" }} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
-                    <input
-                      id={`unit-pin-expire-date-${index}`}
-                      className="input-date2"
-                      type="date"
-                      value={entry.expire_date?.slice(0, 10) ?? ""}
-                      onChange={(e) => handlePinEntryChange(index, "expire_date", e.target.value)}
-                      disabled={!isAdminView}
-                    />
+
+                    {isAdminView && (
+                    <div style={{ border: "0px solid black" }}>
+
+                      <label className="input-label_normal" htmlFor={`unit-pin-description-${index}`}>Description</label>
+                      <input
+                        id={`unit-pin-description-${index}`}
+                        className="standardinput"
+                        type="text"
+                        value={entry.description ?? ""}
+                        onChange={(e) => handlePinEntryChange(index, "description", e.target.value)}
+                        disabled={false}
+                      />
+                      <label className="input-label_normal" style={{ marginTop: "10px", display:"block" }} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
+                      <input
+                        id={`unit-pin-uses-allowed-${index}`}
+                        className="standardinput"
+                        type="number"
+                        value={entry.uses_allowed ?? 0}
+                        onChange={(e) => handlePinEntryChange(index, "uses_allowed", e.target.value === "" ? "" : Number(e.target.value))}
+                        disabled={!isAdminView}
+                      />
+                      <label className="input-labe_normal" style={{ marginTop: "10px", display:"block"}} htmlFor={`unit-pin-uses-used-${index}`}>Number Used</label>
+                      <input
+                        id={`unit-pin-uses-used-${index}`}
+                        className="standardinput"
+                        type="number"
+                        value={entry.uses_used ?? -1}
+                        onChange={(e) => handlePinEntryChange(index, "uses_used", e.target.value === "" ? "" : Number(e.target.value))}
+                        disabled={!isAdminView}
+                      />
+                      <label className="input-label_normal" style={{ marginTop: "10px" , display:"block"}} htmlFor={`unit-pin-expire-date-${index}`}>Expiration Date</label>
+                      <input
+                        id={`unit-pin-expire-date-${index}`}
+                        className="input-date2"
+                        type="date"
+                        value={entry.expire_date?.slice(0, 10) ?? ""}
+                        onChange={(e) => handlePinEntryChange(index, "expire_date", e.target.value)}
+                        disabled={!isAdminView}
+                      />
+                    </div>
+                    )}
+
+
+
+
+
                   </div>
                 ))}
                 {isAdminView && (
@@ -572,24 +571,6 @@ export default function UnitDetails() {
               </fieldset>
 
 
-
-
-
-
-
-
-
-              {/* <div className="input-group">
-                <label className="input-label" htmlFor="unit-is_resident">
-                  <input
-                    id="unit-is_resident"
-                    type="checkbox"
-                    checked={formData.is_resident === 1}
-                    onChange={(e) => setFormData(prev => ({ ...prev, is_resident: e.target.checked ? 1 : 0 }))}
-                  />
-                  Resident
-                </label>
-              </div> */}
               <fieldset className="input-group">
                 <legend><b>Unit</b></legend>
 
@@ -791,7 +772,7 @@ export default function UnitDetails() {
                 >
                   Cancel
                 </button>
-                {/* {isEditMode && (
+                {isAdminView && (
                   <button className="btn btn-danger"
                     type="button"
 
@@ -800,7 +781,7 @@ export default function UnitDetails() {
                   >
                     Delete
                   </button>
-                )} */}
+                )}
               </div>
 
             </form>

@@ -15,7 +15,7 @@ router.put("/batch/update-parking", authenticateToken, updateAllUnits);
 router.post("/", authenticateToken, createUnit);
 //router.put("/updateunit", validateRequest(updateUnitDetailsSchema), updateUnit);
 router.put("/updateunit", authenticateToken, updateUnit);
-router.delete("/:id", deleteUnit);
+router.delete("/:hoaid/:unitnumber", authenticateToken, deleteUnit);
 
 
 

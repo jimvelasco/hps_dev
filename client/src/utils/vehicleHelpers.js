@@ -239,7 +239,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         }
 
 
-//console.log('veh_grp_ary.allactivevehs.array',veh_grp_ary.allactivevehs.array)
+
         
 
 
@@ -247,13 +247,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
         }
+console.log('1 veh_grp_ary',veh_grp_ary)
 
-
-          if (createdfrom === 'ownervehicles' && veh_grp_ary.rentervehs.count > 0) {
+          if (createdfrom === 'ownervehicles' && (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0)) {
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
             return robj;
           }
-
+console.log('2 veh_grp_ary',veh_grp_ary)
 
           // if (createdfrom === 'ownervehicles' &&   formvehicle.carownertype === 'tenant' ) {
           //   if (veh_grp_ary.tenantvehsany.count > 1) {
@@ -297,13 +297,17 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
     let theCurrentVehicle = theCurrentVehicleAry[0];
-   // console.log('VD EXISTS the current vehicle is', theCurrentVehicle)
+    //console.log('VD EXISTS the current vehicle is', theCurrentVehicle)
     let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
     let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
     const maxdayusemulti = 2;
     let requirespayment = theCurrentVehicle.requires_payment;
     if (is_vehicle_active && dates_span_today) {
-      robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
+       if (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0) {
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+       } else {
+         robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
+       }
       return robj;
     }
     if (is_vehicle_active && !dates_span_today) {
@@ -323,13 +327,23 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       }
 
 //
-       if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
-          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
-          return robj;
-        } else {
-          robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0};
-          return robj;
-        }      
+      if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
+        return robj;
+      } else if (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0) {
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+        return robj;
+      } else {
+        robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+        return robj;
+      }   
+        
+          //  if (veh_grp_ary.rentervehs.count > 0) {
+          //   showerror = true;
+          //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+          //   return robj;
+          // }
+
     }
 
 
@@ -370,6 +384,8 @@ export const getVehicleTypeGroups = (vehicles, log = false) => {
     { name: 'dayusemultivehsany', matches: v => v.carownertype === 'dayuseonly' || v.carownertype === 'multiday' },
     { name: 'allactivevehs', matches: v => v.calculatedActiveFlag === true },
     { name: 'tenantvehsany', matches: v => v.carownertype === 'tenant' },
+    { name: 'tenantvehs', matches: v => v.carownertype === 'tenant' && v.calculatedActiveFlag === true },
+
     { name: 'otherexpiredvehs', matches: v => v.createdbytype === 'other' && ['dayuseonly', 'renter'].includes(v.carownertype) && v.enddate && v.enddate < todayStr }
   ];
 
