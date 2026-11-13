@@ -49,6 +49,7 @@ export default function OwnerVehicles() {
   const [disableAddButton, setDisableAddButton] = useState(false);
   const [maxDaypassTemplates, setMaxDaypassTemplates] = useState(2);
   const [countOtherExpired, setCountOtherExpired] = useState(0);
+  const [overActiveLimitMsg, setOverActiveLimitMsg] = useState(null);
 
   // these are vehicle types that will show up on this page
   // const [vehicleOwnerTypeAry, setVehicleOwnerTypeArray] =
@@ -99,6 +100,7 @@ export default function OwnerVehicles() {
       try {
         const response = await axios.get(`/units/${encodeURIComponent(hoaId)}/${encodeURIComponent(loggedInUser.unitnumber)}`);
         if (!cancelled) {
+          console.log('the unit is',response.data)
           setUnitForOwner(response.data);
         }
       } catch (err) {
@@ -136,7 +138,8 @@ export default function OwnerVehicles() {
         //  console.log('vehicles from fetchVehicles',responseData)
 
            const veh_grp_ary = getVehicleTypeGroups(responseData);
-          //  console.log('FV 137 veh_grp_ary',veh_grp_ary)
+          //  console.log('FV 140 veh_grp_ary',veh_grp_ary)
+
             setCountOtherExpired(veh_grp_ary.otherexpiredvehs.count)
 
           //     console.log('ALL VEHICLES IN UNIT',responseData);
@@ -227,6 +230,19 @@ export default function OwnerVehicles() {
       fetchVehicles();
     }
   }, [hoaId, ownerId, role]);
+
+  useEffect(() => {
+    if (role === "admin" || vehiclesLoading || unitForOwner?.hoaid !== hoaId || unitForOwner?.unitnumber !== loggedInUser?.unitnumber) {
+      setOverActiveLimitMsg(null);
+      return;
+    }
+    setOverActiveLimitMsg(allActiveCount > Number(unitForOwner.parking_allowed_unit)
+      ? <>The active vehicle count: {allActiveCount}<br />is over your limit: {unitForOwner.parking_allowed_unit}</>
+      : null);
+  }, [role, vehiclesLoading, unitForOwner, hoaId, loggedInUser?.unitnumber, allActiveCount]);
+
+
+
 
   const handleFilterApply = (matchingVehicles) => {
     if (filterType === "owner") {
@@ -849,6 +865,11 @@ export default function OwnerVehicles() {
             {renderTitleBarPhone()}
           </div>
         </div> */}
+
+        {overActiveLimitMsg !== null && (
+          <div className="standardtitlebar320">{overActiveLimitMsg}</div>
+
+        )}
 
 
         <div style={{ display: isVisible ? "block" : "block" }}>

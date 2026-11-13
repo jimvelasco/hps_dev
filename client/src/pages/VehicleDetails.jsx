@@ -747,6 +747,9 @@ export default function VehicleDetails() {
       if (oktoaddobj.msgType === 6) {
         msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
       }
+       if (oktoaddobj.msgType === 8) {
+        msg = (<>There may be a Tenant in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
+      }
       if (oktoaddobj.msgType === 7) {
         msg = (<>Owners can only have one tenant</>);
       }

@@ -302,61 +302,77 @@ console.log('2 veh_grp_ary',veh_grp_ary)
     let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
     const maxdayusemulti = 2;
     let requirespayment = theCurrentVehicle.requires_payment;
+
+    /* START **************************** */
     if (is_vehicle_active && dates_span_today) {
-       if (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0) {
+       if (veh_grp_ary.rentervehs.count > 0 ) {
          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+       } else  if ( veh_grp_ary.tenantvehs.count > 0) {
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
        } else {
          robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
        }
       return robj;
     }
+     /* END **************************** */
+
+
+    /* START **************************** */
     if (is_vehicle_active && !dates_span_today) {
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
       return robj;
     }
-    
+     /* END **************************** */
+
+    /* START **************************** */
     if (!is_vehicle_active && dates_span_today) {
       if (is_day_use_vehicle) {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
         if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
-   //       console.log('VH BAILED ON veh_grp_ary.dayusemultivehs.count >= maxdayuse')
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
           return robj;
         }
         return robj;
       }
 
-//
+      // if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
+      //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
+      //   return robj;
+      // } else if (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0) {
+      //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+      //   return robj;
+      // } else {
+      //   robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+      //   return robj;
+      // }    
+
+
       if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
         return robj;
-      } else if (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0) {
+      } else if (veh_grp_ary.rentervehs.count > 0 ) {
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+        return robj;
+      }  else if ( veh_grp_ary.tenantvehs.count > 0 ) {
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
         return robj;
       } else {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
         return robj;
       }   
-        
-          //  if (veh_grp_ary.rentervehs.count > 0) {
-          //   showerror = true;
-          //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
-          //   return robj;
-          // }
-
     }
+     /* END **************************** */
 
 
 
 
-
-
+    /* START **************************** */
     if (!is_vehicle_active && !dates_span_today) {
       //   console.log('THIS IS WHERE')
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
       return robj;
     }
-
+     /* END **************************** */
 
 
 
