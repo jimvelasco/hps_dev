@@ -3,7 +3,7 @@ import TableButton from "./TableButton";
 import { formatPhoneNumber } from "../utils/vehicleHelpers";
 
 export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDirection, handleSort, handleDetailsClick, handlePaymentClick, getVehicleActiveStatusBoolean, utcDateOnly }) {
-   console.log('role in VehiclesGrid:', role);
+//  console.log('role in VehiclesGrid:', role);
   return (
 
     <div style={{

@@ -395,7 +395,7 @@ export default function VehicleDetails() {
         //   setDisableOutDateField(true)
         // }
 
-           console.log('cf cot',createdfrom,theVehicle.carownertype);
+       //    console.log('cf cot',createdfrom,theVehicle.carownertype);
 
 
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
@@ -543,7 +543,7 @@ export default function VehicleDetails() {
   // JJVFIX
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-     console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+    // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     let dateUpdates = {};
 
     if (name === 'carownertype' && value === 'dayuseonly') {
@@ -797,7 +797,7 @@ export default function VehicleDetails() {
         multidayveh = 1;
       }
 
-console.log('formData is',formData)
+//console.log('formData is',formData)
 
     // JJVFIX
     try {
@@ -834,7 +834,7 @@ console.log('formData is',formData)
         // })
       };
 
-         console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
+      //   console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
