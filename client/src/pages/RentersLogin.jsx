@@ -124,13 +124,7 @@ export default function RentersLogin() {
 
           //  console.log('pinactionary', pinactionary)
 
-            // JJVFIX
-
-            // if (response.data.action !== nonownerType ) {
-            //     setShowTypeMismatch(true);
-            //     return;
-            // }
-
+           
             //  pincodearylength > 1 means the user has more than the default pin.  
             // the pin itself know which type of person it is for (contractor or visitor)
 
@@ -250,13 +244,7 @@ export default function RentersLogin() {
                             >
                                 <option value="">-- Select type --</option>
                                 <option value="renter">Short Term Renter</option>
-                                {/* <option value="tenant">Tenant (Long Term Renter)</option> 
-                                <option value="family">Family</option>
-                                <option value="friend">Friend</option>*/}
-                                {/* <option value="visitor">Visitor / Day Guest</option>
-                                <option value="contractor">Contractor / Vendor</option> */}
                                 <option value="dayuseonly">Day Pass</option>
-                                {/* <option value="multiday">Multiple Days (day use)</option> */}
 
                             </select>
                         </div>

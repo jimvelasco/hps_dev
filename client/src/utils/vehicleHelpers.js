@@ -29,6 +29,14 @@ export const getVehicleActiveStatusBoolean = (element) => {
 
 const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
+// this is the filter used on OwnerVehicles when in admin mode
+export const handleFilterApply = (vehicles, filterType, parkingTypes) => {
+  if (filterType === "all" || !parkingTypes?.some(type => type.value === filterType)) {
+    return vehicles;
+  }
+  return vehicles.filter(vehicle => vehicle.carownertype === filterType);
+};
+
 
 const getVehicleActiveStatusBoolean2 = (sdate, edate) => {
   const todayUTC = new Date(); // "2025-12-03"
@@ -128,7 +136,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
 
 
-  let maxactiveallowed = unit.parking_allowed_unit;
+  let maxactiveallowed = unit.parking_allowed_owner;
   let maxdayuse = unit.daypasses_allowed_owner;
   if (localStorage.getItem('logonType') === 'tenant') {
     maxdayuse = unit.daypasses_allowed_tenant
@@ -197,9 +205,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     if (!vehicleId) {
       if (!dates_span_today) {
+
+        // JJVFIX. hard coded limit ?
        
          if (createdfrom === 'ownervehicles' &&   formvehicle.carownertype === 'tenant' ) {
-            if (veh_grp_ary.tenantvehsany.count > 0) {
+            if (veh_grp_ary.tenantvehsany.count > 1) {
                robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 7 };
             return robj;
             }
@@ -247,13 +257,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
         }
-console.log('1 veh_grp_ary',veh_grp_ary)
+//console.log('1 veh_grp_ary',veh_grp_ary)
 
           if (createdfrom === 'ownervehicles' && (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0)) {
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
             return robj;
           }
-console.log('2 veh_grp_ary',veh_grp_ary)
+//console.log('2 veh_grp_ary',veh_grp_ary)
 
           // if (createdfrom === 'ownervehicles' &&   formvehicle.carownertype === 'tenant' ) {
           //   if (veh_grp_ary.tenantvehsany.count > 1) {
@@ -382,7 +392,7 @@ console.log('2 veh_grp_ary',veh_grp_ary)
 
 
 export const getVehicleTypeGroups = (vehicles, log = false) => {
-  const ownerTypes = ['owner', 'friend', 'family', 'tenant','rentalmanager'];
+  const ownerTypes = ['owner', 'friend', 'family', 'tenant'];
   const todayStr = formatLocalDate(new Date());
 
   // nonownervehs will include active daypass or multi vehicles

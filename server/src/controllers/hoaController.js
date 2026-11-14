@@ -332,7 +332,7 @@ const importHOAUserCSV_full = async (req, res) => {
 
   })
 
-  let parking_allowed_unit = hoa['parking_allowed_unit'];
+  // let parking_allowed_owner = hoa['parking_allowed_owner'];
 
   let parking_allowed_owner = hoa['parking_allowed_owner'];
   let owner_free_parking_spots = hoa['owner_free_parking_spots'];
@@ -346,7 +346,7 @@ const importHOAUserCSV_full = async (req, res) => {
   let renter_free_parking_spots = hoa['renter_free_parking_spots'];
   let daypasses_allowed_renter = hoa['daypasses_allowed_renter'];
 
-  console.log('parking_allowed_unit', parking_allowed_unit);
+  // console.log('parking_allowed_unit', parking_allowed_unit);
 
   console.log('parking_allowed_owner', parking_allowed_owner);
   console.log('owner_free_parking_spots', owner_free_parking_spots);
@@ -367,7 +367,7 @@ const importHOAUserCSV_full = async (req, res) => {
     unit = await Unit.create({
       hoaid: phoaid,
       unitnumber: unitnum,
-      parking_allowed_unit: parking_allowed_unit,
+      parking_allowed_owner: parking_allowed_owner,
 
 
       pincodeary: [{
@@ -524,7 +524,7 @@ const importHOAUserCSV = async (req, res) => {
 
   })
 
-  let parking_allowed_unit = hoa['parking_allowed_unit'];
+  // let parking_allowed_unit = hoa['parking_allowed_unit'];
 
   let parking_allowed_owner = hoa['parking_allowed_owner'];
   let owner_free_parking_spots = hoa['owner_free_parking_spots'];
@@ -590,7 +590,7 @@ const importHOAUserCSV = async (req, res) => {
       const unit = await Unit.create({
         hoaid: phoaid,
         unitnumber,
-        parking_allowed_unit: parking_allowed_unit,
+        // parking_allowed_unit: parking_allowed_unit,
 
         parking_allowed_owner: parking_allowed_owner,
         owner_free_parking: owner_free_parking_spots,
@@ -600,7 +600,7 @@ const importHOAUserCSV = async (req, res) => {
         tenant_free_parking_spots: tenant_free_parking_spots,
         daypasses_allowed_tenant: daypasses_allowed_tenant,
 
-        parking_allowed_renter: parking_allowed_unit,
+        parking_allowed_renter: parking_allowed_renter,
         renter_free_parking: renter_free_parking_spots,
         daypasses_allowed_renter: daypasses_allowed_renter,
 

@@ -34,8 +34,8 @@ export default function UnitDetails() {
     unitnumber: numonunit || "",
     bedrooms: 2,
     inventory_allowed_owner: "",
-    parking_allowed_unit: 2,
-    parking_allowed_owner: "",
+    // parking_allowed_unit: 2,
+    parking_allowed_owner: 2,
     parking_allowed_renter: "",
     owner_free_parking: "",
     renter_free_parking: "",
@@ -107,11 +107,11 @@ export default function UnitDetails() {
           unitnumber: response.data.unitnumber || "",
           bedrooms: response.data.bedrooms || "",
           inventory_allowed_owner: response.data.inventory_allowed_owner || "",
-          parking_allowed_unit: response.data.parking_allowed_unit ?? 2,
-          parking_allowed_owner: response.data.parking_allowed_owner || "",
-          parking_allowed_renter: response.data.parking_allowed_renter || "",
-          owner_free_parking: response.data.owner_free_parking || "",
-          renter_free_parking: response.data.renter_free_parking || "",
+          // parking_allowed_unit: response.data.parking_allowed_unit ?? 2,
+          parking_allowed_owner: response.data.parking_allowed_owner || 2,
+          parking_allowed_renter: response.data.parking_allowed_renter || 2,
+          owner_free_parking: response.data.owner_free_parking || 2,
+          renter_free_parking: response.data.renter_free_parking || 2,
           pincodeary: response.data.pincodeary || [],
           available_for_rent: response.data.available_for_rent ?? 1,
           day_use_only: response.data.day_use_only ?? 0,
@@ -134,7 +134,7 @@ export default function UnitDetails() {
         });
 
 
-        console.log('response.data._id',response.data._id)
+       // console.log('response.data._id',response.data._id)
       } catch (err) {
         setError(err.response?.data?.message || err.message || "Failed to fetch user");
         console.error("Error fetching user:", err);
@@ -224,7 +224,7 @@ export default function UnitDetails() {
         ...(isAdminView && { day_use_only: formData.day_use_only }),
         is_resident: formData.is_resident,
         inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,
-        parking_allowed_unit: formData.parking_allowed_unit !== "" ? Number(formData.parking_allowed_unit) : undefined,
+        // parking_allowed_unit: formData.parking_allowed_unit !== "" ? Number(formData.parking_allowed_unit) : undefined,
         parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,
         parking_allowed_owner: formData.parking_allowed_owner ? parseInt(formData.parking_allowed_owner) : undefined,
         owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : undefined,
@@ -602,7 +602,7 @@ export default function UnitDetails() {
                   />
                 </div>
 
-                <div className="input-group">
+                {/* <div className="input-group">
                   <label className="input-label" htmlFor="parking_allowed_unit">Unit Parking Allowed</label>
                   <input
                     id="parking_allowed_unit"
@@ -614,7 +614,8 @@ export default function UnitDetails() {
                     onChange={handleInputChange}
                     disabled={!isAdminView}
                   />
-                </div>
+                </div> */}
+
               </fieldset>
 
               <fieldset className="input-group">

@@ -102,17 +102,18 @@ export default function VehicleDetails() {
     : logonType === 'tenant'
       ? [
         { value: 'owner', label: 'Owner' },
-        { value: 'friend', label: 'Friend/Family' },
-         { value: 'tenant', label: 'Tenant' }
+        { value: 'friend', label: 'Friend' },
+        { value: 'family', label: 'Family' }
 
       ]
       : logonType === 'owner'
-        ? [
-          { value: 'owner', label: 'Owner' },
-          { value: 'friend', label: 'Friend/Family' },
-          { value: 'tenant', label: 'Tenant' },
-           { value: 'dayuseonly', label: 'Day Pass' }
-        ]
+        ? hoa?.parking_types_array
+        // [
+        //   { value: 'owner', label: 'Owner' },
+        //   { value: 'friend', label: 'Friend/Family' },
+        //   { value: 'tenant', label: 'Tenant' },
+        //   { value: 'dayuseonly', label: 'Day Pass' }
+        // ]
         : logonType === 'rentalmanager'
           ? [{ value: 'owner', label: 'Owner' }]
           : hoa?.parking_types_array ?? [];
@@ -267,10 +268,8 @@ export default function VehicleDetails() {
     edate.setDate(edate.getDate() + daysplus);
 
 
-    // JJVFIX
  //   console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
-  //  console.log("nonownerType ", nonownerType);
-    //  console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
+// console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
 
 
 
@@ -540,7 +539,6 @@ export default function VehicleDetails() {
     navigate(-1);
   };
 
-  // JJVFIX
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
     // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
@@ -724,14 +722,14 @@ export default function VehicleDetails() {
     if (createdfrom === 'ownervehicles' || createdfrom === 'rentervehicles') {
       // not used anywhere
       if (oktoaddobj.msgType === 1) {
-        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_unit}. <br />
+        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_owner}. <br />
           Please deactivate another vehicle before activating this one.<br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
       }
 
       // message when trying to add third vehicle from form
       if (oktoaddobj.msgType === 2) {
-        msg = (<>You are not allowed to have more<br />parking than allowed<br />  {stateUnit.parking_allowed_unit} <br />
+        msg = (<>You are not allowed to have more<br />parking than allowed<br />  {stateUnit.parking_allowed_owner} <br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
       }
       // owner vehicles tried to add a daypass record when one already exists

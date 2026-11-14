@@ -39,7 +39,7 @@ db.hoas.updateMany(
       { value: 'family', label: 'Family' },
       { value: 'friend', label: 'Friend' },
       { value: 'tenant', label: 'Tenant' },
-      { value: 'multiday', label: 'Contractor' }
+      { value: 'dayuseonly', label: 'Day Pass' }
     ]
   }}
 );
@@ -65,7 +65,7 @@ db.units.updateMany(
 
 db.units.updateMany(
   {},
-  { $set: { "parking_allowed_unit": 2 }}
+  { $set: { "parking_allowed_owner": 2 }}
 );
 
 // units need these

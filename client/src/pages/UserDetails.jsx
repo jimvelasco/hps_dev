@@ -96,8 +96,8 @@ export default function UserDetails() {
       };
       fetchUser();
     } else if (hoa && !userId) {
-       console.log('we are creating a new user',location.state)
-         console.log('user details logonType', localStorage.getItem('logonType'))
+      // console.log('we are creating a new user',location.state)
+      //   console.log('user details logonType', localStorage.getItem('logonType'))
       setFormData(prev => ({
         ...prev,
         // inventory_allowed_owner: hoa.inventory_allowed_owner || "",
@@ -319,7 +319,6 @@ export default function UserDetails() {
     disablefield = true;
   }
 
-  // JJVFIX should there be a role === tenant?  
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>

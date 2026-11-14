@@ -38,10 +38,10 @@ const unitSchema = new mongoose.Schema({
     default: 8
   },
 /* not used anywhere but left in for legacy records */
-  parking_allowed_unit: {
-    type: Number,
-    default: 2
-  },
+  // parking_allowed_unit: {
+  //   type: Number,
+  //   default: 2
+  // },
 
   parking_allowed_owner: {
     type: Number,

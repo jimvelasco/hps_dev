@@ -4,9 +4,11 @@ import { useHoaContactPhoneNumber, getHoaContactPhoneNumber } from "./hoaHelpers
 
 
 export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction, allActiveCount, containsDaypassCount, hoa) => {
-  const unitParkingLimit = Number(unit.parking_allowed_unit);
+  const unitParkingLimit = Number(unit.parking_allowed_owner);
   const daypassesallowed = Number(unit.daypasses_allowed_owner);
   const veh_grp_ary = getVehicleTypeGroups(vehicles);
+ // console.log('vehicles',vehicles)
+ //console.log('vmh veh_grp_ary', veh_grp_ary)
   // console.log('veh_grp_ary.nonownervehs.array', veh_grp_ary.nonownervehs.array)
   // console.log('veh_grp_ary.rentervehs.array', veh_grp_ary.rentervehs.array)
   const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
@@ -46,10 +48,13 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   //  console.log('overlapbump', overlapbump)
   //  console.log('we are here with pincode action',pincodeAction)
 
+ //console.log('pincodeAction',pincodeAction)
+
   // this gets called from renter vehicles with pincode associated with dayuseonly is used
-  if (pincodeAction === 'dayuseonly') {
+  if (pincodeAction === 'dayuseonly' ) {
     if (veh_grp_ary.dayusemultivehs.count >= daypassesallowed) {
-      return (<>You are not allowed more <br /> daypasses than allowed<br />  {daypassesallowed} <br /> If issues, first contact person that <br />provided 
+      return (<>You are not allowed more <br /> daypasses than allowed<br />  {daypassesallowed} <br /> If issues, 
+      first contact person that <br />provided 
         Unit/PIN or HOA Management<br />{phonetocall}</>);
     }
     return null;
@@ -71,6 +76,12 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
 
 // rentervehicles when add button selected and there are two active owner vehicles. 
 // we dont have this on the owners side because we don't know what parking type they have picked until there is a form
+console.log('veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
+console.log('unitParkingLimit',unitParkingLimit)
+console.log('overlapbump ',overlapbump)
+console.log(' veh_grp_ary.dayusemultivehs.count', veh_grp_ary.dayusemultivehs.count)
+
+
   if (createdfrom === 'rentervehicles' && veh_grp_ary.allactivevehs.count >= unitParkingLimit + overlapbump + veh_grp_ary.dayusemultivehs.count) {
       return (<>You are not allowed more <br />parking than allowed<br />  {unitParkingLimit}< br /> If issues, first contact the person who provided
         the Unit/PIN <br />or contact HOA Management.< br />{phonetocall}</>);

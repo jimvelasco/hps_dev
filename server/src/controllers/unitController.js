@@ -1,5 +1,6 @@
 import Unit from "../models/Unit.js";
 import User from "../models/User.js";
+import Vehicle from "../models/Vehicle.js";
 import jwt from "jsonwebtoken";
 import sgMail from "@sendgrid/mail";
 
@@ -54,7 +55,8 @@ const createUnit = async (req, res) => {
   try {
     const { hoaid,
       unitnumber, bedrooms, pincode, pincodeary, available_for_rent, day_use_only, is_resident, inventory_allowed_owner,
-       parking_allowed_unit, parking_allowed_renter,
+      //  parking_allowed_unit, 
+       parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking, company,
       daypasses_allowed_owner,
       parking_allowed_tenant,
@@ -90,7 +92,7 @@ const createUnit = async (req, res) => {
       day_use_only,
       is_resident,
       inventory_allowed_owner,
-      parking_allowed_unit,
+      // parking_allowed_unit,
       parking_allowed_renter,
       parking_allowed_owner,
       owner_free_parking,
@@ -179,7 +181,9 @@ const updateUnit = async (req, res) => {
   try {
     //  const { id } = req.params;
     const { hoaid, unitnumber, bedrooms, company,
-      pincode, pincodeary, available_for_rent, day_use_only, is_resident, inventory_allowed_owner, parking_allowed_unit, parking_allowed_renter,
+      pincode, pincodeary, available_for_rent, day_use_only, is_resident, inventory_allowed_owner, 
+      // parking_allowed_unit, 
+      parking_allowed_renter,
       parking_allowed_owner, owner_free_parking, renter_free_parking,
       daypasses_allowed_owner,
       parking_allowed_tenant,
@@ -251,7 +255,7 @@ const updateUnit = async (req, res) => {
     //  if (is_verified !== undefined) user.is_verified = is_verified;
     //  if (has_read_terms !== undefined) user.has_read_terms = has_read_terms;
     if (inventory_allowed_owner !== undefined) unit.inventory_allowed_owner = inventory_allowed_owner;
-    if (currentUser.role === "admin" && parking_allowed_unit !== undefined) unit.parking_allowed_unit = parking_allowed_unit;
+    // if (currentUser.role === "admin" && parking_allowed_unit !== undefined) unit.parking_allowed_unit = parking_allowed_unit;
     if (parking_allowed_renter !== undefined) unit.parking_allowed_renter = parking_allowed_renter;
     if (parking_allowed_owner !== undefined) unit.parking_allowed_owner = parking_allowed_owner;
     if (owner_free_parking !== undefined) unit.owner_free_parking = owner_free_parking;
@@ -303,10 +307,12 @@ const deleteUnit = async (req, res) => {
     }
 
     const deletedUsers = await User.deleteMany({ hoaid, unitnumber });
+    const deletedVehicles = await Vehicle.deleteMany({ hoaid, unitnumber });
 
     res.status(200).json({
-      message: "Unit and associated users deleted successfully",
+      message: "Unit, associated users, and vehicles deleted successfully",
       deletedUsersCount: deletedUsers.deletedCount,
+      deletedVehiclesCount: deletedVehicles.deletedCount,
       unit: {
         _id: unit._id,
         unitnumber: unit.unitnumber

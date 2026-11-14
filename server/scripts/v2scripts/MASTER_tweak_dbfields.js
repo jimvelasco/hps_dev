@@ -21,7 +21,7 @@ const operations = [
   ["units", { $set: { pincodeary: [{ pincode: "", action: "renter", description: "", expire_date: null, uses_allowed: -1, uses_used: 0 }] } }],
   ["units", { $set: { available_for_rent: 1 } }],
   ["units", { $set: { is_resident: 0 } }],
-  ["units", { $set: { parking_allowed_unit: 2 } }],
+  ["units", { $set: { parking_allowed_owner: 2 } }],
   ["units", { $set: { daypasses_allowed_owner: 1 } }],
   ["units", { $set: { parking_allowed_tenant: 2 } }],
   ["units", { $set: { tenant_free_parking_spots: 2 } }],

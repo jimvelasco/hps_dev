@@ -36,6 +36,7 @@ export default function RenterVehicles() {
   const [allActiveVehicles, setAllActiveVehicles] = useState([]);
   const [daypassCount, setDaypassCount] = useState(0);
   const [containsDaypassCount, setContainsDaypassCount] = useState(0)
+  const [rawVehicles, setRawVehicles] = useState([]);
   
 
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
@@ -116,6 +117,19 @@ export default function RenterVehicles() {
           const response = await axios.get(qry);
 
           const responseData = response.data;
+
+
+          const rawVehiclesWithStatus = responseData.map(v => ({
+            ...v,
+            calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+          }));
+
+          setRawVehicles(rawVehiclesWithStatus);
+
+
+        
+
+         // setRawVehicles(responseData);
          //    console.log('the response data is ',responseData);
           //  console.log('choices from rentervehicles',responseData,pincodeAction)
           // responseData.forEach((el, index) => {
@@ -136,9 +150,9 @@ export default function RenterVehicles() {
               calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
             }));
 
-            console.log('updated vehicles',updatedVehicles)
+         //   console.log('updated vehicles',updatedVehicles)
             let updatedVehicles2 = updatedVehicles.filter(v => v.multiday === 0 );
-            console.log('updated vehicles2',updatedVehicles2)
+          //  console.log('updated vehicles2',updatedVehicles2)
 
 
 
@@ -261,7 +275,7 @@ export default function RenterVehicles() {
   const showFailureMessage = () => {
      if (hoa?.hoaid !== hoaId) return null;
     const createdfrom = 'rentervehicles';
-    const messagetoshow = vehicleMessageHelper(createdfrom,vehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount,hoa);
+    const messagetoshow = vehicleMessageHelper(createdfrom,rawVehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount,hoa);
     if (messagetoshow !== null) {
       setModal({
         isOpen: true,
@@ -304,7 +318,7 @@ export default function RenterVehicles() {
 
 
     //const parkingLimitInventory = Number(unitForRenter.inventory_allowed_owner);
-    let unitParkingLimit = Number(unitForRenter.parking_allowed_unit);
+    let unitParkingLimit = Number(unitForRenter.parking_allowed_owner);
     let freepassesallowed = Number(unitForRenter.daypasses_allowed_owner);
    
     let msg = 'now is the time';
@@ -317,7 +331,6 @@ export default function RenterVehicles() {
     const fakevid = null
     const qry = `/${hoaId}/vehicledetails/create/${userIdForUnit}`;
     //  const qry = `/${hoaId}/vehicledetails/create/${fakevid}`;
-    // JJVFIX role?
     navigate(qry, {
       state: {
         nonownerType: nonownerType,

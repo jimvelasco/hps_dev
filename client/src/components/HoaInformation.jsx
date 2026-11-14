@@ -145,7 +145,7 @@ export default function HoaInformation({ hoa }) {
                   <div><strong>Owner Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_owner}</div>
                   <div><strong>Tenant Daily Passes:</strong> </div><div>{hoa.daypasses_allowed_tenant}</div>
 
-                  <div><strong>Unit Parking Allowed</strong> </div><div>{hoa.parking_allowed_unit}</div>
+                  <div><strong>Unit Parking Allowed</strong> </div><div>{hoa.parking_allowed_owner}</div>
                   <div><strong>Renter Parking Allowed</strong> </div><div>{hoa.parking_allowed_renter}</div>
 
                 </div>
