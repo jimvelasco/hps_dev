@@ -33,7 +33,7 @@ export default function RenterVehicles() {
   const [pincodeActionLabel, setPincodeActionLabel] = useState("");
   const [disableAddVehicle, setDisableAddVehicle] = useState(false)
   const [allActiveCount, setAllActiveCount] = useState(0);
-  const [allActiveVehicles, setAllActiveVehicles] = useState([]);
+ // const [allActiveVehicles, setAllActiveVehicles] = useState([]);
  // const [daypassCount, setDaypassCount] = useState(0);
   const [containsDaypassCount, setContainsDaypassCount] = useState(0)
   const [rawVehicles, setRawVehicles] = useState([]);
@@ -168,9 +168,9 @@ export default function RenterVehicles() {
           let containsdaypass = updatedVehicles.filter(v => v.carownertype === 'dayuseonly').length;
           setContainsDaypassCount(containsdaypass)
 
-          let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
-          setAllActiveCount(activeVehicles.length);
-          setAllActiveVehicles(activeVehicles);
+       //   let activeVehicles = updatedVehicles.filter(v => v.calculatedActiveFlag === true);
+        //  setAllActiveCount(activeVehicles.length);
+       //   setAllActiveVehicles(activeVehicles);
 
         //  console.log('activeVehicles',activeVehicles)
 
@@ -347,11 +347,15 @@ export default function RenterVehicles() {
         carownertype: nonownerType,
         createdfrom: 'rentervehicles',
         pincodeValue: pincodeValue,
-        pincodeAction: pincodeAction,
-        allActiveVehicles: allActiveVehicles
+        pincodeAction: pincodeAction
+      //  allActiveVehicles: allActiveVehicles
 
       }
     });
+    /*
+    const { nonownerType, unitNumber, role, vehicles, ownerOfUnit, vehid, unit, carownertype,
+    createdfrom, pincodeValue, pincodeAction } = location.state || {};
+    */
     // console.log("Create navigating to:", qry);
     // navigate(qry, { state: { unitNumber } });
     // const { role ,num_vehicles,renter_free_parking} = location.state || {};
@@ -414,7 +418,7 @@ export default function RenterVehicles() {
 
     const displayedVehicles = displayedVehicles2.filter(v => v.multiday === 0 );
 
-     console.log('displayedVehicles',displayedVehicles);
+   //  console.log('displayedVehicles',displayedVehicles);
 
  //  const displayedVehicles = vehicles.filter(v.carownertype === 'renter')
   

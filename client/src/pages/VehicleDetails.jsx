@@ -47,8 +47,8 @@ export default function VehicleDetails() {
 
   }
 
-  console.log('maxactiveallowed', maxactiveallowed)
-  console.log('maxdayuse', maxdayuse)
+//  console.log('maxactiveallowed', maxactiveallowed)
+//  console.log('maxdayuse', maxdayuse)
 
 
 

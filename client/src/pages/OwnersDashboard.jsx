@@ -198,7 +198,7 @@ export default function OwnersDashboard() {
     });
 
     let disablebutton = false;
-    if (loggedInUser.role === "tenant") {
+    if (loggedInUser.role === "tenant" ) {
       disablebutton = true;
     }
 

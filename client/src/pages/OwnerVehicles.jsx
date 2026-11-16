@@ -11,6 +11,8 @@ import VehiclesGridPhone from "../components/VehiclesGridPhone";
 import VehiclesTableUpdate from "../components/VehiclesTableUpdate";
 import { getVehicleActiveStatusBoolean, utcDateOnly, daypassVehicleCount, anyDaypassVehicleCount, getVehicleTypeGroups, handleFilterApply } from "../utils/vehicleHelpers";
 import { doesUnitHaveDayUse } from "../utils/unitHelpers";
+import { getHoaDayUseOnlyVehicles,getHoaActiveDayUseOnlyVehicles } from "../utils/hoaHelpers";
+
 import ModalAlert from "../components/ModalAlert";
 import { getAWSResource } from "../utils/awsHelper";
 import { vehicleMessageHelper } from "../utils/vehicleMessageHelper";
@@ -278,6 +280,27 @@ useEffect(() => {
     //  console.log(' veh_grp_ary.allactivevehs.count', veh_grp_ary.allactivevehs.count)
     //  console.log(' veh_grp_ary.dayusemultivehs.count', veh_grp_ary.dayusemultivehs.count)
     //  console.log('unitForOwner.parking_allowed_owner', unitForOwner.parking_allowed_owner)
+
+ //   let duva = 0;
+
+      // getHoaDayUseOnlyVehicles(hoaId)
+      //   .then(dayUseVehicles => {
+      //     console.log('day count from hoa helper', dayUseVehicles.length)})
+      //   .catch(error => console.error('Error fetching HOA day-use vehicles:', error));
+
+      getHoaActiveDayUseOnlyVehicles(hoaId)
+        .then(dayUseVehicles => {
+          const duova = dayUseVehicles.length;
+       //   console.log('active day count from hoa helper', dayUseVehicles.length)
+          if (duova >= hoa.daypasses_allowed_hoa) {
+             setOverActiveLimitMsg(<>We are over the<br />HOA day pass limit of {hoa.daypasses_allowed_hoa}</>)
+          }
+        })
+        .catch(error => console.error('Error fetching HOA day-use vehicles:', error));
+
+
+     //  console.log('hoa.daypasses_allowed_hoa',hoa.daypasses_allowed_hoa) 
+
 
     setOverActiveLimitMsg(veh_grp_ary.allactivevehs.count - veh_grp_ary.dayusemultivehs.count > Number(unitForOwner.parking_allowed_owner)
       ? <>The active vehicle count: {veh_grp_ary.allactivevehs.count}<br />is over your limit: {unitForOwner.parking_allowed_owner}</>

@@ -18,6 +18,17 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   // console.log('veh_grp_ary.rentervehs.array', veh_grp_ary.rentervehs.array)
   const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
+
+
+  const minstartdateofgroup =  getMinStartdateOfVehicles (veh_grp_ary.nonownervehs.array);
+  const maxenddaterenters = getMaxEnddateOfVehicles(veh_grp_ary.rentervehs.array);
+
+  // console.log('maxenddateofgroup',maxenddateofgroup)
+  // console.log('minstartdaterenters',minstartdaterenters)
+
+  // console.log('minstartdateofgroup',minstartdateofgroup)
+  // console.log('maxenddaterenters',maxenddaterenters)
+
   const phonetocall = ""; //getHoaContactPhoneNumber(hoa,"pm_renter");
   const maxTenantTemplates = 2;
   let overlapbump = 0;
@@ -33,18 +44,26 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   if (maxenddateofgroup === null && minstartdaterenters === null) {
     overlapbump = 0;
   }
-  if (maxenddateofgroup !== null && minstartdaterenters === null) {
+  if (maxenddateofgroup !== null && maxenddaterenters === null) {
     if (maxenddateofgroup === todayStr) {
       overlapbump = 1;
     }
   }
-  // if (maxenddateofgroup === null && minstartdaterenters !== null) {
-  //   if (maxenddateofgroup === todayStr) {
-  //     overlapbump = 1;
-  //   }
-  // }
-
   if (maxenddateofgroup === minstartdaterenters) {
+    overlapbump = 1;
+  }
+
+
+
+   if (minstartdateofgroup === null && maxenddaterenters === null) {
+    overlapbump = 0;
+  }
+  if (minstartdateofgroup !== null && maxenddaterenters === null) {
+    if (minstartdateofgroup === todayStr) {
+      overlapbump = 1;
+    }
+  }
+  if (minstartdateofgroup === maxenddaterenters) {
     overlapbump = 1;
   }
 
