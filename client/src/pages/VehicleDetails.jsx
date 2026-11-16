@@ -272,9 +272,9 @@ export default function VehicleDetails() {
       setDisableOutDateField(false)
     }
     if (createdfrom === 'ownervehicles' && carownertype === 'dayuseonly') {
-      daysplus = 0;
-      setDisableInDateField(false);
-      setDisableOutDateField(false)
+      daysplus = -1;
+      setDisableInDateField(true);
+      setDisableOutDateField(true)
     }
 
     const edate = new Date();
@@ -562,13 +562,13 @@ export default function VehicleDetails() {
 
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+ //   console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     let dateUpdates = {};
     let daysplus = 0;
 
     if (name === 'carownertype' && value === 'dayuseonly') {
       const edate = new Date();
-      edate.setDate(edate.getDate() - 0);
+      edate.setDate(edate.getDate() - 1);
       const date = formatLocalDate(edate);
       dateUpdates = { startdate: date, enddate: date };
       setDisableInDateField(false)

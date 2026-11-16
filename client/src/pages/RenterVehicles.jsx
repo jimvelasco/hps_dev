@@ -408,9 +408,13 @@ export default function RenterVehicles() {
 
   // console.log('displayedVehicles',displayedVehicles);
 
-  const displayedVehicles = vehicles.filter(v => pincodeAction === 'dayuseonly'
+  const displayedVehicles2 = vehicles.filter(v => pincodeAction === 'dayuseonly'
     ? v.carownertype === 'dayuseonly'
     : v.carownertype === 'renter');
+
+    const displayedVehicles = displayedVehicles2.filter(v => v.multiday === 0 );
+
+     console.log('displayedVehicles',displayedVehicles);
 
  //  const displayedVehicles = vehicles.filter(v.carownertype === 'renter')
   
