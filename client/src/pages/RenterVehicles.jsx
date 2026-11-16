@@ -34,7 +34,7 @@ export default function RenterVehicles() {
   const [disableAddVehicle, setDisableAddVehicle] = useState(false)
   const [allActiveCount, setAllActiveCount] = useState(0);
   const [allActiveVehicles, setAllActiveVehicles] = useState([]);
-  const [daypassCount, setDaypassCount] = useState(0);
+ // const [daypassCount, setDaypassCount] = useState(0);
   const [containsDaypassCount, setContainsDaypassCount] = useState(0)
   const [rawVehicles, setRawVehicles] = useState([]);
   
@@ -159,7 +159,7 @@ export default function RenterVehicles() {
           //console.log('updated vehicles', updatedVehicles)
 
           // const dayusecount  = daypassVehicleCount(updatedVehicles);
-          setDaypassCount(daypassVehicleCount(updatedVehicles));
+        //  setDaypassCount(daypassVehicleCount(updatedVehicles));
 
         //  console.log('RV updatedVehicles', updatedVehicles.length, updatedVehicles);
 
@@ -275,7 +275,7 @@ export default function RenterVehicles() {
   const showFailureMessage = () => {
      if (hoa?.hoaid !== hoaId) return null;
     const createdfrom = 'rentervehicles';
-    const messagetoshow = vehicleMessageHelper(createdfrom,rawVehicles, unitForRenter, pincodeAction, allActiveCount, containsDaypassCount,hoa);
+    const messagetoshow = vehicleMessageHelper(createdfrom,rawVehicles, unitForRenter, pincodeAction,hoa);
     if (messagetoshow !== null) {
       setModal({
         isOpen: true,

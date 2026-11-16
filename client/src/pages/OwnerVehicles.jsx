@@ -35,8 +35,8 @@ export default function OwnerVehicles() {
   const [unitSearch, setUnitSearch] = useState("");
 //  const [filterDate, setFilterDate] = useState("");
  // const [allRawVehicles, setAllRawVehicles] = useState([]);
-  const [allVehicles, setAllVehicles] = useState([]);
-  const [allActiveCount, setAllActiveCount] = useState(0);
+ // const [allVehicles, setAllVehicles] = useState([]);
+//  const [allActiveCount, setAllActiveCount] = useState(0);
 //  const [allActiveVehicles, setAllActiveVehicles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
@@ -45,7 +45,7 @@ export default function OwnerVehicles() {
   const [showUnitId, setShowUnitId] = useState("");
   const [unitForOwner, setUnitForOwner] = useState(null);
 //  const [logonType, setLogonType] = useState("owner");
-  const [activeVehicles, setActiveVehicles] = useState(0);
+// const [activeVehicles, setActiveVehicles] = useState(0);
   const [disableAddButton, setDisableAddButton] = useState(false);
   const [maxDaypassTemplates, setMaxDaypassTemplates] = useState(2);
   const [countOtherExpired, setCountOtherExpired] = useState(0);
@@ -84,7 +84,7 @@ export default function OwnerVehicles() {
     //  setLogonType(localStorage.getItem('logonType'));
       //  console.log('OV role from url',routeRole, loggedInUser.role)
       if (localStorage.getItem('logonType') === 'tenant') {
-        setDisableAddButton(true)
+       // setDisableAddButton(true)
       }
 
 
@@ -174,8 +174,22 @@ export default function OwnerVehicles() {
           //   calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
           // }));
 
+          // const rawvehicles = responseData
+          //   .filter(v => v.createdbytype !== 'other' || !['dayuseonly', 'renter'].includes(v.carownertype) || !v.enddate || v.enddate >= todayStr)
+          //   .map(v => ({
+          //     ...v,
+          //     calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
+          //   }));
+
+
+          // this clears out all dayuseonly and renter records that were created on nonowner (other) side
           const rawvehicles = responseData
-            .filter(v => v.createdbytype !== 'other' || !['dayuseonly', 'renter'].includes(v.carownertype) || !v.enddate || v.enddate >= todayStr)
+            .filter(v => {
+              const isExpiredOtherVehicle = v.createdbytype === 'other' &&
+                ['dayuseonly', 'renter'].includes(v.carownertype) &&
+                v.enddate && v.enddate < todayStr;
+              return !isExpiredOtherVehicle;
+            })
             .map(v => ({
               ...v,
               calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
@@ -188,12 +202,12 @@ export default function OwnerVehicles() {
         //  setAllRawVehicles(rawvehicles);
 
           //  console.log('rawvehicles', rawvehicles);
-          let gpa = getVehicleTypeGroups(rawvehicles);
+         // let gpa = getVehicleTypeGroups(rawvehicles);
           //  console.log('gpa', gpa)
 
-          let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
+        //  let activeVehicles = rawvehicles.filter(v => v.calculatedActiveFlag === true);
           //   console.log('activeVehicles', activeVehicles);
-          setAllActiveCount(activeVehicles.length);
+        //  setAllActiveCount(activeVehicles.length);
         //  setAllActiveVehicles(activeVehicles);
 
           const updatedVehicles = [...rawvehicles];
@@ -204,15 +218,16 @@ export default function OwnerVehicles() {
           let updatedVehicles2 = [...updatedVehicles];
 
 
-          if (role === 'tenant') {
-            updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant" || v.carownertype === "friend");
-            //  console.log('updated vehicles2 after filter',updatedVehicles2)
-          }
+        //  if (role === 'tenant') {
+            // or whatever 
+            // updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant" || v.carownertype === "friend");
+         //   updatedVehicles2 = updatedVehicles.filter(v => v.carownertype === "tenant");
+       //   }
 
-          let updatedVehicles3 = [...updatedVehicles2]
+         // let updatedVehicles3 = [...updatedVehicles2]
 
 
-          setActiveVehicles(updatedVehicles3);
+        //  setActiveVehicles(updatedVehicles3);
           // keep vehicles in order
           // updatedVehicles2.sort((a, b) => {
           //   let valueA, valueB;
@@ -225,7 +240,9 @@ export default function OwnerVehicles() {
           // console.log('WE ARE ABOUT TO SET-ALL-VEHICLES updatedVehicles.  these are vehicles sans renter.  FOR NOW USE RAWVEHICLES',rawvehicles)
 
           //  setAllVehicles(updatedVehicles);
-          setAllVehicles(rawvehicles);
+
+       //   setAllVehicles(rawvehicles);
+          setVehicles(rawvehicles)
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");
@@ -239,18 +256,33 @@ export default function OwnerVehicles() {
     }
   }, [hoaId, ownerId, role]);
 
-  useEffect(() => {
-    const veh_grp_ary = getVehicleTypeGroups(allVehicles);
-    // console.log('veh_grp_ary',veh_grp_ary)
+  // useEffect(() => {
+  //   const veh_grp_ary = getVehicleTypeGroups(rawVehicles);
+  //   console.log('allActiveCount',allActiveCount)
+  //   console.log(' veh_grp_ary.allactivevehs.count', veh_grp_ary.allactivevehs.count)
+  //   if (role === "admin" || vehiclesLoading || unitForOwner?.hoaid !== hoaId || unitForOwner?.unitnumber !== loggedInUser?.unitnumber) {
+  //     setOverActiveLimitMsg(null);
+  //     return;
+  //   }
+  //   setOverActiveLimitMsg(allActiveCount - veh_grp_ary.dayusemultivehs.count > Number(unitForOwner.parking_allowed_owner)
+  //     ? <>The active vehicle count: {allActiveCount}<br />is over your limit: {unitForOwner.parking_allowed_owner}</>
+  //     : null);
+  // }, [role, vehiclesLoading, unitForOwner, hoaId, loggedInUser?.unitnumber, allActiveCount]);
+
+useEffect(() => {
+    const veh_grp_ary = getVehicleTypeGroups(rawVehicles);
     if (role === "admin" || vehiclesLoading || unitForOwner?.hoaid !== hoaId || unitForOwner?.unitnumber !== loggedInUser?.unitnumber) {
       setOverActiveLimitMsg(null);
       return;
     }
-    setOverActiveLimitMsg(allActiveCount - veh_grp_ary.dayusemultivehs.count > Number(unitForOwner.parking_allowed_owner)
-      ? <>The active vehicle count: {allActiveCount}<br />is over your limit: {unitForOwner.parking_allowed_owner}</>
-      : null);
-  }, [role, vehiclesLoading, unitForOwner, hoaId, loggedInUser?.unitnumber, allActiveCount]);
+    //  console.log(' veh_grp_ary.allactivevehs.count', veh_grp_ary.allactivevehs.count)
+    //  console.log(' veh_grp_ary.dayusemultivehs.count', veh_grp_ary.dayusemultivehs.count)
+    //  console.log('unitForOwner.parking_allowed_owner', unitForOwner.parking_allowed_owner)
 
+    setOverActiveLimitMsg(veh_grp_ary.allactivevehs.count - veh_grp_ary.dayusemultivehs.count > Number(unitForOwner.parking_allowed_owner)
+      ? <>The active vehicle count: {veh_grp_ary.allactivevehs.count}<br />is over your limit: {unitForOwner.parking_allowed_owner}</>
+      : null);
+  }, [role, vehiclesLoading, unitForOwner, hoaId, loggedInUser?.unitnumber, rawVehicles]);
 
 
 
@@ -263,7 +295,18 @@ export default function OwnerVehicles() {
 
 
 
-  const filteredVehicles = loggedInUser?.role === "admin"
+  // const filteredVehicles = loggedInUser?.role === "admin"
+  //   ? handleFilterApply(vehicles, activeFilterType, vehicleOwnerTypeAry).filter(vehicle =>
+  //     String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
+  //     String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
+  //   )
+  //   : loggedInUser?.role === "tenant"
+  //     ? vehicles.filter(v => v.createdbyrole === "tenant" || v.carownertype === "tenant")
+  //     : loggedInUser?.role === "rentalmanager"
+  //       ? vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" && v.createdbyrole !== "")
+  //       : vehicles;
+
+   const filteredVehicles = loggedInUser?.role === "admin"
     ? handleFilterApply(vehicles, activeFilterType, vehicleOwnerTypeAry).filter(vehicle =>
       String(vehicle.plate ?? "").toLowerCase().includes(plateQuery) &&
       String(vehicle.unitnumber ?? "").toLowerCase().includes(unitQuery)
@@ -272,7 +315,9 @@ export default function OwnerVehicles() {
       ? vehicles.filter(v => v.createdbyrole === "tenant" || v.carownertype === "tenant")
       : loggedInUser?.role === "rentalmanager"
         ? vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" && v.createdbyrole !== "")
-        : vehicles;
+        : loggedInUser?.role === "owner"
+          ? vehicles.filter(v => v.carownertype !== "xrenter")
+          : []
 
   //.filter(v => v.carownertype !== "renter")
   //    const filteredVehicles = loggedInUser?.role === "admin"
@@ -298,9 +343,9 @@ export default function OwnerVehicles() {
   //   &&  v.createdbyrole !== "tenant" &&  v.createdbyrole !== ""
   //filter(v => v.carownertype !== "renter")
 
-  useEffect(() => {
-    setVehicles(allVehicles);
-  }, [allVehicles]);
+  // useEffect(() => {
+  //   setVehicles(allVehicles);
+  // }, [allVehicles]);
 
 
 
@@ -437,7 +482,7 @@ export default function OwnerVehicles() {
     const pincodeAction = 'standard';
     const containsDaypassCount = 0;
     const createdfrom = 'ownervehicles';
-    const messagetoshow = vehicleMessageHelper(createdfrom, vehicles, unitForOwner, pincodeAction, allActiveCount, containsDaypassCount, hoa);
+    const messagetoshow = vehicleMessageHelper(createdfrom, vehicles, unitForOwner, pincodeAction, hoa);
     if (messagetoshow !== null) {
       setModal({
         isOpen: true,
@@ -460,7 +505,7 @@ export default function OwnerVehicles() {
 
     pin_code_action = "";
 
-    const veh_grp_ary = getVehicleTypeGroups(vehicles);
+    const veh_grp_ary = getVehicleTypeGroups(rawVehicles);
     //   console.log('veh_grp_ary',veh_grp_ary)
 
     const maxdaypasstemplates = 2;
@@ -534,21 +579,7 @@ export default function OwnerVehicles() {
 
       setUnitForOwner(unit);
       let parkingLimitInventory = Number(unit.inventory_allowed_owner);
-      // let unitParkingLimit = Number(unit.parking_allowed_unit);
-
-
-      // const dayuseok = doesUnitHaveDayUse(unit);
-
-      // this will get all the count all the ACTIVE daypass vehicles 
-
-      //  const daypassCount = daypassVehicleCount(allVehicles);
-      //   console.log('function daypassVehicleCount', daypassCount);
-      //   console.log('grp ary dayusemultivehs', veh_grp_ary.dayusemultivehs.count);
-
-      // this counts all vehicles with a daypass that are active or inactive
-      //  const anydaypassCount = anyDaypassVehicleCount(allVehicles);
-
-
+     
 
 
 

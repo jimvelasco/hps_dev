@@ -3,9 +3,14 @@ import { getVehicleTypeGroups, getMaxEnddateOfVehicles, getMinStartdateOfVehicle
 import { useHoaContactPhoneNumber, getHoaContactPhoneNumber } from "./hoaHelpers";
 
 
-export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction, allActiveCount, containsDaypassCount, hoa) => {
-  const unitParkingLimit = Number(unit.parking_allowed_owner);
-  const daypassesallowed = Number(unit.daypasses_allowed_owner);
+export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction, hoa) => {
+  let unitParkingLimit = Number(unit.parking_allowed_owner);
+  let daypassesallowed = Number(unit.daypasses_allowed_owner);
+  if (localStorage.getItem('logonType') === 'tenant') {
+     unitParkingLimit = Number(unit.parking_allowed_tenant);
+     daypassesallowed = Number(unit.daypasses_allowed_tenant);
+
+  }
   const veh_grp_ary = getVehicleTypeGroups(vehicles);
  // console.log('vehicles',vehicles)
  //console.log('vmh veh_grp_ary', veh_grp_ary)
@@ -14,6 +19,7 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
   const phonetocall = ""; //getHoaContactPhoneNumber(hoa,"pm_renter");
+  const maxTenantTemplates = 2;
   let overlapbump = 0;
 
  // console.log('vehicles from helper',vehicles)
@@ -53,7 +59,7 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   // this gets called from renter vehicles with pincode associated with dayuseonly is used
   if (pincodeAction === 'dayuseonly' ) {
     if (veh_grp_ary.dayusemultivehs.count >= daypassesallowed) {
-      return (<>You are not allowed more <br /> daypasses than allowed<br />  {daypassesallowed} <br /> If issues, 
+      return (<>You are not allowed more <br /> Day Passes than<br />  {daypassesallowed} <br /> If issues, 
       first contact person that <br />provided 
         Unit/PIN or HOA Management<br />{phonetocall}</>);
     }
@@ -76,15 +82,24 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
 
 // rentervehicles when add button selected and there are two active owner vehicles. 
 // we dont have this on the owners side because we don't know what parking type they have picked until there is a form
-console.log('veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
-console.log('unitParkingLimit',unitParkingLimit)
-console.log('overlapbump ',overlapbump)
-console.log(' veh_grp_ary.dayusemultivehs.count', veh_grp_ary.dayusemultivehs.count)
+  // console.log('veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
+  // console.log('unitParkingLimit',unitParkingLimit)
+  // console.log('overlapbump ',overlapbump)
+  // console.log(' veh_grp_ary.dayusemultivehs.count', veh_grp_ary.dayusemultivehs.count)
 
 
   if (createdfrom === 'rentervehicles' && veh_grp_ary.allactivevehs.count >= unitParkingLimit + overlapbump + veh_grp_ary.dayusemultivehs.count) {
       return (<>You are not allowed more <br />parking than allowed<br />  {unitParkingLimit}< br /> If issues, first contact the person who provided
         the Unit/PIN <br />or contact HOA Management.< br />{phonetocall}</>);
+  }
+
+   if (createdfrom === 'ownervehicles' && localStorage.getItem('logonType') === 'tenant' && veh_grp_ary.tenantvehs.count >= unitParkingLimit ) {
+      return (<>You are not allowed more <br />parking than allowed<br />  {unitParkingLimit}< br /> If issues, first contact the person who provided
+        the Unit/PIN <br />or contact HOA Management.< br />{phonetocall}</>);
+  }
+
+    if (createdfrom === 'ownervehicles' && localStorage.getItem('logonType') === 'tenant' && veh_grp_ary.tenantvehsany.count >= maxTenantTemplates ) {
+      return (<>You are not allowed more than <br />  {maxTenantTemplates} < br /> tenant vehicle templates.</>);
   }
 
   //  if (veh_grp_ary.allactivevehs.count >= unitParkingLimit + overlapbump + veh_grp_ary.dayusemultivehs.count) {

@@ -39,6 +39,19 @@ export default function VehicleDetails() {
 
 
 
+  let maxactiveallowed = unit.parking_allowed_owner;
+  let maxdayuse = unit.daypasses_allowed_owner;
+  if (localStorage.getItem('logonType') === 'tenant') {
+    maxactiveallowed = unit.parking_allowed_tenant;
+    maxdayuse = unit.daypasses_allowed_tenant
+
+  }
+
+  console.log('maxactiveallowed', maxactiveallowed)
+  console.log('maxdayuse', maxdayuse)
+
+
+
   // const vehicleOwnerTypeAry = unit?.day_use_only === 1
   //   ? ['visitor', 'contractor']
   //   : ['owner', 'family', 'friend', 'visitor', 'contractor'];
@@ -101,9 +114,9 @@ export default function VehicleDetails() {
     ? [{ value: 'dayuseonly', label: 'Day Pass' }]
     : logonType === 'tenant'
       ? [
-        { value: 'owner', label: 'Owner' },
-        { value: 'friend', label: 'Friend' },
-        { value: 'family', label: 'Family' }
+        // { value: 'friend', label: 'Friend' },
+        // { value: 'family', label: 'Family' },
+        { value: 'tenant', label: 'Tenant' }
 
       ]
       : logonType === 'owner'
@@ -238,11 +251,11 @@ export default function VehicleDetails() {
       setDisableInDateField(true);
       setDisableOutDateField(true)
     }
-    if (createdfrom === 'rentervehicles' && carownertype === 'multiday') {
-      daysplus = 0;
-      setDisableInDateField(true);
-      setDisableOutDateField(false)
-    }
+    // if (createdfrom === 'rentervehicles' && carownertype === 'multiday') {
+    //   daysplus = 0;
+    //   setDisableInDateField(true);
+    //   setDisableOutDateField(false)
+    // }
     if (createdfrom === 'rentervehicles' && carownertype === 'renter') {
       daysplus = 3;
       setDisableInDateField(false);
@@ -258,8 +271,8 @@ export default function VehicleDetails() {
       setDisableInDateField(false);
       setDisableOutDateField(false)
     }
-    if (createdfrom === 'ownervehicles' && carownertype === 'dayuseonly' || carownertype === 'multiday') {
-      daysplus = 3;
+    if (createdfrom === 'ownervehicles' && carownertype === 'dayuseonly') {
+      daysplus = 0;
       setDisableInDateField(false);
       setDisableOutDateField(false)
     }
@@ -268,8 +281,8 @@ export default function VehicleDetails() {
     edate.setDate(edate.getDate() + daysplus);
 
 
- //   console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
-// console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
+    //   console.log("VEHICLE DETAILS LOCATION STATE IS ", location.state);
+    // console.log('vehicles passed into vehicle details state var vehicles ',vehicles)
 
 
 
@@ -336,7 +349,7 @@ export default function VehicleDetails() {
           enddate: formatLocalDate(edate),
         }
         )
-         if (nonownerType === 'dayuseonly') {
+        if (nonownerType === 'dayuseonly') {
           setDisableInDateField(true)
           setDisableOutDateField(true)
         } else {
@@ -394,10 +407,11 @@ export default function VehicleDetails() {
         //   setDisableOutDateField(true)
         // }
 
-       //    console.log('cf cot',createdfrom,theVehicle.carownertype);
+        //    console.log('cf cot',createdfrom,theVehicle.carownertype);
 
 
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
+          console.log('ownervehicles dayuseonly')
           const edate = new Date();
           edate.setDate(edate.getDate() - 0);
           sd = formatLocalDate(edate);
@@ -407,17 +421,18 @@ export default function VehicleDetails() {
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
-        if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'multiday')) {
-          // const edate = new Date();
-          // edate.setDate(edate.getDate() - 1);
-          // sd = formatLocalDate(edate);
-          // ed = formatLocalDate(edate);
-          sd = theVehicle.startdate;
-          ed = theVehicle.enddate;
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
-        }
+        // if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'multiday')) {
+        //   // const edate = new Date();
+        //   // edate.setDate(edate.getDate() - 1);
+        //   // sd = formatLocalDate(edate);
+        //   // ed = formatLocalDate(edate);
+        //   sd = theVehicle.startdate;
+        //   ed = theVehicle.enddate;
+        //   setDisableInDateField(false)
+        //   setDisableOutDateField(false)
+        // }
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'tenant')) {
+          console.log('ownervehicles tenant')
           let enabled = true;
           //   console.log('logontype',localStorage.getItem('logonType'))
           let ltype = localStorage.getItem('logonType');
@@ -432,25 +447,29 @@ export default function VehicleDetails() {
           setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
+          console.log('rentervehicles dayuseonly')
           //  console.log('we are from rentervehicles clicked on a multiday');
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
-         if (createdfrom === 'rentervehicles' && (theVehicle.multiday === 1)) {
-           sd = theVehicle.startdate;
+        if (createdfrom === 'rentervehicles' && (theVehicle.multiday === 1)) {
+          console.log('rentervehicles theVehicle.multiday === 1')
+          sd = theVehicle.startdate;
           ed = theVehicle.enddate;
           setDisableInDateField(true)
           setDisableOutDateField(false)
         }
-         if (createdfrom === 'ownervehicles' && (theVehicle.multiday === 1)) {
-           sd = theVehicle.startdate;
+        if (createdfrom === 'ownervehicles' && (theVehicle.multiday === 1)) {
+          console.log('ownervehicles theVehicle.multiday === 1')
+          sd = theVehicle.startdate;
           ed = theVehicle.enddate;
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'renter')) {
+          console.log('rentervehicles renter')
           const edate = new Date();
           edate.setDate(edate.getDate() + 3);
 
@@ -459,19 +478,21 @@ export default function VehicleDetails() {
           setDisableInDateField(true)
           setDisableOutDateField(false)
         }
-        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
-          //  console.log('we are from rentervehicles clicked on a multiday');
-          //  sd = formatLocalDate(new Date());
-          const edate = new Date();
-          edate.setDate(edate.getDate() + 3);
-          //  sd = theVehicle.startdate;
-          sd = formatLocalDate(new Date());
-          // ed = formatLocalDate(new Date());
-          ed = formatLocalDate(edate);
-          // ed = theVehicle.enddate;
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
-        }
+
+        console.log('setting default dates');
+        // if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
+        //   //  console.log('we are from rentervehicles clicked on a multiday');
+        //   //  sd = formatLocalDate(new Date());
+        //   const edate = new Date();
+        //   edate.setDate(edate.getDate() + 3);
+        //   //  sd = theVehicle.startdate;
+        //   sd = formatLocalDate(new Date());
+        //   // ed = formatLocalDate(new Date());
+        //   ed = formatLocalDate(edate);
+        //   // ed = theVehicle.enddate;
+        //   setDisableInDateField(false)
+        //   setDisableOutDateField(false)
+        // }
 
 
         setFormData({
@@ -541,37 +562,30 @@ export default function VehicleDetails() {
 
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+    console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     let dateUpdates = {};
+    let daysplus = 0;
 
     if (name === 'carownertype' && value === 'dayuseonly') {
       const edate = new Date();
-      //  console.log('DO SOMETHING WITH DATES day use only');
       edate.setDate(edate.getDate() - 0);
       const date = formatLocalDate(edate);
       dateUpdates = { startdate: date, enddate: date };
       setDisableInDateField(false)
       setDisableOutDateField(false)
     }
-    if (name === 'carownertype' && value === 'multiday') {
+    if (name === 'carownertype' && value !== 'dayuseonly') {
+      daysplus = 3;
+      let sdate = new Date();
+      sdate = formatLocalDate(sdate)
+      let edate = new Date();
+      edate.setDate(edate.getDate() + daysplus);
+      edate = formatLocalDate(edate);
+      dateUpdates = { startdate: sdate, enddate: edate };
       setDisableInDateField(false)
       setDisableOutDateField(false)
     }
-     if (name === 'multiday') {
-      let daysplus = 0;
-      if (checked === true) {
-        daysplus = 5
-      }
-      const edate = new Date();
-      const edate2 = new Date();
-      edate.setDate(edate.getDate());
-      edate2.setDate(edate2.getDate() + daysplus);
-      const date = formatLocalDate(edate);
-      const date2 = formatLocalDate(edate2);
-      dateUpdates = { startdate: date, enddate: date2 };
-      setDisableInDateField(false)
-      setDisableOutDateField(false)
-    }
+
 
     setFormData(prev => ({
       ...prev,
@@ -705,6 +719,22 @@ export default function VehicleDetails() {
       });
       return;
     }
+    // JJVFIX sdate > today 
+    if (formData.startdate > formatLocalDate(new Date())) {
+      setModal({
+        isOpen: true,
+        type: "alert",
+        title: "Validation Error",
+        message: <>Checkin date cannot be <br /> later that today {formatLocalDate(new Date())}</>,
+        confirmText: "OK",
+        onConfirm: () => {
+          setModal(prev => ({ ...prev, isOpen: false }))
+        }
+      });
+      return;
+    }
+
+
 
 
     // const renterFreeParking = ownerOfUnit?.renter_free_parking || 0;
@@ -722,20 +752,20 @@ export default function VehicleDetails() {
     if (createdfrom === 'ownervehicles' || createdfrom === 'rentervehicles') {
       // not used anywhere
       if (oktoaddobj.msgType === 1) {
-        msg = (<>You are not allowed to have more<br />parking than allowed  {stateUnit.parking_allowed_owner}. <br />
+        msg = (<>You are not allowed to have more<br />parking than allowed  {maxactiveallowed}. <br />
           Please deactivate another vehicle before activating this one.<br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
       }
 
       // message when trying to add third vehicle from form
       if (oktoaddobj.msgType === 2) {
-        msg = (<>You are not allowed to have more<br />parking than allowed<br />  {stateUnit.parking_allowed_owner} <br />
+        msg = (<>You are not allowed to have more<br />parking than allowed<br />  {maxactiveallowed} <br />
           If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
       }
       // owner vehicles tried to add a daypass record when one already exists
       if (oktoaddobj.msgType === 3) {
-        msg = (<>Daypass limit reached. <br />
-          You are allowed {stateUnit.daypasses_allowed_owner} Day Passes.<br />Contact Admin to increase<br /> allowed daypass count.</>);
+        msg = (<>Day Pass limit reached. <br />
+          You are allowed {maxdayuse} Day Passes.<br />Contact Admin to increase<br /> allowed Day Pass count.</>);
       }
       // if (oktoaddobj.msgType === 5) {
       //   msg = (<>Multi Day and Day Use limit exceded. <br />
@@ -745,15 +775,18 @@ export default function VehicleDetails() {
       if (oktoaddobj.msgType === 6) {
         msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
       }
-       if (oktoaddobj.msgType === 8) {
-        msg = (<>There may be a Tenant in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
+      if (oktoaddobj.msgType === 8) {
+        msg = (<>There may be a Tenant in the unit.<br />If issues, first contact the Owner  <br />or HOA Management {phonetocall}</>);
       }
       if (oktoaddobj.msgType === 7) {
         msg = (<>Owners can only have one tenant</>);
       }
+       if (oktoaddobj.msgType === 10) {
+        msg = (<>The Day Pass Start and End date must be the same.</>);
+      }
 
     }
-   
+
     //   if (role === 'owner') {
     //      oktoaddobj = okToActivateOwnerVehicle(formData, vehicles, role, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
     if (!oktoaddobj.oktoadd) {
@@ -794,11 +827,11 @@ export default function VehicleDetails() {
     }
 
     let multidayveh = 0;
-      if (formData.enddate > formData.startdate && formData.carownertype === 'dayuseonly') {
-        multidayveh = 1;
-      }
+    if (formData.enddate > formData.startdate && formData.carownertype === 'dayuseonly') {
+      multidayveh = 1;
+    }
 
-//console.log('formData is',formData)
+    //console.log('formData is',formData)
 
     // JJVFIX
     try {
@@ -818,7 +851,7 @@ export default function VehicleDetails() {
       if (role === "" && vehcot === 'dayuseonly') {
         // cbt = 'other'
       }
-     
+
 
       const vehiclePayload = {
         ...formData,
@@ -1278,7 +1311,7 @@ export default function VehicleDetails() {
                     disabled={disableOutDateField}
                   />
                 </div>
-                 {/* <div className="unit-checkbox-row">
+                {/* <div className="unit-checkbox-row">
                   <input
                     type="checkbox"
                     id="vehicle-multiday"
@@ -1443,7 +1476,7 @@ export default function VehicleDetails() {
                     type="button"
 
                     onClick={handleDeleteClick}
-                    disabled={formSubmitting || !termsAcknowledged }
+                    disabled={formSubmitting || !termsAcknowledged}
                   >
                     Delete
                   </button>

@@ -110,7 +110,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   const todayUTC = new Date(); // "2025-12-03"
   const todayStr = formatLocalDate(todayUTC);
- //   console.log('okToAddUnitVehicle vehiclearray', vehiclearray)
+ //  console.log('okToAddUnitVehicle vehiclearray', vehiclearray)
   const allActiveVehicles = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   const allActiveVehiclesCount = allActiveVehicles.length;
   //  console.log('okToAddUnitVehicle allActiveVehicles', allActiveVehicles)
@@ -139,8 +139,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let maxactiveallowed = unit.parking_allowed_owner;
   let maxdayuse = unit.daypasses_allowed_owner;
   if (localStorage.getItem('logonType') === 'tenant') {
+    maxactiveallowed = unit.parking_allowed_tenant;
     maxdayuse = unit.daypasses_allowed_tenant
+   
   }
+
+  console.log('maxactiveallowed',maxactiveallowed)
+  console.log('maxdayuse',maxdayuse)
 
 
   //console.log('role of logged on person ', localStorage.getItem('logonType'),maxdayuse)
@@ -257,43 +262,21 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
         }
-//console.log('1 veh_grp_ary',veh_grp_ary)
 
-          if (createdfrom === 'ownervehicles' && (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0)) {
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
-            return robj;
-          }
-//console.log('2 veh_grp_ary',veh_grp_ary)
-
-          // if (createdfrom === 'ownervehicles' &&   formvehicle.carownertype === 'tenant' ) {
-          //   if (veh_grp_ary.tenantvehsany.count > 1) {
-          //      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 7 };
+          // if (createdfrom === 'ownervehicles' && (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0)) {
+          //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
           //   return robj;
-          //   }
           // }
-
-         
-
-
-
-        // if (createdfrom === 'ownervehicles' && (formvehicle.carownertype === 'dayuseonly' ||
-        //   formvehicle.carownertype === 'tenant' )) {
-
-         
-
-        //   if (veh_grp_ary.dayusemultivehs.count  < maxdayuse + formdayusecnt) {
-        //     robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 1 };
-        //   } else {
-        //     showerror = true;
-        //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 3 };
-        //   }
-
-        //   if (veh_grp_ary.rentervehs.count > 0) {
-        //     showerror = true;
-        //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
-        //     return robj;
-        //   }
-        // }
+        if (createdfrom === 'ownervehicles') {
+          if (veh_grp_ary.rentervehs.count > 0) {
+            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+          } else if (veh_grp_ary.tenantvehs.count > 0) {
+            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+          } else {
+            robj = { oktoadd: true, rpflag: 0, currentVehicle: null, msgType: 0 };
+          }
+          return robj;
+        } 
 
       }
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
@@ -307,7 +290,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
     let theCurrentVehicle = theCurrentVehicleAry[0];
-    //console.log('VD EXISTS the current vehicle is', theCurrentVehicle)
     let is_vehicle_active = theCurrentVehicle.calculatedActiveFlag === true;
     let is_day_use_vehicle = theCurrentVehicle.day_use_only === 1;
     const maxdayusemulti = 2;
@@ -315,10 +297,20 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     /* START **************************** */
     if (is_vehicle_active && dates_span_today) {
+       if (is_day_use_vehicle) {
+        if (formvehicle.startdate !== formvehicle.enddate && theCurrentVehicle.multiday === 0) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 10 };
+          return robj;
+        }
+         if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
+          return robj;
+         }
+       }
        if (veh_grp_ary.rentervehs.count > 0 ) {
-         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
        } else  if ( veh_grp_ary.tenantvehs.count > 0) {
-         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
        } else {
          robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
        }
@@ -329,6 +321,16 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     /* START **************************** */
     if (is_vehicle_active && !dates_span_today) {
+       if (is_day_use_vehicle) {
+         if (formvehicle.startdate !== formvehicle.enddate  && theCurrentVehicle.multiday === 0) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 10 };
+          return robj;
+        }
+        //  if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
+        //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
+        //   return robj;
+        //  }
+       }
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
       return robj;
     }
@@ -337,6 +339,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     /* START **************************** */
     if (!is_vehicle_active && dates_span_today) {
       if (is_day_use_vehicle) {
+         if (formvehicle.startdate !== formvehicle.enddate  && theCurrentVehicle.multiday === 0) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 10 };
+          return robj;
+        }
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
         if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
@@ -345,26 +351,14 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         return robj;
       }
 
-      // if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
-      //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
-      //   return robj;
-      // } else if (veh_grp_ary.rentervehs.count > 0 || veh_grp_ary.tenantvehs.count > 0) {
-      //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
-      //   return robj;
-      // } else {
-      //   robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
-      //   return robj;
-      // }    
-
-
       if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
         return robj;
       } else if (veh_grp_ary.rentervehs.count > 0 ) {
-        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
         return robj;
       }  else if ( veh_grp_ary.tenantvehs.count > 0 ) {
-        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+        robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
         return robj;
       } else {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
@@ -378,6 +372,16 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
     /* START **************************** */
     if (!is_vehicle_active && !dates_span_today) {
+       if (is_day_use_vehicle) {
+         if (formvehicle.startdate !== formvehicle.enddate  && theCurrentVehicle.multiday === 0) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 10 };
+          return robj;
+        } 
+        // if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
+        //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
+        //   return robj;
+        //  }
+       }
       //   console.log('THIS IS WHERE')
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
       return robj;

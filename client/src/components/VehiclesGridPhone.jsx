@@ -111,13 +111,15 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           )} */}
 
            <div className="full-row-left" style={{marginTop:"5px"}}>
-               Role: {vehicle.createdbyrole}  &nbsp; cbt: {vehicle.createdbytype} &nbsp; multi: {vehicle.multiday} - {vehicle.carownertype} 
+               Role: {vehicle.createdbyrole}  &nbsp; Multiday: {vehicle.multiday} 
            </div>
   
           
 
              {/* {(vehicle.day_use_only === 1) && "DAY PASS"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype} 
-            - {vehicle.createdbytype} - {vehicle.carownertype}*/}
+            - {vehicle.createdbytype} - {vehicle.carownertype}
+              Role: {vehicle.createdbyrole}  &nbsp; cbt: {vehicle.createdbytype} &nbsp; multi: {vehicle.multiday} - {vehicle.carownertype} 
+            */}
 
 
         </div>
