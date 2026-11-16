@@ -150,9 +150,11 @@ export default function RenterVehicles() {
               calculatedActiveFlag: getVehicleActiveStatusBoolean(v)
             }));
 
-         //   console.log('updated vehicles',updatedVehicles)
-            let updatedVehicles2 = updatedVehicles.filter(v => v.multiday === 0 );
-          //  console.log('updated vehicles2',updatedVehicles2)
+          //  let updatedVehicles2 = updatedVehicles.filter(v => v.multiday === 0 );
+          // do not filter out day pass items
+            let updatedVehicles2 = [...updatedVehicles];
+
+         //   console.log('updated vehicles2',updatedVehicles2)
 
 
 
@@ -177,6 +179,7 @@ export default function RenterVehicles() {
           //   if (v.carownertype !== "owner") return true;
           // });
 
+         //   console.log('RV updated vehicles2',updatedVehicles2)
 
           setVehicles(updatedVehicles2);
 
@@ -401,9 +404,16 @@ export default function RenterVehicles() {
 
   // DO NOT SHOW MULTIDAY RECORDS
 
+  // const displayedVehicles = [...vehicles];
+
+  // console.log('displayedVehicles',displayedVehicles);
+
   const displayedVehicles = vehicles.filter(v => pincodeAction === 'dayuseonly'
     ? v.carownertype === 'dayuseonly'
     : v.carownertype === 'renter');
+
+ //  const displayedVehicles = vehicles.filter(v.carownertype === 'renter')
+  
 
   // const displayedVehicles = vehicles.filter(v => v.carownertype === pincodeAction);
 
