@@ -110,9 +110,30 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
-
   const minstartdateofgroup =  getMinStartdateOfVehicles (veh_grp_ary.nonownervehs.array);
   const maxenddaterenters = getMaxEnddateOfVehicles(veh_grp_ary.rentervehs.array);
+
+  
+
+   let overlapbump = 0;
+     if (maxenddateofgroup === formsdate) {
+      console.log('GROUP')
+      overlapbump = 1;
+     } 
+      if (minstartdateofgroup === formedate) {
+        console.log('RENTER')
+      overlapbump = 1;
+     }
+
+  console.log('maxenddateofgroup',maxenddateofgroup)
+  console.log('minstartdaterenters',minstartdaterenters)
+  console.log('minstartdateofgroup',minstartdateofgroup)
+  console.log('maxenddaterenters',maxenddaterenters)
+  console.log('formsdate',formsdate)
+  console.log('formedate',formedate)
+  console.log('overlapbump',overlapbump)
+
+  console.log('')
 
   const todayUTC = new Date(); // "2025-12-03"
   const todayStr = formatLocalDate(todayUTC);
@@ -146,18 +167,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       formdayusecnt = 1;
     }
 
-     let overlapbump = 0;
-     if (maxenddateofgroup === formsdate) {
-      overlapbump = 1;
-     }
-      if (minstartdateofgroup === formedate) {
-        console.log('renter')
-      overlapbump = 1;
-     }
-      console.log('maxenddateofgroup',maxenddateofgroup)
-      console.log('formsdate',formsdate)
-      console.log('minstartdateofgroup',minstartdateofgroup)
-      console.log('formedate',formedate)
+    
 
      //console.log('overlapbump',overlapbump);
      if (veh_grp_ary.rentervehs.count >= freeparkinglimit) {
@@ -192,6 +202,14 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       if (formvehicle.carownertype === 'renter') {
          rbump = 1;
       }
+
+      console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
+      console.log('XX maxactiveallowed',maxactiveallowed)
+      console.log('XX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
+      console.log('XX overlapbump',overlapbump)
+      console.log('XX formdayusecnt',formdayusecnt)
+      console.log('')
+
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count +  overlapbump)) {
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
@@ -262,6 +280,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       }
 
       let alltypesary = ['owner','family','friend','friend/family','tenant'];
+      console.log('WE ARE RIGHT HERE')
 
       //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
@@ -270,6 +289,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         return robj;
         }
       }
+
+      console.log('allActiveVehiclesCount',allActiveVehiclesCount)
+      console.log('maxactiveallowed',maxactiveallowed)
+      console.log('veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
 
       if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
@@ -296,7 +319,20 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     }
      /* END **************************** */
   }
+
+  /*********************** */
+  /* RENTER VEHICLES */
+  /*********************** */
+
+
   if (createdfrom === 'rentervehicles') {
+     console.log('XXX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
+      console.log('XXX maxactiveallowed',maxactiveallowed)
+      console.log('XXX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
+      console.log('XXX overlapbump',overlapbump)
+      console.log('XXX formdayusecnt',formdayusecnt)
+      console.log('')
+
     if (!vehicleId) {
       if (!dates_span_today) {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
@@ -318,13 +354,16 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + overlapbump)) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
-        }
-        robj = { oktoadd: true, rpflag: 0, currentVehicle: null, msgType: 0 };
+        } 
+        else if (veh_grp_ary.nonownervehs.count > 0)
+        robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11};
         return robj;
-      }
+      } else 
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
       return robj;
     }
+
+    // 
 
     let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
     let theCurrentVehicle = theCurrentVehicleAry[0];
@@ -381,8 +420,8 @@ export const getVehicleTypeGroups = (vehicles, log = false) => {
   //const allActiveVehicles = vehiclearray.filter(v => v.calculatedActiveFlag === true);
   const groups = [
     { name: 'rentervehs', matches: v => v.carownertype === 'renter' && v.calculatedActiveFlag === true },
-    { name: 'nonownervehs', matches: v => v.carownertype !== 'renter' && v.calculatedActiveFlag === true },
-    { name: 'nonownervehsany', matches: v => v.carownertype !== 'renter' },
+    { name: 'nonownervehs', matches: v => v.carownertype !== 'renter' &&  v.carownertype !== 'dayuseonly' && v.calculatedActiveFlag === true },
+    { name: 'nonownervehsany', matches: v => v.carownertype !== 'renter' &&  v.carownertype !== 'dayuseonly'},
     { name: 'ownervehs', matches: v => ownerTypes.includes(v.carownertype) && v.calculatedActiveFlag === true },
     { name: 'dayusevehs', matches: v => v.carownertype === 'dayuseonly' && v.calculatedActiveFlag === true },
     { name: 'dayusevehsany', matches: v => v.carownertype === 'dayuseonly' },

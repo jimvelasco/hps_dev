@@ -231,7 +231,7 @@ export default function VehicleDetails() {
 
     let daysplus = 0;
 
-      console.log('WE GOT HERE', carownertype)
+    //  console.log('WE GOT HERE', carownertype)
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
