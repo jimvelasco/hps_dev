@@ -194,7 +194,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       overlapbump = 1;
      }
 
-    // console.log('overlapbump',overlapbump)
+     console.log('overlapbump',overlapbump)
 
 
      //console.log('overlapbump',overlapbump);
@@ -280,7 +280,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
           //   return robj;
           // }
-        if (createdfrom === 'ownervehicles') {
+        if (createdfrom === 'ownervehicles' || createdfrom === 'rentervehicles') {
           if (veh_grp_ary.rentervehs.count > overlapbump) {
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
           } else if (veh_grp_ary.tenantvehs.count > 0) {

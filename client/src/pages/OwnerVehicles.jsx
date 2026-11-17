@@ -339,7 +339,7 @@ useEffect(() => {
       : loggedInUser?.role === "rentalmanager"
         ? vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" && v.createdbyrole !== "")
         : loggedInUser?.role === "owner"
-          ? vehicles.filter(v => v.carownertype !== "xrenter")
+          ? vehicles.filter(v => v.carownertype !== "renter")
           : []
 
   //.filter(v => v.carownertype !== "renter")

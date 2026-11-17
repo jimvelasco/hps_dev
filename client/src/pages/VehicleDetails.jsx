@@ -431,19 +431,21 @@ export default function VehicleDetails() {
         //   setDisableInDateField(false)
         //   setDisableOutDateField(false)
         // }
-        if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'tenant')) {
+        if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'tenant') ) {
           console.log('ownervehicles tenant')
           let enabled = true;
-          //   console.log('logontype',localStorage.getItem('logonType'))
           let ltype = localStorage.getItem('logonType');
-          if (ltype === 'owner') enabled = false;
-          // const edate = new Date();
-          // edate.setDate(edate.getDate() - 1);
-          // sd = formatLocalDate(edate);
-          // ed = formatLocalDate(edate);
+        //   if (ltype === 'owner') {
+        //     enabled = false;
+        //   const edate = new Date();
+        //   edate.setDate(edate.getDate() - 1);
+        //   sd = formatLocalDate(edate);
+        //   ed = formatLocalDate(edate);
+        // } else {
           sd = theVehicle.startdate;
           ed = theVehicle.enddate;
-          setDisableInDateField(enabled)
+      //  }
+          setDisableInDateField(false)
           setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
@@ -562,29 +564,50 @@ export default function VehicleDetails() {
 
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
- //   console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+    console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     let dateUpdates = {};
     let daysplus = 0;
 
-    if (name === 'carownertype' && value === 'dayuseonly') {
-      const edate = new Date();
-      edate.setDate(edate.getDate() - 1);
-      const date = formatLocalDate(edate);
-      dateUpdates = { startdate: date, enddate: date };
-      setDisableInDateField(false)
-      setDisableOutDateField(false)
-    }
-    if (name === 'carownertype' && value !== 'dayuseonly') {
-      daysplus = 3;
-      let sdate = new Date();
-      sdate = formatLocalDate(sdate)
-      let edate = new Date();
-      edate.setDate(edate.getDate() + daysplus);
-      edate = formatLocalDate(edate);
-      dateUpdates = { startdate: sdate, enddate: edate };
-      setDisableInDateField(false)
-      setDisableOutDateField(false)
-    }
+    // if (name === 'carownertype' && value === 'dayuseonly') {
+    //   const edate = new Date();
+    //   edate.setDate(edate.getDate() - 1);
+    //   const date = formatLocalDate(edate);
+    //   dateUpdates = { startdate: date, enddate: date };
+    //   setDisableInDateField(false)
+    //   setDisableOutDateField(false)
+    // }
+    // if (name === 'carownertype' && value !== 'dayuseonly') {
+    //   daysplus = 3;
+    //   let sdate = new Date();
+    //   sdate = formatLocalDate(sdate)
+    //   let edate = new Date();
+    //   edate.setDate(edate.getDate() + daysplus);
+    //   edate = formatLocalDate(edate);
+    //   dateUpdates = { startdate: sdate, enddate: edate };
+    //   setDisableInDateField(false)
+    //   setDisableOutDateField(false)
+    // }
+
+    // if (createdfrom === 'ownervehicles' && name === 'carownertype' && value === 'tenant') {
+    //   const edate = new Date();
+    //   edate.setDate(edate.getDate() - 1);
+    //   const date = formatLocalDate(edate);
+    //   dateUpdates = { startdate: date, enddate: date };
+    //   setDisableInDateField(false)
+    //   setDisableOutDateField(false)
+    // }
+    //  if (createdfrom === 'ownervehicles' && name === 'carownertype' && value !== 'tenant') {
+    //   daysplus = 3;
+    //   let sdate = new Date();
+    //   sdate = formatLocalDate(sdate)
+    //   let edate = new Date();
+    //   edate.setDate(edate.getDate() + daysplus);
+    //   edate = formatLocalDate(edate);
+    //   dateUpdates = { startdate: sdate, enddate: edate };
+    //   setDisableInDateField(false)
+    //   setDisableOutDateField(false)
+    // }
+
 
 
     setFormData(prev => ({

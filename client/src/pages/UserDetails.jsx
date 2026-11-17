@@ -50,14 +50,14 @@ export default function UserDetails() {
     ? [
       { value: 'owner', label: 'Owner' },
       { value: 'tenant', label: 'Tenant' },
-       { value: 'rentalmanager', label: 'Rental Manager' },
+   //    { value: 'rentalmanager', label: 'Rental Manager' },
        { value: 'admin', label: 'Admin' },
       { value: 'enforcer', label: 'Enforcer' }
     ]
     : [
       { value: 'owner', label: 'Owner' },
-      { value: 'tenant', label: 'Tenant' },
-      { value: 'rentalmanager', label: 'Rental Manager' }
+      { value: 'tenant', label: 'Tenant' }
+  //    { value: 'rentalmanager', label: 'Rental Manager' }
     ];
 
     /*
