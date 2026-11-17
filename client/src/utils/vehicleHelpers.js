@@ -203,12 +203,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
          rbump = 1;
       }
 
-      console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
-      console.log('XX maxactiveallowed',maxactiveallowed)
-      console.log('XX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
-      console.log('XX overlapbump',overlapbump)
-      console.log('XX formdayusecnt',formdayusecnt)
-      console.log('')
+      // console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
+      // console.log('XX maxactiveallowed',maxactiveallowed)
+      // console.log('XX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
+      // console.log('XX overlapbump',overlapbump)
+      // console.log('XX formdayusecnt',formdayusecnt)
+      // console.log('')
 
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count +  overlapbump)) {
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
@@ -290,9 +290,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         }
       }
 
-      console.log('allActiveVehiclesCount',allActiveVehiclesCount)
-      console.log('maxactiveallowed',maxactiveallowed)
-      console.log('veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
+      // console.log('allActiveVehiclesCount',allActiveVehiclesCount)
+      // console.log('maxactiveallowed',maxactiveallowed)
+      // console.log('veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
 
       if (allActiveVehiclesCount >= maxactiveallowed + veh_grp_ary.dayusemultivehs.count) {
         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 2 };
@@ -326,12 +326,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
 
   if (createdfrom === 'rentervehicles') {
-     console.log('XXX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
-      console.log('XXX maxactiveallowed',maxactiveallowed)
-      console.log('XXX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
-      console.log('XXX overlapbump',overlapbump)
-      console.log('XXX formdayusecnt',formdayusecnt)
-      console.log('')
+    //  console.log('XXX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
+    //   console.log('XXX maxactiveallowed',maxactiveallowed)
+    //   console.log('XXX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
+    //   console.log('XXX overlapbump',overlapbump)
+    //   console.log('XXX formdayusecnt',formdayusecnt)
+    //   console.log('')
 
     if (!vehicleId) {
       if (!dates_span_today) {
@@ -351,18 +351,26 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           }
         }
 
+        console.log('this is where we are')
+        if (veh_grp_ary.nonownervehs.count > (0 + overlapbump)) {
+          robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11 };
+          return robj;
+        } 
+
+
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + overlapbump)) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
-        } 
-        else if (veh_grp_ary.nonownervehs.count > 0)
-        robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11};
-        return robj;
-      } else 
-      robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
-      return robj;
+        }
+        else if (veh_grp_ary.nonownervehs.count > (0 + overlapbump)) {
+          robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11 };
+          return robj;
+        } else {
+          robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
+          return robj;
+        }
+      }
     }
-
     // 
 
     let theCurrentVehicleAry = vehiclearray.filter(v => v._id === vehicleId);
@@ -408,7 +416,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     }
 
 
-  }
+}
 } // end of okToAddUnitVehicle
 
 
