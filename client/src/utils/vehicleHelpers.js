@@ -124,16 +124,20 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         console.log('RENTER')
       overlapbump = 1;
      }
+      if (maxenddaterenters === formsdate) {
+        console.log('owner renter')
+      overlapbump = 1;
+     }
 
-  console.log('maxenddateofgroup',maxenddateofgroup)
-  console.log('minstartdaterenters',minstartdaterenters)
-  console.log('minstartdateofgroup',minstartdateofgroup)
-  console.log('maxenddaterenters',maxenddaterenters)
-  console.log('formsdate',formsdate)
-  console.log('formedate',formedate)
-  console.log('overlapbump',overlapbump)
+  // console.log('maxenddateofgroup',maxenddateofgroup)
+  // console.log('minstartdaterenters',minstartdaterenters)
+  // console.log('minstartdateofgroup',minstartdateofgroup)
+  // console.log('maxenddaterenters',maxenddaterenters)
+  // console.log('formsdate',formsdate)
+  // console.log('formedate',formedate)
+  // console.log('overlapbump',overlapbump)
 
-  console.log('')
+  // console.log('')
 
   const todayUTC = new Date(); // "2025-12-03"
   const todayStr = formatLocalDate(todayUTC);
@@ -176,6 +180,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
    
     let showerror = false;
     let messagetoshow = '';
+
+/*********************** */
+  /* OWNER VEHICLES */
+  /*********************** */
+
+
   if (createdfrom === 'ownervehicles') {
     if (!vehicleId) {
       if (!dates_span_today) {
@@ -245,8 +255,21 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           return robj;
          }
        }
-      robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
-      return robj;
+        let alltypesary = ['owner','family','friend','friend/family','tenant'];
+    //  console.log('WE ARE RIGHT HERE is_vehicle_active && dates_span_today')
+      //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
+      if (alltypesary.includes(theCurrentVehicle.carownertype)) {
+        if (veh_grp_ary.tenantvehs.count > 0 ) {
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
+        return robj;
+        }
+         if (veh_grp_ary.rentervehs.count > (0 + overlapbump) ) {
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
+        return robj;
+        }
+      }
+      // robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
+      // return robj;
     }
      /* END **************************** */
 
@@ -280,12 +303,15 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       }
 
       let alltypesary = ['owner','family','friend','friend/family','tenant'];
-      console.log('WE ARE RIGHT HERE')
-
+      console.log('WE ARE RIGHT HERE !is_vehicle_active && dates_span_today')
       //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0 ) {
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
+        return robj;
+        }
+         if (veh_grp_ary.rentervehs.count > (0 + overlapbump) ) {
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
         return robj;
         }
       }

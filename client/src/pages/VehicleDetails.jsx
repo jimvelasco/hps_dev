@@ -433,7 +433,7 @@ export default function VehicleDetails() {
         //   setDisableOutDateField(false)
         // }
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'tenant') ) {
-          console.log('ownervehicles tenant')
+        //  console.log('ownervehicles tenant')
           let enabled = true;
           let ltype = localStorage.getItem('logonType');
         //   if (ltype === 'owner') {
@@ -482,7 +482,7 @@ export default function VehicleDetails() {
           setDisableOutDateField(false)
         }
 
-        console.log('setting default dates');
+       // console.log('setting default dates');
         // if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
         //   //  console.log('we are from rentervehicles clicked on a multiday');
         //   //  sd = formatLocalDate(new Date());
