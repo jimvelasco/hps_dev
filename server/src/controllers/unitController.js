@@ -272,7 +272,7 @@ const updateUnit = async (req, res) => {
     // unit.daypasses_allowed_tenant: 0,
     // unit.daypasses_allowed_renter: 0
 
-    console.log('UNIT CONTROLLER UNIT MODIFIED DATA',unit)
+   // console.log('UNIT CONTROLLER UNIT MODIFIED DATA',unit)
 
     await unit.save();
 
