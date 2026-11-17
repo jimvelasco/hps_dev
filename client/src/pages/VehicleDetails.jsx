@@ -231,7 +231,7 @@ export default function VehicleDetails() {
 
     let daysplus = 0;
 
-    //  console.log('WE GOT HERE', carownertype)
+      console.log('WE GOT HERE', carownertype)
 
     if (createdfrom === "rentervehicles") {
       setCreatedByType("other");
@@ -257,8 +257,9 @@ export default function VehicleDetails() {
     //   setDisableOutDateField(false)
     // }
     if (createdfrom === 'rentervehicles' && carownertype === 'renter') {
+      console.log('we should be setting fields')
       daysplus = 3;
-      setDisableInDateField(false);
+      setDisableInDateField(true);
       setDisableOutDateField(false)
     }
     if (createdfrom === 'ownervehicles') {
@@ -316,13 +317,13 @@ export default function VehicleDetails() {
 
         }
         )
-        if (nonownerType === 'dayuseonly') {
-          setDisableInDateField(true)
-          setDisableOutDateField(true)
-        } else {
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
-        }
+        // if (nonownerType === 'dayuseonly') {
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(true)
+        // } else {
+        //   setDisableInDateField(false)
+        //   setDisableOutDateField(false)
+        // }
 
       }
       if (dmode === 0) {
@@ -349,13 +350,13 @@ export default function VehicleDetails() {
           enddate: formatLocalDate(edate),
         }
         )
-        if (nonownerType === 'dayuseonly') {
-          setDisableInDateField(true)
-          setDisableOutDateField(true)
-        } else {
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
-        }
+        // if (nonownerType === 'dayuseonly') {
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(true)
+        // } else {
+        //   setDisableInDateField(false)
+        //   setDisableOutDateField(false)
+        // }
       }
     }
   }, [hoaId]);
@@ -564,7 +565,7 @@ export default function VehicleDetails() {
 
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
+  //  console.log(`Form change - Name: ${name}, Value: ${value}, Type: ${type}, Checked: ${checked}`);
     let dateUpdates = {};
     let daysplus = 0;
 
@@ -798,6 +799,7 @@ export default function VehicleDetails() {
       if (oktoaddobj.msgType === 6) {
         msg = (<>There may be a Renter in the unit.<br />If issues, first contact your rental manager <br />or HOA Management {phonetocall}</>);
       }
+      
       if (oktoaddobj.msgType === 8) {
         msg = (<>There may be a Tenant in the unit.<br />If issues, first contact the Owner  <br />or HOA Management {phonetocall}</>);
       }
@@ -806,6 +808,15 @@ export default function VehicleDetails() {
       }
        if (oktoaddobj.msgType === 10) {
         msg = (<>The Day Pass Start and End date must be the same.</>);
+      }
+       if (oktoaddobj.msgType === 11) {
+        msg = (<>There may be a Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
+      }
+       if (oktoaddobj.msgType === 12) {
+        msg = (<>There may be an Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
+      }
+       if (oktoaddobj.msgType === 13) {
+        msg = (<>There may be an Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
       }
 
     }

@@ -302,9 +302,9 @@ useEffect(() => {
      //  console.log('hoa.daypasses_allowed_hoa',hoa.daypasses_allowed_hoa) 
 
 
-    setOverActiveLimitMsg(veh_grp_ary.allactivevehs.count - veh_grp_ary.dayusemultivehs.count > Number(unitForOwner.parking_allowed_owner)
-      ? <>The active vehicle count: {veh_grp_ary.allactivevehs.count}<br />is over your limit: {unitForOwner.parking_allowed_owner}</>
-      : null);
+    // setOverActiveLimitMsg(veh_grp_ary.allactivevehs.count - veh_grp_ary.dayusemultivehs.count > Number(unitForOwner.parking_allowed_owner)
+    //   ? <>The active vehicle count: {veh_grp_ary.allactivevehs.count}<br />is over your limit: {unitForOwner.parking_allowed_owner}</>
+    //   : null);
   }, [role, vehiclesLoading, unitForOwner, hoaId, loggedInUser?.unitnumber, rawVehicles]);
 
 
@@ -339,7 +339,7 @@ useEffect(() => {
       : loggedInUser?.role === "rentalmanager"
         ? vehicles.filter(v => v.carownertype !== "renter" && v.createdbyrole !== "tenant" && v.createdbyrole !== "")
         : loggedInUser?.role === "owner"
-          ? vehicles.filter(v => v.carownertype !== "renter")
+          ? vehicles.filter(v => v.carownertype !== "xrenter")
           : []
 
   //.filter(v => v.carownertype !== "renter")

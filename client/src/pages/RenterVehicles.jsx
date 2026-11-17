@@ -154,7 +154,7 @@ export default function RenterVehicles() {
           // do not filter out day pass items
             let updatedVehicles2 = [...updatedVehicles];
 
-         //   console.log('updated vehicles2',updatedVehicles2)
+            console.log('updated vehicles2',updatedVehicles2)
 
 
 
@@ -415,8 +415,11 @@ export default function RenterVehicles() {
   const displayedVehicles2 = vehicles.filter(v => pincodeAction === 'dayuseonly'
     ? v.carownertype === 'dayuseonly'
     : v.carownertype === 'renter');
+   // console.log('displayedVehicles2',displayedVehicles2);
 
-    const displayedVehicles = displayedVehicles2.filter(v => v.multiday === 0 );
+   // const displayedVehicles = displayedVehicles2.filter(v => v.multiday === 0 );
+   // JJVFIX is above important?
+   const displayedVehicles = [...displayedVehicles2];
 
    //  console.log('displayedVehicles',displayedVehicles);
 
