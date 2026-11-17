@@ -111,7 +111,7 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
           )} */}
 
            <div className="full-row-left" style={{marginTop:"5px"}}>
-               Role: {vehicle.createdbyrole}  &nbsp; Multiday: {vehicle.multiday} 
+               Role: {vehicle.createdbyrole}  &nbsp; Multiday: {vehicle.multiday} &nbsp;Type: {vehicle.carownertype}
            </div>
   
           

@@ -250,10 +250,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 10 };
           return robj;
         }
-         if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
-           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 3 };
+          robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0};
           return robj;
-         }
        }
         let alltypesary = ['owner','family','friend','friend/family','tenant'];
     //  console.log('WE ARE RIGHT HERE is_vehicle_active && dates_span_today')
@@ -277,6 +275,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     /* START **************************** */
     if (is_vehicle_active && !dates_span_today) {
        if (is_day_use_vehicle) {
+       // console.log('we need to figure this out');
          if (formvehicle.startdate !== formvehicle.enddate  && theCurrentVehicle.multiday === 0) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 10 };
           return robj;
@@ -303,7 +302,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       }
 
       let alltypesary = ['owner','family','friend','friend/family','tenant'];
-      console.log('WE ARE RIGHT HERE !is_vehicle_active && dates_span_today')
+    //  console.log('WE ARE RIGHT HERE !is_vehicle_active && dates_span_today')
       //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0 ) {
@@ -415,7 +414,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       return robj;
     }
     if (!is_vehicle_active && dates_span_today) {
-      console.log('we are here at present')
+     // console.log('we are here at present')
       let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
 
       //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {

@@ -8,7 +8,7 @@ const copyUnitnumberToPincodevalue = async () => {
  //   const db = mongoose.connection.useDb("hps_dev");
     const result = await mongoose.connection.db.collection("vehicles").updateMany(
       {
-        carownertype: { $in: ["renter", "visitor"] },
+        carownertype: { $in: ["renter"] },
         unitnumber: { $type: "string" },
         $expr: { $ne: ["$pin_code_value", "$unitnumber"] }
       },

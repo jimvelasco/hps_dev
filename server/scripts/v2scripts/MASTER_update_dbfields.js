@@ -10,10 +10,15 @@ import { fileURLToPath } from "node:url";
 //   "copyUnitnumberToPincodevalue.js"
 // ];
 
+// const scripts = [
+//   "createUnitTable.js",
+//   "populateUnitTable.js",
+//   "copyUnitPincodes.js"
+// ];
 const scripts = [
-  "createUnitTable.js",
-  "populateUnitTable.js",
-  "copyUnitPincodes.js"
+     "removeUserParkingFields.js",
+   "copyRenterVehicleOwnerType.js",
+   "copyUnitnumberToPincodevalue.js"
 ];
 
 const serverDirectory = fileURLToPath(new URL("../../", import.meta.url));

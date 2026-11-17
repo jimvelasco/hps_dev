@@ -154,7 +154,7 @@ export default function RenterVehicles() {
           // do not filter out day pass items
             let updatedVehicles2 = [...updatedVehicles];
 
-            console.log('updated vehicles2',updatedVehicles2)
+          //  console.log('updated vehicles2',updatedVehicles2)
 
 
 

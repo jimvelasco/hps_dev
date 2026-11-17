@@ -152,7 +152,7 @@ export default function VehicleDetails() {
   // 
   const selectedOwnerType = carownertype;
 
-  // console.log('VD selectedOwnerType',selectedOwnerType)
+  //console.log('VD selectedOwnerType',selectedOwnerType)
 
 
 
@@ -450,7 +450,7 @@ export default function VehicleDetails() {
           setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
-          console.log('rentervehicles dayuseonly')
+        //  console.log('rentervehicles dayuseonly')
           //  console.log('we are from rentervehicles clicked on a multiday');
           sd = formatLocalDate(new Date());
           ed = formatLocalDate(new Date());
@@ -768,7 +768,7 @@ export default function VehicleDetails() {
     let oktoaddobj = { oktoadd: false, activecount: 0 };
     oktoaddobj = okToAddUnitVehicle(formData, vehicles, unitOwner, vehid, stateUnit, createdfrom, pincodeAction);
 
-    //  console.log('VEHICLE DETAILS oktoaddobj', oktoaddobj);
+   //   console.log('VEHICLE DETAILS oktoaddobj formData', formData);
     let rpflag = 0;
     let msg = "";
     //console.log('phonetocall',phonetocall)
@@ -807,7 +807,7 @@ export default function VehicleDetails() {
         msg = (<>Owners can only have one tenant</>);
       }
        if (oktoaddobj.msgType === 10) {
-        msg = (<>The Day Pass Start and End date must be the same.</>);
+        msg = (<>The Day Pass <br />Start Date and End Date<br /> must be the same.</>);
       }
        if (oktoaddobj.msgType === 11) {
         msg = (<>There may be a Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
@@ -902,7 +902,7 @@ export default function VehicleDetails() {
         // })
       };
 
-      //   console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
+       //  console.log('VD THE VEHICLE CREATION PAYLOAD IS ',vehiclePayload)
 
       if (isModifyMode) {
         // console.log('we are modifying a vehicle')
@@ -1086,7 +1086,7 @@ export default function VehicleDetails() {
 
 
 
-                  {createdfrom === "rentervehicles" && (
+                  {createdfrom === "rentervehicles" && formData.carownertype === 'dayuseonly' && (
                     <div style={{ fontWeight: "normal" }}>
                       <div style={{ marginLeft: "12px", marginTop: "15px" }}>
                         {formData.carownertype === 'dayuseonly' ? 'DAY PASS' : formData.carownertype?.toUpperCase()}
@@ -1095,7 +1095,27 @@ export default function VehicleDetails() {
                     </div>
                   )
                   }
-                  {createdfrom !== "rentervehicles" && (
+
+                  {/* {createdfrom === "ownervehicles" && (formData.carownertype === 'dayuseonly' || formData.carownertype === 'renter') && (
+                    <div style={{ fontWeight: "normal" }}>
+                      <div style={{ marginLeft: "12px", marginTop: "15px" }}>
+                        {formData.carownertype === 'dayuseonly' ? 'DAY PASS' : formData.carownertype?.toUpperCase()}
+                      </div>
+
+                    </div>
+                  )
+                  } */}
+
+                    {createdfrom === "ownervehicles" && (formData.carownertype === 'dayuseonly' || formData.carownertype === 'renter') && (
+                    <div style={{ fontWeight: "normal" }}>
+                      <div style={{ marginLeft: "12px", marginTop: "15px" }}>
+                        {formData.carownertype === 'dayuseonly' ? 'DAY PASS' : formData.carownertype === 'renter' ? 'RENTER' : formData.carownertype?.toUpperCase()}
+                      </div>
+
+                    </div>
+                  )
+                  }
+                  {createdfrom !== "rentervehicles" && formData.carownertype !== 'dayuseonly' && formData.carownertype !== 'renter' && (
                     <select
                       className="standardselect100"
                       name="carownertype"
@@ -1111,6 +1131,7 @@ export default function VehicleDetails() {
                       ))}
                     </select>
                   )}
+
 
                   {/* {createdfrom === "ownervehicles" && (
                     <select
