@@ -418,7 +418,7 @@ const checkCsvFileFormatOk = (csvfile) => {
 
 }
 
-const importHOAUserCSV = async (req, res) => {
+const importHOAUserCSV_without_daypass = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "Please select a CSV file" });
   }
@@ -647,6 +647,244 @@ const importHOAUserCSV = async (req, res) => {
   }
 };
 
+
+const importHOAUserCSV = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "Please select a CSV file" });
+  }
+
+  const hoaid = req.params.id;
+  console.log('the hoaid is', hoaid);
+  let hoa;
+  try {
+    hoa = await Hoa.findOne({ hoaid });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+  if (!hoa) {
+    return res.status(404).json({ message: "HOA not found" });
+  }
+
+
+
+  const rows = [];
+  let row = [];
+  let value = "";
+  let quoted = false;
+  const csv = req.file.buffer.toString("utf8").replace(/^\uFEFF/, "");
+ // quoted = checkCsvFileFormatOk(csv);
+
+  for (let index = 0; index < csv.length; index += 1) {
+    const character = csv[index];
+    if (character === '"') {
+      if (quoted && csv[index + 1] === '"') {
+        value += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (character === "," && !quoted) {
+      row.push(value);
+      value = "";
+    } else if ((character === "\n" || character === "\r") && !quoted) {
+      row.push(value);
+      if (row.some((field) => field.trim())) rows.push(row);
+      row = [];
+      value = "";
+      if (character === "\r" && csv[index + 1] === "\n") index += 1;
+    } else {
+      value += character;
+    }
+  }
+
+  if (quoted) {
+    return res.status(400).json({ message: "CSV contains an unclosed quoted field" });
+  }
+
+  row.push(value);
+  if (row.some((field) => field.trim())) rows.push(row);
+  if (!rows.length) {
+    return res.status(400).json({ message: "CSV file is empty" });
+  }
+
+  const [headers, ...records] = rows;
+  if (records.some((record) => record.length !== headers.length)) {
+    return res.status(400).json({ message: "CSV row has a different number of fields than the header" });
+  }
+
+
+  let oary = [];
+  //for (const record of records.slice(0, 3)) {
+    for (const record of records) {
+    const output = Object.fromEntries(headers.map((header, index) => {
+      const column = header.trim();
+      let field = record[index];
+      if (column.toLowerCase() === "phone") {
+        field = field.split(",")[0].trim().replace(/^Phone:\s*/i, "");
+      } else if (column.toLowerCase() === "emails") {
+        field = field.split(/[,;]/)[0].trim().replace(/^Email:\s*/i, "");
+        // } else if (column.toLowerCase() === "name") {
+        //   field = field.split(/[,;]/)[0].trim().replace(/^Name:\s*/i, "");
+      }
+      return [column, field];
+    }));
+    const [lastName = "", firstName = ""] = (output.Name || "").split(",", 2);
+    output.last_name = lastName.trim();
+    output.first_name = firstName.trim();
+    console.log(output);
+    oary.push(output)
+  }
+  console.log('oary size', oary.length)
+  let fname = "";
+  let lname = "";
+  let phone = "";
+  let email = "";
+  let unitnum = "";
+  let hoid = "";
+  oary.forEach((el) => {
+    let parts = (el.Name || "").split(",");
+    lname = parts[0];
+    fname = parts[1];
+    phone = el.Phone;
+    email = el.Emails;
+    unitnum = el.Unit;
+
+    console.log(hoaid, unitnum, lname, fname, phone, email);
+    console.log();
+
+  })
+
+  // let parking_allowed_unit = hoa['parking_allowed_unit'];
+
+  let parking_allowed_owner = hoa['parking_allowed_owner'];
+  let owner_free_parking_spots = hoa['owner_free_parking_spots'];
+  let daypasses_allowed_owner = hoa['daypasses_allowed_owner'];
+
+  let parking_allowed_tenant = hoa['parking_allowed_tenant'];
+  let tenant_free_parking_spots = hoa['tenant_free_parking_spots'];
+  let daypasses_allowed_tenant = hoa['daypasses_allowed_tenant'];
+
+  let parking_allowed_renter = hoa['parking_allowed_renter'];
+  let renter_free_parking_spots = hoa['renter_free_parking_spots'];
+  let daypasses_allowed_renter = hoa['daypasses_allowed_renter'];
+
+  // console.log('parking_allowed_unit', parking_allowed_unit);
+
+  // console.log('parking_allowed_owner', parking_allowed_owner);
+  // console.log('owner_free_parking_spots', owner_free_parking_spots);
+  // console.log('daypasses_allowed_owner', daypasses_allowed_owner);
+
+  // console.log('parking_allowed_tenant', parking_allowed_tenant);
+  // console.log('tenant_free_parking_spots', tenant_free_parking_spots);
+  // console.log('daypasses_allowed_tenant', daypasses_allowed_tenant);
+
+  // console.log('parking_allowed_renter', parking_allowed_renter);
+  // console.log('renter_free_parking_spots', renter_free_parking_spots);
+  // console.log('daypasses_allowed_renter', daypasses_allowed_renter);
+
+  const unitIndex = headers.findIndex((header) => header.trim().toLowerCase() === "unit");
+  if (unitIndex === -1 || !records.length) {
+    return res.status(400).json({ message: "CSV must include a Unit column and at least one row" });
+  }
+  const dayPassIndex = headers.findIndex((header) => header.trim().toLowerCase() === "day pass");
+  if (dayPassIndex === -1) {
+    return res.status(400).json({ message: "CSV must include a Day Pass column" });
+  }
+  const dayPassValues = records.map((record) => record[dayPassIndex].trim());
+  if (dayPassValues.some((value) => value !== "0" && value !== "1")) {
+    return res.status(400).json({ message: "Every CSV row must have a Day Pass value of 0 or 1" });
+  }
+  if (oary.some(({ Role }) => !Role?.trim())) {
+    return res.status(400).json({ message: "CSV must include a Role for every row" });
+  }
+
+  //const unitNumbers = records.slice(0, 3).map((record) => record[unitIndex].trim());
+   const unitNumbers = records.map((record) => record[unitIndex].trim());
+  if (unitNumbers.some((unitnumber) => !unitnumber)) {
+    return res.status(400).json({ message: "Every CSV row must include a Unit" });
+  }
+  if (oary.some(({ Name }) => !Name?.trim())) {
+    return res.status(400).json({ message: "Every CSV row must include a Name" });
+  }
+
+  const phoaid = hoaid; // + 'x';
+  const units = [];
+  let createdUsers = 0;
+  let skipped = 0;
+  let currentUnitNumber;
+  let unitCreatedWithoutUser = false;
+
+  try {
+    for (const [index, unitnumber] of unitNumbers.entries()) {
+      currentUnitNumber = unitnumber;
+      unitCreatedWithoutUser = false;
+      const { first_name, last_name, Phone, Emails, Role } = oary[index];
+      if (Emails && await User.findOne({ hoaid: phoaid, email: Emails })) {
+        console.log('WE ARE SKIPPING A RECORD ',phoaid,Emails);
+        skipped += 1;
+        continue;
+      }
+
+      const unit = await Unit.create({
+        hoaid: phoaid,
+        unitnumber,
+        day_use_only: Number(dayPassValues[index]),
+        // parking_allowed_unit: parking_allowed_unit,
+
+        parking_allowed_owner: parking_allowed_owner,
+        owner_free_parking: owner_free_parking_spots,
+        daypasses_allowed_owner: daypasses_allowed_owner,
+
+        parking_allowed_tenant: parking_allowed_tenant,
+        tenant_free_parking_spots: tenant_free_parking_spots,
+        daypasses_allowed_tenant: daypasses_allowed_tenant,
+
+        parking_allowed_renter: parking_allowed_renter,
+        renter_free_parking: renter_free_parking_spots,
+        daypasses_allowed_renter: daypasses_allowed_renter,
+
+        pincodeary: [{
+          pincode:  unitnumber + 'str',
+          action: "renter",
+          description: "short term renter",
+          uses_allowed: -1,
+          uses_used: 0,
+          expire_date: ""
+        },
+        {
+          pincode:  unitnumber + 'duo',
+          action: "dayuseonly",
+          description: "day use only",
+          uses_allowed: -1,
+          uses_used: 0,
+          expire_date: ""
+        }
+      ]
+      });
+      units.push(unit);
+      unitCreatedWithoutUser = true;
+
+      await User.create({
+        hoaid: phoaid,
+        unitnumber: unit.unitnumber,
+        name: `${first_name} ${last_name}`.trim(),
+        first_name,
+        last_name,
+        phone: Phone,
+        email: Emails,
+        role: Role.trim(),
+        password:  unitnumber + 'pw'
+      });
+      createdUsers += 1;
+      unitCreatedWithoutUser = false;
+    }
+    return res.status(201).json({ message: `Created ${units.length} units and ${createdUsers} users. Skipped ${skipped} existing users.`, units, createdUsers, skipped });
+  } catch (error) {
+    console.error(`Import failed for unit ${currentUnitNumber}:`, error);
+    const orphanMessage = unitCreatedWithoutUser ? " The most recent Unit remains without a User." : "";
+    return res.status(500).json({ message: `Import failed after creating ${units.length} units and ${createdUsers} users.${orphanMessage}`, units, createdUsers, skipped });
+  }
+};
 
 
 export { getHoaById, getHoas, updateHoaById, createStripeConnectAccount, getStripeAccountStatus, importHOAUserCSV };
