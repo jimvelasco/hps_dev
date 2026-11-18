@@ -788,18 +788,7 @@ const sendEmailFromHoaSES = async (req, res) => {
 
      console.log('sendEmailFromHoaSES toemail', toEmail,'fromwhere',fromwhere)
 
-    let HPS_EMAIL = toEmail;
-    // process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
-    let HPS_EMAILx = 'admin@hoaparkingsolutions.com';
-    if (toEmail) {
-      //    HPS_EMAIL = toEmail;
-    }
-    if (fromwhere === 'about') {
-      HPS_EMAIL = process.env.HPS_EMAIL || "contact@hoaparkingsolutions.com";
-    }
-    //  if (fromwhere === 'hoainformation') {
-    //      HPS_EMAIL = toEmail;
-    // }
+    const HPS_EMAIL = process.env.HPS_EMAIL || "admin@hoaparkingsolutions.com";
 
     // Set the AWS Region (e.g., "us-east-1")
     const REGION = "us-east-1";
@@ -851,13 +840,9 @@ const sendEmailFromHoaSES = async (req, res) => {
 
     const params = {
       Source: HPS_EMAIL,
-      //"no.reply@hoaparkingsolutions.com", // Verified sender email address
-      // sender@example.com", // Verified sender email address
+      ReplyToAddresses: [returnEmail],
       Destination: {
-        // ToAddresses: ["recipient@example.com"], // Verified recipient email address(es)
-        // this will be contact@hoaparkingsolutions.com or something like that depending on where the email is triggered
-        ToAddresses: [toEmail], // Verified recipient email address(es)
-
+        ToAddresses: [toEmail],
       },
       Message: {
         Subject: {
@@ -877,19 +862,7 @@ const sendEmailFromHoaSES = async (req, res) => {
       },
     };
 
-    // Async function to send the email
-    const sendEmail = async () => {
-      try {
-        const command = new SendEmailCommand(params);
-        const data = await sesClient.send(command);
-        // console.log("Email sent successfully. Message ID:", data.MessageId);
-        return data;
-      } catch (err) {
-        console.error("Failed to send email:", err);
-      }
-    };
-
-    await sendEmail();
+    await sesClient.send(new SendEmailCommand(params));
     res.json({
       message: "Email sent successfully"
     });
