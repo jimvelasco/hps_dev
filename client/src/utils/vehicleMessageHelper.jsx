@@ -12,7 +12,7 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
 
   }
   const veh_grp_ary = getVehicleTypeGroups(vehicles);
- // console.log('vehicles',vehicles)
+ // console.log('daypassesallowed',daypassesallowed)
  //console.log('vmh veh_grp_ary', veh_grp_ary)
   // console.log('veh_grp_ary.nonownervehs.array', veh_grp_ary.nonownervehs.array)
   // console.log('veh_grp_ary.rentervehs.array', veh_grp_ary.rentervehs.array)

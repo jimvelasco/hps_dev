@@ -188,6 +188,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
   if (createdfrom === 'ownervehicles') {
     if (!vehicleId) {
+
+     //  console.log('ownervehicles dates_span_today',dates_span_today,formdayusecnt,maxdayuse,veh_grp_ary)
+
       if (!dates_span_today) {
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
         return robj;
@@ -357,6 +360,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     //   console.log('XXX overlapbump',overlapbump)
     //   console.log('XXX formdayusecnt',formdayusecnt)
     //   console.log('')
+   // console.log('formvehicle',formvehicle);
 
     if (!vehicleId) {
       if (!dates_span_today) {
@@ -364,7 +368,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         return robj;
       }
 
-
+      // this logic was in place when daypasses were created by owner
+      // since daypasses are created my()
+    //  console.log('dates_span_today',dates_span_today)
       if (dates_span_today) {
         if (formdayusecnt === 1) {  //means we passed in a dayuseonly form
           if (veh_grp_ary.dayusemultivehs.count >= maxdayuse) {
@@ -376,7 +382,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           }
         }
 
-        console.log('this is where we are')
+      //  console.log('this is where we are')
         if (veh_grp_ary.nonownervehs.count > (0 + overlapbump)) {
           robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11 };
           return robj;
@@ -405,7 +411,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     const maxdayusemulti = 2;
     let requirespayment = theCurrentVehicle.requires_payment;
 
+
     if (is_vehicle_active && dates_span_today) {
+    // console.log('day use only vacasa room')
       robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
       return robj;
     }

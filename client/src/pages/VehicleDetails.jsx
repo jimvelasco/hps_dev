@@ -246,7 +246,7 @@ export default function VehicleDetails() {
     //   setDisableInDateField(true);
     //   setDisableOutDateField(false)
     // }
-    if (createdfrom === 'rentervehicles' && carownertype === 'dayuseonly') {
+    if (createdfrom === 'rentervehicles' && carownertype === 'dayuseonly'  ) {
       daysplus = 0;
       setDisableInDateField(true);
       setDisableOutDateField(true)
@@ -408,7 +408,8 @@ export default function VehicleDetails() {
         //   setDisableOutDateField(true)
         // }
 
-        //    console.log('cf cot',createdfrom,theVehicle.carownertype);
+            console.log('unit',unit);
+             console.log('createdfrom',createdfrom);
 
 
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
@@ -449,7 +450,7 @@ export default function VehicleDetails() {
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
-        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
+        if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' || unit.day_use_only === 1 )) {
         //  console.log('rentervehicles dayuseonly')
           //  console.log('we are from rentervehicles clicked on a multiday');
           sd = formatLocalDate(new Date());
@@ -457,13 +458,13 @@ export default function VehicleDetails() {
           setDisableInDateField(true)
           setDisableOutDateField(true)
         }
-        if (createdfrom === 'rentervehicles' && (theVehicle.multiday === 1)) {
-          console.log('rentervehicles theVehicle.multiday === 1')
-          sd = theVehicle.startdate;
-          ed = theVehicle.enddate;
-          setDisableInDateField(true)
-          setDisableOutDateField(false)
-        }
+        // if (createdfrom === 'rentervehicles' && (theVehicle.multiday === 1)) {
+        //   console.log('rentervehicles theVehicle.multiday === 1')
+        //   sd = theVehicle.startdate;
+        //   ed = theVehicle.enddate;
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(false)
+        // }
         if (createdfrom === 'ownervehicles' && (theVehicle.multiday === 1)) {
           console.log('ownervehicles theVehicle.multiday === 1')
           sd = theVehicle.startdate;
