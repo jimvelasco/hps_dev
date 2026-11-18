@@ -228,7 +228,7 @@ export default function OnsiteVehicles() {
       <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
       {getVehicleIsActiveTodayBoolean(vehicle) ? (
         <div className="grid-item-normal-highlight">
-          {utcDateOnly(vehicle.checkout)}
+          {vehicle.enddate}
         </div>
       ) : (
         <div className="grid-item-normal"> {utcDateOnly(vehicle.checkout)}</div>
@@ -276,8 +276,8 @@ export default function OnsiteVehicles() {
         <div className="grid-item-bold">Check Out</div>
         <div className="grid-item-bold">Active</div>
 
-        <div className="grid-item-normal">{utcDateOnly(vehicle.checkin)}</div>
-        <div className="grid-item-normal">{utcDateOnly(vehicle.checkout)}</div>
+        <div className="grid-item-normal">{vehicle.startdate}</div>
+        <div className="grid-item-normal">{vehicle.enddate}</div>
         <div className="grid-item-normal"><b>{getVehicleActiveStatusBoolean(vehicle) ? "Yes" : "No"} </b></div>
 
 

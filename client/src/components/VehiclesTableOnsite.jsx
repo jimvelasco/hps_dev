@@ -88,7 +88,7 @@ export default function VehiclesTableOnsite({ vehicles, role, sortColumn, sortDi
                         </div>
                         <div className="standard-table-cell "> {vehicle.unitnumber}</div>
                         <div className="standard-table-cell "> {vehicle.carownerphone}</div>
-                        <div className="standard-table-cell ">{utcDateOnly(vehicle.checkout)}</div>
+                        <div className="standard-table-cell ">{vehicle.enddate}</div>
                         <div className="standard-table-cell "> {vehicle.carownertype}</div>
                         <div className="standard-table-cell ">{vehicle.vehicle_type}</div>
                         <div className="standard-table-cell ">{vehicle.make}</div>
