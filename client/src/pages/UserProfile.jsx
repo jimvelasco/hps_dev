@@ -220,7 +220,7 @@ export default function UserProfile() {
   }
 
   if (loggedInUser && loggedInUser.role === 'admin') {
-    console.log('Admin User');
+  //  console.log('Admin User');
   }
 
   return (

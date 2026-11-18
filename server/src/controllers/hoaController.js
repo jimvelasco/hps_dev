@@ -605,7 +605,7 @@ const importHOAUserCSV_without_daypass = async (req, res) => {
         daypasses_allowed_renter: daypasses_allowed_renter,
 
         pincodeary: [{
-          pincode:  unitnumber + 'str',
+          pincode:  unitnumber + '1',
           action: "renter",
           description: "short term renter",
           uses_allowed: -1,
@@ -613,7 +613,7 @@ const importHOAUserCSV_without_daypass = async (req, res) => {
           expire_date: ""
         },
         {
-          pincode:  unitnumber + 'duo',
+          pincode:  unitnumber + '2',
           action: "dayuseonly",
           description: "day use only",
           uses_allowed: -1,
@@ -634,7 +634,7 @@ const importHOAUserCSV_without_daypass = async (req, res) => {
         phone: Phone,
         email: Emails,
         role: Role.trim(),
-        password:  unitnumber + 'pw'
+        password:  unitnumber + unitnumber
       });
       createdUsers += 1;
       unitCreatedWithoutUser = false;
@@ -844,7 +844,7 @@ const importHOAUserCSV = async (req, res) => {
         daypasses_allowed_renter: daypasses_allowed_renter,
 
         pincodeary: [{
-          pincode:  unitnumber + 'str',
+          pincode:  unitnumber + '1',
           action: "renter",
           description: "short term renter",
           uses_allowed: -1,
@@ -852,7 +852,7 @@ const importHOAUserCSV = async (req, res) => {
           expire_date: ""
         },
         {
-          pincode:  unitnumber + 'duo',
+          pincode:  unitnumber + '2',
           action: "dayuseonly",
           description: "day use only",
           uses_allowed: -1,
@@ -873,7 +873,7 @@ const importHOAUserCSV = async (req, res) => {
         phone: Phone,
         email: Emails,
         role: Role.trim(),
-        password:  unitnumber + 'pw'
+        password: `${unitnumber}${unitnumber}`
       });
       createdUsers += 1;
       unitCreatedWithoutUser = false;

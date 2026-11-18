@@ -459,7 +459,9 @@ export default function UnitDetails() {
                   checked={formData.day_use_only === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, day_use_only: e.target.checked ? 1 : 0 }))}
                   // disabled={!isAdminView && !isEditMode}
-                   disabled={ isEditMode || !isAdminView}
+                  //  disabled={ isEditMode || !isAdminView}. //this will disable it even in admin mode.  Only available when new unit
+                     disabled={  !isAdminView}
+
                 />
                 <label className="input-label" htmlFor="unit-day_use_only" title="The virual room will only allow day passes">Day Pass Only Unit</label>
               </div>
