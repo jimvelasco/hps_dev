@@ -853,7 +853,7 @@ input.input-date2:disabled {
   color: black;
   padding: 10px;
   border-radius: 8px;
-  width: 320px;
+  max-width: 320px;
   margin: auto;
   text-align: center;
   opacity: .8;
