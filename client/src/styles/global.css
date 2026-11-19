@@ -1269,7 +1269,7 @@ section.standardsectiondashboard {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   margin: 2px;
   border: 0px solid black;
-  width: 200px;
+  min-width: 220px;
   /* width: 180px; */
   /* height: 100px */
 

@@ -779,7 +779,7 @@ export default function VehicleDetails() {
       if (oktoaddobj.msgType === 1) {
         msg = (<>You are not allowed to have more<br />parking than allowed  {maxactiveallowed}. <br />
           Please deactivate another vehicle before activating this one.<br />
-          If issues, adjust your registrations or <br /> contact HOA Management. <br />{phonetocall}</>);
+          If issues, first adjust your registrations or <br /> contact HOA Management.</>);
       }
 
       // message when trying to add third vehicle from form

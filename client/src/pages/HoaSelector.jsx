@@ -49,6 +49,8 @@ export default function HoaSelector() {
     }
   };
 
+  const livehoas = ['YV','TIMBER']
+
   //https://hoaparking.s3.us-east-1.amazonaws.com/timber_run.jpg
   //https://hoaparking.s3.us-east-1.amazonaws.com/Rockies-Condominiums-08.jpg
   //http://hoaparking.s3.amazonaws.com/yampa_103022.jpg
@@ -114,7 +116,7 @@ export default function HoaSelector() {
                 required
               >
                 <option value="">-- Select an HOA --</option>
-                {hoas.map((hoa) => (
+                {hoas.filter((hoa) => livehoas.includes(hoa.hoaid)).map((hoa) => (
                   <option key={hoa._id} value={hoa.hoaid}>
                     {hoa.name}
                   </option>

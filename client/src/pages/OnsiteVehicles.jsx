@@ -195,14 +195,14 @@ export default function OnsiteVehicles() {
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
       <div className="grid-item-bold">Unit</div>
-      <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
+      <div className="grid-item-normal"> {vehicle.carownertype === 'dayuseonly' ? 'Day' : vehicle.carownertype || "N/A"} </div>
 
       {getVehicleIsActiveTodayBoolean(vehicle) ? (
         <div className="grid-item-normal-highlight">
-          {utcDateOnly(vehicle.checkout)}
+          {vehicle.enddate}
         </div>
       ) : (
-        <div className="grid-item-normal"> {utcDateOnly(vehicle.checkout)}</div>
+        <div className="grid-item-normal"> {vehicle.enddate}</div>
       )}
       <div className="grid-item-normal"> {vehicle.unitnumber || "N/A"} </div>
     </div>
@@ -225,13 +225,13 @@ export default function OnsiteVehicles() {
       <div className="grid-item-bold">User</div>
       <div className="grid-item-bold">Checkout</div>
       <div className="grid-item-bold">Unit</div>
-      <div className="grid-item-normal"> {vehicle.carownertype || "N/A"} </div>
+      <div className="grid-item-normal"> {vehicle.carownertype === 'dayuseonly' ? 'Day' : vehicle.carownertype || "N/A"} </div>
       {getVehicleIsActiveTodayBoolean(vehicle) ? (
         <div className="grid-item-normal-highlight">
           {vehicle.enddate}
         </div>
       ) : (
-        <div className="grid-item-normal"> {utcDateOnly(vehicle.checkout)}</div>
+        <div className="grid-item-normal"> {vehicle.enddate}</div>
       )}
       <div className="grid-item-normal"> {vehicle.unitnumber || "N/A"} </div>
     </div>)
@@ -332,7 +332,7 @@ export default function OnsiteVehicles() {
   const renderTitleBar = () => {
     return (<div>
       <button className="navbutton2" onClick={handleShowGrid}
-        disabled={true}>
+        disabled={false}>
         {isGridVisible ?
           (<span className="strike">
             Violations</span>)

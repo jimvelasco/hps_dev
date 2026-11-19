@@ -76,14 +76,14 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
  //console.log('pincodeAction',pincodeAction)
 
   // this gets called from renter vehicles with pincode associated with dayuseonly is used
-  if (pincodeAction === 'dayuseonly' ) {
-    if (veh_grp_ary.dayusemultivehs.count >= daypassesallowed) {
-      return (<>You are not allowed more <br /> Day Passes than<br />  {daypassesallowed} <br /> If issues, 
-      first contact person that <br />provided 
-        Unit/PIN or HOA Management<br />{phonetocall}</>);
-    }
-    return null;
-  }
+  // if (pincodeAction === 'dayuseonly' ) {
+  //   if (veh_grp_ary.dayusemultivehs.count >= daypassesallowed) {
+  //     return (<>You are not allowed more <br /> Day Passes than<br />  {daypassesallowed} <br /> If issues, 
+  //     first contact person that <br />provided 
+  //       Unit/PIN or HOA Management<br />{phonetocall}</>);
+  //   }
+  //   return null;
+  // }
 
 // owner vehicles when add vehicle is hit with active daypass
   //  if (veh_grp_ary.dayusemultivehs.count >= daypassesallowed) {
@@ -105,6 +105,15 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   // console.log('unitParkingLimit',unitParkingLimit)
   // console.log('overlapbump ',overlapbump)
   // console.log(' veh_grp_ary.dayusemultivehs.count', veh_grp_ary.dayusemultivehs.count)
+
+   if (pincodeAction === 'dayuseonly' ) {
+    if (veh_grp_ary.dayusemultivehs.count >= daypassesallowed) {
+      return (<>Day Pass limit reached.<br />You are allowed {daypassesallowed} Day Passes.<br /> 
+      Contact the person that <br />provided 
+        Unit/PIN or HOA Management.</>);
+    }
+    return null;
+  }
 
 
   if (createdfrom === 'rentervehicles' && veh_grp_ary.allactivevehs.count >= unitParkingLimit + overlapbump + veh_grp_ary.dayusemultivehs.count) {
