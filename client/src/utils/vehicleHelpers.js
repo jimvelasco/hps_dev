@@ -217,6 +217,19 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
          rbump = 1;
       }
 
+       if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
+         return robj;
+
+      }
+      let alltypesary = ['owner','family','friend','friend/family','tenant'];
+       if (alltypesary.includes(formvehicle.carownertype)) {
+        if (veh_grp_ary.tenantvehs.count > 0 ) {
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+        return robj;
+        }
+      }
+
       // console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
       // console.log('XX maxactiveallowed',maxactiveallowed)
       // console.log('XX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
