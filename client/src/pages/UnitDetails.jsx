@@ -539,7 +539,9 @@ export default function UnitDetails() {
                         onChange={(e) => handlePinEntryChange(index, "description", e.target.value)}
                         disabled={false}
                       />
-                      <label className="input-label_normal" style={{ marginTop: "10px", display:"block" }} htmlFor={`unit-pin-uses-allowed-${index}`}>Number of Uses Allowed</label>
+                      <label className="input-label_normal" style={{ marginTop: "10px", display:"block" }} htmlFor={`unit-pin-uses-allowed-${index}`}>
+                        Number of Uses Allowed &nbsp;&nbsp;&nbsp;
+                        <span style={{fontSize: "14px"}}>(-1, unlimited)</span></label>
                       <input
                         id={`unit-pin-uses-allowed-${index}`}
                         className="standardinput"

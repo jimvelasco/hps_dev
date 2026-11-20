@@ -794,6 +794,14 @@ const importHOAUserCSV = async (req, res) => {
   if (dayPassValues.some((value) => value !== "0" && value !== "1")) {
     return res.status(400).json({ message: "Every CSV row must have a Day Pass value of 0 or 1" });
   }
+  const bedroomsIndex = headers.findIndex((header) => header.trim().toLowerCase() === "bedrooms");
+  if (bedroomsIndex === -1) {
+    return res.status(400).json({ message: "CSV must include a Bedrooms column" });
+  }
+  const bedroomValues = records.map((record) => record[bedroomsIndex].trim());
+  if (bedroomValues.some((value) => !/^\d+$/.test(value) || !Number.isSafeInteger(Number(value)))) {
+    return res.status(400).json({ message: "Every CSV row must have a non-negative whole number of Bedrooms" });
+  }
   if (oary.some(({ Role }) => !Role?.trim())) {
     return res.status(400).json({ message: "CSV must include a Role for every row" });
   }
@@ -831,7 +839,7 @@ const importHOAUserCSV = async (req, res) => {
         day_use_only: Number(dayPassValues[index]),
         // parking_allowed_unit: parking_allowed_unit,
 
-        parking_allowed_owner: parking_allowed_owner,
+        parking_allowed_owner: Number(bedroomValues[index]),
         owner_free_parking: owner_free_parking_spots,
         daypasses_allowed_owner: daypasses_allowed_owner,
 
@@ -873,7 +881,7 @@ const importHOAUserCSV = async (req, res) => {
         phone: Phone,
         email: Emails,
         role: Role.trim(),
-        password: `${unitnumber}${unitnumber}`
+        password: `timberrunparking${unitnumber}`
       });
       createdUsers += 1;
       unitCreatedWithoutUser = false;

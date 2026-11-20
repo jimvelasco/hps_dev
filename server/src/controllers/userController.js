@@ -23,6 +23,7 @@ const getUsers = async (req, res) => {
   }
 
   const users = await User.find(filter).sort({ unitnumber: 1 });
+  console.log('users',users)
   res.json(users);
 };
 
