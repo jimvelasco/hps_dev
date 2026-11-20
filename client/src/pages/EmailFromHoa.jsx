@@ -164,7 +164,7 @@ export default function EmailFromHoa() {
       <DashboardNavbar title="Email HOA" buttons={navButtons} />
 
       <div className="page-content">
-        <div className="standardtitlebar">
+        <div className="standardtitlebar800">
          
           <h1 style={{ fontSize: "24px" }}>Send Email to {hoaorhps}</h1>
           {email && (

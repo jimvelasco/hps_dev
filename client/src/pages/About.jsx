@@ -31,7 +31,7 @@ export default function About() {
       minHeight: "100vh",
       padding: "20px"
     }}>
-      <div className="standardtitlebar">
+      <div className="standardtitlebar800">
         <h2 onClick={() => navigate(hoaId ? `/${hoaId}` : "/")}>HOA Parking Solutions</h2>
       </div>
 
