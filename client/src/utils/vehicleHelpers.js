@@ -107,6 +107,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   const formedate = formvehicle.enddate;
   const veh_grp_ary = getVehicleTypeGroups(vehiclearray, false);
   console.log('veh_grp_ary',veh_grp_ary);
+   console.log('vehiclearray',vehiclearray);
 
   const maxenddateofgroup = getMaxEnddateOfVehicles(veh_grp_ary.nonownervehs.array);
   const minstartdaterenters = getMinStartdateOfVehicles(veh_grp_ary.rentervehs.array);
@@ -311,8 +312,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         }
         return robj;
       }
+   //   console.log('WE ARE HERE')
 
       let alltypesary = ['owner','family','friend','friend/family','tenant'];
+    //  console.log('veh_grp_ary',veh_grp_ary)
     //  console.log('WE ARE RIGHT HERE !is_vehicle_active && dates_span_today')
       //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
@@ -324,6 +327,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
         return robj;
         }
+      }
+      if (theCurrentVehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 12 };
+         return robj;
+
       }
 
       // console.log('allActiveVehiclesCount',allActiveVehiclesCount)

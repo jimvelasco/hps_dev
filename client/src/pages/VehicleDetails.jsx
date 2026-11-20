@@ -822,7 +822,7 @@ export default function VehicleDetails() {
         msg = (<>There may be a Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
       }
        if (oktoaddobj.msgType === 12) {
-        msg = (<>There may be an Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
+        msg = (<>There is an Owner in the unit.<br />If issues, first contact your HOA Management.</>);
       }
        if (oktoaddobj.msgType === 13) {
         msg = (<>There may be an Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
