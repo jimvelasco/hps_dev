@@ -227,9 +227,17 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
         }
+              if (veh_grp_ary.tenantvehsany.count >= maxactiveallowed && formvehicle.carownertype === 'tenant') {
+                 robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 14 };
+                return robj;
+
+              }
+
           robj = { oktoadd: true, rpflag: 0, currentVehicle: null, msgType: 0 };
           return robj;
       }
+
+
       robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
       return robj;
     }

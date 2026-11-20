@@ -437,18 +437,19 @@ export default function VehicleDetails() {
         //  console.log('ownervehicles tenant')
           let enabled = true;
           let ltype = localStorage.getItem('logonType');
-        //   if (ltype === 'owner') {
-        //     enabled = false;
+          if (ltype === 'owner') {
+            enabled = false;
+          }
         //   const edate = new Date();
         //   edate.setDate(edate.getDate() - 1);
         //   sd = formatLocalDate(edate);
         //   ed = formatLocalDate(edate);
         // } else {
-          sd = theVehicle.startdate;
-          ed = theVehicle.enddate;
-      //  }
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
+        //   sd = theVehicle.startdate;
+        //   ed = theVehicle.enddate;
+        // }
+          setDisableInDateField(enabled)
+          setDisableOutDateField(enabled)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'dayuseonly' || unit.day_use_only === 1 )) {
         //  console.log('rentervehicles dayuseonly')
@@ -482,6 +483,13 @@ export default function VehicleDetails() {
           setDisableInDateField(true)
           setDisableOutDateField(false)
         }
+
+        //  if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'tenant')) {
+        //   sd = theVehicle.startdate;
+        //   ed = theVehicle.enddate;
+        //   setDisableInDateField(true)
+        //   setDisableOutDateField(true)
+        // }
 
        // console.log('setting default dates');
         // if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'multiday')) {
@@ -818,6 +826,9 @@ export default function VehicleDetails() {
       }
        if (oktoaddobj.msgType === 13) {
         msg = (<>There may be an Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
+      }
+        if (oktoaddobj.msgType === 14) {
+        msg = (<>The owner may only have<br /> {maxactiveallowed} <br /> tenant vehicle templates.<br /> If issues, please contact your Owner <br />or HOA Management.</>);
       }
 
     }

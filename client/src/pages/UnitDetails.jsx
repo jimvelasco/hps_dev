@@ -21,6 +21,7 @@ export default function UnitDetails() {
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const { setAppError } = useError();
   const [loading, setLoading] = useState(Boolean(!hoaid));
+   const [isDayUseUnit, setIsDayUseUnit] = useState(false);
   const [error, setError] = useState(null);
 
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
@@ -102,20 +103,21 @@ export default function UnitDetails() {
         let qry = `/units/${encodeURIComponent(homeownersid)}/${encodeURIComponent(numonunit)}`;
         //   console.log('qry', qry)
         const response = await axios.get(qry);
+    //    console.log('unit response is',response.data)
         setFormData({
           hoaid: response.data.hoaid || "",
           unitnumber: response.data.unitnumber || "",
-          bedrooms: response.data.bedrooms || "",
-          inventory_allowed_owner: response.data.inventory_allowed_owner || "",
+          bedrooms: response.data.bedrooms ?? 0,
+          inventory_allowed_owner: response.data.inventory_allowed_owner ?? 2,
           // parking_allowed_unit: response.data.parking_allowed_unit ?? 2,
-          parking_allowed_owner: response.data.parking_allowed_owner || 2,
-          parking_allowed_renter: response.data.parking_allowed_renter || 2,
-          owner_free_parking: response.data.owner_free_parking || 2,
-          renter_free_parking: response.data.renter_free_parking || 2,
+          parking_allowed_owner: response.data.parking_allowed_owner ?? 2,
+          parking_allowed_renter: response.data.parking_allowed_renter ?? 2,
+          owner_free_parking: response.data.owner_free_parking ?? 2,
+          renter_free_parking: response.data.renter_free_parking ?? 2,
           pincodeary: response.data.pincodeary || [],
-          available_for_rent: response.data.available_for_rent ?? 1,
+          available_for_rent: response.data.day_use_only === 1 ? 0 : response.data.available_for_rent ?? 1,
           day_use_only: response.data.day_use_only ?? 0,
-          is_resident: response.data.is_resident ?? 0,
+          is_resident: response.data.day_use_only === 1 ? 0 : response.data.is_resident ?? 0,
 
 
           daypasses_allowed_owner: response.data.daypasses_allowed_owner || 0,
@@ -124,6 +126,7 @@ export default function UnitDetails() {
           daypasses_allowed_tenant: response.data.daypasses_allowed_tenant || 0,
           daypasses_allowed_renter: response.data.daypasses_allowed_renter || 0
 
+         
           // daypasses_allowed_owner: 1,
           // parking_allowed_tenant: 2,
           // tenant_free_parking_spots: 2,
@@ -132,6 +135,13 @@ export default function UnitDetails() {
 
 
         });
+
+         if (response.data.day_use_only === 1) {
+     //     console.log('we have a day use unit')
+          setIsDayUseUnit(true)
+            
+          }
+
 
 
        // console.log('response.data._id',response.data._id)
@@ -225,10 +235,10 @@ export default function UnitDetails() {
         is_resident: formData.is_resident,
         inventory_allowed_owner: formData.inventory_allowed_owner ? parseInt(formData.inventory_allowed_owner) : undefined,
         // parking_allowed_unit: formData.parking_allowed_unit !== "" ? Number(formData.parking_allowed_unit) : undefined,
-        parking_allowed_renter: formData.parking_allowed_renter ? parseInt(formData.parking_allowed_renter) : undefined,
+        parking_allowed_renter: formData.parking_allowed_renter !== "" ? parseInt(formData.parking_allowed_renter) : undefined,
         parking_allowed_owner: formData.parking_allowed_owner ? parseInt(formData.parking_allowed_owner) : undefined,
         owner_free_parking: formData.owner_free_parking ? parseInt(formData.owner_free_parking) : undefined,
-        renter_free_parking: formData.renter_free_parking ? parseInt(formData.renter_free_parking) : undefined,
+        renter_free_parking: formData.renter_free_parking !== "" ? parseInt(formData.renter_free_parking) : undefined,
 
         daypasses_allowed_owner: formData.daypasses_allowed_owner ? parseInt(formData.daypasses_allowed_owner) : undefined,
         parking_allowed_tenant: formData.parking_allowed_tenant ? parseInt(formData.parking_allowed_tenant) : undefined,
@@ -432,7 +442,7 @@ export default function UnitDetails() {
                   type="checkbox"
                   checked={formData.available_for_rent === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView}
+                  disabled={!isAdminView || isDayUseUnit}
                 />
                   <label className="input-label" htmlFor="unit-available_for_rent"
                     title="This flag will prevent the unit number from even showing in the list when a non-owner uses the app">
@@ -447,7 +457,7 @@ export default function UnitDetails() {
                   type="checkbox"
                   checked={formData.is_resident === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, is_resident: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView}
+                  disabled={!isAdminView || isDayUseUnit}
                 />
                 <label className="input-label" htmlFor="unit-is_resident" title="Is this the Owner's primary residence">Primary Residence for Owner</label>
               </div>
@@ -460,7 +470,7 @@ export default function UnitDetails() {
                   onChange={(e) => setFormData(prev => ({ ...prev, day_use_only: e.target.checked ? 1 : 0 }))}
                   // disabled={!isAdminView && !isEditMode}
                   //  disabled={ isEditMode || !isAdminView}. //this will disable it even in admin mode.  Only available when new unit
-                     disabled={  !isAdminView}
+                     disabled={  !isAdminView || isDayUseUnit ||  isEditMode }
 
                 />
                 <label className="input-label" htmlFor="unit-day_use_only" title="The virual room will only allow day passes">Day Pass Only Unit</label>
