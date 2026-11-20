@@ -218,19 +218,19 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       if (formvehicle.carownertype === 'renter') {
          rbump = 1;
       }
-      // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS
-      //  if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
-      //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
-      //    return robj;
+      // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS based on timber run rules
+       if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
+         return robj;
 
-      // }
-      // let alltypesary = ['owner','family','friend','friend/family','tenant'];
-      //  if (alltypesary.includes(formvehicle.carownertype)) {
-      //   if (veh_grp_ary.tenantvehs.count > 0 ) {
-      //      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
-      //   return robj;
-      //   }
-      // }
+      }
+      let alltypesary = ['owner','family','friend','friend/family','tenant'];
+       if (alltypesary.includes(formvehicle.carownertype)) {
+        if (veh_grp_ary.tenantvehs.count > 0 ) {
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+        return robj;
+        }
+      }
 
       // console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
       // console.log('XX maxactiveallowed',maxactiveallowed)
@@ -330,7 +330,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       }
    //   console.log('WE ARE HERE')
    
-/*. ALLOW EVERYTHING TO GO THROUGH
+/*. ALLOW EVERYTHING TO GO THROUGH */
       let alltypesary = ['owner','family','friend','friend/family','tenant'];
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0 ) {
@@ -347,7 +347,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
          return robj;
       }
 
-      */
+      
 
       // console.log('allActiveVehiclesCount',allActiveVehiclesCount)
       // console.log('maxactiveallowed',maxactiveallowed)

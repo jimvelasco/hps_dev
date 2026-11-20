@@ -836,6 +836,7 @@ const importHOAUserCSV = async (req, res) => {
       const unit = await Unit.create({
         hoaid: phoaid,
         unitnumber,
+        bedrooms: Number(bedroomValues[index]),
         day_use_only: Number(dayPassValues[index]),
         // parking_allowed_unit: parking_allowed_unit,
 

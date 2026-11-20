@@ -133,7 +133,7 @@ export default function ResetPassword() {
       padding: "20px",
       backgroundColor: "#f5f5f5"
     }}>
-      <div className="standardtitlebar">
+      <div className="standardtitlebar800">
         <h1 style={{ fontSize: "24px"}}>HOA Parking Solutions</h1>
       </div>
 
