@@ -23,6 +23,8 @@ export default function UnitDetails() {
   const [loading, setLoading] = useState(Boolean(!hoaid));
    const [isDayUseUnit, setIsDayUseUnit] = useState(false);
   const [error, setError] = useState(null);
+    const [theUnit, setTheUnit] = useState(null);
+
 
   const [modal, setModal] = useState({ isOpen: false, type: "alert", title: "", message: "", onConfirm: null, onCancel: null });
   const location = useLocation();
@@ -139,8 +141,8 @@ export default function UnitDetails() {
          if (response.data.day_use_only === 1) {
      //     console.log('we have a day use unit')
           setIsDayUseUnit(true)
-            
           }
+          setTheUnit(response.data)
 
 
 
@@ -386,9 +388,11 @@ export default function UnitDetails() {
   }
   const isEditMode = !!numonunit;
 
-  // console.log(isEditMode, isEditMode);
+  
 
   const isAdminView = which === 'admin' && loggedInUser?.role === 'admin';
+   console.log('isEditMode', isEditMode);
+    console.log('isAdminView', isAdminView);
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
@@ -422,6 +426,8 @@ export default function UnitDetails() {
             </h2>
 
             <form onSubmit={handleSubmit}>
+
+
               <div style={{ marginBottom: "15px" }}>
                 <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
                   Unit Number
@@ -435,20 +441,23 @@ export default function UnitDetails() {
                 />
               </div>
            
-
+              {(isAdminView || isEditMode) && !isDayUseUnit && (
               <div className="unit-checkbox-row" style={{marginTop:"30px"}}>
                 <input
                   id="unit-available_for_rent"
                   type="checkbox"
                   checked={formData.available_for_rent === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, available_for_rent: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView || isDayUseUnit}
+                  disabled={false}
                 />
                   <label className="input-label" htmlFor="unit-available_for_rent"
                     title="This flag will prevent the unit number from even showing in the list when a non-owner uses the app">
                     Available for Rent
                   </label>
               </div>
+              )}
+
+               {(isAdminView || isEditMode ) && !isDayUseUnit && (
 
                 <div className="unit-checkbox-row" style={{marginTop:"15px"}}>
         
@@ -457,10 +466,13 @@ export default function UnitDetails() {
                   type="checkbox"
                   checked={formData.is_resident === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, is_resident: e.target.checked ? 1 : 0 }))}
-                  disabled={!isAdminView || isDayUseUnit}
+                  disabled={false}
                 />
                 <label className="input-label" htmlFor="unit-is_resident" title="Is this the Owner's primary residence">Primary Residence for Owner</label>
               </div>
+               )}
+
+                {(isAdminView  || isDayUseUnit) && (
 
                <div className="unit-checkbox-row" style={{marginTop:"15px",marginBottom:"30px"}}>
                 <input
@@ -468,13 +480,11 @@ export default function UnitDetails() {
                   type="checkbox"
                   checked={formData.day_use_only === 1}
                   onChange={(e) => setFormData(prev => ({ ...prev, day_use_only: e.target.checked ? 1 : 0 }))}
-                  // disabled={!isAdminView && !isEditMode}
-                  //  disabled={ isEditMode || !isAdminView}. //this will disable it even in admin mode.  Only available when new unit
-                     disabled={  !isAdminView || isDayUseUnit ||  isEditMode }
-
+                  disabled={  isDayUseUnit || isEditMode }
                 />
                 <label className="input-label" htmlFor="unit-day_use_only" title="The virual room will only allow day passes">Day Pass Only Unit</label>
               </div>
+                 )} 
 
                
              

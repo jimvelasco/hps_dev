@@ -118,17 +118,21 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
    let overlapbump = 0;
      if (maxenddateofgroup === formsdate) {
-      console.log('GROUP')
+     // console.log('GROUP')
       overlapbump = 1;
      } 
       if (minstartdateofgroup === formedate) {
-        console.log('RENTER')
+     //   console.log('RENTER')
       overlapbump = 1;
      }
-      if (maxenddaterenters === formsdate) {
-        console.log('owner renter')
+    if (maxenddaterenters === formsdate) {
+    //    console.log('owner renter')
       overlapbump = 1;
      }
+      if (minstartdaterenters === formedate) {
+      overlapbump = 1;
+     }
+     
 
   // console.log('maxenddateofgroup',maxenddateofgroup)
   // console.log('minstartdaterenters',minstartdaterenters)
@@ -160,7 +164,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
   let freeparkinglimit = unit.renter_free_parking;
  // console.log('free parking for unit is', freeparkinglimit);
 
- let allowedmultidaytemplates = 1;
 
     // this is run for blank vehicle records (new vehicles)
   // console.log('formvehicle okToAddUnitVehicle either',formvehicle);
@@ -179,8 +182,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       irpflag = 0; // would be 1 if payment implemeted
      }
    
-    let showerror = false;
-    let messagetoshow = '';
+   
 
 /*********************** */
   /* OWNER VEHICLES */
