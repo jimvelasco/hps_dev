@@ -216,19 +216,19 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       if (formvehicle.carownertype === 'renter') {
          rbump = 1;
       }
+      // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS
+      //  if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
+      //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
+      //    return robj;
 
-       if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
-         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
-         return robj;
-
-      }
-      let alltypesary = ['owner','family','friend','friend/family','tenant'];
-       if (alltypesary.includes(formvehicle.carownertype)) {
-        if (veh_grp_ary.tenantvehs.count > 0 ) {
-           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
-        return robj;
-        }
-      }
+      // }
+      // let alltypesary = ['owner','family','friend','friend/family','tenant'];
+      //  if (alltypesary.includes(formvehicle.carownertype)) {
+      //   if (veh_grp_ary.tenantvehs.count > 0 ) {
+      //      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+      //   return robj;
+      //   }
+      // }
 
       // console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
       // console.log('XX maxactiveallowed',maxactiveallowed)
@@ -241,11 +241,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
             robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
         }
-              if (veh_grp_ary.tenantvehsany.count >= maxactiveallowed && formvehicle.carownertype === 'tenant') {
-                 robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 14 };
-                return robj;
 
-              }
+        // SPECIAL FOR TENANT?
+              // if (veh_grp_ary.tenantvehsany.count >= maxactiveallowed && formvehicle.carownertype === 'tenant') {
+              //    robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 14 };
+              //   return robj;
+
+              // }
 
           robj = { oktoadd: true, rpflag: 0, currentVehicle: null, msgType: 0 };
           return robj;
@@ -278,19 +280,18 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0};
           return robj;
        }
-        let alltypesary = ['owner','family','friend','friend/family','tenant'];
-    //  console.log('WE ARE RIGHT HERE is_vehicle_active && dates_span_today')
-      //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
-      if (alltypesary.includes(theCurrentVehicle.carownertype)) {
-        if (veh_grp_ary.tenantvehs.count > 0 ) {
-           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
-        return robj;
-        }
-         if (veh_grp_ary.rentervehs.count > (0 + overlapbump) ) {
-           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
-        return robj;
-        }
-      }
+      // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS
+      // let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
+      // if (alltypesary.includes(theCurrentVehicle.carownertype)) {
+      //   if (veh_grp_ary.tenantvehs.count > 0) {
+      //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
+      //     return robj;
+      //   }
+      //   if (veh_grp_ary.rentervehs.count > (0 + overlapbump)) {
+      //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
+      //     return robj;
+      //   }
+      // }
       // robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
       // return robj;
     }
@@ -326,11 +327,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         return robj;
       }
    //   console.log('WE ARE HERE')
-
+   
+/*. ALLOW EVERYTHING TO GO THROUGH
       let alltypesary = ['owner','family','friend','friend/family','tenant'];
-    //  console.log('veh_grp_ary',veh_grp_ary)
-    //  console.log('WE ARE RIGHT HERE !is_vehicle_active && dates_span_today')
-      //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0 ) {
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
@@ -344,8 +343,9 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       if (theCurrentVehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 12 };
          return robj;
-
       }
+
+      */
 
       // console.log('allActiveVehiclesCount',allActiveVehiclesCount)
       // console.log('maxactiveallowed',maxactiveallowed)
@@ -454,7 +454,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
      // console.log('we are here at present')
       let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
 
-      //  if (theCurrentVehicle.carownertype === 'owner' || theCurrentVehicle.carownertype === 'friend/family') {
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };

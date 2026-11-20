@@ -1118,7 +1118,16 @@ export default function VehicleDetails() {
                   )
                   } */}
 
-                    {createdfrom === "ownervehicles" && (formData.carownertype === 'dayuseonly' || formData.carownertype === 'renter') && (
+                  {createdfrom === "ownervehicles" && (formData.carownertype === 'dayuseonly' || formData.carownertype === 'renter') && (
+                    <div style={{ fontWeight: "normal" }}>
+                      <div style={{ marginLeft: "12px", marginTop: "15px" }}>
+                        {formData.carownertype === 'dayuseonly' ? 'DAY PASS' : formData.carownertype === 'renter' ? 'RENTER' : formData.carownertype?.toUpperCase()}
+                      </div>
+
+                    </div>
+                  )
+                  }
+                   {createdfrom === "rentervehicles" && (formData.carownertype === 'dayuseonly' || formData.carownertype === 'renter') && (
                     <div style={{ fontWeight: "normal" }}>
                       <div style={{ marginLeft: "12px", marginTop: "15px" }}>
                         {formData.carownertype === 'dayuseonly' ? 'DAY PASS' : formData.carownertype === 'renter' ? 'RENTER' : formData.carownertype?.toUpperCase()}
