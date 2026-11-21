@@ -3,7 +3,7 @@ import TableButton from "./TableButton";
 import { formatPhoneNumber } from "../utils/vehicleHelpers";
 
 export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDirection, handleSort, handleDetailsClick, handlePaymentClick, getVehicleActiveStatusBoolean, utcDateOnly }) {
-//  console.log('role in VehiclesGrid:', role);
+  console.log('role in VehiclesGrid:', vehicles);
   return (
 
     <div style={{
@@ -25,7 +25,8 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
 
           
             <div className="full-row" style={{ marginBottom: '0px' }}>
-              {vehicle.carownertype === 'dayuseonly' ? 'DAY PASS' : vehicle.carownertype === 'multiday' ? 'CONTRACTOR (Day Pass)' : vehicle.carownertype.toUpperCase()}
+              {vehicle.carownertype === 'dayuseonly' ? 'DAY PASS' : vehicle.carownertype === 'multiday' ? 'CONTRACTOR (Day Pass)' :
+               vehicle.carownertype?.toUpperCase() ?? ""}
             </div>
           <div className="full-row" style={{ marginBottom: '0px' }}>{vehicle.carowner_lname || "N/A"}, {vehicle.carowner_fname || "N/A"}
            
