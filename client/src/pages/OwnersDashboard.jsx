@@ -178,7 +178,7 @@ export default function OwnersDashboard() {
     //   which: "standard"
     // },
 
-  //  if (loggedInUser.role === "admin") {
+    if (loggedInUser.role === "admin") {
     navButtons.push({
       label: "Onsite",
       onClick: handleOnsiteClick,
@@ -186,7 +186,7 @@ export default function OwnersDashboard() {
       hoverColor: "#1976d2",
       which: "standard"
     });
- // }
+  }
 
   if (loggedInUser.role !== "admin") {
     navButtons.push({

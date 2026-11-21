@@ -257,7 +257,7 @@ export default function VehicleDetails() {
     //   setDisableOutDateField(false)
     // }
     if (createdfrom === 'rentervehicles' && carownertype === 'renter') {
-      console.log('we should be setting fields')
+   //   console.log('we should be setting fields')
       daysplus = 3;
       setDisableInDateField(true);
       setDisableOutDateField(false)
@@ -408,8 +408,8 @@ export default function VehicleDetails() {
         //   setDisableOutDateField(true)
         // }
 
-            console.log('unit',unit);
-             console.log('createdfrom',createdfrom);
+         //   console.log('unit',unit);
+         //    console.log('createdfrom',createdfrom);
 
 
         if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'dayuseonly')) {
@@ -467,14 +467,14 @@ export default function VehicleDetails() {
         //   setDisableOutDateField(false)
         // }
         if (createdfrom === 'ownervehicles' && (theVehicle.multiday === 1)) {
-          console.log('ownervehicles theVehicle.multiday === 1')
+     //     console.log('ownervehicles theVehicle.multiday === 1')
           sd = theVehicle.startdate;
           ed = theVehicle.enddate;
           setDisableInDateField(false)
           setDisableOutDateField(false)
         }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'renter')) {
-          console.log('rentervehicles renter')
+   //       console.log('rentervehicles renter')
           const edate = new Date();
           edate.setDate(edate.getDate() + 3);
 
