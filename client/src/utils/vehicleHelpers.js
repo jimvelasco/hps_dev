@@ -283,19 +283,19 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           return robj;
        }
       // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS
-      // let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
-      // if (alltypesary.includes(theCurrentVehicle.carownertype)) {
-      //   if (veh_grp_ary.tenantvehs.count > 0) {
-      //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
-      //     return robj;
-      //   }
-      //   if (veh_grp_ary.rentervehs.count > (0 + overlapbump)) {
-      //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
-      //     return robj;
-      //   }
-      // }
-      // robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
-      // return robj;
+      let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
+      if (alltypesary.includes(theCurrentVehicle.carownertype)) {
+        if (veh_grp_ary.tenantvehs.count > 0) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
+          return robj;
+        }
+        if (veh_grp_ary.rentervehs.count > (0 + overlapbump)) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
+          return robj;
+        }
+      }
+      robj = { oktoadd: true, rpflag: 0, currentVehicle: theCurrentVehicle, msgType: 0 };
+      return robj;
     }
      /* END **************************** */
 
