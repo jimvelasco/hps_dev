@@ -178,7 +178,7 @@ export default function OwnersDashboard() {
     //   which: "standard"
     // },
 
-    if (loggedInUser.role === "admin") {
+    if (loggedInUser.role === "admin" || hoa.config_params.onsite_button === 1) {
     navButtons.push({
       label: "Onsite",
       onClick: handleOnsiteClick,
@@ -219,7 +219,7 @@ export default function OwnersDashboard() {
   // },
 
 
- if (loggedInUser.role === "admin") {
+ if (loggedInUser.role === "admin" ||  hoa.config_params.report_button === 1 ) {
   navButtons.push({
     label: "Reports",
     onClick: handleReportClick,
