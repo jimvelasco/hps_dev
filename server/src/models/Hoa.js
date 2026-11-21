@@ -48,6 +48,12 @@ const HoaSchema = new mongoose.Schema({
   },
 
   parking_types_array: [{ value: String, label: String }],
+  
+  config_params: {
+    type: Map,
+    of: { type: Number, enum: [0, 1] },
+    default: () => ({})
+  },
 
   daypasses_allowed_owner: {
     type: Number,

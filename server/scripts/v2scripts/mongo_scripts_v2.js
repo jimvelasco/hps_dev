@@ -31,6 +31,12 @@ db.hoas.updateMany(
   {},
   { $set: { "parking_handicapped_hoa": 0 }}
 );
+
+db.hoas.updateMany(
+  {},
+  { $set: { "config_params": {"onsite_button":0,"report_button":0} }}
+);
+
 db.hoas.updateMany(
   {},
   { $set: { "parking_types_array": 

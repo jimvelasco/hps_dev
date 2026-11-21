@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import authenticateToken from "../middleware/authenticateToken.js";
-import { getHoaById, getHoas, updateHoaById, createStripeConnectAccount, getStripeAccountStatus, importHOAUserCSV } from "../controllers/hoaController.js";
+import { getHoaById, getHoas, updateHoaById, updateHoaConfigParams, createStripeConnectAccount, getStripeAccountStatus, importHOAUserCSV } from "../controllers/hoaController.js";
 
 const router = express.Router();
 const csvUpload = multer({
@@ -15,6 +15,12 @@ const csvUpload = multer({
 router.get("/", getHoas);
 router.get("/:id", getHoaById);
 router.put("/:id", updateHoaById);
+router.put("/:id/config-params", authenticateToken, (req, res, next) => {
+  if (req.user.role !== "admin" || req.user.hoaId !== req.params.id) {
+    return res.status(403).json({ message: "Administrator access required for this HOA" });
+  }
+  next();
+}, updateHoaConfigParams);
 router.post("/:id/stripe-connect", createStripeConnectAccount);
 router.get("/:id/stripe-status", getStripeAccountStatus);
 router.post("/:id/import-users-csv", authenticateToken, (req, res, next) => {

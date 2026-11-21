@@ -27,6 +27,7 @@ import UpdateAllUsers from "./pages/administration/UpdateAllUsers";
 import UpdateAllUnits from "./pages/administration/UpdateAllUnits";
 import ContactInformation from "./pages/administration/ContactInformation";
 import ParkingTypes from "./pages/administration/ParkingTypes";
+import ConfigParams from "./pages/administration/ConfigParams";
 import HoaSettings from "./pages/administration/HoaSettings";
 import ImageUpload from "./pages/administration/ImageUpload";
 import PDFUpload from "./pages/administration/PDFUpload";
@@ -268,6 +269,11 @@ function App() {
             <Route path="/:hoaId/parking-types" element={
               <ProtectedRoute>
                 <ParkingTypes />
+              </ProtectedRoute>
+            } />
+            <Route path="/:hoaId/config-params" element={
+              <ProtectedRoute>
+                <ConfigParams />
               </ProtectedRoute>
             } />
             <Route path="/:hoaId/contact-information" element={

@@ -138,6 +138,10 @@ export default function Administration() {
     navigate(`/${hoaId}/parking-types`);
   };
 
+  const handleManageConfigParams = () => {
+    navigate(`/${hoaId}/config-params`);
+  };
+
   const handleImageUpload = () => {
     navigate(`/${hoaId}/image-upload`);
   };
@@ -283,6 +287,15 @@ export default function Administration() {
             <p>Manage parking type values, labels, and display order.</p>
             <button className="standardsubmitbutton" onClick={handleManageParkingTypes}>
               Parking Types
+            </button>
+          </section>
+
+          <section className="admin_section parking-types-admin-card">
+            <h5 className="admin_section_title">Manage</h5>
+            <h3>Config Params</h3>
+            <p>Manage HOA-specific feature switches.</p>
+            <button className="standardsubmitbutton" onClick={handleManageConfigParams}>
+              Config Params
             </button>
           </section>
 

@@ -56,6 +56,9 @@ const updateHoaById = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
+    if (Object.keys(updateData).some((key) => key === "config_params" || key.startsWith("$") || key.includes("."))) {
+      return res.status(400).json({ message: "Use the config-params endpoint to update configuration parameters" });
+    }
     console.log("Update HOA data received:", id, updateData);
 
     if (updateData.payment_ranges) {
@@ -92,6 +95,32 @@ const updateHoaById = async (req, res) => {
   } catch (error) {
     console.error("Update HOA error:", error);
     res.status(500).json({ message: error.message });
+  }
+};
+
+const updateHoaConfigParams = async (req, res) => {
+  const configParams = req.body?.config_params;
+  if (!configParams || typeof configParams !== "object" || Array.isArray(configParams)) {
+    return res.status(400).json({ message: "config_params must be an object" });
+  }
+
+  const entries = Object.entries(configParams);
+  if (entries.some(([key, value]) => !/^[a-z][a-z0-9_]*$/.test(key) || ["constructor", "prototype"].includes(key) || (value !== 0 && value !== 1))) {
+    return res.status(400).json({ message: "Config keys must be lowercase identifiers and values must be 0 or 1" });
+  }
+
+  try {
+    const hoa = await Hoa.findOneAndUpdate(
+      { hoaid: req.params.id },
+      { $set: { config_params: Object.fromEntries(entries) } },
+      { new: true, runValidators: true }
+    );
+    if (!hoa) {
+      return res.status(404).json({ message: "HOA not found" });
+    }
+    return res.json(hoa);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -841,15 +870,15 @@ const importHOAUserCSV = async (req, res) => {
         // parking_allowed_unit: parking_allowed_unit,
 
         parking_allowed_owner: Number(bedroomValues[index]),
-        owner_free_parking: owner_free_parking_spots,
+        owner_free_parking: Number(bedroomValues[index]),
         daypasses_allowed_owner: daypasses_allowed_owner,
 
-        parking_allowed_tenant: parking_allowed_tenant,
-        tenant_free_parking_spots: tenant_free_parking_spots,
+        parking_allowed_tenant: Number(bedroomValues[index]),
+        tenant_free_parking_spots:  Number(bedroomValues[index]),
         daypasses_allowed_tenant: daypasses_allowed_tenant,
 
-        parking_allowed_renter: parking_allowed_renter,
-        renter_free_parking: renter_free_parking_spots,
+        parking_allowed_renter:  Number(bedroomValues[index]),
+        renter_free_parking:  Number(bedroomValues[index]),
         daypasses_allowed_renter: daypasses_allowed_renter,
 
         pincodeary: [{
@@ -896,7 +925,7 @@ const importHOAUserCSV = async (req, res) => {
 };
 
 
-export { getHoaById, getHoas, updateHoaById, createStripeConnectAccount, getStripeAccountStatus, importHOAUserCSV };
+export { getHoaById, getHoas, updateHoaById, updateHoaConfigParams, createStripeConnectAccount, getStripeAccountStatus, importHOAUserCSV };
 
 
 

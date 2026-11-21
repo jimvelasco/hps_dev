@@ -9,6 +9,7 @@ const operations = [
   ["hoas", { $set: { daypasses_allowed_tenant: 0 } }],
   ["hoas", { $set: { daypasses_allowed_renter: 0 } }],
   ["hoas", { $set: { parking_handicapped_hoa: 0 } }],
+  ["hoas", { $set: { config_params: {"onsite_button":0,"report_button":0} } }],
   ["hoas", { $set: { parking_types_array:  [
       { value: 'owner', label: 'Owner' },
       { value: 'family', label: 'Family' },
