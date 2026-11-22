@@ -3,7 +3,7 @@ import TableButton from "./TableButton";
 import { formatPhoneNumber } from "../utils/vehicleHelpers";
 
 export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDirection, handleSort, handleDetailsClick, handlePaymentClick, getVehicleActiveStatusBoolean, utcDateOnly }) {
-  console.log('role in VehiclesGrid:', vehicles);
+ // console.log('role in VehiclesGrid:', vehicles);
   return (
 
     <div style={{
@@ -111,15 +111,25 @@ export default function VehiclesGridPhone({ vehicles, role, sortColumn, sortDire
 
           )} */}
 
-           <div className="full-row-left" style={{marginTop:"5px"}}>
-               Role: {vehicle.createdbyrole}  &nbsp;Type: {vehicle.carownertype}
-           </div>
+
+          {localStorage.getItem('logonType') === 'admin' && (
+            <>
+              <div className="grid-item-bold" style={{ marginTop: "5px" }}>
+                Role
+              </div>
+              <div className="grid-item-normal " style={{ marginTop: "5px" }}>
+                {vehicle.createdbyrole.charAt(0).toUpperCase() + vehicle.createdbyrole.slice(1)}
+              </div>
+              <div>&nbsp;</div>
+            </>
+          )}
   
           
 
              {/* {(vehicle.day_use_only === 1) && "DAY PASS"}   &nbsp; {vehicle.createdbytype} - {vehicle.carownertype} 
             - {vehicle.createdbytype} - {vehicle.carownertype}
               Role: {vehicle.createdbyrole}  &nbsp; cbt: {vehicle.createdbytype} &nbsp; multi: {vehicle.multiday} - {vehicle.carownertype} 
+               &nbsp;Type: {vehicle.carownertype}
             */}
 
 

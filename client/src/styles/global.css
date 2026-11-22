@@ -1433,7 +1433,9 @@ section.standardsectiondashboard {
   grid-column: 1 /-1;
   /* span all columns */
   text-align: left;
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-weight: bold;
+   font-size: .8rem;
   margin: 0px;
   padding: 0px;
   padding-left: 0px
