@@ -310,7 +310,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS
       let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
-        if (veh_grp_ary.tenantvehs.count > 0 ) {
+        if (veh_grp_ary.tenantvehs.count > 0  && formvehicle.carownertype !== 'tenant') {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
           return robj;
         }
