@@ -31,7 +31,7 @@ const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth(
 
 // this is the filter used on OwnerVehicles when in admin mode
 export const handleFilterApply = (vehicles, filterType, parkingTypes) => {
-  if (filterType === "all" || !parkingTypes?.some(type => type.value === filterType)) {
+  if (filterType === "all" || (filterType !== "dayuseonly" && !parkingTypes?.some(type => type.value === filterType))) {
     return vehicles;
   }
   return vehicles.filter(vehicle => vehicle.carownertype === filterType);
@@ -195,6 +195,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
      //  console.log('ownervehicles dates_span_today',dates_span_today,formdayusecnt,maxdayuse,veh_grp_ary)
 
       if (!dates_span_today) {
+        console.log('dates do not span today');
+        console.log('veh_grp_ary.tenantvehsany.count',veh_grp_ary.tenantvehsany.count,formvehicle.carownertype)
+
+        if (formvehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehsany.count >= maxactiveallowed) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 14 };
+          return robj;
+        }
         robj = { oktoadd: true, rpflag: irpflag, currentVehicle: null, msgType: 0 };
         return robj;
       }
@@ -239,6 +246,13 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       // console.log('XX formdayusecnt',formdayusecnt)
       // console.log('')
 
+       if (formvehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehsany.count >= maxactiveallowed) {
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 14 };
+          return robj;
+        }
+
+
+
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + overlapbump)) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
@@ -255,7 +269,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           }
           let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
           if (alltypesary.includes(formvehicle.carownertype)) {
-            if (veh_grp_ary.tenantvehs.count > 0) {
+            if (veh_grp_ary.tenantvehs.count > 0 ) {
               robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
               return robj;
             }
@@ -296,7 +310,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS
       let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
-        if (veh_grp_ary.tenantvehs.count > 0) {
+        if (veh_grp_ary.tenantvehs.count > 0 ) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
           return robj;
         }
@@ -344,7 +358,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 /*. ALLOW EVERYTHING TO GO THROUGH */
       let alltypesary = ['owner','family','friend','friend/family','tenant'];
       if (alltypesary.includes(theCurrentVehicle.carownertype)) {
-        if (veh_grp_ary.tenantvehs.count > 0 ) {
+        if (veh_grp_ary.tenantvehs.count > 0  && formvehicle.carownertype !== 'tenant') {
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
         return robj;
         }
@@ -353,10 +367,11 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         return robj;
         }
       }
-      if (theCurrentVehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
-         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 12 };
-         return robj;
-      }
+      // JJVFIX. this should be left in?
+      // if (theCurrentVehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
+      //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 12 };
+      //    return robj;
+      // }
 
       
 

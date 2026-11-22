@@ -144,7 +144,11 @@ db.vehicles.updateMany(
  { $set: { "pin_code_action": "renter" }}
 );
 
+// usefull notes
+/*
+{ someField: { $exists: false } }
 
+*/
 
 
 

@@ -73,6 +73,7 @@ export default function OnsiteVehicles() {
           setVehiclesLoading(true);
           const response = await axios.get(`/vehicles/onsiteonly/${hoaId}`);
           let newary = [];
+          console.log('onsite vehicles',response.data);
           response.data.forEach(element => {
             //  if (getVehicleActiveStatusBoolean(element)) {
             newary.push(element);

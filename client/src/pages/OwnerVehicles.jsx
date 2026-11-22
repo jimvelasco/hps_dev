@@ -63,7 +63,7 @@ export default function OwnerVehicles() {
   //     { value: 'dayuseonly', label: 'Day Pass' }
   //   ]
   const vehicleOwnerTypeAry = hoa?.parking_types_array ?? [];
-  const activeFilterType = filterType === "all" || vehicleOwnerTypeAry.some(type => type.value === filterType)
+  const activeFilterType = filterType === "all" || filterType === "dayuseonly" || vehicleOwnerTypeAry.some(type => type.value === filterType)
     ? filterType
     : vehicleOwnerTypeAry[0]?.value ?? "all";
 
@@ -735,6 +735,7 @@ useEffect(() => {
                     {type.label}
                   </option>
                 ))}
+                <option value="dayuseonly" >Day Pass</option>
                 <option value="all" >All</option>
               </select>
 
@@ -796,6 +797,7 @@ useEffect(() => {
                     {type.label}
                   </option>
                 ))}
+                 <option value="dayuseonly" >Day Pass</option>
                 <option value="all" >All</option>
 
               </select>

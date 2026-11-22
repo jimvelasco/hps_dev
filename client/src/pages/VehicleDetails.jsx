@@ -304,7 +304,7 @@ export default function VehicleDetails() {
           vehicle_type: "Car",
           plate: "",
           plate_state: "CO",
-          company: "Company",
+          company: "",
           unitnumber: unitNumber,
           carownertype: selectedOwnerType,
           pin_code_value: pincodeValue,
@@ -813,13 +813,13 @@ export default function VehicleDetails() {
         msg = (<>There may be a Tenant in the unit.<br />If issues, first contact the Owner  <br />or HOA Management {phonetocall}</>);
       }
       if (oktoaddobj.msgType === 7) {
-        msg = (<>Owners can only have one tenant</>);
+        msg = (<>Owner's can only have one tenant</>);
       }
        if (oktoaddobj.msgType === 10) {
         msg = (<>The Day Pass <br />Start Date and End Date<br /> must be the same.</>);
       }
        if (oktoaddobj.msgType === 11) {
-        msg = (<>There may be a Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
+        msg = (<>There may be an Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
       }
        if (oktoaddobj.msgType === 12) {
         msg = (<>There is an Owner in the unit.<br />If issues, first contact your HOA Management.</>);
@@ -828,7 +828,7 @@ export default function VehicleDetails() {
         msg = (<>There may be an Owner in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
       }
         if (oktoaddobj.msgType === 14) {
-        msg = (<>The owner may only have<br /> {maxactiveallowed} <br /> tenant vehicle templates.<br /> If issues, please contact your Owner <br />or HOA Management.</>);
+        msg = (<>The Owner may only have<br /> {maxactiveallowed} <br /> tenant vehicle templates.<br /> If issues, please contact your Owner <br />or HOA Management.</>);
       }
 
     }
