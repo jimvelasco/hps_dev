@@ -32,7 +32,7 @@ export default function OwnerVehicles() {
   const { user: loggedInUser, loading: userLoading, clearLoggedInUser } = useLoggedInUser();
   const [role, setRole] = useState(null);
   const [ownerId, setOwnerId] = useState(null);
-  const [filterType, setFilterType] = useState("owner");
+  const [filterType, setFilterType] = useState("all");
   const [plateSearch, setPlateSearch] = useState("");
   const [unitSearch, setUnitSearch] = useState("");
 //  const [filterDate, setFilterDate] = useState("");
