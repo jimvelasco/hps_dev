@@ -440,10 +440,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         }
 
       //  console.log('this is where we are')
-        if (veh_grp_ary.nonownervehs.count > (0 + overlapbump)) {
-          robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11 };
-          return robj;
-        } 
+        // if (veh_grp_ary.nonownervehs.count > (0 + overlapbump)) {
+        //   robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11 };
+        //   return robj;
+        // } 
 
 
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + overlapbump)) {
@@ -451,6 +451,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           return robj;
         }
         else if (veh_grp_ary.nonownervehs.count > (0 + overlapbump)) {
+        // console.log('we are here')
           robj = { oktoadd: false, rpflag: 0, currentVehicle: null, msgType: 11 };
           return robj;
         } else {

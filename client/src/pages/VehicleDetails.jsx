@@ -830,6 +830,9 @@ export default function VehicleDetails() {
         if (oktoaddobj.msgType === 14) {
         msg = (<>The Owner may only have<br /> {maxactiveallowed} <br /> tenant vehicle templates.<br /> If issues, please contact your Owner <br />or HOA Management.</>);
       }
+       if (oktoaddobj.msgType === 15) {
+        msg = (<>There may be an Owner <br />or Tenant in the unit.<br />If issues, first contact your rental manager <br />or HOA Management.</>);
+      }
 
     }
 
