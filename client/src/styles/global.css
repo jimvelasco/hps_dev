@@ -861,6 +861,12 @@ input.input-date2:disabled {
   box-sizing: border-box;
 }
 
+.hoa-loading-screen {
+  padding-top: 50px;
+  box-sizing: border-box;
+}
+
+
 
 .standardtitlebar800 {
   background-color: white;

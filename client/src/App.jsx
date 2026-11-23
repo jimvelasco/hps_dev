@@ -67,10 +67,13 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="standardtitlebar" style={{ marginTop: "50px", backgroundColor: "cyan" }}>
-        <h1>Loading HOA data...</h1>
+      <div style={{ marginTop: "0px", minHeight: "100vh", backgroundColor: "white", backgroundImage: `url('${bimage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+        <div className="hoa-loading-screen">
+          <div className="standardtitlebar800" style={{ marginTop: "0px" }}>
+            <h2>Loading HOA data...</h2>
+          </div>
+        </div>
       </div>)
-
   }
 
 
