@@ -225,22 +225,22 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       if (formvehicle.carownertype === 'renter') {
          rbump = 1;
       }
-     //   console.log('form value carownertype 1',formvehicle.carownertype)
+        console.log('form value carownertype 1',formvehicle.carownertype)
       // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS based on timber run rules
        if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nontenantvehs.count > 0) {
          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
          return robj;
 
       }
-   //  console.log('form value carownertype 2',formvehicle.carownertype)
-      let alltypesary = ['owner','family','friend','friend/family','tenant'];
+     console.log('form value carownertype 2',formvehicle.carownertype)
+      let alltypesary = ['owner','family','friend','friend/family'];
        if (alltypesary.includes(formvehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0 && formvehicle.carownertype !=='tenant') {
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
         return robj;
         }
       }
-
+     console.log('form value carownertype 3',formvehicle.carownertype)
       // console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
       // console.log('XX maxactiveallowed',maxactiveallowed)
       // console.log('XX veh_grp_ary.dayusemultivehs.count',veh_grp_ary.dayusemultivehs.count)
@@ -248,10 +248,10 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       // console.log('XX formdayusecnt',formdayusecnt)
       // console.log('')
 
-       if (formvehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehsany.count >= maxactiveallowed) {
-          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 14 };
-          return robj;
-        }
+      //  if (formvehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehsany.count >= maxactiveallowed) {
+      //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 14 };
+      //     return robj;
+      //   }
 
 
 
@@ -260,24 +260,8 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           return robj;
         } else 
           {
-          // console.log('else part of major check olb',overlapbump)
-          // if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
-          //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
-          //   return robj;
-
-          // }
-          // if (veh_grp_ary.rentervehs.count > (0 + overlapbump)) {
-          //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
-          //   return robj;
-          // }
-          // let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
-          // if (alltypesary.includes(formvehicle.carownertype)) {
-          //   if (veh_grp_ary.tenantvehs.count > 0 ) {
-          //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
-          //     return robj;
-          //   }
-          // }
-
+         
+console.log('form value carownertype 4',formvehicle.carownertype)
           robj = { oktoadd: true, rpflag: 0, currentVehicle: null, msgType: 0 };
           return robj;
         }
