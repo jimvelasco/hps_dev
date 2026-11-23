@@ -225,19 +225,21 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
       if (formvehicle.carownertype === 'renter') {
          rbump = 1;
       }
+     //   console.log('form value carownertype 1',formvehicle.carownertype)
       // THIS DISALLOWS ALL OWNER AND TENANT COLLISIONS based on timber run rules
-      //  if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
-      //    robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
-      //    return robj;
+       if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nontenantvehs.count > 0) {
+         robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
+         return robj;
 
-      // }
-      // let alltypesary = ['owner','family','friend','friend/family','tenant'];
-      //  if (alltypesary.includes(formvehicle.carownertype)) {
-      //   if (veh_grp_ary.tenantvehs.count > 0 ) {
-      //      robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
-      //   return robj;
-      //   }
-      // }
+      }
+   //  console.log('form value carownertype 2',formvehicle.carownertype)
+      let alltypesary = ['owner','family','friend','friend/family','tenant'];
+       if (alltypesary.includes(formvehicle.carownertype)) {
+        if (veh_grp_ary.tenantvehs.count > 0 && formvehicle.carownertype !=='tenant') {
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+        return robj;
+        }
+      }
 
       // console.log('XX veh_grp_ary.allactivevehs.count',veh_grp_ary.allactivevehs.count)
       // console.log('XX maxactiveallowed',maxactiveallowed)
@@ -256,24 +258,25 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         if (veh_grp_ary.allactivevehs.count >= (maxactiveallowed + veh_grp_ary.dayusemultivehs.count + overlapbump)) {
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 2 };
           return robj;
-        } else {
-          console.log('else part of major check olb',overlapbump)
-          if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
-            return robj;
+        } else 
+          {
+          // console.log('else part of major check olb',overlapbump)
+          // if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
+          //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 12 };
+          //   return robj;
 
-          }
-          if (veh_grp_ary.rentervehs.count > (0 + overlapbump)) {
-            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
-            return robj;
-          }
-          let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
-          if (alltypesary.includes(formvehicle.carownertype)) {
-            if (veh_grp_ary.tenantvehs.count > 0 ) {
-              robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
-              return robj;
-            }
-          }
+          // }
+          // if (veh_grp_ary.rentervehs.count > (0 + overlapbump)) {
+          //   robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
+          //   return robj;
+          // }
+          // let alltypesary = ['owner', 'family', 'friend', 'friend/family', 'tenant'];
+          // if (alltypesary.includes(formvehicle.carownertype)) {
+          //   if (veh_grp_ary.tenantvehs.count > 0 ) {
+          //     robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
+          //     return robj;
+          //   }
+          // }
 
           robj = { oktoadd: true, rpflag: 0, currentVehicle: null, msgType: 0 };
           return robj;
@@ -519,6 +522,7 @@ export const getVehicleTypeGroups = (vehicles, log = false) => {
   const groups = [
     { name: 'rentervehs', matches: v => v.carownertype === 'renter' && v.calculatedActiveFlag === true },
     { name: 'nonownervehs', matches: v => v.carownertype !== 'renter' &&  v.carownertype !== 'dayuseonly' && v.calculatedActiveFlag === true },
+    { name: 'nontenantvehs', matches: v => v.carownertype !== 'renter' &&  v.carownertype !== 'tenant' && v.calculatedActiveFlag === true },
     { name: 'nonownervehsany', matches: v => v.carownertype !== 'renter' &&  v.carownertype !== 'dayuseonly'},
     { name: 'ownervehs', matches: v => ownerTypes.includes(v.carownertype) && v.calculatedActiveFlag === true },
     { name: 'dayusevehs', matches: v => v.carownertype === 'dayuseonly' && v.calculatedActiveFlag === true },
