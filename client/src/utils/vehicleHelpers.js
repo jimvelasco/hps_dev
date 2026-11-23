@@ -233,7 +233,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
 
       }
      console.log('form value carownertype 2',formvehicle.carownertype)
-      let alltypesary = ['owner','family','friend','friend/family'];
+      let alltypesary = ['owner','family','friend','friend/family','tenant'];
        if (alltypesary.includes(formvehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0 && formvehicle.carownertype !=='tenant') {
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 8 };
@@ -261,7 +261,6 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         } else 
           {
          
-console.log('form value carownertype 4',formvehicle.carownertype)
           robj = { oktoadd: true, rpflag: 0, currentVehicle: null, msgType: 0 };
           return robj;
         }
