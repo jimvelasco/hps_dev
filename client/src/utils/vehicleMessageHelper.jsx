@@ -116,6 +116,13 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
   }
 
 
+ if (createdfrom === 'rentervehicles' && veh_grp_ary.tenantvehs.count > 0 ) {
+      return ( <>There is a Tenant in the unit.<br />If issues, contact your  <br />rental manager or HOA Management.</>);
+  }
+
+ if (createdfrom === 'rentervehicles' && veh_grp_ary.nonownervehs.count > 0 ) {
+      return ( <>There is a Owner in the unit.<br />If issues, contact your  <br />rental manager or HOA Management.</>);
+  }
   if (createdfrom === 'rentervehicles' && veh_grp_ary.allactivevehs.count >= unitParkingLimit + overlapbump + veh_grp_ary.dayusemultivehs.count) {
       return (<>You are not allowed more <br />parking than allowed<br />  {unitParkingLimit}< br /> If issues, first contact the person who provided
         the Unit/PIN <br />or contact HOA Management.< br />{phonetocall}</>);
@@ -130,9 +137,7 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
       return (<>You are not allowed more than <br />  {maxTenantTemplates} < br /> tenant vehicle templates.</>);
   }
 
-  if (createdfrom === 'rentervehicles' && veh_grp_ary.tenantvehs.count > 0 ) {
-      return ( <>There is a Tenant in the unit.<br />If issues, contact your  <br />rental manager or HOA Management.</>);
-  }
+ 
 
   //  if (veh_grp_ary.allactivevehs.count >= unitParkingLimit + overlapbump + veh_grp_ary.dayusemultivehs.count) {
   //   if (veh_grp_ary.ownervehs.count > 0) {
