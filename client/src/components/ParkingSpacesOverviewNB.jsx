@@ -81,7 +81,9 @@ export default function ParkingSpacesOverviewNB() {
     fetchVehicles();
   }, [hoaId]);
 
-  const totalSpaces = hoa?.parking_allowed_hoa +  hoa?.parking_handicapped_hoa|| 0;
+  // const totalSpaces = hoa?.parking_allowed_hoa +  hoa?.parking_handicapped_hoa|| 0;
+  const totalSpaces = hoa?.parking_allowed_hoa || 0;
+
   const remainingSpaces = totalSpaces - occupiedSpaces;
   const hoaname = hoa?.name;
 
