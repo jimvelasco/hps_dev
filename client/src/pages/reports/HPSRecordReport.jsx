@@ -113,17 +113,17 @@ export default function HPSRecordReport() {
 
   return (
     <div style={{
-      minHeight: "100vh", 
+      minHeight: "100vh",
       backgroundColor: "#f5f5f5",
-      backgroundImage: `url('${backgroundImage}')`, 
+      backgroundImage: `url('${backgroundImage}')`,
       backgroundSize: "cover",
-      backgroundPosition: "center", 
+      backgroundPosition: "center",
       backgroundAttachment: "fixed"
     }}>
       <DashboardNavbar title="Record Report" title2={hoa && hoa.name} buttons={navButtons} />
 
       <div className="page-content">
-        <div className="standardtitlebar">
+        <div className="standardtitlebar800">
           <h1 style={{ fontSize: "24px" }}>Record Log</h1>
         </div>
 
@@ -134,12 +134,26 @@ export default function HPSRecordReport() {
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
         }}>
-          {/* <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}> */}
-{/* <div style={{ border:"1px solid black",marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap",margin:"auto",alignItems: "center" }}> */}
-          <div className="generic-grid ">
+          <div className="generic-grid-fr ">
             <div>
-              <p>Owner Type</p>
-            <select
+              <b>Owner Type</b>
+            </div>
+            <div>
+              <b>Unit Number</b>
+            </div>
+            <div>
+              <b>Before Date</b>
+            </div>
+            <div>
+             &nbsp;
+            </div>
+            <div>
+             &nbsp;
+            </div>
+          </div>
+           <div className="generic-grid-fr ">
+            <div>
+              <select
               value={ownerTypeFilter}
               onChange={(e) => setOwnerTypeFilter(e.target.value)}
               className="standardinput"
@@ -156,13 +170,10 @@ export default function HPSRecordReport() {
               <option value="renter">Renter</option>
             </select>
             </div>
-
-
-            {loggedInUser && loggedInUser.role === 'admin' ? (
+            <div>
+               {loggedInUser && loggedInUser.role === 'admin' ? (
               <div>
-                 <label className="input-label">
-                    Unit Number
-                  </label>
+                
                 
               <select
                 value={unitFilter}
@@ -184,7 +195,7 @@ export default function HPSRecordReport() {
               </div>
             ) : (
               <div>
-               <p>Unit Number</p>
+         
               
               <div style={{
                 padding: "10px",
@@ -201,13 +212,9 @@ export default function HPSRecordReport() {
               </div>
               </div>
             )}
-
-            {/* {loggedInUser && loggedInUser.role === 'admin' && ( */}
-              {/* <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "auto" }}> */}
-               
-               <div>
-                  <p>Before Date</p>
-                 <input
+            </div>
+            <div>
+              <input
                   type="date"
                   value={deleteDate}
                   onChange={(e) => setDeleteDate(e.target.value)}
@@ -218,123 +225,103 @@ export default function HPSRecordReport() {
                     border: "1px solid #ccc"
                   }}
                 />
-                </div>
-                
-                <div>
-                   <p>&nbsp;</p>
-
-                    <button
+            </div>
+            <div>
+               <button
                   onClick={handleGoBack}
-                  className="standardbutton"
-                  style={{
-                    backgroundColor: "#f44336",
-                    color: "white",
-                    border: "none",
-                    padding: "5px 10px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    width:"80px"
-                  }}
+                  className="btns btn-primary"
+                  
                 >
                   Cancel
                 </button>
-                &nbsp;
-
-                <button
+            </div>
+            <div>
+             <button
                   onClick={handleDeleteBeforeDate}
-                  className="standardbutton"
-                  style={{
-                    backgroundColor: "#f44336",
-                    color: "white",
-                    border: "none",
-                    padding: "5px 10px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    width:"80px"
-                  }}
+                   className="btns btn-primary"
                 >
                   Delete
                 </button>
-              </div>
-            {/*  )} */}
+            </div>
           </div>
 
-          {loading ? (
-            <p>Loading records...</p>
-          ) : error ? (
-            <p style={{ color: "red" }}>Error: {error}</p>
-          ) : filteredRecords.length === 0 ? (
-            <p>No records found.</p>
-          ) : (
-            <div style={{ overflowX: "auto", maxWidth: "100%" }}>
-            <div style={{ 
-              display: "grid", 
-              gridTemplateColumns: "1.2fr 0.8fr 1.5fr 0.8fr 1fr 1fr 1fr 1fr .5fr",
-              gap: "0px",
-              marginTop: "20px" ,
-              minWidth: "800px",
-              overflowX: "auto"
-            }}>
-               <div className="standard-table-header">Date</div>
-               <div className="standard-table-header">Unit</div>
-               <div className="standard-table-header">Name</div>
-              
-                <div className="standard-table-header">Type</div>
-               <div className="standard-table-header">Plate</div>
-               <div className="standard-table-header">Start</div>
-               <div className="standard-table-header">End</div>
-                 <div className="standard-table-header">Days</div>
-                  <div className="standard-table-header">RP</div>
+           {loading ? (
+                      <p>Loading records...</p>
+                    ) : error ? (
+                      <p style={{ color: "red" }}>Error: {error}</p>
+                    ) : filteredRecords.length === 0 ? (
+                      <p>No records found.</p>
+                    ) : (
+                      <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+                      <div style={{ 
+                        display: "grid", 
+                        gridTemplateColumns: "1.2fr 0.8fr 1.5fr 0.8fr 1fr 1fr 1fr 1fr .5fr",
+                        gap: "0px",
+                        marginTop: "20px" ,
+                        minWidth: "800px",
+                        overflowX: "auto"
+                      }}>
+                         <div className="standard-table-header">Date</div>
+                         <div className="standard-table-header">Unit</div>
+                         <div className="standard-table-header">Name</div>
+                        
+                          <div className="standard-table-header">Type</div>
+                         <div className="standard-table-header">Plate</div>
+                         <div className="standard-table-header">Start</div>
+                         <div className="standard-table-header">End</div>
+                           <div className="standard-table-header">Days</div>
+                            <div className="standard-table-header">Payment</div>
+          
+                         {filteredRecords.map((record, index) => {
+                           let hasOverlap = false;
+                           if (index > 0) {
+                             const prevRecord = filteredRecords[index - 1];
+                             // Simple date string comparison works for YYYY-MM-DD
+                             const s1 = record.startdate || "";
+                             const e1 = record.enddate || "";
+                             const s2 = prevRecord.startdate || "";
+                             const e2 = prevRecord.enddate || "";
+                             
+                            //  if (s1 && e1 && s2 && e2) {
+                            //    // Check overlap: (StartA <= EndB) && (EndA >= StartB)
+                            //    if (s1 <= e2 && e1 >= s2) {
+                            //    //  hasOverlap = true;
+                            //    }
+                            //  }
+                             // assumes records are ordered by start date. If the second record start date 
+                             // is in between the previous records start and end date it gets flagged
+                              if (s1 && e1 && s2 && e2) {
+                               if (s1 >= s2  && s1 < e2) {
+                                 hasOverlap = true;
+                               }
+                             }
+                           }
+          
+                           return (
+                             <React.Fragment key={record._id || index}>
+                               <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>
+                                 {new Date(record.createdAt).toLocaleDateString()}
+                               </div>
+                               <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.unitnumber}</div>
+                               <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{`${record.firstname} ${record.lastname}`}</div>
+                               <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.ownertype}</div>
+                                <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.plate}</div>
+                               <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.startdate}</div>
+                               <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.enddate}</div>
+                              <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{calculateDays(record.startdate, record.enddate)}</div>
+                              <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.requires_payment}</div>
+          
+                             </React.Fragment>
+                           );
+                         })}
+                      </div>
+          
+                      </div>
+                       
+                    )}
 
-               {filteredRecords.map((record, index) => {
-                 let hasOverlap = false;
-                 if (index > 0) {
-                   const prevRecord = filteredRecords[index - 1];
-                   // Simple date string comparison works for YYYY-MM-DD
-                   const s1 = record.startdate || "";
-                   const e1 = record.enddate || "";
-                   const s2 = prevRecord.startdate || "";
-                   const e2 = prevRecord.enddate || "";
-                   
-                  //  if (s1 && e1 && s2 && e2) {
-                  //    // Check overlap: (StartA <= EndB) && (EndA >= StartB)
-                  //    if (s1 <= e2 && e1 >= s2) {
-                  //    //  hasOverlap = true;
-                  //    }
-                  //  }
-                   // assumes records are ordered by start date. If the second record start date 
-                   // is in between the previous records start and end date it gets flagged
-                    if (s1 && e1 && s2 && e2) {
-                     if (s1 >= s2  && s1 < e2) {
-                       hasOverlap = true;
-                     }
-                   }
-                 }
-
-                 return (
-                   <React.Fragment key={record._id || index}>
-                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>
-                       {new Date(record.createdAt).toLocaleDateString()}
-                     </div>
-                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.unitnumber}</div>
-                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{`${record.firstname} ${record.lastname}`}</div>
-                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.ownertype}</div>
-                      <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.plate}</div>
-                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.startdate}</div>
-                     <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.enddate}</div>
-                    <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{calculateDays(record.startdate, record.enddate)}</div>
-                    <div className="standard-table-cell" style={{ color: hasOverlap ? 'red' : 'inherit', fontWeight: hasOverlap ? 'bold' : 'normal' }}>{record.requires_payment}</div>
-
-                   </React.Fragment>
-                 );
-               })}
-            </div>
-
-            </div>
-             
-          )}
         </div>
       </div>
     </div>
-  );
+  )
 }
