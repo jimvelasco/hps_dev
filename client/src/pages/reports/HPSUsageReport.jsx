@@ -125,6 +125,35 @@ export default function HPSRecordReport() {
     return matchesOwnerType && matchesUnit && matchesStartDate && matchesEndDate;
   });
 
+  const handleDownloadCsv = () => {
+    const escapeCsvValue = (value) => {
+      const text = String(value ?? "");
+      const safeText = /^\s*[=+\-@]/.test(text) ? `'${text}` : text;
+      return `"${safeText.replace(/"/g, '""')}"`;
+    };
+    const rows = [
+      ["Start Date", "End Date", "Days", "Unit", "Name", "Type", "Plate"],
+      ...filteredRecords.map(record => [
+        record.startdate,
+        record.enddate,
+        calculateDays(record.startdate, record.enddate),
+        record.unitnumber,
+        `${record.carowner_fname} ${record.carowner_lname}`,
+        record.carownertype,
+        record.plate
+      ])
+    ];
+    const csv = rows.map(row => row.map(escapeCsvValue).join(",")).join("\r\n");
+    const url = URL.createObjectURL(new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `hps-usage-report-${hoaId}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
   const uniqueUnits = [...new Set(records.map(r => r.unitnumber))].sort((a, b) => 
     a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
   );
@@ -293,6 +322,9 @@ export default function HPSRecordReport() {
                     ) : (
                       <div style={{ overflowX: "auto", maxWidth: "100%" }}>
                         <div style={{marginTop:"20px"}}>Count: {filteredRecords.length}</div>
+                        <button type="button" className="btns btn-primary" onClick={handleDownloadCsv} style={{marginTop:"10px"}}>
+                          Download CSV
+                        </button>
                       <div style={{ 
                         display: "grid", 
                         gridTemplateColumns: " 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
