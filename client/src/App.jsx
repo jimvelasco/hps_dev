@@ -34,6 +34,8 @@ import PDFUpload from "./pages/administration/PDFUpload";
 import ImportCSV from "./pages/administration/ImportCSV";
 import UserReports from "./pages/reports/UserReports";
 import HPSRecordReport from "./pages/reports/HPSRecordReport";
+import HPSUsageReport from "./pages/reports/HPSUsageReport";
+
 import OwnerList from "./pages/reports/OwnerList";
 import TestPage from "./pages/TestPage";
 import UserProfile from "./pages/UserProfile";
@@ -267,6 +269,11 @@ function App() {
             <Route path="/:hoaId/hps-record-report" element={
               <ProtectedRoute>
                 <HPSRecordReport />
+              </ProtectedRoute>
+            } />
+             <Route path="/:hoaId/hps-usage-report" element={
+              <ProtectedRoute>
+                <HPSUsageReport />
               </ProtectedRoute>
             } />
             <Route path="/:hoaId/parking-types" element={

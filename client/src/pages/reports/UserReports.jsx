@@ -17,6 +17,10 @@ export default function UserReports() {
     navigate(`/${hoaId}/hps-record-report`);
   };
 
+   const handleHPSUsageReportClick = () => {
+    navigate(`/${hoaId}/hps-usage-report`);
+  };
+
   const handleOwnerListClick = () => {
     navigate(`/${hoaId}/owner-list`);
   };
@@ -63,7 +67,7 @@ export default function UserReports() {
               onClick={handleHPSRecordReportClick}
               style={{ width: "200px" }}
             >
-              View Report
+             Record Log
             </button>
           </section>
 
@@ -78,6 +82,19 @@ export default function UserReports() {
               style={{ width: "200px" }}
             >
               Owner List
+            </button>
+          </section> 
+            <section className="standardsection"  style={{minHeight:"176px"}}>
+            <h3 style={{ color: "#e91e63", marginTop: 0 }}>Usage Report</h3>
+            <p style={{ color: "#666", marginBottom: "20px" }}>
+              View a log of all HOA past vehicles.
+            </p>
+            <button 
+              className="standardsubmitbutton" 
+              onClick={handleHPSUsageReportClick}
+              style={{ width: "200px" }}
+            >
+             Usage Report
             </button>
           </section> 
         </div>
