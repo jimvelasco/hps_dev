@@ -315,7 +315,7 @@ export default function ParkingPayment() {
       <DashboardNavbar title={pageTitle} buttons={navButtons} />
       {/* <div style={{ padding: "30px", maxWidth: "600px", margin: "0 auto" }}> */}
       <div className="page-content">
-        <div className="standardtitlebar" style={{ marginTop: "10px" }}>
+        <div className="standardtitlebar800" style={{ marginTop: "10px" }}>
           <h2>Parking Space Payment</h2>
         </div>
         <div style={{
