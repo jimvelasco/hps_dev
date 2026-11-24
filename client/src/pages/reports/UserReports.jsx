@@ -57,7 +57,7 @@ export default function UserReports() {
       
 
         <div className="grid-flex-container">
-          <section className="standardsection" style={{minHeight:"176px"}}>
+          {/* <section className="standardsection" style={{minHeight:"176px"}}>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Record Log</h3>
             <p style={{ color: "#666", marginBottom: "20px" }}>
               View a detailed log of all HOA records and vehicle changes.
@@ -69,7 +69,7 @@ export default function UserReports() {
             >
              Record Log
             </button>
-          </section>
+          </section> */}
 
           <section className="standardsection"  style={{minHeight:"176px"}}>
             <h3 style={{ color: "#e91e63", marginTop: 0 }}>Owner List</h3>
