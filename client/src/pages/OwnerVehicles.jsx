@@ -149,7 +149,7 @@ export default function OwnerVehicles() {
 
           setRawVehicles(rawVehiclesWithStatus);
 
-          //  console.log('vehicles from fetchVehicles',responseData)
+           console.log('vehicles from fetchVehicles',rawVehiclesWithStatus)
 
           const veh_grp_ary = getVehicleTypeGroups(responseData);
           //  console.log('FV 140 veh_grp_ary',veh_grp_ary)
@@ -198,7 +198,7 @@ export default function OwnerVehicles() {
             }));
 
 
-
+ //console.log('vehicles from fetchVehicles rawvehicles',rawvehicles)
 
 
         //  setAllRawVehicles(rawvehicles);
@@ -244,7 +244,7 @@ export default function OwnerVehicles() {
           //  setAllVehicles(updatedVehicles);
 
        //   setAllVehicles(rawvehicles);
-          setVehicles(rawvehicles)
+          setVehicles(rawVehiclesWithStatus)
           setVehiclesError(null);
         } catch (err) {
           setVehiclesError(err.message || "Failed to load vehicles");

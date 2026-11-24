@@ -1,6 +1,9 @@
 import Vehicle from "../models/Vehicle.js";
 import HPSRecord from "../models/HPSRecord.js";
 
+  const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+
 const logHPSRecord = async (vehicle, oldStartDate = null, oldEndDate = null) => {
   try {
     // console.log("Logging HPSRecord for vehicle:", vehicle._id, "owner:", vehicle.ownerid);
@@ -63,13 +66,8 @@ const getOnsiteVehiclesByHoaId = async (req, res) => {
   try {
     const { hoaId } = req.params;
     const { filter } = req.query;
-
-      
-
-        const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-    const qry = { hoaid: hoaId,  checkout: { $gte: today } };
- 
+    const today = formatLocalDate(new Date());
+    const qry = { hoaid: hoaId, enddate: { $gte: today } };
     const vehicles = await Vehicle.find(qry);
     //  console.log("getOnsiteVehiclesByHoaId reponse size is:", vehicles.length);
     res.json(vehicles);
@@ -82,9 +80,8 @@ const getOnsiteVehiclesByHoaId = async (req, res) => {
 const getAdminVehiclesByHoaId = async (req, res) => {
   try {
     const { hoaId } = req.params;
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-    const qry = { hoaid: hoaId, checkout: { $gte: today } };
+    const today = formatLocalDate(new Date());
+    const qry = { hoaid: hoaId, enddate: { $gte: today } };
    
 
     const qry2 = {
@@ -96,7 +93,7 @@ const getAdminVehiclesByHoaId = async (req, res) => {
         {
           $and: [
             { carownertype: "renter" },
-            { checkout: { $gte: today } }
+            { enddate: { $gte: today } }
           ]
         }
       ]
@@ -104,10 +101,34 @@ const getAdminVehiclesByHoaId = async (req, res) => {
   ]
 }
 
-//console.log("getAdminVehiclesByHoaId Filter qry:", qry2);
-
     const vehicles = await Vehicle.find(qry2);
   //  console.log("getAdminVehiclesByHoaId reponse size is:", vehicles.length);
+    res.json(vehicles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+const getAdminAllVehiclesByHoaId = async (req, res) => {
+  try {
+    const { hoaId } = req.params;
+    const { startDate, endDate } = req.query;
+    const isValidDate = (value) => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+      !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+
+    if ((startDate && !isValidDate(startDate)) || (endDate && !isValidDate(endDate)) ||
+        (startDate && endDate && startDate > endDate)) {
+      return res.status(400).json({ message: "Enter a valid date range (YYYY-MM-DD)" });
+    }
+
+    const query = { hoaid: hoaId };
+    if (startDate) query.startdate = { $gte: startDate };
+    if (endDate) query.enddate = { $lte: endDate };
+
+    const vehicles = await Vehicle.find(query);
     res.json(vehicles);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -637,5 +658,5 @@ export {
   getVehiclesByHoaIdUserId, getVehicleById, createVehicle, updateVehicle, deleteVehicle,
   deleteVehiclesByStatusFlag, batchUpdateDateFields, jjvrunquery, getVehiclesForUnitNumber,
   updateVehiclePayment, getHPSRecordsByHoaId, deleteRenterVehicles, deleteHPSRecords, lookupPlate,
-  getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId,getVehiclesByHoaIdUnitNumber
+  getOnsiteVehiclesByHoaId,getAdminVehiclesByHoaId,getVehiclesByHoaIdUnitNumber,getAdminAllVehiclesByHoaId
 };

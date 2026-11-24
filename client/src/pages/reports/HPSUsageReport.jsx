@@ -12,7 +12,8 @@ export default function HPSRecordReport() {
   const { hoa, loading: hoaLoading } = useHoa();
   const { user: loggedInUser, loading: userLoading } = useLoggedInUser();
   const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const [error, setError] = useState(null);
   const [ownerTypeFilter, setOwnerTypeFilter] = useState("all");
   const [unitFilter, setUnitFilter] = useState("");
@@ -31,37 +32,43 @@ export default function HPSRecordReport() {
     }
   }, [loggedInUser]);
 
-  // qry = `/vehicles/adminvehicles/${hoaId}`
-
   useEffect(() => {
-    const fetchRecords = async () => {
-      try {
-        setLoading(true);
-        // const response = await axios.get(`/vehicles/hpsrecords/${hoaId}`);
-        const response = await axios.get(`/vehicles/adminvehicles/${hoaId}`);
-      //  console.log(response.data)
-
-        const sortedRecords = [...response.data].sort((a, b) =>
-          (a.startdate ?? "").localeCompare(b.startdate ?? "")
-        );
-        setRecords(sortedRecords);
-         const sdate = new Date();
-        sdate.setDate(sdate.getDate() - 30);
-        setStartDate(formatLocalDate(sdate))
-        setEndDate(formatLocalDate(new Date()))
-        
-      } catch (err) {
-        setError(err.message || "Failed to fetch records");
-        console.error("Error fetching HOA records:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (hoaId) {
-      fetchRecords();
-    }
+    const sdate = new Date();
+    sdate.setDate(sdate.getDate() - 30);
+    const edate = new Date();
+    edate.setDate(edate.getDate() + 10);
+    setStartDate(formatLocalDate(sdate));
+    setEndDate(formatLocalDate(edate));
+    setRecords([]);
+    setHasSubmitted(false);
+    setError(null);
   }, [hoaId]);
+
+  const fetchRecords = async () => {
+    if (startDate && endDate && startDate > endDate) {
+      setError("Start Date must be on or before End Date.");
+      setHasSubmitted(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setHasSubmitted(true);
+    try {
+      const response = await axios.get(`/vehicles/adminallvehicles/${hoaId}`, {
+        params: { startDate: startDate || undefined, endDate: endDate || undefined }
+      });
+      const sortedRecords = [...response.data].sort((a, b) =>
+        (a.startdate ?? "").localeCompare(b.startdate ?? "")
+      );
+      setRecords(sortedRecords);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || "Failed to fetch records");
+      setRecords([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // const handleDeleteBeforeDate = async () => {
   //   if (!deleteDate) {
@@ -101,9 +108,6 @@ export default function HPSRecordReport() {
     navigate(`/${hoaId}/reports`);
   };
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
   const navButtons = [
     {
       label: "Back",
@@ -117,12 +121,19 @@ export default function HPSRecordReport() {
     backgroundImage = getAWSResource(hoa, 'BI');
   }
 
-  const filteredRecords = records.filter(record => {
+  // const filteredRecords = records.filter(record => {
+  //   const matchesOwnerType = ownerTypeFilter === "all" || record.carownertype === ownerTypeFilter;
+  //   const matchesUnit = !unitFilter || record.unitnumber === unitFilter;
+  //   const matchesStartDate = !startDate || (record.startdate && record.startdate >= startDate);
+  //   const matchesEndDate = !endDate || (record.enddate && record.enddate <= endDate);
+  //   return matchesOwnerType && matchesUnit && matchesStartDate && matchesEndDate;
+  // });
+
+   const filteredRecords = records.filter(record => {
     const matchesOwnerType = ownerTypeFilter === "all" || record.carownertype === ownerTypeFilter;
     const matchesUnit = !unitFilter || record.unitnumber === unitFilter;
-    const matchesStartDate = !startDate || (record.startdate && record.startdate >= startDate);
-    const matchesEndDate = !endDate || (record.enddate && record.enddate <= endDate);
-    return matchesOwnerType && matchesUnit && matchesStartDate && matchesEndDate;
+
+    return matchesOwnerType && matchesUnit ;
   });
 
   const handleDownloadCsv = () => {
@@ -277,7 +288,12 @@ export default function HPSRecordReport() {
               <input
                   type="date"
                   value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                    setHasSubmitted(false);
+                    setError(null);
+                  }}
+                  disabled={loading}
                   className="standardinput"
                   style={{
                     padding: "8px",
@@ -290,7 +306,12 @@ export default function HPSRecordReport() {
               <input
                   type="date"
                   value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                    setHasSubmitted(false);
+                    setError(null);
+                  }}
+                  disabled={loading}
                   className="standardinput"
                   style={{
                     padding: "8px",
@@ -300,16 +321,17 @@ export default function HPSRecordReport() {
                 />
             </div>
 
-{/* 
+
             <div>
                <button
-                  onClick={handleGoBack}
+                  type="button"
+                  onClick={fetchRecords}
+                  disabled={loading}
                   className="btns btn-primary"
-                  
                 >
                   Submit
                 </button>
-            </div> */}
+            </div>
            
           </div>
 
@@ -317,6 +339,8 @@ export default function HPSRecordReport() {
                       <p>Loading records...</p>
                     ) : error ? (
                       <p style={{ color: "red" }}>Error: {error}</p>
+                    ) : !hasSubmitted ? (
+                      <p>Select a date range and submit to load records.</p>
                     ) : filteredRecords.length === 0 ? (
                       <p>No records found.</p>
                     ) : (
