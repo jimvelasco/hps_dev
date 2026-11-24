@@ -238,7 +238,7 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
     //  }
      if (veh_grp_ary.rentervehs.count > (0 + overlapbump)) {
        console.log('fail 4');
-          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 6 };
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 6 };
           return robj;
         }
      console.log('form value carownertype 3',formvehicle.carownertype)
