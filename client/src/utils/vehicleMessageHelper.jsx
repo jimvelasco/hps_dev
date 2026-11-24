@@ -133,7 +133,7 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
         the Unit/PIN <br />or contact HOA Management.< br />{phonetocall}</>);
   }
 
-    if (createdfrom === 'ownervehicles' && localStorage.getItem('logonType') === 'tenant' && veh_grp_ary.tenantvehsany.count >= maxTenantTemplates ) {
+  if (createdfrom === 'ownervehicles' && localStorage.getItem('logonType') === 'tenant' && veh_grp_ary.tenantvehsany.count >= maxTenantTemplates ) {
       return (<>You are not allowed more than <br />  {maxTenantTemplates} < br /> tenant vehicle templates.</>);
   }
 

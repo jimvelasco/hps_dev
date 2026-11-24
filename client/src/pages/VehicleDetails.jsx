@@ -420,8 +420,8 @@ export default function VehicleDetails() {
           ed = formatLocalDate(edate);
           //  sd = theVehicle.startdate;
           //  ed = theVehicle.enddate;
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
+          setDisableInDateField(true)
+          setDisableOutDateField(true)
         }
         // if (createdfrom === 'ownervehicles' && (theVehicle.carownertype === 'multiday')) {
         //   // const edate = new Date();
@@ -466,13 +466,13 @@ export default function VehicleDetails() {
         //   setDisableInDateField(true)
         //   setDisableOutDateField(false)
         // }
-        if (createdfrom === 'ownervehicles' && (theVehicle.multiday === 1)) {
-     //     console.log('ownervehicles theVehicle.multiday === 1')
-          sd = theVehicle.startdate;
-          ed = theVehicle.enddate;
-          setDisableInDateField(false)
-          setDisableOutDateField(false)
-        }
+        // if (createdfrom === 'ownervehicles' && (theVehicle.multiday === 1)) {
+        //   console.log('ownervehicles theVehicle.multiday === 1')
+        //   sd = theVehicle.startdate;
+        //   ed = theVehicle.enddate;
+        //   setDisableInDateField(false)
+        //   setDisableOutDateField(false)
+        // }
         if (createdfrom === 'rentervehicles' && (theVehicle.carownertype === 'renter')) {
    //       console.log('rentervehicles renter')
           const edate = new Date();
@@ -578,25 +578,25 @@ export default function VehicleDetails() {
     let dateUpdates = {};
     let daysplus = 0;
 
-    // if (name === 'carownertype' && value === 'dayuseonly') {
-    //   const edate = new Date();
-    //   edate.setDate(edate.getDate() - 1);
-    //   const date = formatLocalDate(edate);
-    //   dateUpdates = { startdate: date, enddate: date };
-    //   setDisableInDateField(false)
-    //   setDisableOutDateField(false)
-    // }
-    // if (name === 'carownertype' && value !== 'dayuseonly') {
-    //   daysplus = 3;
-    //   let sdate = new Date();
-    //   sdate = formatLocalDate(sdate)
-    //   let edate = new Date();
-    //   edate.setDate(edate.getDate() + daysplus);
-    //   edate = formatLocalDate(edate);
-    //   dateUpdates = { startdate: sdate, enddate: edate };
-    //   setDisableInDateField(false)
-    //   setDisableOutDateField(false)
-    // }
+    if (name === 'carownertype' && value === 'dayuseonly') {
+      const edate = new Date();
+      edate.setDate(edate.getDate() - 0);
+      const date = formatLocalDate(edate);
+      dateUpdates = { startdate: date, enddate: date };
+      setDisableInDateField(true)
+      setDisableOutDateField(true)
+    }
+    if (name === 'carownertype' && value !== 'dayuseonly') {
+      daysplus = 3;
+      let sdate = new Date();
+      sdate = formatLocalDate(sdate)
+      let edate = new Date();
+      edate.setDate(edate.getDate() + daysplus);
+      edate = formatLocalDate(edate);
+      dateUpdates = { startdate: sdate, enddate: edate };
+      setDisableInDateField(false)
+      setDisableOutDateField(false)
+    }
 
     // if (createdfrom === 'ownervehicles' && name === 'carownertype' && value === 'tenant') {
     //   const edate = new Date();
@@ -877,7 +877,7 @@ export default function VehicleDetails() {
 
     let multidayveh = 0;
     if (formData.enddate > formData.startdate && formData.carownertype === 'dayuseonly') {
-      multidayveh = 1;
+     // JJVFIX. do not set multiday multidayveh = 1;
     }
 
     //console.log('formData is',formData)
