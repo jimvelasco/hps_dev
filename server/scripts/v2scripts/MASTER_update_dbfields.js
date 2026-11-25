@@ -1,24 +1,19 @@
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-// const scripts = [
-//   "createUnitTable.js",
-//   "populateUnitTable.js",
-//   "copyUnitPincodes.js",
-//   "removeUserParkingFields.js",
-//   "copyRenterVehicleOwnerType.js",
-//   "copyUnitnumberToPincodevalue.js"
-// ];
 
-// const scripts = [
-//   "createUnitTable.js",
-//   "populateUnitTable.js",
-//   "copyUnitPincodes.js"
-// ];
+
+//  const scripts = [
+//    "createUnitTable.js",
+//    "populateUnitTable.js",
+//   "copyUnitPincodes.js",
+//   "copyUserPincodeToUnitPincodeAry.js"
+//  ];
+
 const scripts = [
-     "removeUserParkingFields.js",
-   "copyRenterVehicleOwnerType.js",
-   "copyUnitnumberToPincodevalue.js"
+  "removeUserParkingFields.js",
+  "copyRenterVehicleOwnerType.js",
+  "copyUnitnumberToPincodevalue.js"
 ];
 
 const serverDirectory = fileURLToPath(new URL("../../", import.meta.url));
@@ -42,3 +37,5 @@ for (const script of scripts) {
     break;
   }
 }
+
+//node scripts/v2scripts/MASTER_update_dbfields.js

@@ -2,24 +2,24 @@ import mongoose from "mongoose";
 import connectDB from "../../src/config/db.js";
 
 const operations = [
-  ["hoas", { $set: { daypasses_allowed_hoa: 10 } }],
-  ["hoas", { $set: { daypasses_allowed_owner: 1 } }],
-  ["hoas", { $set: { parking_allowed_tenant: 2 } }],
-  ["hoas", { $set: { tenant_free_parking_spots: 2 } }],
-  ["hoas", { $set: { daypasses_allowed_tenant: 0 } }],
-  ["hoas", { $set: { daypasses_allowed_renter: 0 } }],
-  ["hoas", { $set: { parking_handicapped_hoa: 0 } }],
-  ["hoas", { $set: { config_params: {"onsite_button":0,"report_button":0} } }],
-  ["hoas", { $set: { parking_types_array:  [
-      { value: 'owner', label: 'Owner' },
-      { value: 'family', label: 'Family' },
-      { value: 'friend', label: 'Friend' },
-      { value: 'tenant', label: 'Tenant' },
-      { value: 'dayuseonly', label: 'Day Pass' }
-    ] } }],
+  // ["hoas", { $set: { daypasses_allowed_hoa: 10 } }],
+  // ["hoas", { $set: { daypasses_allowed_owner: 1 } }],
+  // ["hoas", { $set: { parking_allowed_tenant: 2 } }],
+  // ["hoas", { $set: { tenant_free_parking_spots: 2 } }],
+  // ["hoas", { $set: { daypasses_allowed_tenant: 0 } }],
+  // ["hoas", { $set: { daypasses_allowed_renter: 0 } }],
+  // ["hoas", { $set: { parking_handicapped_hoa: 0 } }],
+  // ["hoas", { $set: { config_params: {"onsite_button":0,"report_button":0} } }],
+  // ["hoas", { $set: { parking_types_array:  [
+  //     { value: 'owner', label: 'Owner' },
+  //     { value: 'family', label: 'Family' },
+  //     { value: 'friend', label: 'Friend' },
+  //     { value: 'tenant', label: 'Tenant' },
+  //     { value: 'dayuseonly', label: 'Day Pass' }
+  //   ] } }],
 
-  ["units", { $unset: { pincodeary: "" } }],
-  ["units", { $set: { pincodeary: [{ pincode: "", action: "renter", description: "", expire_date: null, uses_allowed: -1, uses_used: 0 }] } }],
+  // ["units", { $unset: { pincodeary: "" } }],
+  // ["units", { $set: { pincodeary: [] } } ],
   ["units", { $set: { available_for_rent: 1 } }],
   ["units", { $set: { is_resident: 0 } }],
   ["units", { $set: { parking_allowed_owner: 2 } }],

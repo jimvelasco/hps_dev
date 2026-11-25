@@ -10,9 +10,9 @@ const copyUnitnumberToPincodevalue = async () => {
       {
         carownertype: { $in: ["renter"] },
         unitnumber: { $type: "string" },
-        $expr: { $ne: ["$pin_code_value", "$unitnumber"] }
+        $expr: { $ne: ["$pin_code_value", { $concat: ["$unitnumber", "1"] }] }
       },
-      [{ $set: { pin_code_value: "$unitnumber" } }]
+      [{ $set: { pin_code_value: { $concat: ["$unitnumber", "1"] } } }]
     );
 
     console.log(`Vehicles matched: ${result.matchedCount}, updated: ${result.modifiedCount}`);
