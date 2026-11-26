@@ -86,6 +86,7 @@ export default function UnitDetails() {
     
 
     }));
+   // setPincodeLength(hoa.config_params.onsite_button);
   }, [numonunit, hoaid, hoa]);
 
   // console.log('formdata is ', formData)
@@ -196,18 +197,24 @@ export default function UnitDetails() {
     }));
   };
 
+const minPincodeLength =
+  hoa?.hoaid === hoaid ? (hoa.config_params.min_pincode_length ?? 3) : 3;
+  const maxPincodeLength = 
+  hoa?.hoaid === hoaid ? (hoa.config_params.max_pincode_length ?? 3) : 3;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log('WE ARE SUBMITTING')
+   //  console.log('WE ARE SUBMITTING',minPincodeLength)
 
     const pinCodes = formData.pincodeary.map(entry => entry.pincode);
     let pinError = null;
     if (pinCodes.length === 0) {
       pinError = "Please enter at least one PIN in PIN Entries.";
     } else {
-      const invalidIndex = pinCodes.findIndex(pin => !/^[0-9]{4,}$/.test(pin));
+      const pinPattern = new RegExp(`^[0-9]{${minPincodeLength},${maxPincodeLength}}$`);
+      const invalidIndex = pinCodes.findIndex(pin => !pinPattern.test(pin));
       if (invalidIndex !== -1) {
-        pinError = `PIN #${invalidIndex + 1} must contain at least 4 numeric digits.`;
+        pinError = `PIN #${invalidIndex + 1} must be between  ${minPincodeLength} and  ${maxPincodeLength} numeric digits.`;
       } else if (new Set(pinCodes).size !== pinCodes.length) {
         pinError = "All PINs must be different.";
       }
@@ -391,8 +398,8 @@ export default function UnitDetails() {
   
 
   const isAdminView = which === 'admin' && loggedInUser?.role === 'admin';
-   console.log('isEditMode', isEditMode);
-    console.log('isAdminView', isAdminView);
+  // console.log('isEditMode', isEditMode);
+  //  console.log('isAdminView', isAdminView);
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", backgroundImage: `url('${backgroundImage}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>

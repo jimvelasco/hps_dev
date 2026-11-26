@@ -105,8 +105,8 @@ const updateHoaConfigParams = async (req, res) => {
   }
 
   const entries = Object.entries(configParams);
-  if (entries.some(([key, value]) => !/^[a-z][a-z0-9_]*$/.test(key) || ["constructor", "prototype"].includes(key) || (value !== 0 && value !== 1))) {
-    return res.status(400).json({ message: "Config keys must be lowercase identifiers and values must be 0 or 1" });
+  if (entries.some(([key, value]) => !/^[a-z][a-z0-9_]*$/.test(key) || ["constructor", "prototype"].includes(key) || typeof value !== "number" || !Number.isFinite(value))) {
+    return res.status(400).json({ message: "Config keys must be lowercase identifiers and values must be finite numbers" });
   }
 
   try {

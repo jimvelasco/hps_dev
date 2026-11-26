@@ -51,7 +51,7 @@ const HoaSchema = new mongoose.Schema({
   
   config_params: {
     type: Map,
-    of: { type: Number, enum: [0, 1] },
+    of: Number,
     default: () => ({})
   },
 

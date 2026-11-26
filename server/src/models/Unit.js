@@ -24,8 +24,7 @@ const unitSchema = new mongoose.Schema({
       description: { type: String },
       expire_date: { type: String },
       uses_allowed: { type: Number, default: 0 },
-      uses_used: { type: Number, default: -1 },
-      expire_date: { type: String }
+      uses_used: { type: Number, default: -1 }
     }
   ],
   bedrooms: {

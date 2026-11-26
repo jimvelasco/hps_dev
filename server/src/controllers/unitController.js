@@ -216,7 +216,6 @@ const updateUnit = async (req, res) => {
         pincodeary.every((entry, index) => {
           const original = unit.pincodeary[index];
           return entry && Object.keys(entry).every(key => allowedFields.includes(key)) &&
-            String(entry._id) === String(original._id) &&
             entry.action === original.action &&
             entry.uses_allowed === original.uses_allowed &&
             entry.uses_used === original.uses_used &&

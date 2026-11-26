@@ -67,6 +67,11 @@ export default function ConfigParams() {
       setValidationError("Each configuration key must be unique.");
       return;
     }
+    const invalidValueIndex = entries.findIndex(([, value]) => value.trim() === "" || !Number.isFinite(Number(value)));
+    if (invalidValueIndex !== -1) {
+      setValidationError(`Row ${invalidValueIndex + 1}: enter a valid numeric value.`);
+      return;
+    }
     clearFeedback();
     setSaving(true);
     try {
@@ -115,11 +120,10 @@ export default function ConfigParams() {
                               disabled={saving} placeholder="onsite_button" onChange={(event) => handleChange(row.id, "key", event.target.value)} />
                           </td>
                           <td>
-                            <select className="editable-table-input" aria-label={`Value for ${row.key || "new parameter"}`}
-                              value={row.value} disabled={saving} onChange={(event) => handleChange(row.id, "value", event.target.value)}>
-                              <option value="0">0 (off)</option>
-                              <option value="1">1 (on)</option>
-                            </select>
+                            <input type="number" step="any" className="editable-table-input"
+                              aria-label={`Value for ${row.key || "new parameter"}`}
+                              value={row.value} disabled={saving}
+                              onChange={(event) => handleChange(row.id, "value", event.target.value)} />
                           </td>
                           <td>
                             <button type="button" className="btn btn-primary" disabled={saving} onClick={() => {
