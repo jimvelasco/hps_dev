@@ -110,7 +110,7 @@ export default function UnitDetails() {
         const response = await axios.get(qry);
         console.log('Unit response is',response.data)
         if (response.data === null) {
-          setError(<div style={{fontSize:"20px",fontWeight:"bold"}}>Unit {numonunit} not found </div>);
+          setError(<div style={{fontSize:"18px"}}>Unit <b>{numonunit}</b> not found. </div>);
           return;
         }
         setFormData({
