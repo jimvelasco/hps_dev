@@ -227,7 +227,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 14 };
           return robj;
         }
-     console.log('form value carownertype 2',formvehicle.carownertype)
+         if (formvehicle.carownertype === 'tenant' && veh_grp_ary.nonownervehs.count > 0) {
+         console.log('fail 22');
+          robj = { oktoadd: false, rpflag: irpflag, currentVehicle: null, msgType: 11 };
+          return robj;
+        }
+   //  console.log('form value carownertype 2',formvehicle.carownertype)
    //  let alltypesary = ['owner','family','friend','friend/family','tenant'];
    //   if (alltypesary.includes(formvehicle.carownertype)) {
         if (veh_grp_ary.tenantvehs.count > 0 && formvehicle.carownertype !== 'tenant') {
@@ -347,7 +352,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
         if (veh_grp_ary.tenantvehs.count > 0  && theCurrentVehicle.carownertype !== 'tenant') {
           console.log('fail 10')
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
-        return robj;
+           return robj;
+        }
+         if (veh_grp_ary.nonownervehs.count > 0  && theCurrentVehicle.carownertype === 'tenant') {
+          console.log('fail 10')
+           robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 11 };
+           return robj;
         }
        
          if (veh_grp_ary.rentervehs.count > (0 + overlapbump) ) {

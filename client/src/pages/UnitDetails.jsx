@@ -14,7 +14,7 @@ import { getAWSResource } from "../utils/awsHelper";
 export default function UnitDetails() {
   // const { hoaId: hoaid, unitnumber:unitnumber } = useParams();
   const { hoaId: hoaid } = useParams();
-  // console.log('START we are loading hoaid', hoaid)
+   console.log('START we are loading hoaid', hoaid)
   //   console.log('ud we are loading unitnumber',unitnumber)
   const navigate = useNavigate();
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
@@ -100,13 +100,19 @@ export default function UnitDetails() {
     const fetchUnit = async () => {
       try {
         setLoading(true);
+        setError(null);
+        setTheUnit(null);
         //   console.log('submit form data is  is ', formData);
         //  const response = await axios.get(`/units/YV/111`);
         //  const response = await axios.get(`/YV/995`);
         let qry = `/units/${encodeURIComponent(homeownersid)}/${encodeURIComponent(numonunit)}`;
         //   console.log('qry', qry)
         const response = await axios.get(qry);
-    //    console.log('unit response is',response.data)
+        console.log('Unit response is',response.data)
+        if (response.data === null) {
+          setError(<div style={{fontSize:"20px",fontWeight:"bold"}}>Unit {numonunit} not found </div>);
+          return;
+        }
         setFormData({
           hoaid: response.data.hoaid || "",
           unitnumber: response.data.unitnumber || "",
@@ -149,8 +155,8 @@ export default function UnitDetails() {
 
        // console.log('response.data._id',response.data._id)
       } catch (err) {
-        setError(err.response?.data?.message || err.message || "Failed to fetch user");
-        console.error("Error fetching user:", err);
+        setError(err.response?.data?.message || err.message || "Failed to fetch unit");
+        console.error("Error fetching unit:", err);
       } finally {
         setLoading(false);
       }
@@ -419,9 +425,9 @@ const minPincodeLength =
           </div>
         )}
 
-        {loading || (!numonunit && (!hoa || hoa.hoaid !== hoaid)) ? (
+        {loading || (isEditMode && !theUnit && !error) || (!numonunit && (!hoa || hoa.hoaid !== hoaid)) ? (
           <p style={{ color: "#666" }}>Loading unit data...</p>
-        ) : (
+        ) : isEditMode && !theUnit ? null : (
           <div style={{
             backgroundColor: "white",
             padding: "30px",

@@ -583,8 +583,10 @@ export default function VehicleDetails() {
       edate.setDate(edate.getDate() - 0);
       const date = formatLocalDate(edate);
       dateUpdates = { startdate: date, enddate: date };
-      setDisableInDateField(true)
-      setDisableOutDateField(true)
+      let enabled = true;
+      if (createdfrom === 'ownervehicles') enabled = false
+      setDisableInDateField(enabled)
+      setDisableOutDateField(enabled)
     }
     if (name === 'carownertype' && value !== 'dayuseonly') {
       daysplus = 3;

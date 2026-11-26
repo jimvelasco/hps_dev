@@ -112,6 +112,9 @@ export const vehicleMessageHelper = (createdfrom, vehicles, unit, pincodeAction,
       Contact the person that <br />provided 
         Unit/PIN or HOA Management.</>);
     }
+    if (veh_grp_ary.tenantvehs.count > 0) {
+      return ( <>There is a Tenant in the unit.<br />If issues, contact your  <br />rental manager or HOA Management.</>);
+    }
     return null;
   }
 

@@ -161,8 +161,9 @@ db.vehicles.updateMany(
 
 good
 
- mongorestore --uri "mongodb+srv://velasco_admin_user:L1ttlewin@cluster0.mui6y.mongodb.net/hps_dev" --archive="source.archive2" 
- --nsInclude="1125_test_port.*" --nsFrom="1125_test_port.*" --nsTo="hps_dev_v2.*"
+ mongodump --uri "mongodb://localhost:27017/1125_test_port_2" --db="1125_test_port_2" --archive="source.archive3"
+ mongorestore --uri "mongodb+srv://velasco_admin_user:L1ttlewin@cluster0.mui6y.mongodb.net/hps_dev" --archive="source.archive3" 
+ --nsInclude="1125_test_port_2.*" --nsFrom="1125_test_port_2.*" --nsTo="hps_dev_v2.*"
 
 mongodump --uri="<HPS_DEV_ATLAS_URI>" \
   --db="hps_dev" \
