@@ -14,7 +14,7 @@ import { getAWSResource } from "../utils/awsHelper";
 export default function UnitDetails() {
   // const { hoaId: hoaid, unitnumber:unitnumber } = useParams();
   const { hoaId: hoaid } = useParams();
-   console.log('START we are loading hoaid', hoaid)
+ //  console.log('START we are loading hoaid', hoaid)
   //   console.log('ud we are loading unitnumber',unitnumber)
   const navigate = useNavigate();
   const { hoa, loading: hoaLoading, error: hoaError, fetchHoaById } = useHoa();
