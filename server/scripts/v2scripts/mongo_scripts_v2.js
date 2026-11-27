@@ -147,36 +147,9 @@ db.vehicles.updateMany(
 // usefull notes
 /*
 { someField: { $exists: false } }
+ */
 
 
-// from server dir
-//node scripts/v2scripts/copyUnitPincodes.js
-//heroku run node server/scripts/copyUnitPincodes.js -a hoaparking-test
-
-// mongodump --uri "mongodb://localhost:27017/1117_hps_prod" --db="1117_hps_prod" --archive="source.archive"
-// mongodump --uri "mongodb://localhost:27017/1125_test_port" --db="1125_test_port" --archive="source.archive2"
-// mongorestore --uri "mongodb://localhost:27017/1117_hps_prod" --archive="source.archive" --nsFrom="1117_hps_prod.*" --nsTo="1117_hps_prod_2.*"
-
-/*
-
-good
-
- mongodump --uri "mongodb://localhost:27017/1125_test_port_2" --db="1125_test_port_2" --archive="source.archive3"
- mongorestore --uri "mongodb+srv://velasco_admin_user:L1ttlewin@cluster0.mui6y.mongodb.net/hps_dev" --archive="source.archive3" 
- --nsInclude="1125_test_port_2.*" --nsFrom="1125_test_port_2.*" --nsTo="hps_dev_v2.*"
-
-mongodump --uri="<HPS_DEV_ATLAS_URI>" \
-  --db="hps_dev" \
-  --archive="$HOME/Downloads/hps_dev.archive"
-
-mongosh "<HPS_PROD_ATLAS_URI>" --eval 'db.dropDatabase()'
-
-mongorestore --uri="<HPS_PROD_ATLAS_URI>" \
-  --archive="$HOME/Downloads/hps_dev.archive" \
-  --nsFrom="hps_dev.*" \
-  --nsTo="hps_prod.*"
-
-*/
 
 
 
