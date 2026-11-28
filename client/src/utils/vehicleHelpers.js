@@ -354,6 +354,12 @@ export const okToAddUnitVehicle = (formvehicle, vehiclearray, ownerOfUnit, vehic
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 8 };
            return robj;
         }
+         if (theCurrentVehicle.carownertype === 'tenant' && veh_grp_ary.tenantvehs.count <= maxactiveallowed) {
+          console.log('veh_grp_ary.tenantvehs.count ',veh_grp_ary.tenantvehs.count ,maxactiveallowed)
+           robj = { oktoadd: true, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 0 };
+           return robj;
+
+         } else 
          if (veh_grp_ary.nonownervehs.count > 0  && theCurrentVehicle.carownertype === 'tenant') {
           console.log('fail 10')
            robj = { oktoadd: false, rpflag: irpflag, currentVehicle: theCurrentVehicle, msgType: 11 };

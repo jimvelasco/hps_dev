@@ -149,7 +149,7 @@ export default function OwnerVehicles() {
 
           setRawVehicles(rawVehiclesWithStatus);
 
-           console.log('vehicles from fetchVehicles',rawVehiclesWithStatus)
+          // console.log('vehicles from fetchVehicles',rawVehiclesWithStatus)
 
           const veh_grp_ary = getVehicleTypeGroups(responseData);
           //  console.log('FV 140 veh_grp_ary',veh_grp_ary)
