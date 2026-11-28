@@ -72,10 +72,10 @@ export default function RentersLogin() {
             // const unitNumbers = response.data.filter(unit => unit.unitnumber && (unit.available_for_rent || unit.day_use_only === 1))
             //     .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber,day_use_only: unit.day_use_only ,available_for_rent: unit.available_for_rent}));
 
-            const unitNumbers = response.data
+            const unitNumbers = response.data.filter(unit => unit.unitnumber && (unit.available_for_rent === 1)) 
                 .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber,day_use_only: unit.day_use_only ,available_for_rent: unit.available_for_rent}));
             unitNumbers.sort((a, b) => String(a.unitnumber).localeCompare(String(b.unitnumber), undefined, { numeric: true }));
-           //   console.log('unit numbers array',unitNumbers);
+            //  console.log('unit numbers array',unitNumbers);
             setUnits(unitNumbers);
         } catch (err) {
             // console.error("Error fetching units:", err);

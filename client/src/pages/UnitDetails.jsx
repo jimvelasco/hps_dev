@@ -465,7 +465,7 @@ const minPincodeLength =
                 />
                   <label className="input-label" htmlFor="unit-available_for_rent"
                     title="This flag will prevent the unit number from even showing in the list when a non-owner uses the app">
-                    Available for Rent
+                    Available for Use
                   </label>
               </div>
               )}
