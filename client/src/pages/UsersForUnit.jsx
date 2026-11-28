@@ -8,6 +8,15 @@ import ModalAlert from "../components/ModalAlert";
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 
+function getCreationTime(user) {
+  const timestamp = Date.parse(user.createdAt || user.date);
+  if (Number.isFinite(timestamp)) return timestamp;
+  if (/^[a-f\d]{24}$/i.test(user._id || "")) {
+    return parseInt(user._id.slice(0, 8), 16) * 1000;
+  }
+  return Number.MAX_SAFE_INTEGER;
+}
+
 export default function UsersForUnit() {
   const navigate = useNavigate();
   const { hoaId, unitNumber } = useParams();
@@ -23,6 +32,9 @@ export default function UsersForUnit() {
   const [deleteError, setDeleteError] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const primaryOwnerId = users
+    .filter(user => user.role === "owner")
+    .sort((a, b) => getCreationTime(a) - getCreationTime(b) || String(a._id).localeCompare(String(b._id)))[0]?._id;
 
   useEffect(() => {
     if (hoaId && hoa?.hoaid !== hoaId) fetchHoaById(hoaId);
@@ -51,7 +63,7 @@ export default function UsersForUnit() {
   }, [hoaId, unitNumber, canAccess]);
 
   const handleDelete = async () => {
-    if (!canAccess || !userToDelete?._id || userToDelete.role === "owner" || deletingId) return;
+    if (!canAccess || !userToDelete?._id || userToDelete._id === primaryOwnerId || deletingId) return;
     const userId = userToDelete._id;
     setDeletingId(userId);
     setDeleteError(null);
@@ -131,7 +143,7 @@ export default function UsersForUnit() {
                     <dt className="grid-item-bold">Company</dt>
                     <dd className="grid-item-normal">{user.company || "—"}</dd>
                   </dl>
-                  {user.role !== "owner" && (
+                  {user._id !== primaryOwnerId && (
                     <button
                       type="button"
                       className="btnxs btn-danger full-row"

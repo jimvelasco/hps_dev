@@ -69,9 +69,12 @@ export default function RentersLogin() {
         setLoadingUnits(true);
         try {
             const response = await axios.get("/units", { params: { hoaid: hoaId } });
-            const unitNumbers = response.data.filter(unit => unit.unitnumber && (unit.available_for_rent || unit.day_use_only === 1))
+            // const unitNumbers = response.data.filter(unit => unit.unitnumber && (unit.available_for_rent || unit.day_use_only === 1))
+            //     .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber,day_use_only: unit.day_use_only ,available_for_rent: unit.available_for_rent}));
+
+            const unitNumbers = response.data
                 .map(unit => ({ id: unit._id, unitnumber: unit.unitnumber,day_use_only: unit.day_use_only ,available_for_rent: unit.available_for_rent}));
-            unitNumbers.sort((a, b) => parseInt(a.unitnumber) - parseInt(b.unitnumber));
+            unitNumbers.sort((a, b) => String(a.unitnumber).localeCompare(String(b.unitnumber), undefined, { numeric: true }));
            //   console.log('unit numbers array',unitNumbers);
             setUnits(unitNumbers);
         } catch (err) {
